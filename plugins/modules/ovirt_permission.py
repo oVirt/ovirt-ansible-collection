@@ -12,9 +12,9 @@ DOCUMENTATION = '''
 ---
 module: ovirt_permission
 short_description: Module to manage permissions of users/groups in oVirt/RHV
-version_added: "2.3"
 author:
-- Ondra Machacek (@machacekondra)
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - Module to manage permissions of users/groups in oVirt/RHV.
 options:
@@ -73,7 +73,6 @@ options:
     quota_name:
         description:
             - Name of the quota to assign permission. Works only with C(object_type) I(data_center).
-        version_added: "2.7"
 extends_documentation_fragment: ovirt
 '''
 
@@ -140,7 +139,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

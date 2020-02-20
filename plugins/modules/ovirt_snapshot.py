@@ -28,8 +28,9 @@ DOCUMENTATION = '''
 ---
 module: ovirt_snapshot
 short_description: "Module to manage Virtual Machine Snapshots in oVirt/RHV"
-version_added: "2.3"
-author: "Ondra Machacek (@machacekondra)"
+author:
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "Module to manage Virtual Machine Snapshots in oVirt/RHV"
 options:
@@ -52,11 +53,9 @@ options:
         description:
             - "Disk id which you want to upload or download"
             - "To get disk, you need to define disk_id or disk_name"
-        version_added: "2.8"
     disk_name:
         description:
             - "Disk name which you want to upload or download"
-        version_added: "2.8"
     download_image_path:
         description:
             - "Path on a file system where snapshot should be downloaded."
@@ -64,11 +63,9 @@ options:
                or you must provide it in C(ca_file) parameter."
             - "Note that the snapshot is not downloaded when the file already exists,
                but you can forcibly download the snapshot when using C(force) I (true)."
-        version_added: "2.8"
     upload_image_path:
         description:
             - "Path to disk image, which should be uploaded."
-        version_added: "2.8"
     use_memory:
         description:
             - "If I(true) and C(state) is I(present) save memory of the Virtual
@@ -84,7 +81,6 @@ options:
         description:
             - "Number of days after which should snapshot be deleted."
             - "It will check all snapshots of virtual machine and delete them, if they are older."
-        version_added: "2.8"
     disks:
         description:
             - "List of disks which should be created with snapshot."
@@ -98,7 +94,6 @@ options:
                     - "Name of the disk which should will be created."
                 type: str
         type: list
-        version_added: "2.10"
 notes:
     - "Note that without a guest agent the data on the created snapshot may be
        inconsistent."
@@ -203,7 +198,7 @@ from ansible.module_utils.six.moves.urllib.parse import urlparse
 
 from datetime import datetime
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

@@ -20,13 +20,11 @@ options:
             - "It will fetch IDs of the VMs disks, snapshots, etc. User can configure to fetch other
                attributes of the nested entities by specifying C(nested_attributes)."
         type: bool
-        version_added: "2.3"
     nested_attributes:
         description:
             - "Specifies list of the attributes which should be fetched from the API."
             - "This parameter apply only when C(fetch_nested) is I(true)."
         type: list
-        version_added: "2.3"
     auth:
         description:
             - "Dictionary with values needed to create HTTP/HTTPS connection to oVirt:"

@@ -13,15 +13,15 @@ DOCUMENTATION = '''
 ---
 module: ovirt_mac_pool
 short_description: Module to manage MAC pools in oVirt/RHV
-version_added: "2.3"
-author: "Ondra Machacek (@machacekondra)"
+author:
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "This module manage MAC pools in oVirt/RHV."
 options:
     id:
         description:
             - "ID of the mac pool to manage."
-        version_added: "2.8"
     name:
         description:
             - "Name of the MAC pool to manage."
@@ -90,7 +90,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     equal,

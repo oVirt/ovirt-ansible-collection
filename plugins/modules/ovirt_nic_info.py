@@ -28,8 +28,9 @@ DOCUMENTATION = '''
 ---
 module: ovirt_nic_info
 short_description: Retrieve information about one or more oVirt/RHV virtual machine network interfaces
-author: "Ondra Machacek (@machacekondra)"
-version_added: "2.3"
+author:
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "Retrieve information about one or more oVirt/RHV virtual machine network interfaces."
     - This module was called C(ovirt_nic_facts) before Ansible 2.9, returning C(ansible_facts).
@@ -74,7 +75,7 @@ import fnmatch
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

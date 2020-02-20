@@ -12,7 +12,6 @@ DOCUMENTATION = '''
 ---
 module: ovirt_vnic_profile
 short_description: Module to manage vNIC profile of network in oVirt/RHV
-version_added: "2.8"
 author:
 - "Ondra Machacek (@machacekondra)"
 - "Martin Necas (@mnecas)"
@@ -144,7 +143,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

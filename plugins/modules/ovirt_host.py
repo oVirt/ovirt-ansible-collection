@@ -13,15 +13,15 @@ DOCUMENTATION = '''
 ---
 module: ovirt_host
 short_description: Module to manage hosts in oVirt/RHV
-version_added: "2.3"
-author: "Ondra Machacek (@machacekondra)"
+author:
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "Module to manage hosts in oVirt/RHV"
 options:
     id:
         description:
             - "ID of the host to manage."
-        version_added: "2.8"
     name:
         description:
             - "Name of the host to manage."
@@ -110,7 +110,6 @@ options:
         description:
             - "Enable or disable power management of the host."
             - "For more comprehensive setup of PM use C(ovirt_host_pm) module."
-        version_added: 2.4
         type: bool
     activate:
         description:
@@ -119,7 +118,6 @@ options:
                the state of host when using I(present) C(state)."
         default: True
         type: bool
-        version_added: 2.4
     iscsi:
         description:
           - "If C(state) is I(iscsidiscover) it means that the iscsi attribute is being
@@ -145,21 +143,17 @@ options:
             portal:
                 description:
                     - "The portal being used to connect with iscsi."
-                version_added: 2.10
-        version_added: 2.4
     check_upgrade:
         description:
             - "If I(true) and C(state) is I(upgraded) run check for upgrade
                action before executing upgrade action."
         default: True
         type: bool
-        version_added: 2.4
     reboot_after_upgrade:
         description:
             - "If I(true) and C(state) is I(upgraded) reboot host after successful upgrade."
         default: True
         type: bool
-        version_added: 2.6
     vgpu_placement:
         description:
             - If I(consolidated), each vGPU is placed on the first physical card with
@@ -168,7 +162,6 @@ options:
             - If I(separated), each vGPU is placed on a separate physical card, if
               possible. This can be useful for improving vGPU performance.
         choices: ['consolidated', 'separated']
-        version_added: 2.8
 extends_documentation_fragment: ovirt
 '''
 
@@ -297,7 +290,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

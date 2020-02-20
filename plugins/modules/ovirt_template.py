@@ -13,8 +13,9 @@ DOCUMENTATION = '''
 ---
 module: ovirt_template
 short_description: Module to manage virtual machine templates in oVirt/RHV
-version_added: "2.3"
-author: "Ondra Machacek (@machacekondra)"
+author:
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "Module to manage virtual machine templates in oVirt/RHV."
 options:
@@ -24,7 +25,6 @@ options:
     id:
         description:
             - "ID of the template to be registered."
-        version_added: "2.4"
     state:
         description:
             - "Should the template be present/absent/exported/imported/registered.
@@ -49,7 +49,6 @@ options:
         description:
             - "Boolean indication whether to allow partial registration of a template when C(state) is registered."
         type: bool
-        version_added: "2.4"
     vnic_profile_mappings:
         description:
             - "Mapper which maps an external virtual NIC profile to one that exists in the engine when C(state) is registered.
@@ -64,7 +63,6 @@ options:
             target_profile_id:
                 description:
                     - The id of the target profile id to be mapped to in the engine.
-        version_added: "2.5"
     cluster_mappings:
         description:
             - "Mapper which maps cluster name between Template's OVF and the destination cluster this Template should be registered to,
@@ -77,7 +75,6 @@ options:
             dest_name:
                 description:
                     - The name of the destination cluster.
-        version_added: "2.5"
     role_mappings:
         description:
             - "Mapper which maps role name between Template's OVF and the destination role this Template should be registered to,
@@ -90,7 +87,6 @@ options:
             dest_name:
                 description:
                     - The name of the destination role.
-        version_added: "2.5"
     domain_mappings:
         description:
             - "Mapper which maps aaa domain name between Template's OVF and the destination aaa domain this Template should be registered to,
@@ -103,7 +99,6 @@ options:
             dest_name:
                 description:
                     - The name of the destination aaa domain.
-        version_added: "2.5"
     exclusive:
         description:
             - "When C(state) is I(exported) this parameter indicates if the existing templates with the
@@ -124,13 +119,11 @@ options:
     io_threads:
         description:
             - "Number of IO threads used by virtual machine. I(0) means IO threading disabled."
-        version_added: "2.7"
     template_image_disk_name:
         description:
             - "When C(state) is I(imported) and C(image_provider) is used this parameter specifies the new name for imported disk,
                if omitted then I(image_disk) name is used by default.
                This parameter is used only in case of importing disk image from Glance domain."
-        version_added: "2.4"
     storage_domain:
         description:
             - "When C(state) is I(imported) this parameter specifies the name of the destination data storage domain.
@@ -150,7 +143,6 @@ options:
             - "This parameter is used only when C(state) I(present)."
         default: False
         type: bool
-        version_added: "2.5"
     operating_system:
         description:
             - Operating system of the template.
@@ -163,57 +155,46 @@ options:
                windows_2003x64, windows_2008, windows_2008x64, windows_2008r2x64,
                windows_2008R2x64, windows_2012x64, windows_2012R2x64,
                windows_7, windows_7x64, windows_8, windows_8x64, windows_xp"
-        version_added: "2.6"
     memory:
         description:
             - Amount of memory of the template. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
-        version_added: "2.6"
     memory_guaranteed:
         description:
             - Amount of minimal guaranteed memory of the template.
               Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
             - C(memory_guaranteed) parameter can't be lower than C(memory) parameter.
-        version_added: "2.6"
     memory_max:
         description:
             - Upper bound of template memory up to which memory hot-plug can be performed.
               Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
-        version_added: "2.6"
     version:
         description:
             - "C(name) - The name of this version."
             - "C(number) - The index of this version in the versions hierarchy of the template. Used for editing of sub template."
-        version_added: "2.8"
     clone_name:
         description:
             - Name for importing Template from storage domain.
             - If not defined, C(name) will be used.
-        version_added: "2.8"
     usb_support:
         description:
             - "I(True) enable USB support, I(False) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
-        version_added: "2.9"
     timezone:
         description:
             - Sets time zone offset of the guest hardware clock.
             - For example C(Etc/GMT)
-        version_added: "2.9"
     sso:
         description:
             - "I(True) enable Single Sign On by Guest Agent, I(False) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
-        version_added: "2.9"
     soundcard_enabled:
         description:
             - "If I(true), the sound card is added to the virtual machine."
         type: bool
-        version_added: "2.9"
     smartcard_enabled:
         description:
             - "If I(true), use smart card authentication."
         type: bool
-        version_added: "2.9"
     cloud_init:
         description:
             - Dictionary with values for Unix-like Virtual Machine initialization using cloud init.
@@ -267,7 +248,6 @@ options:
                 description:
                     - If I(True) network interface will be set to start on boot.
                 type: bool
-        version_added: "2.9"
     cloud_init_nics:
         description:
             - List of dictionaries representing network interfaces to be setup by cloud init.
@@ -294,14 +274,12 @@ options:
                 description:
                     - If I(True) network interface will be set to start on boot.
                 type: bool
-        version_added: "2.9"
     ballooning_enabled:
         description:
             - "If I(true), use memory ballooning."
             - "Memory balloon is a guest device, which may be used to re-distribute / reclaim the host memory
                based on VM needs in a dynamic way. In this way it's possible to create memory over commitment states."
         type: bool
-        version_added: "2.9"
     nics:
         description:
             - List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
@@ -320,7 +298,6 @@ options:
             mac_address:
                 description:
                     - Custom MAC address of the network interface, by default it's obtained from MAC pool.
-        version_added: "2.9"
     sysprep:
         description:
             - Dictionary with values for Windows Virtual Machine initialization using sysprep.
@@ -358,7 +335,6 @@ options:
             root_password:
                 description:
                     - Password to be set for username to Windows Virtual Machine.
-        version_added: "2.9"
 extends_documentation_fragment: ovirt
 '''
 
@@ -550,7 +526,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     convert_to_bytes,

@@ -28,15 +28,15 @@ DOCUMENTATION = '''
 ---
 module: ovirt_network
 short_description: Module to manage logical networks in oVirt/RHV
-version_added: "2.3"
-author: "Ondra Machacek (@machacekondra)"
+author:
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "Module to manage logical networks in oVirt/RHV"
 options:
     id:
         description:
             - "ID of the network to manage."
-        version_added: "2.8"
     name:
         description:
             - "Name of the network to manage."
@@ -62,7 +62,6 @@ options:
         description:
             - "Name of external network provider."
             - "At first it tries to import the network when not found it will create network in external provider."
-        version_added: 2.8
     vm_network:
         description:
             - "If I(True) network will be marked as network for VM."
@@ -101,7 +100,6 @@ options:
     label:
         description:
             - "Name of the label to assign to the network."
-        version_added: "2.5"
 extends_documentation_fragment: ovirt
 '''
 
@@ -155,7 +153,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     check_params,

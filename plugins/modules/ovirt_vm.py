@@ -12,9 +12,9 @@ DOCUMENTATION = '''
 ---
 module: ovirt_vm
 short_description: Module to manage Virtual Machines in oVirt/RHV
-version_added: "2.2"
 author:
-- Ondra Machacek (@machacekondra)
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - This module manages whole lifecycle of the Virtual Machine(VM) in oVirt/RHV.
     - Since VM can hold many states in oVirt/RHV, this see notes to see how the states of the VM are handled.
@@ -49,7 +49,6 @@ options:
         description:
             - Boolean indication whether to allow partial registration of Virtual Machine when C(state) is registered.
         type: bool
-        version_added: "2.4"
     vnic_profile_mappings:
         description:
             - "Mapper which maps an external virtual NIC profile to one that exists in the engine when C(state) is registered.
@@ -64,7 +63,6 @@ options:
             target_profile_id:
                 description:
                     - The id of the target profile id to be mapped to in the engine.
-        version_added: "2.5"
     cluster_mappings:
         description:
             - "Mapper which maps cluster name between VM's OVF and the destination cluster this VM should be registered to,
@@ -77,7 +75,6 @@ options:
             dest_name:
                 description:
                     - The name of the destination cluster.
-        version_added: "2.5"
     role_mappings:
         description:
             - "Mapper which maps role name between VM's OVF and the destination role this VM should be registered to,
@@ -90,7 +87,6 @@ options:
             dest_name:
                 description:
                     - The name of the destination role.
-        version_added: "2.5"
     domain_mappings:
         description:
             - "Mapper which maps aaa domain name between VM's OVF and the destination aaa domain this VM should be registered to,
@@ -103,17 +99,14 @@ options:
             dest_name:
                 description:
                     - The name of the destination aaa domain.
-        version_added: "2.5"
     affinity_group_mappings:
         description:
             - "Mapper which maps affinity name between VM's OVF and the destination affinity this VM should be registered to,
                relevant when C(state) is registered."
-        version_added: "2.5"
     affinity_label_mappings:
         description:
             - "Mapper which maps affinity label name between VM's OVF and the destination label this VM should be registered to,
                relevant when C(state) is registered."
-        version_added: "2.5"
     lun_mappings:
         description:
             - "Mapper which maps lun between VM's OVF and the destination lun this VM should contain, relevant when C(state) is registered.
@@ -126,12 +119,10 @@ options:
                - C(logical_unit_username): Username to be used to connect to the block storage host.
                - C(logical_unit_password): Password to be used to connect to the block storage host.
                - C(storage_type): The storage type which the LUN reside on (iscsi or fcp)"
-        version_added: "2.5"
     reassign_bad_macs:
         description:
             - "Boolean indication whether to reassign bad macs when C(state) is registered."
         type: bool
-        version_added: "2.5"
     template:
         description:
             - Name of the template, which should be used to create Virtual Machine.
@@ -141,20 +132,17 @@ options:
         description:
             - Version number of the template to be used for VM.
             - By default the latest available version of the template is used.
-        version_added: "2.3"
     use_latest_template_version:
         description:
             - Specify if latest template version should be used, when running a stateless VM.
             - If this parameter is set to I(yes) stateless VM is created.
         type: bool
-        version_added: "2.3"
     storage_domain:
         description:
             - Name of the storage domain where all template disks should be created.
             - This parameter is considered only when C(template) is provided.
             - IMPORTANT - This parameter is not idempotent, if the VM exists and you specify different storage domain,
               disk won't move.
-        version_added: "2.4"
     disk_format:
         description:
             - Specify format of the disk.
@@ -164,7 +152,6 @@ options:
             - This parameter is considered only when C(template) and C(storage domain) is provided.
         choices: [ cow, raw ]
         default: cow
-        version_added: "2.4"
     memory:
         description:
             - Amount of memory of the Virtual Machine. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
@@ -180,7 +167,6 @@ options:
             - Upper bound of virtual machine memory up to which memory hot-plug can be performed.
               Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
             - Default value is set by engine.
-        version_added: "2.5"
     cpu_shares:
         description:
             - Set a CPU shares for this Virtual Machine.
@@ -197,7 +183,6 @@ options:
         description:
             - Number of threads per core of the Virtual Machine.
             - Default value is set by oVirt/RHV engine.
-        version_added: "2.5"
     type:
         description:
             - Type of the Virtual Machine.
@@ -207,7 +192,6 @@ options:
     quota_id:
         description:
             - "Virtual Machine quota ID to be used for disk. By default quota is chosen by oVirt/RHV engine."
-        version_added: "2.5"
     operating_system:
         description:
             - Operating system of the Virtual Machine.
@@ -228,22 +212,18 @@ options:
         description:
             - "I(True) enable menu to select boot device, I(False) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
-        version_added: "2.5"
     usb_support:
         description:
             - "I(True) enable USB support, I(False) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
-        version_added: "2.5"
     serial_console:
         description:
             - "I(True) enable VirtIO serial console, I(False) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
-        version_added: "2.5"
     sso:
         description:
             - "I(True) enable Single Sign On by Guest Agent, I(False) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
-        version_added: "2.5"
     host:
         description:
             - Specify host where Virtual Machine should be running. By default the host is chosen by engine scheduler.
@@ -260,23 +240,19 @@ options:
               Virtual machines with higher priorities will be started and migrated before virtual machines with lower
               priorities. The value is an integer between 0 and 100. The higher the value, the higher the priority.
             - If no value is passed, default value is set by oVirt/RHV engine.
-        version_added: "2.5"
     lease:
         description:
             - Name of the storage domain this virtual machine lease reside on. Pass an empty string to remove the lease.
             - NOTE - Supported since oVirt 4.1.
-        version_added: "2.4"
     custom_compatibility_version:
         description:
             - "Enables a virtual machine to be customized to its own compatibility version. If
             'C(custom_compatibility_version)' is set, it overrides the cluster's compatibility version
             for this particular virtual machine."
-        version_added: "2.7"
     host_devices:
         description:
             - Single Root I/O Virtualization - technology that allows single device to expose multiple endpoints that can be passed to VMs
             - host_devices is an list which contain dictionary with name and state of device
-        version_added: "2.7"
     delete_protected:
         description:
             - If I(yes) Virtual Machine will be set as delete protected.
@@ -446,20 +422,16 @@ options:
                 description:
                     - Set boot protocol of the network interface of Virtual Machine.
                 choices: ['none', 'dhcp', 'static']
-                version_added: "2.9"
             nic_ip_address_v6:
                 description:
                     - If boot protocol is static, set this IP address to network interface of Virtual Machine.
-                version_added: "2.9"
             nic_netmask_v6:
                 description:
                     - If boot protocol is static, set this netmask to network interface of Virtual Machine.
-                version_added: "2.9"
             nic_gateway_v6:
                 description:
                     - If boot protocol is static, set this gateway to network interface of Virtual Machine.
                     - For IPv6 addresses the value is an integer in the range of 0-128, which represents the subnet prefix.
-                version_added: "2.9"
             nic_name:
                 description:
                     - Set name to network interface of Virtual Machine.
@@ -489,20 +461,16 @@ options:
             nic_boot_protocol_v6:
                 description:
                     - Set boot protocol of the network interface of Virtual Machine. Can be one of C(none), C(dhcp) or C(static).
-                version_added: "2.9"
             nic_ip_address_v6:
                 description:
                     - If boot protocol is static, set this IP address to network interface of Virtual Machine.
-                version_added: "2.9"
             nic_netmask_v6:
                 description:
                     - If boot protocol is static, set this netmask to network interface of Virtual Machine.
-                version_added: "2.9"
             nic_gateway_v6:
                 description:
                     - If boot protocol is static, set this gateway to network interface of Virtual Machine.
                     - For IPv6 addresses the value is an integer in the range of 0-128, which represents the subnet prefix.
-                version_added: "2.9"
             nic_name:
                 description:
                     - Set name to network interface of Virtual Machine.
@@ -510,13 +478,11 @@ options:
                 description:
                     - If I(True) network interface will be set to start on boot.
                 type: bool
-        version_added: "2.3"
     cloud_init_persist:
         description:
             - "If I(yes) the C(cloud_init) or C(sysprep) parameters will be saved for the virtual machine
                and the virtual machine won't be started as run-once."
         type: bool
-        version_added: "2.5"
         aliases: [ 'sysprep_persist' ]
         default: 'no'
     kernel_params_persist:
@@ -525,42 +491,34 @@ options:
                if I(False) it will be used for run once."
             - Usable with oVirt 4.3 and lower; removed in oVirt 4.4.
         type: bool
-        version_added: "2.8"
     kernel_path:
         description:
             - Path to a kernel image used to boot the virtual machine.
             - Kernel image must be stored on either the ISO domain or on the host's storage.
             - Usable with oVirt 4.3 and lower; removed in oVirt 4.4.
-        version_added: "2.3"
     initrd_path:
         description:
             - Path to an initial ramdisk to be used with the kernel specified by C(kernel_path) option.
             - Ramdisk image must be stored on either the ISO domain or on the host's storage.
             - Usable with oVirt 4.3 and lower; removed in oVirt 4.4.
-        version_added: "2.3"
     kernel_params:
         description:
             - Kernel command line parameters (formatted as string) to be used with the kernel specified by C(kernel_path) option.
             - Usable with oVirt 4.3 and lower; removed in oVirt 4.4.
-        version_added: "2.3"
     instance_type:
         description:
             - Name of virtual machine's hardware configuration.
             - By default no instance type is used.
-        version_added: "2.3"
     description:
         description:
             - Description of the Virtual Machine.
-        version_added: "2.3"
     comment:
         description:
             - Comment of the Virtual Machine.
-        version_added: "2.3"
     timezone:
         description:
             - Sets time zone offset of the guest hardware clock.
             - For example C(Etc/GMT)
-        version_added: "2.3"
     serial_policy:
         description:
             - Specify a serial number policy for the Virtual Machine.
@@ -569,12 +527,10 @@ options:
             - C(host) - Sets the host's UUID as the Virtual Machine's serial number.
             - C(custom) - Allows you to specify a custom serial number in C(serial_policy_value).
         choices: ['vm', 'host', 'custom']
-        version_added: "2.3"
     serial_policy_value:
         description:
             - Allows you to specify a custom serial number.
             - This parameter is used only when C(serial_policy) is I(custom).
-        version_added: "2.3"
     vmware:
         description:
             - Dictionary of values to be used to connect to VMware and import
@@ -601,7 +557,6 @@ options:
             storage_domain:
                 description:
                     - Specifies the target storage domain for converted disks. This is required parameter.
-        version_added: "2.3"
     xen:
         description:
             - Dictionary of values to be used to connect to XEN and import
@@ -622,7 +577,6 @@ options:
             storage_domain:
                 description:
                     - Specifies the target storage domain for converted disks. This is required parameter.
-        version_added: "2.3"
     kvm:
         description:
             - Dictionary of values to be used to connect to kvm and import
@@ -652,13 +606,11 @@ options:
             storage_domain:
                 description:
                     - Specifies the target storage domain for converted disks. This is required parameter.
-        version_added: "2.3"
     cpu_mode:
         description:
             - "CPU mode of the virtual machine. It can be some of the following: I(host_passthrough), I(host_model) or I(custom)."
             - "For I(host_passthrough) CPU type you need to set C(placement_policy) to I(pinned)."
             - "If no value is passed, default value is set by oVirt/RHV engine."
-        version_added: "2.5"
     placement_policy:
         description:
             - "The configuration of the virtual machine's placement policy."
@@ -674,12 +626,10 @@ options:
             user_migratable:
                 description:
                     - "Allow manual migration only."
-        version_added: "2.5"
     ticket:
         description:
             - "If I(true), in addition return I(remote_vv_file) inside I(vm) dictionary, which contains compatible
                 content for remote-viewer application. Works only C(state) is I(running)."
-        version_added: "2.7"
         type: bool
     cpu_pinning:
         description:
@@ -692,35 +642,29 @@ options:
             vcpu:
                 description:
                     - "Number of the virtual machine CPU."
-        version_added: "2.5"
     soundcard_enabled:
         description:
             - "If I(true), the sound card is added to the virtual machine."
         type: bool
-        version_added: "2.5"
     smartcard_enabled:
         description:
             - "If I(true), use smart card authentication."
         type: bool
-        version_added: "2.5"
     io_threads:
         description:
             - "Number of IO threads used by virtual machine. I(0) means IO threading disabled."
-        version_added: "2.5"
     ballooning_enabled:
         description:
             - "If I(true), use memory ballooning."
             - "Memory balloon is a guest device, which may be used to re-distribute / reclaim the host memory
                based on VM needs in a dynamic way. In this way it's possible to create memory over commitment states."
         type: bool
-        version_added: "2.5"
     numa_tune_mode:
         description:
             - "Set how the memory allocation for NUMA nodes of this VM is applied (relevant if NUMA nodes are set for this VM)."
             - "It can be one of the following: I(interleave), I(preferred) or I(strict)."
             - "If no value is passed, default value is set by oVirt/RHV engine."
         choices: ['interleave', 'preferred', 'strict']
-        version_added: "2.6"
     numa_nodes:
         description:
             - "List of vNUMA Nodes to set for this VM and pin them to assigned host's physical NUMA node."
@@ -738,13 +682,11 @@ options:
             numa_node_pins:
                 description:
                     - "list of physical NUMA node indexes to pin this virtual NUMA node to."
-        version_added: "2.6"
     rng_device:
         description:
             - "Random number generator (RNG). You can choose of one the following devices I(urandom), I(random) or I(hwrng)."
             - "In order to select I(hwrng), you must have it enabled on cluster first."
             - "/dev/urandom is used for cluster version >= 4.1, and /dev/random for cluster version <= 4.0"
-        version_added: "2.5"
     custom_properties:
         description:
             - "Properties sent to VDSM to configure various hooks."
@@ -759,7 +701,6 @@ options:
             value:
                 description:
                     - "Value to set for custom property."
-        version_added: "2.5"
     watchdog:
         description:
             - "Assign watchdog device for the virtual machine."
@@ -771,7 +712,6 @@ options:
             action:
                 description:
                     - "Watchdog action to be performed when watchdog is triggered. For example: I(none), I(reset), I(poweroff), I(pause) or I(dump)."
-        version_added: "2.5"
     graphical_console:
         description:
             - "Assign graphical console to the virtual machine."
@@ -793,32 +733,26 @@ options:
                     - I(reboot) Initiates a graceful virtual machine reboot.
                     - I(shutdown) Initiates a graceful virtual machine shutdown.
                 type: str
-                version_added: "2.10"
             keyboard_layout:
                 description:
                     - The keyboard layout to use with this graphic console.
                     - This option is only available for the VNC console type.
                     - If no keyboard is enabled then it won't be reported.
                 type: str
-                version_added: "2.10"
             monitors:
                 description:
                     - The number of monitors opened for this graphic console.
                     - This option is only available for the SPICE protocol.
                     - Possible values are 1, 2 or 4.
                 type: int
-                version_added: "2.10"
-        version_added: "2.5"
     exclusive:
         description:
             - "When C(state) is I(exported) this parameter indicates if the existing VM with the
                same name should be overwritten."
-        version_added: "2.8"
         type: bool
     export_domain:
         description:
             - "When C(state) is I(exported)this parameter specifies the name of the export storage domain."
-        version_added: "2.8"
     export_ova:
         description:
             - Dictionary of values to be used to export VM as OVA.
@@ -832,39 +766,32 @@ options:
             filename:
                 description:
                     - The name of the exported OVA file.
-        version_added: "2.8"
     force_migrate:
         description:
             - If I(true), the VM will migrate when I(placement_policy=user-migratable) but not when I(placement_policy=pinned).
-        version_added: "2.8"
         type: bool
     migrate:
         description:
             - "If I(true), the VM will migrate to any available host."
-        version_added: "2.8"
         type: bool
     next_run:
         description:
             - "If I(true), the update will not be applied to the VM immediately and will be only applied when virtual machine is restarted."
             - NOTE - If there are multiple next run configuration changes on the VM, the first change may get reverted if this option is not passed.
-        version_added: "2.8"
         type: bool
     snapshot_name:
         description:
             - "Snapshot to clone VM from."
             - "Snapshot with description specified should exist."
             - "You have to specify C(snapshot_vm) parameter with virtual machine name of this snapshot."
-        version_added: "2.9"
     snapshot_vm:
         description:
             - "Source VM to clone VM from."
             - "VM should have snapshot specified by C(snapshot)."
             - "If C(snapshot_name) specified C(snapshot_vm) is required."
-        version_added: "2.9"
     custom_emulated_machine:
         description:
             - "Sets the value of the custom_emulated_machine attribute."
-        version_added: "2.10"
 
 notes:
     - If VM is in I(UNASSIGNED) or I(UNKNOWN) state before any operation, the module will fail.
@@ -1279,7 +1206,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_params,
     check_sdk,

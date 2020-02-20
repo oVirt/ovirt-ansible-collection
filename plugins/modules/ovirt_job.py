@@ -28,7 +28,6 @@ DOCUMENTATION = '''
 ---
 module: ovirt_job
 short_description: Module to manage jobs in oVirt/RHV
-version_added: "2.9"
 author: "Martin Necas (@mnecas)"
 description:
     - "This module manage jobs in oVirt/RHV. It can also manage steps of the job."
@@ -116,7 +115,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     equal,

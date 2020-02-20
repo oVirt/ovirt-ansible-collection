@@ -28,15 +28,15 @@ DOCUMENTATION = '''
 ---
 module: ovirt_vmpool
 short_description: Module to manage VM pools in oVirt/RHV
-version_added: "2.3"
-author: "Ondra Machacek (@machacekondra)"
+author:
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "Module to manage VM pools in oVirt/RHV."
 options:
     id:
         description:
             - "ID of the vmpool to manage."
-        version_added: "2.8"
     name:
         description:
             - "Name of the VM pool to manage."
@@ -145,7 +145,6 @@ options:
                     - C(mac_address) - Custom MAC address of the network interface, by default it's obtained from MAC pool.
                     - NOTE - This parameter is used only when C(state) is I(running) or I(present) and is able to only create NICs.
                     - To manage NICs of the VM in more depth please use M(ovirt_nics) module instead.
-        version_added: "2.9"
 extends_documentation_fragment: ovirt
 '''
 
@@ -229,7 +228,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_params,
     check_sdk,

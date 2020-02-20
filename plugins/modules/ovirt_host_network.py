@@ -28,8 +28,9 @@ DOCUMENTATION = '''
 ---
 module: ovirt_host_network
 short_description: Module to manage host networks in oVirt/RHV
-version_added: "2.3"
-author: "Ondra Machacek (@machacekondra)"
+author:
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "Module to manage host networks in oVirt/RHV."
 options:
@@ -97,7 +98,6 @@ options:
                     value:
                         description:
                             - Value of custom property.
-                version_added: 2.10
     labels:
         description:
             - "List of names of the network label to be assigned to bond or interface."
@@ -117,7 +117,6 @@ options:
             - "If I(true) all networks will be synchronized before modification"
         type: bool
         default: false
-        version_added: 2.8
 extends_documentation_fragment: ovirt
 '''
 
@@ -221,7 +220,7 @@ except ImportError:
 
 from ansible.module_utils import six
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

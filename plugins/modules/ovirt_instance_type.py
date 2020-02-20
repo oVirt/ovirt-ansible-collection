@@ -12,7 +12,6 @@ DOCUMENTATION = '''
 ---
 module: ovirt_instance_type
 short_description: Module to manage Instance Types in oVirt/RHV
-version_added: "2.8"
 author:
 - Martin Necas (@mnecas)
 - Ondra Machacek (@machacekondra)
@@ -244,7 +243,7 @@ instancetype:
 from ansible.module_utils.basic import AnsibleModule
 import traceback
 
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_params,
     check_sdk,

@@ -28,8 +28,9 @@ DOCUMENTATION = '''
 ---
 module: ovirt_tag
 short_description: Module to manage tags in oVirt/RHV
-version_added: "2.3"
-author: "Ondra Machacek (@machacekondra)"
+author:
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "This module manage tags in oVirt/RHV. It can also manage assignments
        of those tags to entities."
@@ -37,7 +38,6 @@ options:
     id:
         description:
             - "ID of the tag to manage."
-        version_added: "2.8"
     name:
         description:
             - "Name of the tag to manage."
@@ -125,7 +125,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

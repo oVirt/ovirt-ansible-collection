@@ -28,7 +28,6 @@ DOCUMENTATION = '''
 ---
 module: ovirt_external_provider
 short_description: Module to manage external providers in oVirt/RHV
-version_added: "2.3"
 author: "Ondra Machacek (@machacekondra)"
 description:
     - "Module to manage external providers in oVirt/RHV"
@@ -95,7 +94,6 @@ options:
                of them defined in the system they will be removed."
             - "Applicable for I(os_volume)."
         default: []
-        version_added: "2.6"
 extends_documentation_fragment: ovirt
 '''
 
@@ -185,7 +183,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_params,
     check_sdk,

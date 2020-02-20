@@ -13,8 +13,8 @@ DOCUMENTATION = '''
 ---
 module: ovirt_auth
 short_description: "Module to manage authentication to oVirt/RHV"
-author: "Ondra Machacek (@machacekondra)"
-version_added: "2.2"
+author:
+- "Ondra Machacek (@machacekondra)"
 description:
     - "This module authenticates to oVirt/RHV engine and creates SSO token, which should be later used in
        all other oVirt/RHV modules, so all modules don't need to perform login and logout.
@@ -40,7 +40,6 @@ options:
         description:
             - "SSO token to be used instead of login with username/password.
                Default value is set by I(OVIRT_TOKEN) environment variable."
-        version_added: 2.5
     url:
         required: False
         description:
@@ -55,7 +54,6 @@ options:
                For example: I(server.example.com).
                Default value is set by I(OVIRT_HOSTNAME) environment variable."
             - "Either C(url) or C(hostname) is required."
-        version_added: "2.6"
     insecure:
         required: False
         description:
@@ -94,7 +92,6 @@ options:
         required: False
         description:
             - "A dictionary of HTTP headers to be added to each API call."
-        version_added: "2.4"
 
 requirements:
   - python >= 2.7
@@ -206,7 +203,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import check_sdk
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import check_sdk
 
 
 def main():

@@ -13,15 +13,15 @@ DOCUMENTATION = '''
 ---
 module: ovirt_cluster
 short_description: Module to manage clusters in oVirt/RHV
-version_added: "2.3"
-author: "Ondra Machacek (@machacekondra)"
+author:
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "Module to manage clusters in oVirt/RHV"
 options:
     id:
         description:
             - "ID of the cluster to manage."
-        version_added: "2.8"
     name:
         description:
             - "Name of the cluster to manage."
@@ -119,14 +119,12 @@ options:
             - "A flag indicating if fencing should be skipped if Gluster bricks are up and running in the host being fenced."
             - "This flag is optional, and the default value is `false`."
         type: bool
-        version_added: "2.8"
     fence_skip_if_gluster_quorum_not_met:
         description:
             - "A flag indicating if fencing should be skipped if Gluster bricks are up and running and Gluster quorum will not
                be met without those bricks."
             - "This flag is optional, and the default value is `false`."
         type: bool
-        version_added: "2.8"
     fence_skip_if_sd_active:
         description:
             - "If I(True) any hosts in the cluster that are Non Responsive
@@ -211,7 +209,6 @@ options:
             - "Custom scheduling policy properties of the cluster."
             - "These optional properties override the properties of the
                scheduling policy specified by the C(scheduling_policy) parameter."
-        version_added: "2.6"
     cpu_arch:
         description:
             - "CPU architecture of cluster."
@@ -234,7 +231,6 @@ options:
             - "MAC pool to be used by this cluster."
             - "C(Note:)"
             - "This is supported since oVirt version 4.1."
-        version_added: 2.4
     external_network_providers:
         description:
             - "List of references to the external network providers available
@@ -249,21 +245,18 @@ options:
             id:
                 description:
                     - ID of the external network provider. Either C(name) or C(id) is required.
-        version_added: 2.5
     firewall_type:
         description:
             - "The type of firewall to be used on hosts in this cluster."
             - "Up to version 4.1, it was always I(iptables). Since version 4.2, you can choose between I(iptables) and I(firewalld).
                For clusters with a compatibility version of 4.2 and higher, the default firewall type is I(firewalld)."
         type: str
-        version_added: 2.8
         choices: ['firewalld', 'iptables']
     gluster_tuned_profile:
         description:
             - "The name of the U(https://fedorahosted.org/tuned) to set on all the hosts in the cluster. This is not mandatory
                and relevant only for clusters with Gluster service."
             - "Could be for example I(virtual-host), I(rhgs-sequential-io), I(rhgs-random-io)"
-        version_added: 2.8
         type: str
 extends_documentation_fragment: ovirt
 '''
@@ -341,7 +334,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

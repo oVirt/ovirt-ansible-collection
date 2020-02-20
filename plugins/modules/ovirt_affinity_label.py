@@ -28,8 +28,9 @@ DOCUMENTATION = '''
 ---
 module: ovirt_affinity_label
 short_description: Module to manage affinity labels in oVirt/RHV
-version_added: "2.3"
-author: "Ondra Machacek (@machacekondra)"
+author:
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "This module manage affinity labels in oVirt/RHV. It can also manage assignments
        of those labels to hosts and VMs."
@@ -103,7 +104,7 @@ except ImportError:
 
 from collections import defaultdict
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

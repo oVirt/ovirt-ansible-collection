@@ -2,7 +2,7 @@
 
 VERSION="1.0.0"
 MILESTONE=master
-RPM_RELEASE="1"
+RPM_RELEASE="0.1.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
 
 COLLECTION_NAME="ovirt_collection"
 COLLECTION_NAMESPACE="ovirt"

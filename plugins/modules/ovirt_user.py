@@ -28,7 +28,6 @@ DOCUMENTATION = '''
 ---
 module: ovirt_user
 short_description: Module to manage users in oVirt/RHV
-version_added: "2.3"
 author: "Ondra Machacek (@machacekondra)"
 description:
     - "Module to manage users in oVirt/RHV."
@@ -97,7 +96,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     check_params,

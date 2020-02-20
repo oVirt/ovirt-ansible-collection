@@ -12,7 +12,6 @@ DOCUMENTATION = '''
 ---
 module: ovirt_role
 short_description: Module to manage roles in oVirt/RHV
-version_added: "2.8"
 author: "Martin Necas (@mnecas)"
 description:
     - "Module to manage roles in oVirt/RHV."
@@ -76,7 +75,7 @@ ovirt_role:
     type: list
 '''
 
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     convert_to_bytes,

@@ -12,9 +12,9 @@ DOCUMENTATION = '''
 ---
 module: ovirt_affinity_group
 short_description: Module to manage affinity groups in oVirt/RHV
-version_added: "2.3"
 author:
-- Ondra Machacek (@machacekondra)
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "This module manage affinity groups in oVirt/RHV. It can also manage assignments
        of those groups to VMs."
@@ -125,7 +125,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     check_support,

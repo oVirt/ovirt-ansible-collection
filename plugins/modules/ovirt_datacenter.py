@@ -13,15 +13,15 @@ DOCUMENTATION = '''
 ---
 module: ovirt_datacenter
 short_description: Module to manage data centers in oVirt/RHV
-version_added: "2.3"
-author: "Ondra Machacek (@machacekondra)"
+author:
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "Module to manage data centers in oVirt/RHV"
 options:
     id:
         description:
             - "ID of the datacenter to manage."
-        version_added: "2.8"
     name:
         description:
             - "Name of the data center to manage."
@@ -61,7 +61,6 @@ options:
               If I(True) data center will be forcibly removed, even though it
               contains some clusters. Default value is I(False), which means
               that only empty data center can be removed."
-        version_added: "2.5"
         default: False
         type: bool
 
@@ -111,7 +110,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     check_params,

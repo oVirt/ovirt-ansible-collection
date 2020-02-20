@@ -32,7 +32,6 @@ DOCUMENTATION = '''
 module: ovirt_vnic_profile_info
 short_description: Retrieve information about one or more oVirt/RHV vnic profiles
 author: "Martin Necas (@mnecas)"
-version_added: "2.10"
 description:
     - "Retrieve information about one or more oVirt/RHV vnic profiles."
 notes:
@@ -74,7 +73,7 @@ ovirt_vnic_profiles:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

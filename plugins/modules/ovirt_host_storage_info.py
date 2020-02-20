@@ -13,7 +13,6 @@ DOCUMENTATION = '''
 module: ovirt_host_storage_info
 short_description: Retrieve information about one or more oVirt/RHV HostStorages (applicable only for block storage)
 author: "Daniel Erez (@derez)"
-version_added: "2.4"
 description:
     - "Retrieve information about one or more oVirt/RHV HostStorages (applicable only for block storage)."
     - This module was called C(ovirt_host_storage_facts) before Ansible 2.9, returning C(ansible_facts).
@@ -42,7 +41,6 @@ options:
             portal:
                 description:
                   - "The portal being used to connect with iscsi."
-                version_added: 2.10
     fcp:
         description:
             - "Dictionary with values for fibre channel storage type:"
@@ -90,7 +88,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

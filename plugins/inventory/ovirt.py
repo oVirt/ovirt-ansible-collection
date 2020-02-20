@@ -9,7 +9,6 @@ DOCUMENTATION = '''
     name: ovirt
     plugin_type: inventory
     short_description: oVirt inventory source
-    version_added: "2.10"
     author: Bram Verschueren (@bverschueren)
     requirements:
       - ovirt-engine-sdk-python >= 4.2.4

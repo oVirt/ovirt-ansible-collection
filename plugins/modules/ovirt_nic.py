@@ -12,16 +12,15 @@ DOCUMENTATION = '''
 ---
 module: ovirt_nic
 short_description: Module to manage network interfaces of Virtual Machines in oVirt/RHV
-version_added: "2.3"
 author:
-- Ondra Machacek (@machacekondra)
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - Module to manage network interfaces of Virtual Machines in oVirt/RHV.
 options:
     id:
         description:
             - "ID of the nic to manage."
-        version_added: "2.8"
     name:
         description:
             - Name of the network interface to manage.
@@ -34,7 +33,6 @@ options:
         description:
             - Name of the template to manage.
             - You must provide either C(vm) parameter or C(template) parameter.
-        version_added: "2.4"
     state:
         description:
             - Should the Virtual Machine NIC be present/absent/plugged/unplugged.
@@ -59,7 +57,6 @@ options:
         description:
             - Defines if the NIC is linked to the virtual machine.
         type: bool
-        version_added: "2.9"
 extends_documentation_fragment: ovirt
 '''
 
@@ -134,7 +131,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

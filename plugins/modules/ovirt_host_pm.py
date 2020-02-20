@@ -13,7 +13,6 @@ DOCUMENTATION = '''
 ---
 module: ovirt_host_pm
 short_description: Module to manage power management of hosts in oVirt/RHV
-version_added: "2.3"
 author: "Ondra Machacek (@machacekondra)"
 description:
     - "Module to manage power management of hosts in oVirt/RHV."
@@ -58,7 +57,6 @@ options:
     order:
         description:
             - "Integer value specifying, by default it's added at the end."
-        version_added: "2.5"
 extends_documentation_fragment: ovirt
 '''
 
@@ -121,7 +119,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

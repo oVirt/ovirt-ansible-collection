@@ -13,8 +13,9 @@ DOCUMENTATION = '''
 ---
 module: ovirt_disk
 short_description: "Module to manage Virtual Machine and floating disks in oVirt/RHV"
-version_added: "2.2"
-author: "Ondra Machacek (@machacekondra)"
+author:
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "Module to manage Virtual Machine and floating disks in oVirt/RHV."
 options:
@@ -28,7 +29,6 @@ options:
     description:
         description:
             - "Description of the disk image to manage."
-        version_added: "2.5"
     vm_name:
         description:
             - "Name of the Virtual Machine to manage. Either C(vm_id) or C(vm_name) is required if C(state) is I(attached) or I(detached)."
@@ -47,7 +47,6 @@ options:
                or you must provide it in C(ca_file) parameter."
             - "Note that the disk is not downloaded when the file already exists,
                but you can forcibly download the disk when using C(force) I (true)."
-        version_added: "2.3"
     upload_image_path:
         description:
             - "Path to disk image, which should be uploaded."
@@ -58,7 +57,6 @@ options:
                if you want to upload the disk even if the disk with C(id) or C(name) exists,
                then please use C(force) I(true). If you will use C(force) I(false), which
                is default, then the disk image won't be uploaded."
-        version_added: "2.3"
     size:
         description:
             - "Size of the disk. Size should be specified using IEC standard units.
@@ -80,11 +78,9 @@ options:
             - The Hosted Engine disk content types are available with Engine 4.3+ and Ansible 2.8
         choices: ['data', 'iso', 'hosted_engine', 'hosted_engine_sanlock', 'hosted_engine_metadata', 'hosted_engine_configuration']
         default: 'data'
-        version_added: "2.8"
     sparse:
         required: False
         type: bool
-        version_added: "2.5"
         description:
             - "I(True) if the disk should be sparse (also known as I(thin provision)).
               If the parameter is omitted, cow disks will be created as sparse and raw disks as I(preallocated)"
@@ -101,12 +97,10 @@ options:
                your playbook accordingly to not copy the disks all the time. This
                is valid only for VM and floating disks, template disks works
                as expected."
-        version_added: "2.3"
     force:
         description:
             - "Please take a look at C(image_path) documentation to see the correct
                usage of this parameter."
-        version_added: "2.3"
         type: bool
     profile:
         description:
@@ -114,7 +108,6 @@ options:
     quota_id:
         description:
             - "Disk quota ID to be used for disk. By default quota is chosen by oVirt/RHV engine."
-        version_added: "2.5"
     bootable:
         description:
             - "I(True) if the disk should be bootable. By default when disk is created it isn't bootable."
@@ -157,13 +150,11 @@ options:
                the storage."
             - "Note that this parameter isn't idempotent, as it's not possible
                to check if the disk should be or should not be sparsified."
-        version_added: "2.4"
         type: bool
     openstack_volume_type:
         description:
             - "Name of the openstack volume type. This is valid when working
                with cinder."
-        version_added: "2.4"
     image_provider:
         description:
             - "When C(state) is I(exported) disk is exported to given Glance image provider."
@@ -173,7 +164,6 @@ options:
                you specify this parameter the disk is exported, so please handle
                your playbook accordingly to not export the disk all the time.
                This option is valid only for template disks."
-        version_added: "2.4"
     host:
         description:
             - "When the hypervisor name is specified the newly created disk or
@@ -183,7 +173,6 @@ options:
                related information. This option is only valid for passthrough
                disks. This option requires at least the logical_unit.id to be
                specified"
-        version_added: "2.8"
     wipe_after_delete:
         description:
             - "If the disk's Wipe After Delete is enabled, then the disk is first wiped."
@@ -192,7 +181,6 @@ options:
         description:
             - I(True) if the disk should be activated.
             - When creating disk of virtual machine it is set to I(True).
-        version_added: "2.8"
         type: bool
 extends_documentation_fragment: ovirt
 '''
@@ -327,7 +315,7 @@ try:
 except ImportError:
     pass
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     check_params,

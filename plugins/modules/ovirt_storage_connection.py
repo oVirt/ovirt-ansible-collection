@@ -12,7 +12,6 @@ DOCUMENTATION = '''
 ---
 module: ovirt_storage_connection
 short_description: Module to manage storage connections in oVirt
-version_added: "2.4"
 author: "Ondra Machacek (@machacekondra)"
 description:
     - "Module to manage storage connections in oVirt"
@@ -117,7 +116,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

@@ -18,8 +18,8 @@ DOCUMENTATION = '''
 ---
 module: ovirt_api_info
 short_description: Retrieve information about the oVirt/RHV API
-author: "Ondra Machacek (@machacekondra)"
-version_added: "2.5"
+author:
+- "Ondra Machacek (@machacekondra)"
 description:
     - "Retrieve information about the oVirt/RHV API."
     - This module was called C(ovirt_api_facts) before Ansible 2.9, returning C(ansible_facts).
@@ -55,7 +55,7 @@ ovirt_api:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

@@ -13,15 +13,15 @@ DOCUMENTATION = '''
 ---
 module: ovirt_quota
 short_description: Module to manage datacenter quotas in oVirt/RHV
-version_added: "2.3"
-author: "Ondra Machacek (@machacekondra)"
+author:
+- "Ondra Machacek (@machacekondra)"
+- "Martin Necas (@mnecas)"
 description:
     - "Module to manage datacenter quotas in oVirt/RHV"
 options:
     id:
         description:
             - "ID of the quota to manage."
-        version_added: "2.8"
     name:
         description:
             - "Name of the quota to manage."
@@ -151,7 +151,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,
