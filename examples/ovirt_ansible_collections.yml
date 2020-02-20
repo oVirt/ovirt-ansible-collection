@@ -1,0 +1,20 @@
+---
+- name: oVirt infra
+  hosts: localhost
+  connection: local
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: Login
+      ovirt_auth:
+          url: "{{ engine_url | default(omit) | default(lookup('env','host')) }}"
+          password: "{{ engine_password | default(omit) | default(lookup('env','password')) }}"
+          username: "{{ engine_user | default(omit) | default(lookup('env','username')) }}"
+    - name: Clone VM from snapshot
+      ovirt_vm:
+        auth: "{{ ovirt_auth }}"
+        name: vm_clone_new
+        state: present
+        cluster: Default
+  collections:
+    - ovirt.ovirt_collection
