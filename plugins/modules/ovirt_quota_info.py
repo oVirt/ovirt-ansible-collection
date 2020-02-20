@@ -28,6 +28,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_quota_info
 short_description: Retrieve information about one or more oVirt/RHV quotas
+version_added: "1.0.0"
 author: "Maor Lipchuk (@machacekondra)"
 description:
     - "Retrieve information about one or more oVirt/RHV quotas."

@@ -28,6 +28,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_storage_template_info
 short_description: Retrieve information about one or more oVirt/RHV templates relate to a storage domain.
+version_added: "1.0.0"
 author: "Maor Lipchuk (@machacekondra)"
 description:
     - "Retrieve information about one or more oVirt/RHV templates relate to a storage domain."

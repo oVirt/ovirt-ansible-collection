@@ -13,6 +13,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_template
 short_description: Module to manage virtual machine templates in oVirt/RHV
+version_added: "1.0.0"
 author:
 - "Ondra Machacek (@machacekondra)"
 - "Martin Necas (@mnecas)"

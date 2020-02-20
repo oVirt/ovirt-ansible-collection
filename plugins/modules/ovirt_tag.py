@@ -28,6 +28,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_tag
 short_description: Module to manage tags in oVirt/RHV
+version_added: "1.0.0"
 author:
 - "Ondra Machacek (@machacekondra)"
 - "Martin Necas (@mnecas)"

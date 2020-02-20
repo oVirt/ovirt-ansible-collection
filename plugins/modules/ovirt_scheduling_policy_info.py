@@ -28,6 +28,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_scheduling_policy_info
 short_description: Retrieve information about one or more oVirt scheduling policies
+version_added: "1.0.0"
 author: "Ondra Machacek (@machacekondra)"
 description:
     - "Retrieve information about one or more oVirt scheduling policies."

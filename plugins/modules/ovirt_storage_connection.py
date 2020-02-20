@@ -12,6 +12,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_storage_connection
 short_description: Module to manage storage connections in oVirt
+version_added: "1.0.0"
 author: "Ondra Machacek (@machacekondra)"
 description:
     - "Module to manage storage connections in oVirt"

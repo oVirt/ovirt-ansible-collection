@@ -13,6 +13,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_host_pm
 short_description: Module to manage power management of hosts in oVirt/RHV
+version_added: "1.0.0"
 author: "Ondra Machacek (@machacekondra)"
 description:
     - "Module to manage power management of hosts in oVirt/RHV."

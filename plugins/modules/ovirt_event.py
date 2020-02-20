@@ -14,6 +14,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_event
 short_description: Create or delete an event in oVirt/RHV
+version_added: "1.0.0"
 author: "Chris Keller (@nasx)"
 description:
     - "This module can be used to create or delete an event in oVirt/RHV."

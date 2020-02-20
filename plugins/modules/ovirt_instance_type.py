@@ -12,6 +12,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_instance_type
 short_description: Module to manage Instance Types in oVirt/RHV
+version_added: "1.0.0"
 author:
 - Martin Necas (@mnecas)
 - Ondra Machacek (@machacekondra)

@@ -28,6 +28,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_external_provider
 short_description: Module to manage external providers in oVirt/RHV
+version_added: "1.0.0"
 author: "Ondra Machacek (@machacekondra)"
 description:
     - "Module to manage external providers in oVirt/RHV"

@@ -28,6 +28,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_disk_info
 short_description: Retrieve information about one or more oVirt/RHV disks
+version_added: "1.0.0"
 author: "Katerina Koukiou (@KKoukiou)"
 description:
     - "Retrieve information about one or more oVirt/RHV disks."

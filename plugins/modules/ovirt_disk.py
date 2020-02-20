@@ -13,6 +13,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_disk
 short_description: "Module to manage Virtual Machine and floating disks in oVirt/RHV"
+version_added: "1.0.0"
 author:
 - "Ondra Machacek (@machacekondra)"
 - "Martin Necas (@mnecas)"

@@ -12,6 +12,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_host_storage_info
 short_description: Retrieve information about one or more oVirt/RHV HostStorages (applicable only for block storage)
+version_added: "1.0.0"
 author: "Daniel Erez (@derez)"
 description:
     - "Retrieve information about one or more oVirt/RHV HostStorages (applicable only for block storage)."

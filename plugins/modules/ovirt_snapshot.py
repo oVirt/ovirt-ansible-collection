@@ -28,6 +28,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_snapshot
 short_description: "Module to manage Virtual Machine Snapshots in oVirt/RHV"
+version_added: "1.0.0"
 author:
 - "Ondra Machacek (@machacekondra)"
 - "Martin Necas (@mnecas)"

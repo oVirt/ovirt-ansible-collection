@@ -12,6 +12,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_affinity_group
 short_description: Module to manage affinity groups in oVirt/RHV
+version_added: "1.0.0"
 author:
 - "Ondra Machacek (@machacekondra)"
 - "Martin Necas (@mnecas)"

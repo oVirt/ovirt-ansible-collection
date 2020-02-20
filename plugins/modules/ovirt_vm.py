@@ -12,6 +12,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_vm
 short_description: Module to manage Virtual Machines in oVirt/RHV
+version_added: "1.0.0"
 author:
 - "Ondra Machacek (@machacekondra)"
 - "Martin Necas (@mnecas)"

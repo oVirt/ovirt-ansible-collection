@@ -15,6 +15,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_event_info
 short_description: This module can be used to retrieve information about one or more oVirt/RHV events
+version_added: "1.0.0"
 author: "Chris Keller (@nasx)"
 description:
     - "Retrieve information about one or more oVirt/RHV events."

@@ -13,6 +13,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_host_info
 short_description: Retrieve information about one or more oVirt/RHV hosts
+version_added: "1.0.0"
 author:
 - "Ondra Machacek (@machacekondra)"
 - "Martin Necas (@mnecas)"

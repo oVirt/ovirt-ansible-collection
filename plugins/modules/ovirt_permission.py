@@ -12,6 +12,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_permission
 short_description: Module to manage permissions of users/groups in oVirt/RHV
+version_added: "1.0.0"
 author:
 - "Ondra Machacek (@machacekondra)"
 - "Martin Necas (@mnecas)"

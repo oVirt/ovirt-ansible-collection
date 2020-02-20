@@ -28,6 +28,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_host_network
 short_description: Module to manage host networks in oVirt/RHV
+version_added: "1.0.0"
 author:
 - "Ondra Machacek (@machacekondra)"
 - "Martin Necas (@mnecas)"

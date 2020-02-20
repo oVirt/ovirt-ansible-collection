@@ -18,6 +18,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_api_info
 short_description: Retrieve information about the oVirt/RHV API
+version_added: "1.0.0"
 author:
 - "Ondra Machacek (@machacekondra)"
 description:

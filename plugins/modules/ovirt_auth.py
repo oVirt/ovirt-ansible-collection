@@ -13,6 +13,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_auth
 short_description: "Module to manage authentication to oVirt/RHV"
+version_added: "1.0.0"
 author:
 - "Ondra Machacek (@machacekondra)"
 description:
