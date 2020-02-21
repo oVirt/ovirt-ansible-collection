@@ -48,7 +48,7 @@ options:
         description:
             - "Name of vnic profile."
         type: str
-extends_documentation_fragment: ovirt_info
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
 '''
 
 EXAMPLES = '''

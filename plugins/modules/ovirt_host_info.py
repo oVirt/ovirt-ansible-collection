@@ -42,7 +42,7 @@ options:
         - "Filter the hosts based on the cluster version."
       type: str
 
-extends_documentation_fragment: ovirt_info
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
 '''
 
 EXAMPLES = '''

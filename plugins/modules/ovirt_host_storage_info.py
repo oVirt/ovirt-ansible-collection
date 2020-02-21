@@ -55,7 +55,7 @@ options:
             lun_id:
                 description:
                   - "LUN id."
-extends_documentation_fragment: ovirt_info
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
 '''
 
 EXAMPLES = '''

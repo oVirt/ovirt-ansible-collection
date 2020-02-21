@@ -46,7 +46,7 @@ options:
         - "Search term which is accepted by oVirt/RHV search backend."
         - "For example to search storage domain X from datacenter Y use following pattern:
            name=X and datacenter=Y"
-extends_documentation_fragment: ovirt_info
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
 '''
 
 EXAMPLES = '''

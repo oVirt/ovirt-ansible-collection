@@ -51,7 +51,7 @@ options:
     storage_domain:
         description:
             - "The storage domain name where the virtual machines should be listed."
-extends_documentation_fragment: ovirt_info
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
 '''
 
 EXAMPLES = '''

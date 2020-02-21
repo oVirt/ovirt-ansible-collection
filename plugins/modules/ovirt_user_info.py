@@ -43,7 +43,7 @@ options:
       description:
         - "Search term which is accepted by oVirt/RHV search backend."
         - "For example to search user X use following pattern: name=X"
-extends_documentation_fragment: ovirt_info
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
 '''
 
 EXAMPLES = '''

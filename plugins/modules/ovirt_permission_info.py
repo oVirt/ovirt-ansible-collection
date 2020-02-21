@@ -56,7 +56,7 @@ options:
         description:
             - "Namespace of the authorization provider, where user/group resides."
         required: false
-extends_documentation_fragment: ovirt_info
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
 '''
 
 EXAMPLES = '''

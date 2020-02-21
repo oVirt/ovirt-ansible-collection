@@ -47,7 +47,7 @@ options:
     name:
         description:
             - "Name of the external provider, can be used as glob expression."
-extends_documentation_fragment: ovirt_info
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
 '''
 
 EXAMPLES = '''

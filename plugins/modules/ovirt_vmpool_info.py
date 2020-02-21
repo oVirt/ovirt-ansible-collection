@@ -45,7 +45,7 @@ options:
       description:
         - "Search term which is accepted by oVirt/RHV search backend."
         - "For example to search vmpool X: name=X"
-extends_documentation_fragment: ovirt_info
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
 '''
 
 EXAMPLES = '''

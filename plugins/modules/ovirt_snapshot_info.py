@@ -37,7 +37,7 @@ options:
     snapshot_id:
         description:
             - "Id of the snapshot we want to retrieve information about."
-extends_documentation_fragment: ovirt_info
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
 '''
 
 EXAMPLES = '''

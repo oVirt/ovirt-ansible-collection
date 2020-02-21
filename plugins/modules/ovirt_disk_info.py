@@ -44,7 +44,7 @@ options:
         - "Search term which is accepted by oVirt/RHV search backend."
         - "For example to search Disk X from storage Y use following pattern:
            name=X and storage.name=Y"
-extends_documentation_fragment: ovirt_info
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
 '''
 
 EXAMPLES = '''

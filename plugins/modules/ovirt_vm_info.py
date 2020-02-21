@@ -65,7 +65,7 @@ options:
            the virtual machine with the modifications that have already been performed but that will only come into
            effect when the virtual machine is restarted. By default the value is set by engine."
       type: bool
-extends_documentation_fragment: ovirt_info
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
 '''
 
 EXAMPLES = '''

@@ -51,7 +51,7 @@ options:
     storage_domain:
         description:
             - "The storage domain name where the templates should be listed."
-extends_documentation_fragment: ovirt_info
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
 '''
 
 EXAMPLES = '''
