@@ -46,9 +46,9 @@ Example Playbook
     - name: Login
       ovirt_auth:
           url: "https://ovirt-engine.example.com/ovirt-engine/api"
-          password: "{{ engine_password | default(omit) | default(lookup('env','password')) }}"
+          password: "{{ engine_password | default(omit) }}"
           username: "admin@internal"
-    - name: Clone VM from snapshot
+    - name: Create vm
       ovirt_vm:
         auth: "{{ ovirt_auth }}"
         name: vm_name

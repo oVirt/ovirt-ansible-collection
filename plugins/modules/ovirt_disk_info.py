@@ -83,10 +83,6 @@ def main():
         pattern=dict(default='', required=False),
     )
     module = AnsibleModule(argument_spec)
-    is_old_facts = module._name == 'ovirt_disk_facts'
-    if is_old_facts:
-        module.deprecate("The 'ovirt_disk_facts' module has been renamed to 'ovirt_disk_info', "
-                         "and the renamed one no longer returns ansible_facts", version='2.13')
     check_sdk(module)
 
     try:
@@ -106,10 +102,7 @@ def main():
                 ) for c in disks
             ],
         )
-        if is_old_facts:
-            module.exit_json(changed=False, ansible_facts=result)
-        else:
-            module.exit_json(changed=False, **result)
+        module.exit_json(changed=False, **result)
     except Exception as e:
         module.fail_json(msg=str(e), exception=traceback.format_exc())
     finally:
