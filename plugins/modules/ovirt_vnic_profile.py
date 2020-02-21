@@ -74,7 +74,7 @@ options:
         description:
             - "Marks whether pass_through NIC is migratable or not."
         type: bool
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

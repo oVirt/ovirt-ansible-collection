@@ -74,7 +74,7 @@ options:
     quota_name:
         description:
             - Name of the quota to assign permission. Works only with C(object_type) I(data_center).
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

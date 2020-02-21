@@ -70,7 +70,7 @@ options:
             - "If I(true) the storage domain don't have to be in I(MAINTENANCE)
                state, so the storage connection is updated."
         type: bool
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

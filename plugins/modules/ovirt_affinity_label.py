@@ -54,7 +54,7 @@ options:
     hosts:
         description:
             - "List of the hosts names, which should have assigned this affinity label."
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

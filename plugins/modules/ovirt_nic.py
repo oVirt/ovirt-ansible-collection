@@ -58,7 +58,7 @@ options:
         description:
             - Defines if the NIC is linked to the virtual machine.
         type: bool
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

@@ -336,7 +336,7 @@ options:
             root_password:
                 description:
                     - Password to be set for username to Windows Virtual Machine.
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

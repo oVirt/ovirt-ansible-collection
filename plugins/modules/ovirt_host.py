@@ -163,7 +163,7 @@ options:
             - If I(separated), each vGPU is placed on a separate physical card, if
               possible. This can be useful for improving vGPU performance.
         choices: ['consolidated', 'separated']
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

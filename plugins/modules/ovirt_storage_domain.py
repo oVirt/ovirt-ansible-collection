@@ -211,7 +211,7 @@ options:
             - "If I(True) storage domain blocks will be discarded upon deletion. Enabled by default."
             - "This parameter is relevant only for block based storage domains."
         type: bool
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

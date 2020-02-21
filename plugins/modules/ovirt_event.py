@@ -93,7 +93,7 @@ options:
         description:
             - "The id of the VM associated with this event."
         type: str
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

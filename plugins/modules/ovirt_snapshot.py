@@ -102,7 +102,7 @@ notes:
        machine - it simply removes a return-point. However, restoring a virtual
        machine from a snapshot deletes any content that was written to the
        virtual machine after the time the snapshot was taken."
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 

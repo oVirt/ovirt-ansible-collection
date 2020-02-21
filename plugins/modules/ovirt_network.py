@@ -101,7 +101,7 @@ options:
     label:
         description:
             - "Name of the label to assign to the network."
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

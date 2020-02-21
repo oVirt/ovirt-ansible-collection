@@ -64,7 +64,7 @@ options:
         description:
             - List of the hosts names, which should have assigned this affinity group.
             - This parameter is support since oVirt/RHV 4.1 version.
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

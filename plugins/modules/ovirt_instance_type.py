@@ -174,7 +174,7 @@ options:
             - "Memory balloon is a guest device, which may be used to re-distribute / reclaim the host memory
                based on instance type needs in a dynamic way. In this way it's possible to create memory over commitment states."
         type: bool
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

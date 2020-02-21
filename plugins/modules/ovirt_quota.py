@@ -84,7 +84,7 @@ options:
             size:
                 description:
                     - Size limit (in GiB).
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

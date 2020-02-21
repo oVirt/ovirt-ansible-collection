@@ -95,7 +95,7 @@ options:
                of them defined in the system they will be removed."
             - "Applicable for I(os_volume)."
         default: []
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

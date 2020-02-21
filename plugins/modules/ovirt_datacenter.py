@@ -65,7 +65,7 @@ options:
         default: False
         type: bool
 
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

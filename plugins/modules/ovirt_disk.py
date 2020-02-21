@@ -183,7 +183,7 @@ options:
             - I(True) if the disk should be activated.
             - When creating disk of virtual machine it is set to I(True).
         type: bool
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 

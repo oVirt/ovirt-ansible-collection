@@ -40,7 +40,7 @@ options:
             - "List of permits which role will have"
             - "Permit 'login' is default and all roles will have it."
             - "List can contain name of permit."
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

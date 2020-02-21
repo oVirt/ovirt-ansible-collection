@@ -58,7 +58,7 @@ options:
     order:
         description:
             - "Integer value specifying, by default it's added at the end."
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

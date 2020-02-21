@@ -61,7 +61,7 @@ options:
                 choices: ['present', 'absent', 'started', 'finished', 'failed']
                 default: present
         type: list
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

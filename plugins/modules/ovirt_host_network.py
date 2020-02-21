@@ -118,7 +118,7 @@ options:
             - "If I(true) all networks will be synchronized before modification"
         type: bool
         default: false
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

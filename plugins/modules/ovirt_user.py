@@ -51,7 +51,7 @@ options:
         description:
             - "Namespace where the user resides. When using the authorization provider that stores users in the LDAP server,
                this attribute equals the naming context of the LDAP server."
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''

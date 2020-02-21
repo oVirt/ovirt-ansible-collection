@@ -259,7 +259,7 @@ options:
                and relevant only for clusters with Gluster service."
             - "Could be for example I(virtual-host), I(rhgs-sequential-io), I(rhgs-random-io)"
         type: str
-extends_documentation_fragment: ovirt
+extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
 
 EXAMPLES = '''
