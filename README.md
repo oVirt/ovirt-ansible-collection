@@ -15,7 +15,7 @@ $ ansible-galaxy collection install ovirt.ovirt_collection
 Requirements
 ------------
 
- * Ansible version 2.10 or higher
+ * Ansible version 2.9 or higher
  * Python SDK version 4.3 or higher
 
 List of ovirt modules
