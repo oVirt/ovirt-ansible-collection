@@ -2,5 +2,5 @@
 .tox
 *.tar.gz
 output/
-ovirt-ansible-vm-infra.spec
+ovirt-ansible-collection.spec
 exported-artifacts/

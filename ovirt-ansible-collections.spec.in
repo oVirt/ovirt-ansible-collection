@@ -3,7 +3,7 @@
 %global ansible_collections_dir ansible/collections/ansible_collections
 
 Name: @PACKAGE_NAME@
-Summary: Ansible collection to manage all ovirt releated roles
+Summary: Ansible collection to manage all ovirt modules and inventory
 Version: @RPM_VERSION@
 Release: @RPM_RELEASE@%{?release_suffix}%{?dist}
 Source0: http://resources.ovirt.org/pub/src/@PACKAGE_NAME@/@PACKAGE_NAME@-@PACKAGE_VERSION@.tar.gz
@@ -15,7 +15,7 @@ Url:            http://www.ovirt.org
 Requires: ansible >= 2.9.0
 
 %description
-This Ansible role provide funtionality to create virtual machine infrastructure.
+This Ansible collection is to manage all ovirt modules and inventory
 
 %prep
 %setup -c -q

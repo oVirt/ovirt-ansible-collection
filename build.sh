@@ -7,7 +7,7 @@ RPM_RELEASE="0.1.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
 COLLECTION_NAME="ovirt_collection"
 COLLECTION_NAMESPACE="ovirt"
 
-PACKAGE_NAME="ovirt-ansible-collections"
+PACKAGE_NAME="ovirt-ansible-collection"
 PREFIX=/usr/local
 DATAROOT_DIR=$PREFIX/share
 COLLECTIONS_DATAROOT_DIR=$DATAROOT_DIR/ansible/collections/ansible_collections
@@ -30,9 +30,9 @@ dist() {
    -e "s|@RPM_RELEASE@|$RPM_RELEASE|g" \
    -e "s|@PACKAGE_NAME@|$PACKAGE_NAME|g" \
    -e "s|@PACKAGE_VERSION@|$PACKAGE_VERSION|g" \
-   < ovirt-ansible-collections.spec.in > ovirt-ansible-collections.spec
+   < ovirt-ansible-collection.spec.in > ovirt-ansible-collection.spec
 
-  git ls-files | tar --files-from /proc/self/fd/0 -czf "$TARBALL" ovirt-ansible-collections.spec
+  git ls-files | tar --files-from /proc/self/fd/0 -czf "$TARBALL" ovirt-ansible-collection.spec
   echo "tar archive '$TARBALL' created."
 }
 

@@ -1,4 +1,4 @@
-# oVirt ansible collections
+# oVirt ansible collection
 This collection works with Ansible 2.9+
 
 # Installation
