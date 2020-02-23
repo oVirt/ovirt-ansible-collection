@@ -21,7 +21,7 @@ Requirements
 List of ovirt modules
 --------------
 
-| Name                           | Decription    | Documentation                                |
+| Name                           | Description    | Documentation                                |
 |--------------------------------|---------------|----------------------------------------------|
 | ovirt_auth                     | Module to manage authentication to oVirt/RHV         |  [Link](https://docs.ansible.com/ansible/latest/modules/ovirt_auth_module.html#ovirt-auth-module) |
 | ovirt_vm                       | Module to manage Virtual Machines in oVirt/RHV       |  [Link](https://docs.ansible.com/ansible/latest/modules/ovirt_vm_module.html#ovirt-vm-module) |
