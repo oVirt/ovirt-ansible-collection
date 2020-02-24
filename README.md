@@ -18,13 +18,9 @@ Requirements
  * Ansible version 2.9 or higher
  * Python SDK version 4.3 or higher
 
-List of ovirt modules
+Modules documentation
 --------------
-
-| Name                           | Description    | Documentation                                |
-|--------------------------------|---------------|----------------------------------------------|
-| ovirt_auth                     | Module to manage authentication to oVirt/RHV         |  [Link](https://docs.ansible.com/ansible/latest/modules/ovirt_auth_module.html#ovirt-auth-module) |
-| ovirt_vm                       | Module to manage Virtual Machines in oVirt/RHV       |  [Link](https://docs.ansible.com/ansible/latest/modules/ovirt_vm_module.html#ovirt-vm-module) |
+https://docs.ansible.com/ansible/latest/modules/list_of_cloud_modules.html#ovirt
 
 Dependencies
 ------------
