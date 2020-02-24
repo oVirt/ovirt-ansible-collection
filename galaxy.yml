@@ -1,0 +1,12 @@
+namespace: "ovirt"
+name: "ovirt_collection"
+version: 1.0.0
+authors:
+    - Martin Necas <mnecas@redhat.com>
+license_file: ./LICENSE
+tags:
+    - collection
+readme: README.md
+repository: https://github.com/ovirt/ovirt-ansible-collection
+description: The oVirt ansible collection.
+homepage: https://www.ovirt.org/
