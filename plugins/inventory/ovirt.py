@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: (c) 2018, Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -9,6 +10,7 @@ DOCUMENTATION = '''
     name: ovirt
     plugin_type: inventory
     short_description: oVirt inventory source
+    version_added: "2.10"
     author: Bram Verschueren (@bverschueren)
     requirements:
       - ovirt-engine-sdk-python >= 4.2.4
@@ -39,14 +41,19 @@ DOCUMENTATION = '''
         env:
           - name: OVIRT_PASSWORD
       ovirt_cafile:
-        description: path to ovirt-engine CA file.
+        description: path to ovirt-engine CA file. If C(ovirt_cafile) parameter is not set and C(ovirt_insecure) is not True, system wide CA certificate store\
+        is used.
         required: False
+      ovirt_insecure:
+        description: A boolean flag that indicates if the server TLS certificate and host name should be checked.
+        required: False
+        default: False
       ovirt_query_filter:
-        required: false
+        required: False
         description: dictionary of filter key-values to query VM's. See U(https://ovirt.github.io/ovirt-engine-sdk/master/services.m.html#ovirtsdk4\
 .services.VmsService.list) for filter parameters.
       ovirt_hostname_preference:
-        required: false
+        required: False
         description: list of options that describe the ordering for which hostnames should be assigned. See U(https://ovirt.github.io/ovirt-engin\
 e-api-model/master/#types/vm) for available attributes.
         default: ['fqdn', 'name']
@@ -54,22 +61,22 @@ e-api-model/master/#types/vm) for available attributes.
 '''
 
 EXAMPLES = '''
-# Sample content of ovirt.yml
-# plugin: ovirt
-# ovirt_url: http://localhost/ovirt-engine/api
-# ovirt_username: ansible-tester
-# ovirt_password: secure
-# ovirt_query_filter:
-#   search: 'name=myvm AND cluster=mycluster'
-#   case_sensitive: no
-#   max: 15
-# keyed_groups:
-#   - key: cluster
-#     prefix: 'cluster'
-# groups:
-#   dev: "'dev' in tags"
-# compose:
-#   ansible_host: devices["eth0"][0]
+ # Sample content of ovirt.yml
+ plugin: ovirt
+ ovirt_url: http://localhost/ovirt-engine/api
+ ovirt_username: ansible-tester
+ ovirt_password: secure
+ ovirt_query_filter:
+   search: 'name=myvm AND cluster=mycluster'
+   case_sensitive: no
+   max: 15
+ keyed_groups:
+   - key: cluster
+     prefix: 'cluster'
+ groups:
+   dev: "'dev' in tags"
+ compose:
+   ansible_host: devices["eth0"][0]
 '''
 
 import sys
@@ -88,22 +95,12 @@ except ImportError:
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
-    NAME = 'ovirt'
+    NAME = 'ovirt.ovirt_collection.ovirt'
 
     def __init__(self):
 
         super(InventoryModule, self).__init__()
         self.connection = None
-
-    def _get_connection(self):
-        if self.connection is None:
-            self.connection = sdk.Connection(
-                url=self.ovirt_engine_url,
-                username=self.ovirt_engine_user,
-                password=self.ovirt_engine_password,
-                ca_file=self.ovirt_engine_cafile
-            )
-        return self.connection
 
     def _get_dict_of_struct(self, vm):
         '''  Transform SDK Vm Struct type to Python dictionary.
@@ -111,7 +108,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
              :return dict of vm struct type
         '''
 
-        connection = self._get_connection()
+        connection = self.connection
 
         vms_service = connection.system_service().vms_service()
         clusters_service = connection.system_service().clusters_service()
@@ -141,7 +138,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 if vm.name in [vm.name for vm in connection.follow_link(group.vms)]
             ],
             'statistics': dict(
-                (stat.name, stat.values[0].datum) for stat in stats
+                (stat.name, stat.values[0].datum if stat.values else None) for stat in stats
             ),
             'devices': dict(
                 (device.name, [ip.address for ip in device.ips]) for device in devices if device.ips
@@ -160,13 +157,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             :param filter: dictionary of vm filter parameter/values
             :return list of oVirt vm structs
         '''
-        connection = self._get_connection()
+        connection = self.connection
 
         vms_service = connection.system_service().vms_service()
         if query_filter is not None:
             return vms_service.list(**query_filter)
-        else:
-            return vms_service.list()
+        return vms_service.list()
 
     def _get_query_options(self, param_dict):
         ''' Get filter parameters and cast these to comply with sdk VmsService.list param types
@@ -249,6 +245,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.ovirt_engine_user = self.get_option('ovirt_username')
         self.ovirt_engine_password = self.get_option('ovirt_password')
         self.ovirt_engine_cafile = self.get_option('ovirt_cafile')
+        self.ovirt_insecure = self.get_option('ovirt_insecure')
+        self.connection = sdk.Connection(
+            url=self.ovirt_engine_url,
+            username=self.ovirt_engine_user,
+            password=self.ovirt_engine_password,
+            ca_file=self.ovirt_engine_cafile,
+            insecure=self.ovirt_insecure,
+        )
 
         query_filter = self._get_query_options(self.get_option('ovirt_query_filter', None))
 
