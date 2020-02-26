@@ -10,7 +10,7 @@ DOCUMENTATION = '''
     name: ovirt
     plugin_type: inventory
     short_description: oVirt inventory source
-    version_added: "2.10"
+    version_added: "1.0.0"
     author: Bram Verschueren (@bverschueren)
     requirements:
       - ovirt-engine-sdk-python >= 4.2.4
@@ -241,17 +241,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         config = self._read_config_data(path)
 
-        self.ovirt_engine_url = self.get_option('ovirt_url')
-        self.ovirt_engine_user = self.get_option('ovirt_username')
-        self.ovirt_engine_password = self.get_option('ovirt_password')
-        self.ovirt_engine_cafile = self.get_option('ovirt_cafile')
-        self.ovirt_insecure = self.get_option('ovirt_insecure')
         self.connection = sdk.Connection(
-            url=self.ovirt_engine_url,
-            username=self.ovirt_engine_user,
-            password=self.ovirt_engine_password,
-            ca_file=self.ovirt_engine_cafile,
-            insecure=self.ovirt_insecure,
+            url=self.get_option('ovirt_url'),
+            username=self.get_option('ovirt_username'),
+            password=self.get_option('ovirt_password'),
+            ca_file=self.get_option('ovirt_cafile'),
+            insecure=self.get_option('ovirt_insecure'),
         )
 
         query_filter = self._get_query_options(self.get_option('ovirt_query_filter', None))
