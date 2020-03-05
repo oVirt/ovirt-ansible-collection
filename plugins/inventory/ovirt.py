@@ -100,21 +100,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     NAME = 'ovirt.ovirt_collection.ovirt'
 
-    def __init__(self):
-
-        super(InventoryModule, self).__init__()
-        self.connection = None
-
     def _get_dict_of_struct(self, vm):
         '''  Transform SDK Vm Struct type to Python dictionary.
              :param vm: host struct of which to create dict
              :return dict of vm struct type
         '''
 
-        connection = self.connection
-
-        vms_service = connection.system_service().vms_service()
-        clusters_service = connection.system_service().clusters_service()
+        vms_service = self.connection.system_service().vms_service()
+        clusters_service = self.connection.system_service().clusters_service()
         vm_service = vms_service.vm_service(vm.id)
         devices = vm_service.reported_devices_service().list()
         tags = vm_service.tags_service().list()
@@ -127,18 +120,18 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         return {
             'id': vm.id,
             'name': vm.name,
-            'host': connection.follow_link(vm.host).name if vm.host else None,
-            'cluster': connection.follow_link(vm.cluster).name,
+            'host': self.connection.follow_link(vm.host).name if vm.host else None,
+            'cluster': self.connection.follow_link(vm.cluster).name,
             'status': str(vm.status),
             'description': vm.description,
             'fqdn': vm.fqdn,
             'os_type': vm.os.type,
-            'template': connection.follow_link(vm.template).name,
+            'template': self.connection.follow_link(vm.template).name,
             'tags': [tag.name for tag in tags],
             'affinity_labels': [label.name for label in labels],
             'affinity_groups': [
                 group.name for group in groups
-                if vm.name in [vm.name for vm in connection.follow_link(group.vms)]
+                if vm.name in [vm.name for vm in self.connection.follow_link(group.vms)]
             ],
             'statistics': dict(
                 (stat.name, stat.values[0].datum if stat.values else None) for stat in stats
@@ -160,9 +153,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             :param filter: dictionary of vm filter parameter/values
             :return list of oVirt vm structs
         '''
-        connection = self.connection
 
-        vms_service = connection.system_service().vms_service()
+        vms_service = self.connection.system_service().vms_service()
         if query_filter is not None:
             return vms_service.list(**query_filter)
         return vms_service.list()
