@@ -61,22 +61,25 @@ e-api-model/master/#types/vm) for available attributes.
 '''
 
 EXAMPLES = '''
- # Sample content of ovirt.yml
- plugin: ovirt
- ovirt_url: http://localhost/ovirt-engine/api
- ovirt_username: ansible-tester
- ovirt_password: secure
- ovirt_query_filter:
-   search: 'name=myvm AND cluster=mycluster'
-   case_sensitive: no
-   max: 15
- keyed_groups:
-   - key: cluster
-     prefix: 'cluster'
- groups:
-   dev: "'dev' in tags"
- compose:
-   ansible_host: devices["eth0"][0]
+# Ensure the CA is available:
+# $ wget "https://engine/ovirt-engine/services/pki-resource?resource=ca-certificate&format=X509-PEM-CA" -O /path/to/ca.pem
+# Sample content of ovirt.yml:
+plugin: ovirt
+ovirt_url: https://engine/ovirt-engine/api
+ovirt_cafile: /path/to/ca.pem
+ovirt_username: ansible-tester
+ovirt_password: secure
+ovirt_query_filter:
+  search: 'name=myvm AND cluster=mycluster'
+  case_sensitive: no
+  max: 15
+keyed_groups:
+  - key: cluster
+    prefix: 'cluster'
+groups:
+  dev: "'dev' in tags"
+compose:
+  ansible_host: devices["eth0"][0]
 '''
 
 import sys
