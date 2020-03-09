@@ -55,7 +55,7 @@ e-api-model/master/#types/vm) for available attributes.
 
 EXAMPLES = '''
 # Sample content of ovirt.yml
-# plugin: ovirt
+# plugin: ovirt.ovirt_collection.ovirt
 # ovirt_url: http://localhost/ovirt-engine/api
 # ovirt_username: ansible-tester
 # ovirt_password: secure
@@ -88,7 +88,7 @@ except ImportError:
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
-    NAME = 'ovirt'
+    NAME = 'ovirt.ovirt_collection.ovirt'
 
     def __init__(self):
 
