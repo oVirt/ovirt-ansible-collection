@@ -1,6 +1,7 @@
 distros:
   - fc30
-  - el7
+  - fc31
+  - fc32
   - el8
 release_branches:
   master: [ "ovirt-master" ]
