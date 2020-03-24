@@ -64,6 +64,29 @@ options:
               that only empty data center can be removed."
         default: False
         type: bool
+    iscsi_bonds:
+        description:
+            - "this is list for iscsi_bonds"
+        suboptions:
+            name:
+                description:
+                    - "Name of the iscsi bond."
+                type: str
+            networks:
+                description:
+                    - "List of network names in bond."
+                type: list
+            storage_domains:
+                description:
+                    - "List of storage domain names and it will automatically get all storage_connections in the domain."
+                type: list
+                default: []
+            storage_connections:
+                description:
+                    - "List of storage_connection IDs. Used when you want to use specific storage connection instead of all in storage domain."
+                type: list
+                default: []
+        type: list
 
 extends_documentation_fragment: ovirt.ovirt_collection.ovirt
 '''
@@ -88,6 +111,27 @@ EXAMPLES = '''
 - ovirt_datacenter:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_datacenter_name"
+
+# Create datacenter with iscsi bond
+- ovirt_datacenter:
+    name: mydatacenter
+    iscsi_bonds:
+      - name: bond1
+        networks:
+            - network1
+            - network2
+        storage_domains:
+            - storage1
+      - name: bond2
+        networks:
+            - network3
+        storage_connections:
+            - cf780201-6a4f-43c1-a019-e65c4220ab73
+
+# Remove all iscsi bonds
+- ovirt_datacenter:
+    name: mydatacenter
+    iscsi_bonds: []
 '''
 
 RETURN = '''
@@ -119,8 +163,9 @@ from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt impor
     equal,
     ovirt_full_argument_spec,
     search_by_name,
+    follow_link,
+    get_id_by_name
 )
-
 
 class DatacentersModule(BaseModule):
 
@@ -145,7 +190,6 @@ class DatacentersModule(BaseModule):
                 self._connection.system_service().mac_pools_service(),
                 self._module.params.get('mac_pool'),
             )
-
         return mac_pool
 
     def build_entity(self):
@@ -182,6 +226,26 @@ class DatacentersModule(BaseModule):
         )
 
 
+def get_storage_connections(iscsi_bond, connection):
+    resp = []
+    for storage_domain_name in iscsi_bond.get('storage_domains', []):
+        storage_domains_service = connection.system_service().storage_domains_service()
+        storage_domain = storage_domains_service.storage_domain_service(
+            get_id_by_name(storage_domains_service, storage_domain_name)).get()
+        resp.extend(connection.follow_link(storage_domain.storage_connections))
+
+    for storage_connection_id in iscsi_bond.get('storage_connections', []):
+        resp.append(connection.system_service().storage_connections_service(
+        ).storage_connection_service(storage_connection_id).get())
+    return resp
+
+
+def serialize_iscsi_bond(iscsi_bonds):
+    return [{"name": bond.name,
+             "networks": [net.name for net in bond.networks],
+             "storage_connections": [connection.address for connection in bond.storage_connections]} for bond in iscsi_bonds]
+
+
 def main():
     argument_spec = ovirt_full_argument_spec(
         state=dict(
@@ -197,6 +261,7 @@ def main():
         comment=dict(default=None),
         mac_pool=dict(default=None),
         force=dict(default=None, type='bool'),
+        iscsi_bonds=dict(type='list', default=None),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
@@ -219,6 +284,28 @@ def main():
         state = module.params['state']
         if state == 'present':
             ret = data_centers_module.create()
+            if module.params.get('iscsi_bonds') is not None:
+                iscsi_bonds_service = data_centers_service.data_center_service(
+                    ret.get('id')).iscsi_bonds_service()
+                before_iscsi_bonds = iscsi_bonds_service.list()
+                networks_service = connection.system_service().networks_service()
+                # Remove existing bonds
+                for bond in iscsi_bonds_service.list():
+                    iscsi_bonds_service.iscsi_bond_service(bond.id).remove()
+                # Create new bond
+                for new_bond in module.params.get('iscsi_bonds'):
+                    iscsi_bond = otypes.IscsiBond(
+                        name=new_bond.get('name'),
+                        data_center=data_centers_service.data_center_service(
+                            ret.get('id')).get(),
+                        storage_connections=get_storage_connections(
+                            new_bond, connection),
+                        networks=[search_by_name(networks_service, network_name)
+                                  for network_name in new_bond.get('networks')],
+                    )
+                    iscsi_bonds_service.add(iscsi_bond)
+                ret['changed'] = ret['changed'] or serialize_iscsi_bond(
+                    before_iscsi_bonds) != serialize_iscsi_bond(iscsi_bonds_service.list())
         elif state == 'absent':
             ret = data_centers_module.remove(force=module.params['force'])
 
