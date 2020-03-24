@@ -92,9 +92,9 @@ options:
         default: 3
 requirements:
   - python >= 2.7
-  - ovirt-engine-sdk-python >= 4.3.0
+  - ovirt-engine-sdk-python >= 4.4.0
 notes:
   - "In order to use this module you have to install oVirt Python SDK.
      To ensure it's installed with correct version you can create the following task:
-     I(pip: name=ovirt-engine-sdk-python version=4.3.0)"
+     I(pip: name=ovirt-engine-sdk-python version=4.4.0)"
 '''
