@@ -66,7 +66,7 @@ options:
         type: bool
     iscsi_bonds:
         description:
-            - "this is list for iscsi_bonds"
+            - "List of iscsi bonds, which should be created in datacenter."
         suboptions:
             name:
                 description:
