@@ -13,7 +13,7 @@ BuildArch:      noarch
 Url:            http://www.ovirt.org
 
 Requires: ansible >= 2.9.0
-Requires: python3-ovirt-engine-sdk4
+Requires: python3-ovirt-engine-sdk4 >= 4.4.0
 
 %description
 This Ansible collection is to manage all ovirt modules and inventory
