@@ -1,7 +1,10 @@
 #!/usr/bin/python
 'Module to create filter to find IP addresses in VMs'
+
+
 class FilterModule(object):
     'Filter for IP addresses on newly created VMs'
+
     def filters(self):
         'Define filters'
         return {
@@ -87,10 +90,12 @@ class FilterModule(object):
     def __address_in_network(self, ip, net):
         "Return boolean if IP is in network."
         if net:
-            import socket, struct
+            import socket
+            import struct
             ipaddr = int(''.join(['%02x' % int(x) for x in ip.split('.')]), 16)
             netstr, bits = net.split('/')
-            netaddr = int(''.join(['%02x' % int(x) for x in netstr.split('.')]), 16)
+            netaddr = int(''.join(['%02x' % int(x)
+                                   for x in netstr.split('.')]), 16)
             mask = (0xffffffff << (32 - int(bits))) & 0xffffffff
             return (ipaddr & mask) == (netaddr & mask)
         return True
@@ -107,7 +112,7 @@ class FilterModule(object):
                 profile = value['profile']
                 if key_to_remove in profile:
                     profile[key_to_remove] = "******"
-                if  'cloud_init' in profile and key_to_remove in profile['cloud_init']:
+                if 'cloud_init' in profile and key_to_remove in profile['cloud_init']:
                     profile['cloud_init'][key_to_remove] = "******"
                 if 'sysprep' in profile and key_to_remove in profile['sysprep']:
                     profile['sysprep'][key_to_remove] = "******"
