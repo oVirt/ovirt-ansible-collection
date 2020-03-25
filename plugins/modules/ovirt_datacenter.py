@@ -167,6 +167,7 @@ from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt impor
     get_id_by_name
 )
 
+
 class DatacentersModule(BaseModule):
 
     def __get_major(self, full_version):
