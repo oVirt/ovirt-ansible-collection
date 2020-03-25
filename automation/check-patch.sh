@@ -25,3 +25,9 @@ rpmbuild \
 [[ -d exported-artifacts ]] || mkdir -p exported-artifacts
 find output -iname \*rpm -exec mv "{}" exported-artifacts/ \;
 mv *.tar.gz exported-artifacts
+
+COLLECTION_DIR="/usr/local/share/ansible/collections/ansible_collections/ovirt/ovirt_collection"
+mkdir -p $COLLECTION_DIR
+cp -r $PWD/* $COLLECTION_DIR
+cd $COLLECTION_DIR
+ansible-test sanity --test validate-modules --test pep8
