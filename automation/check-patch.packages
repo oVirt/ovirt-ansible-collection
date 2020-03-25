@@ -3,3 +3,4 @@ git
 ansible
 python3-voluptuous
 python3-pycodestyle
+glibc-langpack-en
