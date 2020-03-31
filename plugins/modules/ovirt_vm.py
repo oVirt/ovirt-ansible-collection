@@ -215,7 +215,8 @@ options:
         type: bool
     bios_type:
         description:
-            - "Sets bios type, necessary for some operating systems and secure boot.  Available in ovirt 4.3 and above"
+            - "Type representing a chipset and a BIOS type combination."
+            - "NOTE - Supported since oVirt 4.3."
         choices: [ i440fx_sea_bios, q35_ovmf, q35_sea, q35_secure_boot ]
     usb_support:
         description:
