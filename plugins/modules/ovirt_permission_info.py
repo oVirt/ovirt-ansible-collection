@@ -56,7 +56,7 @@ options:
         description:
             - "Namespace of the authorization provider, where user/group resides."
         required: false
-extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
+extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -88,7 +88,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_link_name,

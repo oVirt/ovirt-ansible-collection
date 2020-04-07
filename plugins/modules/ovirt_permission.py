@@ -74,7 +74,7 @@ options:
     quota_name:
         description:
             - Name of the quota to assign permission. Works only with C(object_type) I(data_center).
-extends_documentation_fragment: ovirt.ovirt_collection.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -140,7 +140,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

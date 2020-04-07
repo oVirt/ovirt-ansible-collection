@@ -93,7 +93,7 @@ options:
         description:
             - "The id of the VM associated with this event."
         type: str
-extends_documentation_fragment: ovirt.ovirt_collection.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -144,7 +144,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     check_params,

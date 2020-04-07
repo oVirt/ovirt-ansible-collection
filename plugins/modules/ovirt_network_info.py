@@ -45,7 +45,7 @@ options:
       description:
         - "Search term which is accepted by oVirt/RHV search backend."
         - "For example to search network starting with string vlan1 use: name=vlan1*"
-extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
+extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
 
@@ -73,7 +73,7 @@ ovirt_networks:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

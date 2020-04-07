@@ -18,4 +18,4 @@
         state: present
         cluster: Default
   collections:
-    - ovirt.ovirt_collection
+    - ovirt.ovirt

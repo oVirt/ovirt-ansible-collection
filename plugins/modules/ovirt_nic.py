@@ -58,7 +58,7 @@ options:
         description:
             - Defines if the NIC is linked to the virtual machine.
         type: bool
-extends_documentation_fragment: ovirt.ovirt_collection.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -132,7 +132,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

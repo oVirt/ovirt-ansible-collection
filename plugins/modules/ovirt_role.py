@@ -40,7 +40,7 @@ options:
             - "List of permits which role will have"
             - "Permit 'login' is default and all roles will have it."
             - "List can contain name of permit."
-extends_documentation_fragment: ovirt.ovirt_collection.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -76,7 +76,7 @@ ovirt_role:
     type: list
 '''
 
-from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     convert_to_bytes,

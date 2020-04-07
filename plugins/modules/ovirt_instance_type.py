@@ -174,7 +174,7 @@ options:
             - "Memory balloon is a guest device, which may be used to re-distribute / reclaim the host memory
                based on instance type needs in a dynamic way. In this way it's possible to create memory over commitment states."
         type: bool
-extends_documentation_fragment: ovirt.ovirt_collection.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -244,7 +244,7 @@ instancetype:
 from ansible.module_utils.basic import AnsibleModule
 import traceback
 
-from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_params,
     check_sdk,

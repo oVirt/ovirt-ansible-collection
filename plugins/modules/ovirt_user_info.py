@@ -43,7 +43,7 @@ options:
       description:
         - "Search term which is accepted by oVirt/RHV search backend."
         - "For example to search user X use following pattern: name=X"
-extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
+extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -69,7 +69,7 @@ ovirt_users:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

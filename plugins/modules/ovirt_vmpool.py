@@ -146,7 +146,7 @@ options:
                     - C(mac_address) - Custom MAC address of the network interface, by default it's obtained from MAC pool.
                     - NOTE - This parameter is used only when C(state) is I(running) or I(present) and is able to only create NICs.
                     - To manage NICs of the VM in more depth please use M(ovirt_nics) module instead.
-extends_documentation_fragment: ovirt.ovirt_collection.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -229,7 +229,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_params,
     check_sdk,

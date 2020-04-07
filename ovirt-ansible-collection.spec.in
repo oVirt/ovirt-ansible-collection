@@ -1,5 +1,5 @@
 %global namespace ovirt
-%global collectionname ovirt_collection
+%global collectionname ovirt
 %global ansible_collections_dir ansible/collections/ansible_collections
 
 Name: @PACKAGE_NAME@
