@@ -1,7 +1,7 @@
 oVirt ansible collection
 ====================================
 
-The `ovirt.ovirt_collection` manages all ansible modules of oVirt.
+## This collection was deprecated and renamed to `ovirt.ovirt`, after a request from ansible team.
 
 Note
 ----
