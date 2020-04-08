@@ -1,6 +1,6 @@
 namespace: "ovirt"
-name: "ovirt_collection"
-version: 1.0.1
+name: "ovirt"
+version: 1.0.0
 authors:
     - Martin Necas <mnecas@redhat.com>
 license_file: ./LICENSE

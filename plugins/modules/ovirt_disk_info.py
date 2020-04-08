@@ -44,7 +44,7 @@ options:
         - "Search term which is accepted by oVirt/RHV search backend."
         - "For example to search Disk X from storage Y use following pattern:
            name=X and storage.name=Y"
-extends_documentation_fragment: ovirt.ovirt_collection.ovirt_info
+extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -70,7 +70,7 @@ ovirt_disks:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

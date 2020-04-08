@@ -820,7 +820,7 @@ notes:
       When user specify I(absent) C(state), we forcibly stop the VM in any state and remove it.
     - "If you update a VM parameter that requires a reboot, the oVirt engine always creates a new snapshot for the VM,
       and an Ansible playbook will report this as changed."
-extends_documentation_fragment: ovirt.ovirt_collection.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -1230,7 +1230,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_params,
     check_sdk,

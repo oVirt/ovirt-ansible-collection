@@ -1,14 +1,14 @@
 oVirt ansible collection
 ====================================
 
-The `ovirt.ovirt_collection` manages all ansible modules of oVirt.
+The `ovirt.ovirt` manages all ansible modules of oVirt.
 
 Note
 ----
 Please note that when installing this collection from Ansible Galaxy you are instructed to run following command:
 
 ```bash
-$ ansible-galaxy collection install ovirt.ovirt_collection
+$ ansible-galaxy collection install ovirt.ovirt
 ```
 
 
@@ -51,7 +51,7 @@ Example Playbook
         state: present
         cluster: Default
   collections:
-    - ovirt.ovirt_collection
+    - ovirt.ovirt
 ```
 License
 -------

@@ -204,7 +204,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt_collection.plugins.module_utils.ovirt import check_sdk
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import check_sdk
 
 
 def main():
