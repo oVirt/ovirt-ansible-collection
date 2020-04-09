@@ -38,3 +38,5 @@ sh build.sh install
 %license LICENSE
 
 %changelog
+* Thu Apr 9 2020 Martin Necas <mnecas@redhat.com> - 1.0.0-1
+- Initial release
