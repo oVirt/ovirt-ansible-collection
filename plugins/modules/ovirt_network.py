@@ -114,7 +114,7 @@ EXAMPLES = '''
 - ovirt_network:
     data_center: mydatacenter
     name: mynetwork
-    vlan_tag: 1
+    vlan_tag: 10
     vm_network: true
 
 # Remove network
@@ -133,6 +133,12 @@ EXAMPLES = '''
     data_center: mydatacenter
     name: mynetwork
     external_provider: ovirt-provider-ovn
+
+# Remove vlan_tag
+- ovirt_network:
+    data_center: mydatacenter
+    name: mynetwork
+    vlan_tag: -1
 '''
 
 RETURN = '''
