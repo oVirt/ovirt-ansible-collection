@@ -452,6 +452,7 @@ EXAMPLES = '''
   ovirt_template:
     name: mytemplate
     cluster: Default
+    vm: rhel8
     memory: 1GiB
     cloud_init:
       nic_boot_protocol: static
@@ -474,6 +475,7 @@ EXAMPLES = '''
   ovirt_template:
     name: mytemplate
     cluster: mycluster
+    vm: rhel8
     cloud_init_nics:
     - nic_name: eth0
       nic_boot_protocol: dhcp
@@ -489,6 +491,7 @@ EXAMPLES = '''
   ovirt_template:
     cluster: MyCluster
     name: mytemplate
+    vm: rhel8
     timezone: America/Godthab
     memory_max: 2Gib
     nics:
@@ -498,6 +501,7 @@ EXAMPLES = '''
   ovirt_vm:
     name: windows2012R2_AD
     cluster: Default
+    vm: windows2012
     memory: 3GiB
     sysprep:
       host_name: windowsad.example.com
