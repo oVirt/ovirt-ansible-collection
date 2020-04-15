@@ -58,6 +58,7 @@ options:
                if you want to upload the disk even if the disk with C(id) or C(name) exists,
                then please use C(force) I(true). If you will use C(force) I(false), which
                is default, then the disk image won't be uploaded."
+            - "Note that to upload iso the C(format) should be 'raw'"
     size:
         description:
             - "Size of the disk. Size should be specified using IEC standard units.
@@ -78,7 +79,6 @@ options:
         description:
             - Specify if the disk is a data disk or ISO image or a one of a the Hosted Engine disk types
             - The Hosted Engine disk content types are available with Engine 4.3+ and Ansible 2.8
-            - Note when using 'iso' the C(format) should be 'raw'.
         choices: ['data', 'iso', 'hosted_engine', 'hosted_engine_sanlock', 'hosted_engine_metadata', 'hosted_engine_configuration']
         default: 'data'
     sparse:
