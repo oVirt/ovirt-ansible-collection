@@ -73,10 +73,12 @@ options:
             - Specify format of the disk.
             - Note that this option isn't idempotent as it's not currently possible to change format of the disk via API.
         choices: ['raw', 'cow']
+        default: 'cow'
     content_type:
         description:
             - Specify if the disk is a data disk or ISO image or a one of a the Hosted Engine disk types
             - The Hosted Engine disk content types are available with Engine 4.3+ and Ansible 2.8
+            - Note when using 'iso' the C(format) should be 'raw'.
         choices: ['data', 'iso', 'hosted_engine', 'hosted_engine_sanlock', 'hosted_engine_metadata', 'hosted_engine_configuration']
         default: 'data'
     sparse:
@@ -731,6 +733,8 @@ def main():
 
             # Upload disk image in case it's new disk or force parameter is passed:
             if module.params['upload_image_path'] and (is_new_disk or module.params['force']):
+                if module.params['format'] == 'cow' and module.params['content_type'] == 'iso':
+                    module.warn("Parameter 'format' should not be 'cow' when uploading iso image, please change it to 'raw'.")
                 uploaded = upload_disk_image(connection, module)
                 ret['changed'] = ret['changed'] or uploaded
             # Download disk image in case it's file don't exist or force parameter is passed:
