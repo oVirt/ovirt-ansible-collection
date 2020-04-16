@@ -71,7 +71,7 @@ EXAMPLES = '''
 RETURN = '''
 ovirt_vm_os:
     description: "List of dictionaries describing the operating systems. Operating system attributes are mapped to dictionary keys,
-                  all operating systems attributes can be found at following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/operating_system."
+                  all operating systems attributes can be found at following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/operating_system_info."
     returned: On success.
     type: list
 '''
