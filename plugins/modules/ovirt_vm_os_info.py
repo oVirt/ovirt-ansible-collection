@@ -100,11 +100,12 @@ def main():
         auth = module.params.pop('auth')
         connection = create_connection(auth)
         operating_systems_service = connection.system_service().operating_systems_service()
-        operating_systems = operating_systems_service.list(
-            max=module.params['max'],
-        )
+        operating_systems = operating_systems_service.list()
         if module.params['name']:
           operating_systems = filter(lambda x: x.name == module.params['name'], operating_systems)
+
+        if module.params['max']:
+          operating_systems = operating_systems[:module.params['max']]
         result = dict(
             ovirt_vm_os=[
                 get_dict_of_struct(
