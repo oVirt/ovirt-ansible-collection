@@ -734,7 +734,7 @@ def main():
             # Upload disk image in case it's new disk or force parameter is passed:
             if module.params['upload_image_path'] and (is_new_disk or module.params['force']):
                 if module.params['format'] == 'cow' and module.params['content_type'] == 'iso':
-                    module.warn("Parameter 'format' should not be 'cow' when uploading iso image, please change it to 'raw'.")
+                    module.warn("To upload an ISO image 'format' parameter needs to be set to 'raw'.")
                 uploaded = upload_disk_image(connection, module)
                 ret['changed'] = ret['changed'] or uploaded
             # Download disk image in case it's file don't exist or force parameter is passed:
