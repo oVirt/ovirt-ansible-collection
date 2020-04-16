@@ -27,27 +27,26 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: ovirt_vm_os_info
-short_description: Retrieve information about all supported oVirt/RHV operating systems
+short_description: Retrieve information on all supported oVirt/RHV operating systems
 version_added: "1.0.1"
 author:
 - "Martin Necas (@mnecas)"
+- "Chris Brown (@snecklifter)"
 description:
-    - "Retrieve information all supported oVirt/RHV operating systems."
+    - "Retrieve information on all supported oVirt/RHV operating systems."
 notes:
     - "This module returns a variable C(ovirt_vm_os), which
        contains a list of operating systems. You need to register the result with
        the I(register) keyword to use it."
 options:
-    max:
-      description:
-        - "The maximum number of results to return."
     filter_keys:
       description:
-        - "List of atributes which should be in return."
+        - "List of attributes which should be in returned."
       type: list
     name:
       description:
-        - "Name of the operating system which should be return."
+        - "Name of the operating system which should be returned."
+      type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
@@ -58,20 +57,21 @@ EXAMPLES = '''
     auth: "{{ ovirt_auth }}"
   register: result
 - debug:
-    msg: "{{ result.ovirt_vm_os }}"
+    msg: "{{ result.ovirt_operating_systems }}"
 
 - ovirt_vm_os_info:
     auth: "{{ ovirt_auth }}"
     filter_keys: name,architecture
   register: result
 - debug:
-    msg: "{{ result.ovirt_vm_os }}"
+    msg: "{{ result.ovirt_operating_systems }}"
 '''
 
 RETURN = '''
-ovirt_vm_os:
+ovirt_operating_systems:
     description: "List of dictionaries describing the operating systems. Operating system attributes are mapped to dictionary keys,
-                  all operating systems attributes can be found at following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/operating_system_info."
+                  all operating systems attributes can be found at following url:
+                  http://ovirt.github.io/ovirt-engine-api-model/master/#types/operating_system_info."
     returned: On success.
     type: list
 '''
@@ -89,7 +89,6 @@ from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
 
 def main():
     argument_spec = ovirt_info_full_argument_spec(
-        max=dict(default=None, type='int'),
         filter_keys=dict(default=None, type='list'),
         name=dict(default=None, type='str'),
     )
@@ -102,15 +101,14 @@ def main():
         operating_systems_service = connection.system_service().operating_systems_service()
         operating_systems = operating_systems_service.list()
         if module.params['name']:
-          operating_systems = filter(lambda x: x.name == module.params['name'], operating_systems)
-
-        if module.params['max']:
-          operating_systems = operating_systems[:module.params['max']]
+            operating_systems = filter(lambda x: x.name == module.params['name'], operating_systems)
         result = dict(
-            ovirt_vm_os=[
+            ovirt_operating_systems=[
                 get_dict_of_struct(
                     struct=c,
                     connection=connection,
+                    fetch_nested=module.params.get('fetch_nested'),
+                    attributes=module.params.get('nested_attributes'),
                     filter_keys=module.params['filter_keys'],
                 ) for c in operating_systems
             ],
