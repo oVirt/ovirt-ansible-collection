@@ -43,7 +43,11 @@ options:
         - "The maximum number of results to return."
     filter_keys:
       description:
-        - "List of filters"
+        - "List of atributes which should be in return."
+      type: list
+    name:
+      description:
+        - "Name of the operating system which should be return."
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
@@ -87,6 +91,7 @@ def main():
     argument_spec = ovirt_info_full_argument_spec(
         max=dict(default=None, type='int'),
         filter_keys=dict(default=None, type='list'),
+        name=dict(default=None, type='str'),
     )
     module = AnsibleModule(argument_spec)
     check_sdk(module)
@@ -98,6 +103,8 @@ def main():
         operating_systems = operating_systems_service.list(
             max=module.params['max'],
         )
+        if module.params['name']:
+          operating_systems = filter(lambda x: x.name == module.params['name'], operating_systems)
         result = dict(
             ovirt_vm_os=[
                 get_dict_of_struct(
