@@ -55,7 +55,7 @@ def check_sdk(module):
         )
 
 
-def get_dict_of_struct(struct, connection=None, fetch_nested=False, attributes=None):
+def get_dict_of_struct(struct, connection=None, fetch_nested=False, attributes=None, filter_keys=None):
     """
     Convert SDK Struct type into dictionary.
     """
@@ -127,7 +127,10 @@ def get_dict_of_struct(struct, connection=None, fetch_nested=False, attributes=N
                 continue
 
             key = remove_underscore(key)
-            res[key] = convert_value(value)
+            if filter_keys is None:
+                res[key] = convert_value(value)
+            elif key in filter_keys:
+                res[key] = convert_value(value)
 
     return res
 
