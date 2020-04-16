@@ -148,6 +148,7 @@ options:
         description:
             - Operating system of the template.
             - Default value is set by oVirt/RHV engine.
+            - Use the ovirt_vm_os_info module to obtain the current list.
             - "Possible values: debian_7, freebsd, freebsdx64, other, other_linux, other_linux_kernel_4,
                other_linux_ppc64, other_linux_s390x, other_ppc64, other_s390x, rhcos_x64, rhel_3,
                rhel_3x64, rhel_4, rhel_4x64, rhel_5, rhel_5x64, rhel_6, rhel_6_9_plus_ppc64,
