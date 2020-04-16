@@ -35,7 +35,7 @@ author:
 description:
     - "Retrieve information on all supported oVirt/RHV operating systems."
 notes:
-    - "This module returns a variable C(ovirt_vm_os), which
+    - "This module returns a variable C(ovirt_operating_systems), which
        contains a list of operating systems. You need to register the result with
        the I(register) keyword to use it."
 options:
