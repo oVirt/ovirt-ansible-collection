@@ -50,7 +50,7 @@ extends_documentation_fragment: ovirt.ovirt.ovirt_info
 EXAMPLES = '''
 # Look at ovirt_auth module to see how to reuse authentication:
 
-- ovirt_vm_info:
+- ovirt_vm_os_info:
     auth: "{{ ovirt_auth }}"
   register: result
 - debug:
