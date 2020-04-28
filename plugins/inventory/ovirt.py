@@ -127,7 +127,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             'fqdn': vm.fqdn,
             'os_type': vm.os.type,
             'template': self.connection.follow_link(vm.template).name,
-            'creation_time': vm.creation_time,
+            'creation_time': str(vm.creation_time),
             'tags': [tag.name for tag in tags],
             'affinity_labels': [label.name for label in labels],
             'affinity_groups': [
