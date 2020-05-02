@@ -337,6 +337,7 @@ from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     get_dict_of_struct,
     search_by_name,
     wait,
+    engine_supported,
 )
 
 
@@ -371,7 +372,7 @@ def transfer(connection, module, direction, transfer_func):
             time.sleep(module.params['poll_interval'])
             transfer = transfer_service.get()
 
-        if module.params['use_proxy']:
+        if module.params['use_proxy'] or not engine_supported(connection, '4.4'):
             destination_url = urlparse(transfer.proxy_url)
         else:
             destination_url = urlparse(transfer.transfer_url)
@@ -672,7 +673,7 @@ def main():
         host=dict(default=None),
         wipe_after_delete=dict(type='bool', default=None),
         activate=dict(default=None, type='bool'),
-        use_proxy=dict(default=False, type='bool'),
+        use_proxy=dict(default=None, type='bool'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
