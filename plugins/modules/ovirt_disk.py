@@ -186,6 +186,11 @@ options:
             - I(True) if the disk should be activated.
             - When creating disk of virtual machine it is set to I(True).
         type: bool
+    use_proxy:
+        description:
+            - "Use Image I/O proxy when uploading or downloading disk image. Set
+              this to I(True) if you cannot directly connect to the oVirt node."
+        type: bool
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -366,7 +371,10 @@ def transfer(connection, module, direction, transfer_func):
             time.sleep(module.params['poll_interval'])
             transfer = transfer_service.get()
 
-        proxy_url = urlparse(transfer.proxy_url)
+        if module.params['use_proxy']:
+            destination_url = urlparse(transfer.proxy_url)
+        else:
+            destination_url = urlparse(transfer.transfer_url)
         context = ssl.create_default_context()
         auth = module.params['auth']
         if auth.get('insecure'):
@@ -375,16 +383,16 @@ def transfer(connection, module, direction, transfer_func):
         elif auth.get('ca_file'):
             context.load_verify_locations(cafile=auth.get('ca_file'))
 
-        proxy_connection = HTTPSConnection(
-            proxy_url.hostname,
-            proxy_url.port,
+        transfer_connection = HTTPSConnection(
+            destination_url.hostname,
+            destination_url.port,
             context=context,
         )
 
         transfer_func(
             transfer_service,
-            proxy_connection,
-            proxy_url,
+            transfer_connection,
+            destination_url,
             transfer.signed_ticket
         )
         return True
@@ -416,17 +424,10 @@ def transfer(connection, module, direction, transfer_func):
 
 
 def download_disk_image(connection, module):
-    def _transfer(transfer_service, proxy_connection, proxy_url, transfer_ticket):
+    def _transfer(transfer_service, transfer_connection, destination_url, transfer_ticket):
         BUF_SIZE = 128 * 1024
-        transfer_headers = {
-            'Authorization': transfer_ticket,
-        }
-        proxy_connection.request(
-            'GET',
-            proxy_url.path,
-            headers=transfer_headers,
-        )
-        r = proxy_connection.getresponse()
+        transfer_connection.request('GET', destination_url.path)
+        r = transfer_connection.getresponse()
         path = module.params["download_image_path"]
         image_size = int(r.getheader('Content-Length'))
         with open(path, "wb") as mydisk:
@@ -448,14 +449,14 @@ def download_disk_image(connection, module):
 
 
 def upload_disk_image(connection, module):
-    def _transfer(transfer_service, proxy_connection, proxy_url, transfer_ticket):
+    def _transfer(transfer_service, transfer_connection, destination_url, transfer_ticket):
         BUF_SIZE = 128 * 1024
         path = module.params['upload_image_path']
 
         image_size = os.path.getsize(path)
-        proxy_connection.putrequest("PUT", proxy_url.path)
-        proxy_connection.putheader('Content-Length', "%d" % (image_size,))
-        proxy_connection.endheaders()
+        transfer_connection.putrequest("PUT", destination_url.path)
+        transfer_connection.putheader('Content-Length', "%d" % (image_size,))
+        transfer_connection.endheaders()
         with open(path, "rb") as disk:
             pos = 0
             while pos < image_size:
@@ -464,7 +465,7 @@ def upload_disk_image(connection, module):
                 if not chunk:
                     transfer_service.pause()
                     raise RuntimeError("Unexpected end of file at pos=%d" % pos)
-                proxy_connection.send(chunk)
+                transfer_connection.send(chunk)
                 pos += len(chunk)
 
     return transfer(
@@ -671,6 +672,7 @@ def main():
         host=dict(default=None),
         wipe_after_delete=dict(type='bool', default=None),
         activate=dict(default=None, type='bool'),
+        use_proxy=dict(default=False, type='bool'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
