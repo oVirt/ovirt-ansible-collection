@@ -30,6 +30,10 @@
       debug:
         msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipsv4 }}"
 
+    - name: Print VM all IPv4 from specific network
+      debug:
+        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipsv4(network_ip='192.168.2.0/24') }}"
+
     - name: Print VM IPv6
       debug:
         msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipv6 }}"
