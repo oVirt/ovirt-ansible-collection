@@ -14,7 +14,7 @@ Url:            http://www.ovirt.org
 
 Requires: ansible >= 2.9.0
 Requires: python3-ovirt-engine-sdk4 >= 4.4.0
-Requires: ovirt-imageio-common >= 2.0.5
+Requires: ovirt-imageio-client >= 2.0.5
 
 %description
 This Ansible collection is to manage all ovirt modules and inventory
