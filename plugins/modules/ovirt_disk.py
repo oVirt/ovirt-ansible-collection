@@ -317,7 +317,7 @@ import time
 import traceback
 import ssl
 
-from ovirt_imageio import client
+
 from ansible.module_utils.six.moves.http_client import HTTPSConnection, IncompleteRead
 from ansible.module_utils.six.moves.urllib.parse import urlparse
 try:
@@ -426,6 +426,7 @@ def download_disk_image(connection, module):
     def _transfer(transfer_service, proxy_connection, proxy_url, transfer):
         path = module.params['download_image_path']
         if engine_supported(connection, '4.4'):
+            from ovirt_imageio import client
             auth = module.params['auth']
             if module.params['use_proxy']:
                 destination_url = transfer.proxy_url
@@ -472,6 +473,7 @@ def upload_disk_image(connection, module):
     def _transfer(transfer_service, proxy_connection, proxy_url, transfer):
         path = module.params['upload_image_path']
         if engine_supported(connection, '4.4'):
+            from ovirt_imageio import client
             auth = module.params['auth']
             if module.params['use_proxy']:
                 destination_url = transfer.proxy_url
