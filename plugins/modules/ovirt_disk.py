@@ -186,6 +186,11 @@ options:
             - I(True) if the disk should be activated.
             - When creating disk of virtual machine it is set to I(True).
         type: bool
+    use_proxy:
+        description:
+            - I(True) if the disk should be activated.
+            - asdasd
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -312,6 +317,7 @@ import time
 import traceback
 import ssl
 
+from ovirt_imageio import client
 from ansible.module_utils.six.moves.http_client import HTTPSConnection, IncompleteRead
 from ansible.module_utils.six.moves.urllib.parse import urlparse
 try:
@@ -332,6 +338,7 @@ from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     get_dict_of_struct,
     search_by_name,
     wait,
+    engine_supported
 )
 
 
@@ -385,7 +392,7 @@ def transfer(connection, module, direction, transfer_func):
             transfer_service,
             proxy_connection,
             proxy_url,
-            transfer.signed_ticket
+            transfer
         )
         return True
     finally:
@@ -416,56 +423,83 @@ def transfer(connection, module, direction, transfer_func):
 
 
 def download_disk_image(connection, module):
-    def _transfer(transfer_service, proxy_connection, proxy_url, transfer_ticket):
-        BUF_SIZE = 128 * 1024
-        transfer_headers = {
-            'Authorization': transfer_ticket,
-        }
-        proxy_connection.request(
-            'GET',
-            proxy_url.path,
-            headers=transfer_headers,
-        )
-        r = proxy_connection.getresponse()
-        path = module.params["download_image_path"]
-        image_size = int(r.getheader('Content-Length'))
-        with open(path, "wb") as mydisk:
-            pos = 0
-            while pos < image_size:
-                to_read = min(image_size - pos, BUF_SIZE)
-                chunk = r.read(to_read)
-                if not chunk:
-                    raise RuntimeError("Socket disconnected")
-                mydisk.write(chunk)
-                pos += len(chunk)
+    def _transfer(transfer_service, proxy_connection, proxy_url, transfer):
+        path = module.params['download_image_path']
+        if engine_supported(connection, '4.4'):
+            auth = module.params['auth']
+            if module.params['use_proxy']:
+                destination_url = transfer.proxy_url
+            else:
+                destination_url = transfer.transfer_url
+            client.download(
+                destination_url,
+                path,
+                auth.get('ca_file'),
+                fmt=module.params['format'],
+                secure=not auth.get('insecure'),
+            )
+        else:
+            BUF_SIZE = 128 * 1024
+            transfer_headers = {
+                'Authorization': transfer.signed_ticket,
+            }
+            proxy_connection.request(
+                'GET',
+                proxy_url.path,
+                headers=transfer_headers,
+            )
+            r = proxy_connection.getresponse()
+            image_size = int(r.getheader('Content-Length'))
+            with open(path, "wb") as mydisk:
+                pos = 0
+                while pos < image_size:
+                    to_read = min(image_size - pos, BUF_SIZE)
+                    chunk = r.read(to_read)
+                    if not chunk:
+                        raise RuntimeError("Socket disconnected")
+                    mydisk.write(chunk)
+                    pos += len(chunk)
 
     return transfer(
         connection,
         module,
         otypes.ImageTransferDirection.DOWNLOAD,
-        transfer_func=_transfer,
+        transfer_func=_transfer
     )
 
 
 def upload_disk_image(connection, module):
-    def _transfer(transfer_service, proxy_connection, proxy_url, transfer_ticket):
-        BUF_SIZE = 128 * 1024
+    def _transfer(transfer_service, proxy_connection, proxy_url, transfer):
         path = module.params['upload_image_path']
+        if engine_supported(connection, '4.4'):
+            auth = module.params['auth']
+            if module.params['use_proxy']:
+                destination_url = transfer.proxy_url
+            else:
+                destination_url = transfer.transfer_url
+            client.upload(
+                path,
+                destination_url,
+                auth.get('ca_file'),
+                secure=not auth.get('insecure'),
+            )
+        else:
+            BUF_SIZE = 128 * 1024
 
-        image_size = os.path.getsize(path)
-        proxy_connection.putrequest("PUT", proxy_url.path)
-        proxy_connection.putheader('Content-Length', "%d" % (image_size,))
-        proxy_connection.endheaders()
-        with open(path, "rb") as disk:
-            pos = 0
-            while pos < image_size:
-                to_read = min(image_size - pos, BUF_SIZE)
-                chunk = disk.read(to_read)
-                if not chunk:
-                    transfer_service.pause()
-                    raise RuntimeError("Unexpected end of file at pos=%d" % pos)
-                proxy_connection.send(chunk)
-                pos += len(chunk)
+            image_size = os.path.getsize(path)
+            proxy_connection.putrequest("PUT", proxy_url.path)
+            proxy_connection.putheader('Content-Length', "%d" % (image_size,))
+            proxy_connection.endheaders()
+            with open(path, "rb") as disk:
+                pos = 0
+                while pos < image_size:
+                    to_read = min(image_size - pos, BUF_SIZE)
+                    chunk = disk.read(to_read)
+                    if not chunk:
+                        transfer_service.pause()
+                        raise RuntimeError("Unexpected end of file at pos=%d" % pos)
+                    proxy_connection.send(chunk)
+                    pos += len(chunk)
 
     return transfer(
         connection,
@@ -669,6 +703,7 @@ def main():
         openstack_volume_type=dict(default=None),
         image_provider=dict(default=None),
         host=dict(default=None),
+        use_proxy=dict(default=None),
         wipe_after_delete=dict(type='bool', default=None),
         activate=dict(default=None, type='bool'),
     )
