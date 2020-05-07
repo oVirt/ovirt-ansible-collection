@@ -32,7 +32,7 @@ class FilterModule(object):
         if vm1.get('next_run_configuration_exists'):
             keys = [
                 key for key in set(list(vm1.keys()) + list(vm2.keys()))
-                if (key in vm1 and (not key in vm2 or vm2[key] != vm1[key])) or (key in vm2 and (not key in vm1 or vm1[key] != vm2[key]))
+                if (key in vm1 and (key not in vm2 or vm2[key] != vm1[key])) or (key in vm2 and (key not in vm1 or vm1[key] != vm2[key]))
             ]
             for key in keys:
                 before.append((key, vm1.get(key)))
