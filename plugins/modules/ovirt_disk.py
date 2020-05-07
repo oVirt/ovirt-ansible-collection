@@ -699,6 +699,7 @@ def main():
                     otypes.ImageTransferDirection.DOWNLOAD
                 )
                 ret['changed'] = ret['changed'] or downloaded
+            disks_module.changed = ret['changed']
 
             # Disk sparsify, only if disk is of image type:
             if not module.check_mode:
