@@ -340,7 +340,6 @@ from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     search_by_name,
     wait,
 )
-from ovirt_imageio import client
 
 
 def _search_by_lun(disks_service, lun_id):
@@ -356,6 +355,7 @@ def _search_by_lun(disks_service, lun_id):
 
 
 def transfer(connection, module, direction):
+    from ovirt_imageio import client
     transfers_service = connection.system_service().image_transfers_service()
     transfer = transfers_service.add(
         otypes.ImageTransfer(
