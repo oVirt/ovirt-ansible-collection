@@ -11,21 +11,16 @@ Please note that when installing this collection from Ansible Galaxy you are ins
 $ ansible-galaxy collection install ovirt.ovirt
 ```
 
-
 Requirements
 ------------
 
- * Ansible version 2.9 or higher
- * Python SDK version 4.3 or higher
+ * ansible >= 2.9.0
+ * python3-ovirt-engine-sdk4 >= 4.4.0
+ * ovirt-imageio-client >= 2.0.5
 
 Modules documentation
 --------------
 https://docs.ansible.com/ansible/latest/modules/list_of_cloud_modules.html#ovirt
-
-Dependencies
-------------
-
-None.
 
 Example Playbook
 ----------------

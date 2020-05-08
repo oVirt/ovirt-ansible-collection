@@ -1,1 +1,3 @@
 ansible>=2.9.0
+python3-ovirt-engine-sdk4>=4.4.0
+ovirt-imageio-client>=2.0.5

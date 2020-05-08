@@ -188,9 +188,11 @@ options:
         type: bool
     use_proxy:
         description:
-            - I(True) if the disk should be activated.
-            - asdasd
-        type: str
+            - "Use Image I/O proxy when uploading or downloading disk image. Set
+              this to I(True) if you cannot directly connect to the oVirt node."
+            - "Warning usage of the proxy when uploading will be slower than the direct upload."
+        type: bool
+        default: False
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -317,8 +319,6 @@ import time
 import traceback
 import ssl
 
-
-from ovirt_imageio import client
 from ansible.module_utils.six.moves.http_client import HTTPSConnection, IncompleteRead
 from ansible.module_utils.six.moves.urllib.parse import urlparse
 try:
@@ -339,8 +339,8 @@ from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     get_dict_of_struct,
     search_by_name,
     wait,
-    engine_supported
 )
+from ovirt_imageio import client
 
 
 def _search_by_lun(disks_service, lun_id):
@@ -384,7 +384,8 @@ def transfer(connection, module, direction):
                 destination_url,
                 module.params['download_image_path'],
                 auth.get('ca_file'),
-                fmt=module.params['format'],
+                fmt='qcow2' if module.params['format'] == 'cow' else 'raw',
+                incremental=module.params['format'] == 'cow',
                 secure=not auth.get('insecure'),
             )
         else:
@@ -616,7 +617,7 @@ def main():
         openstack_volume_type=dict(default=None),
         image_provider=dict(default=None),
         host=dict(default=None),
-        use_proxy=dict(default=None),
+        use_proxy=dict(default=False, type='bool'),
         wipe_after_delete=dict(type='bool', default=None),
         activate=dict(default=None, type='bool'),
     )
