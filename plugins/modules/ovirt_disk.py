@@ -317,10 +317,7 @@ disk_attachment:
 import os
 import time
 import traceback
-import ssl
 
-from ansible.module_utils.six.moves.http_client import HTTPSConnection, IncompleteRead
-from ansible.module_utils.six.moves.urllib.parse import urlparse
 try:
     import ovirtsdk4.types as otypes
 except ImportError:
