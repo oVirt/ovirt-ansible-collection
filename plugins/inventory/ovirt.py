@@ -217,9 +217,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             for fact, value in host.items():
                 self.inventory.set_variable(hostname, fact, value)
 
-            self._set_composite_vars(self.get_option('compose'), host, hostname)
-            self._add_host_to_composed_groups(self.get_option('groups'), host, hostname)
-            self._add_host_to_keyed_groups(self.get_option('keyed_groups'), host, hostname)
+            strict = self.get_option('strict')
+            self._set_composite_vars(self.get_option('compose'), host, hostname, strict=strict)
+            self._add_host_to_composed_groups(self.get_option('groups'), host, hostname, strict=strict)
+            self._add_host_to_keyed_groups(self.get_option('keyed_groups'), host, hostname, strict=strict)
 
     def verify_file(self, path):
 
