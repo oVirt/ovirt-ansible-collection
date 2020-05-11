@@ -360,6 +360,7 @@ def transfer(connection, module, direction):
                 id=module.params['id'],
             ),
             direction=direction,
+            format=otypes.DiskFormat.RAW,
         )
     )
     transfer_service = transfers_service.image_transfer_service(transfer.id)
