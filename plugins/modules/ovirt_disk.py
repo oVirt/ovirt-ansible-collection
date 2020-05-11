@@ -273,15 +273,22 @@ EXAMPLES = '''
 
 # Upload an ISO image
 # Since Ansible 2.8
--  ovirt_disk:
-     name: myiso
-     upload_image_path: /path/to/iso/image
-     storage_domain: data
-     size: 4 GiB
-     wait: true
-     bootable: true
-     format: raw
-     content_type: iso
+- ovirt_disk:
+    name: myiso
+    upload_image_path: /path/to/iso/image.iso
+    storage_domain: data
+    wait: true
+    bootable: true
+    format: raw
+    content_type: iso
+
+# Upload an QCOW image
+- ovirt_disk:
+    name: myimage
+    upload_image_path: /path/to/image/image.qcow2
+    storage_domain: data
+    wait: true
+    format: cow
 
 # Add fiber chanel disk
 - name: Create disk
@@ -317,6 +324,8 @@ disk_attachment:
 import os
 import time
 import traceback
+import json
+import subprocess
 
 try:
     import ovirtsdk4.types as otypes
@@ -427,7 +436,10 @@ class DisksModule(BaseModule):
         logical_unit = self._module.params.get('logical_unit')
         size = convert_to_bytes(self._module.params.get('size'))
         if not size and self._module.params.get('upload_image_path'):
-            size = os.path.getsize(self._module.params.get('upload_image_path'))
+            out = subprocess.check_output(
+                ["qemu-img", "info", "--output", "json", self._module.params.get('upload_image_path')])
+            image_info = json.loads(out)
+            size = image_info["virtual-size"]
         disk = otypes.Disk(
             id=self._module.params.get('id'),
             name=self._module.params.get('name'),
@@ -475,7 +487,16 @@ class DisksModule(BaseModule):
             ) if logical_unit else None,
         )
         if hasattr(disk, 'initial_size') and self._module.params['upload_image_path']:
-            disk.initial_size = size
+            out = subprocess.check_output([
+                'qemu-img',
+                'measure',
+                '-f', 'qcow2' if self._module.params.get('format') == 'cow' else 'raw',
+                '-O', 'qcow2' if self._module.params.get('format') == 'cow' else 'raw',
+                '--output', 'json',
+                self._module.params['upload_image_path']
+            ])
+            measure = json.loads(out)
+            disk.initial_size = measure["required"]
 
         return disk
 
