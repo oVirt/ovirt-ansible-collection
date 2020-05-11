@@ -383,7 +383,6 @@ def transfer(connection, module, direction):
                 module.params['download_image_path'],
                 auth.get('ca_file'),
                 fmt='qcow2' if module.params['format'] == 'cow' else 'raw',
-                incremental=module.params['format'] == 'cow',
                 secure=not auth.get('insecure'),
             )
         else:
