@@ -198,7 +198,7 @@ class QuotasModule(BaseModule):
         new_limits = {}
         for cluster in self._module.params.get('clusters'):
             new_limits[cluster.get('name', '')] = {
-                'cpu': cluster.get('cpu'),
+                'cpu': int(cluster.get('cpu')),
                 'memory': float(cluster.get('memory')),
             }
 
@@ -285,7 +285,7 @@ def main():
                 cl_limit_service.add(
                     limit=otypes.QuotaClusterLimit(
                         memory_limit=float(cluster.get('memory')),
-                        vcpu_limit=cluster.get('cpu'),
+                        vcpu_limit=int(cluster.get('cpu')),
                         cluster=search_by_name(
                             connection.system_service().clusters_service(),
                             cluster.get('name')
