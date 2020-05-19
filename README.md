@@ -3,6 +3,10 @@ oVirt ansible collection
 
 The `ovirt.ovirt` manages all ansible modules of oVirt.
 
+The pypi installation is no longer supported if you want
+to install all dependencies do it manually or install the
+collection from RPM and it will be done automatically.
+
 Note
 ----
 Please note that when installing this collection from Ansible Galaxy you are instructed to run following command:
