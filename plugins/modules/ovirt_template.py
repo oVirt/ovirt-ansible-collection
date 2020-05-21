@@ -239,10 +239,6 @@ options:
             nic_name:
                 description:
                     - Set name to network interface of Virtual Machine.
-            nic_on_boot:
-                description:
-                    - If I(True) network interface will be set to start on boot.
-                type: bool
     cloud_init_nics:
         description:
             - List of dictionaries representing network interfaces to be setup by cloud init.
@@ -265,10 +261,6 @@ options:
             nic_name:
                 description:
                     - Set name to network interface of Virtual Machine.
-            nic_on_boot:
-                description:
-                    - If I(True) network interface will be set to start on boot.
-                type: bool
     ballooning_enabled:
         description:
             - "If I(true), use memory ballooning."
@@ -455,7 +447,6 @@ EXAMPLES = '''
       nic_netmask: 255.255.252.0
       nic_gateway: 10.34.63.254
       nic_name: eth1
-      nic_on_boot: true
       host_name: example.com
       custom_script: |
         write_files:
@@ -474,13 +465,11 @@ EXAMPLES = '''
     cloud_init_nics:
     - nic_name: eth0
       nic_boot_protocol: dhcp
-      nic_on_boot: true
     - nic_name: eth1
       nic_boot_protocol: static
       nic_ip_address: 10.34.60.86
       nic_netmask: 255.255.252.0
       nic_gateway: 10.34.63.254
-      nic_on_boot: true
 
 - name: Template with timezone and nic
   ovirt_template:
@@ -688,7 +677,7 @@ class TemplatesModule(BaseModule):
                             nic.pop('nic_boot_protocol').lower()
                         ) if nic.get('nic_boot_protocol') else None,
                         name=nic.pop('nic_name', None),
-                        on_boot=nic.pop('nic_on_boot', None),
+                        on_boot=True,
                         ip=otypes.Ip(
                             address=nic.pop('nic_ip_address', None),
                             netmask=nic.pop('nic_netmask', None),
@@ -704,8 +693,7 @@ class TemplatesModule(BaseModule):
                         nic.get('nic_gateway') is not None or
                         nic.get('nic_netmask') is not None or
                         nic.get('nic_ip_address') is not None or
-                        nic.get('nic_boot_protocol') is not None or
-                        nic.get('nic_on_boot') is not None
+                        nic.get('nic_boot_protocol') is not None
                     )
                 ] if cloud_init_nics else None,
                 **cloud_init

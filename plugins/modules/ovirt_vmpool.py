@@ -128,7 +128,6 @@ options:
                     - C(nic_netmask) - If boot protocol is static, set this netmask to network interface of Virtual Machine.
                     - C(nic_gateway) - If boot protocol is static, set this gateway to network interface of Virtual Machine.
                     - C(nic_name) - Set name to network interface of Virtual Machine.
-                    - C(nic_on_boot) - If I(True) network interface will be set to start on boot.
             sso:
                 description:
                     - "I(True) enable Single Sign On by Guest Agent, I(False) to disable it. By default is chosen by oVirt/RHV engine."
@@ -191,7 +190,6 @@ EXAMPLES = '''
         nic_netmask: 255.255.252.0
         nic_gateway: 10.34.63.254
         nic_name: eth1
-        nic_on_boot: true
         host_name: example.com
         custom_script: |
           write_files:
@@ -315,7 +313,7 @@ class VmPoolsModule(BaseModule):
                             nic.pop('nic_boot_protocol').lower()
                         ) if nic.get('nic_boot_protocol') else None,
                         name=nic.pop('nic_name', None),
-                        on_boot=nic.pop('nic_on_boot', None),
+                        on_boot=True,
                         ip=otypes.Ip(
                             address=nic.pop('nic_ip_address', None),
                             netmask=nic.pop('nic_netmask', None),
@@ -331,8 +329,7 @@ class VmPoolsModule(BaseModule):
                         nic.get('nic_gateway') is not None or
                         nic.get('nic_netmask') is not None or
                         nic.get('nic_ip_address') is not None or
-                        nic.get('nic_boot_protocol') is not None or
-                        nic.get('nic_on_boot') is not None
+                        nic.get('nic_boot_protocol') is not None
                     )
                 ] if cloud_init_nics else None,
                 **cloud_init
