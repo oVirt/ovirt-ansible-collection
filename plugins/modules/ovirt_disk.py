@@ -347,6 +347,25 @@ def _search_by_lun(disks_service, lun_id):
     return res[0] if res else None
 
 
+def create_transfer_connection(module, transfer, context, connect_timeout=10, read_timeout=60):
+    url = urlparse(transfer.transfer_url)
+    connection = HTTPSConnection(
+        url.netloc, context=context, timeout=connect_timeout)
+    try:
+        connection.connect()
+    except OSError as e:
+        # Typically ConnectionRefusedError or socket.gaierror.
+        module.warn("Cannot connect to %s, trying %s: %s", transfer.transfer_url, transfer.proxy_url, e)
+
+        url = urlparse(transfer.proxy_url)
+        connection = HTTPSConnection(
+            url.netloc, context=context, timeout=connect_timeout)
+        connection.connect()
+
+    connection.sock.settimeout(read_timeout)
+    return connection, url
+
+
 def transfer(connection, module, direction, transfer_func):
     transfers_service = connection.system_service().image_transfers_service()
     transfer = transfers_service.add(
@@ -374,35 +393,13 @@ def transfer(connection, module, direction, transfer_func):
         elif auth.get('ca_file'):
             context.load_verify_locations(cafile=auth.get('ca_file'))
 
-        try:
-            destination_url = urlparse(transfer.transfer_url)
-            transfer_connection = HTTPSConnection(
-                destination_url.hostname,
-                destination_url.port,
-                context=context,
-            )
-            transfer_func(
-                transfer_service,
-                transfer_connection,
-                destination_url,
-                transfer.signed_ticket
-            )
-        except Exception as e:
-            module.warn("Image transfer fail with message: {}.".format(e))
-            module.warn("Retrying trasfer with proxy.")
-            destination_url = urlparse(transfer.proxy_url)
-            transfer_connection = HTTPSConnection(
-                destination_url.hostname,
-                destination_url.port,
-                context=context,
-            )
-
-            transfer_func(
-                transfer_service,
-                transfer_connection,
-                destination_url,
-                transfer.signed_ticket
-            )
+        transfer_connection, url = create_transfer_connection(module, transfer, context)
+        transfer_func(
+            transfer_service,
+            transfer_connection,
+            url,
+            transfer.signed_ticket
+        )
         return True
     finally:
         transfer_service.finalize()
