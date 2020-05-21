@@ -355,8 +355,7 @@ def create_transfer_connection(module, transfer, context, connect_timeout=10, re
         connection.connect()
     except OSError as e:
         # Typically ConnectionRefusedError or socket.gaierror.
-        module.warn("Cannot connect to {}, trying {}: {}"
-                    .format(transfer.transfer_url, transfer.proxy_url, e))
+        module.warn("Cannot connect to %s, trying %s: %s" % (transfer.transfer_url, transfer.proxy_url, e))
 
         url = urlparse(transfer.proxy_url)
         connection = HTTPSConnection(
@@ -394,12 +393,11 @@ def transfer(connection, module, direction, transfer_func):
         elif auth.get('ca_file'):
             context.load_verify_locations(cafile=auth.get('ca_file'))
 
-        transfer_connection, url = create_transfer_connection(module, transfer, context)
+        transfer_connection, transfer_url = create_transfer_connection(module, transfer, context)
         transfer_func(
             transfer_service,
             transfer_connection,
-            url,
-            transfer.signed_ticket
+            transfer_url,
         )
         return True
     finally:
@@ -430,9 +428,9 @@ def transfer(connection, module, direction, transfer_func):
 
 
 def download_disk_image(connection, module):
-    def _transfer(transfer_service, transfer_connection, destination_url, transfer_ticket):
+    def _transfer(transfer_service, transfer_connection, transfer_url):
         BUF_SIZE = 128 * 1024
-        transfer_connection.request('GET', destination_url.path)
+        transfer_connection.request('GET', transfer_url.path)
         r = transfer_connection.getresponse()
         path = module.params["download_image_path"]
         image_size = int(r.getheader('Content-Length'))
@@ -455,12 +453,12 @@ def download_disk_image(connection, module):
 
 
 def upload_disk_image(connection, module):
-    def _transfer(transfer_service, transfer_connection, destination_url, transfer_ticket):
+    def _transfer(transfer_service, transfer_connection, transfer_url):
         BUF_SIZE = 128 * 1024
         path = module.params['upload_image_path']
 
         image_size = os.path.getsize(path)
-        transfer_connection.putrequest("PUT", destination_url.path)
+        transfer_connection.putrequest("PUT", transfer_url.path)
         transfer_connection.putheader('Content-Length', "%d" % (image_size,))
         transfer_connection.endheaders()
         with open(path, "rb") as disk:
