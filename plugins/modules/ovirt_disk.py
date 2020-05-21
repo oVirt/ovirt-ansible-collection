@@ -186,11 +186,6 @@ options:
             - I(True) if the disk should be activated.
             - When creating disk of virtual machine it is set to I(True).
         type: bool
-    use_proxy:
-        description:
-            - "Use Image I/O proxy when uploading or downloading disk image. Set
-              this to I(True) if you cannot directly connect to the oVirt node."
-        type: bool
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -337,7 +332,6 @@ from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     get_dict_of_struct,
     search_by_name,
     wait,
-    engine_supported,
 )
 
 
@@ -372,10 +366,6 @@ def transfer(connection, module, direction, transfer_func):
             time.sleep(module.params['poll_interval'])
             transfer = transfer_service.get()
 
-        if module.params['use_proxy'] or not engine_supported(connection, '4.4'):
-            destination_url = urlparse(transfer.proxy_url)
-        else:
-            destination_url = urlparse(transfer.transfer_url)
         context = ssl.create_default_context()
         auth = module.params['auth']
         if auth.get('insecure'):
@@ -384,18 +374,35 @@ def transfer(connection, module, direction, transfer_func):
         elif auth.get('ca_file'):
             context.load_verify_locations(cafile=auth.get('ca_file'))
 
-        transfer_connection = HTTPSConnection(
-            destination_url.hostname,
-            destination_url.port,
-            context=context,
-        )
+        try:
+            destination_url = urlparse(transfer.transfer_url)
+            transfer_connection = HTTPSConnection(
+                destination_url.hostname,
+                destination_url.port,
+                context=context,
+            )
+            transfer_func(
+                transfer_service,
+                transfer_connection,
+                destination_url,
+                transfer.signed_ticket
+            )
+        except Exception as e:
+            module.warn("Image transfer fail with message: {}.".format(e))
+            module.warn("Retrying trasfer with proxy.")
+            destination_url = urlparse(transfer.proxy_url)
+            transfer_connection = HTTPSConnection(
+                destination_url.hostname,
+                destination_url.port,
+                context=context,
+            )
 
-        transfer_func(
-            transfer_service,
-            transfer_connection,
-            destination_url,
-            transfer.signed_ticket
-        )
+            transfer_func(
+                transfer_service,
+                transfer_connection,
+                destination_url,
+                transfer.signed_ticket
+            )
         return True
     finally:
         transfer_service.finalize()
@@ -673,7 +680,6 @@ def main():
         host=dict(default=None),
         wipe_after_delete=dict(type='bool', default=None),
         activate=dict(default=None, type='bool'),
-        use_proxy=dict(default=None, type='bool'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
