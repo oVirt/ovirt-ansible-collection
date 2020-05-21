@@ -355,7 +355,8 @@ def create_transfer_connection(module, transfer, context, connect_timeout=10, re
         connection.connect()
     except OSError as e:
         # Typically ConnectionRefusedError or socket.gaierror.
-        module.warn("Cannot connect to %s, trying %s: %s", transfer.transfer_url, transfer.proxy_url, e)
+        module.warn("Cannot connect to {}, trying {}: {}"
+                    .format(transfer.transfer_url, transfer.proxy_url, e))
 
         url = urlparse(transfer.proxy_url)
         connection = HTTPSConnection(
