@@ -267,15 +267,15 @@ EXAMPLES = '''
 
 # Upload an ISO image
 # Since Ansible 2.8
--  ovirt_disk:
-     name: myiso
-     upload_image_path: /path/to/iso/image
-     storage_domain: data
-     size: 4 GiB
-     wait: true
-     bootable: true
-     format: raw
-     content_type: iso
+- ovirt_disk:
+    name: myiso
+    upload_image_path: /path/to/iso/image
+    storage_domain: data
+    size: 4 GiB
+    wait: true
+    bootable: true
+    format: raw
+    content_type: iso
 
 # Add fiber chanel disk
 - name: Create disk
