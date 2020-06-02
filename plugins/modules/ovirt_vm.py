@@ -282,7 +282,7 @@ options:
     cd_iso:
         description:
             - ISO file from ISO storage domain which should be attached to Virtual Machine.
-            - If you have mutiple ISO disks with same name use disk ID to specify which to use.
+            - If you have multiple ISO disks with the same name use disk ID to specify which should be use.
             - If you pass empty string the CD will be ejected from VM.
             - If used with C(state) I(running) or I(present) and VM is running the CD will be attached to VM.
             - If used with C(state) I(running) or I(present) and VM is down the CD will be attached to VM persistently.
