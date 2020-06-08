@@ -322,6 +322,9 @@ options:
             root_password:
                 description:
                     - Password to be set for username to Windows Virtual Machine.
+            custom_script:
+                description:
+                    - A custom Sysprep definition in the format of a complete unattended installation answer file.
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 

@@ -374,6 +374,9 @@ options:
             root_password:
                 description:
                     - Password to be set for username to Windows Virtual Machine.
+            custom_script:
+                description:
+                    - A custom Sysprep definition in the format of a complete unattended installation answer file.
     cloud_init:
         description:
             - Dictionary with values for Unix-like Virtual Machine initialization using cloud init.
