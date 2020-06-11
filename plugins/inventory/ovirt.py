@@ -244,7 +244,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             username=self.get_option('ovirt_username'),
             password=self.get_option('ovirt_password'),
             ca_file=self.get_option('ovirt_cafile'),
-            insecure=self.get_option('ovirt_insecure'),
+            insecure=not self.get_option('ovirt_cafile'),
         )
 
         query_filter = self._get_query_options(self.get_option('ovirt_query_filter', None))
