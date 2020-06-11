@@ -128,6 +128,7 @@ def main():
             all_content=module.params['all_content'],
             case_sensitive=module.params['case_sensitive'],
             max=module.params['max'],
+            follow='tags',
         )
         if module.params['next_run']:
             vms = [vms_service.vm_service(vm.id).get(next_run=True) for vm in vms]
