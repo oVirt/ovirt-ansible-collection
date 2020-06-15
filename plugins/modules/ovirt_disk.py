@@ -186,6 +186,11 @@ options:
             - I(True) if the disk should be activated.
             - When creating disk of virtual machine it is set to I(True).
         type: bool
+    backup:
+        description:
+            - The backup behavior supported by the disk.
+        choices: ['incremental']
+        version_added: 1.0.1
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -515,6 +520,7 @@ class DisksModule(BaseModule):
             ],
             quota=otypes.Quota(id=self._module.params.get('quota_id')) if self.param('quota_id') else None,
             shareable=self._module.params.get('shareable'),
+            backup=otypes.DiskBackup(self.param('backup')) if self.param('backup') else None,
             wipe_after_delete=self.param('wipe_after_delete'),
             lun_storage=otypes.HostStorage(
                 host=otypes.Host(
@@ -664,6 +670,7 @@ def main():
             default='data',
             choices=['data', 'iso', 'hosted_engine', 'hosted_engine_sanlock', 'hosted_engine_metadata', 'hosted_engine_configuration']
         ),
+        backup=dict(default=None, type='str', choices=['incremental']),
         sparse=dict(default=None, type='bool'),
         bootable=dict(default=None, type='bool'),
         shareable=dict(default=None, type='bool'),
