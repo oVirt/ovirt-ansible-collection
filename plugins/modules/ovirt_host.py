@@ -53,6 +53,10 @@ options:
     password:
         description:
             - "Password of the root. It's required in case C(public_key) is set to I(False)."
+    ssh_port:
+        description:
+            - "The host SSH port."
+        type: int
     public_key:
         description:
             - "I(True) if the public key should be used to authenticate to host."
@@ -318,8 +322,9 @@ class HostsModule(BaseModule):
             address=self.param('address'),
             root_password=self.param('password'),
             ssh=otypes.Ssh(
-                authentication_method=otypes.SshAuthenticationMethod.PUBLICKEY,
-            ) if self.param('public_key') else None,
+                authentication_method=otypes.SshAuthenticationMethod.PUBLICKEY if self.param('public_key') else None,
+                port=self.param('ssh_port'),
+            ),
             spm=otypes.Spm(
                 priority=self.param('spm_priority'),
             ) if self.param('spm_priority') else None,
@@ -467,6 +472,7 @@ def main():
         comment=dict(default=None),
         cluster=dict(default=None),
         address=dict(default=None),
+        ssh_port=dict(default=None, type='int'),
         password=dict(default=None, no_log=True),
         public_key=dict(default=False, type='bool', aliases=['ssh_public_key']),
         kdump_integration=dict(default=None, choices=['enabled', 'disabled']),
