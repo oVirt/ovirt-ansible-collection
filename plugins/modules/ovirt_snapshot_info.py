@@ -21,7 +21,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV virtual machine snapshots."
     - This module was called C(ovirt_snapshot_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt_snapshot_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_snapshot_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_snapshots), which
        contains a list of snapshots. You need to register the result with

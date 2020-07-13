@@ -33,7 +33,7 @@ author: "Maor Lipchuk (@machacekondra)"
 description:
     - "Retrieve information about one or more oVirt/RHV virtual machines relate to a storage domain."
     - This module was called C(ovirt_storage_vm_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt_storage_vm_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_storage_vm_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_storage_vms), which
        contains a list of virtual machines. You need to register the result with

@@ -57,12 +57,12 @@ options:
             - Username of the user to manage. In most LDAPs it's I(uid) of the user,
               but in Active Directory you must specify I(UPN) of the user.
             - Note that if user does not exist in the system this module will fail,
-              you should ensure the user exists by using M(ovirt_users) module.
+              you should ensure the user exists by using M(ovirt.ovirt.ovirt_users) module.
     group_name:
         description:
             - Name of the group to manage.
             - Note that if group does not exist in the system this module will fail,
-               you should ensure the group exists by using M(ovirt_groups) module.
+               you should ensure the group exists by using M(ovirt.ovirt.ovirt_groups) module.
     authz_name:
         description:
             - Authorization provider of the user/group.
