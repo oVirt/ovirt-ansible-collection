@@ -530,7 +530,7 @@ def main():
                             otypes.Property(
                                 name=prop.get('name'),
                                 value=prop.get('value')
-                            ) for prop in network.get('custom_properties')
+                            ) for prop in network.get('custom_properties', [])
                         ]
                     ) for network in networks
                 ] if networks else None,
