@@ -282,7 +282,7 @@ options:
     cd_iso:
         description:
             - ISO file from ISO storage domain which should be attached to Virtual Machine.
-            - If you have multiple ISO disks with the same name use disk ID to specify which should be used.
+            - If you have multiple ISO disks with the same name use disk ID to specify which should be used or use C(storage_domain) to filter disks.
             - If you pass empty string the CD will be ejected from VM.
             - If used with C(state) I(running) or I(present) and VM is running the CD will be attached to VM.
             - If used with C(state) I(running) or I(present) and VM is down the CD will be attached to VM persistently.
@@ -1660,9 +1660,16 @@ class VmsModule(BaseModule):
         self._wait_for_UP(vm_service)
         self._attach_cd(vm_service.get())
 
+    def __get_cds_from_sds(self, sds):
+        for sd in sds:
+            disks = list(filter(lambda x: x.name==self.param('cd_iso') and x.content_type==otypes.DiskContentType.ISO, self._connection.follow_link(sd.disks)))
+            if disks:
+                return disks
+
     def __get_cd_id(self):
-        disks_service = self._connection.system_service().disks_service()
-        disks = disks_service.list(search='name="{}"'.format(self.param('cd_iso')))
+        sds_service = self._connection.system_service().storage_domains_service()
+        sds = sds_service.list(search='name="{}"'.format(self.param('storage_domain') if self.param('storage_domain') else "*"))
+        disks = self.__get_cds_from_sds(sds)
         if len(disks) > 1:
             raise ValueError('Found mutiple disks with same name "{}" please use \
                 disk ID in "cd_iso" to specify which disk should be used.'.format(self.param('cd_iso')))
