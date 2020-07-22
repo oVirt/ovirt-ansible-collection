@@ -1662,7 +1662,8 @@ class VmsModule(BaseModule):
 
     def __get_cds_from_sds(self, sds):
         for sd in sds:
-            disks = list(filter(lambda x: x.name==self.param('cd_iso') and x.content_type==otypes.DiskContentType.ISO, self._connection.follow_link(sd.disks)))
+            disks = list(filter(lambda x: x.name == self.param('cd_iso') and x.content_type == otypes.DiskContentType.ISO,
+                                self._connection.follow_link(sd.disks)))
             if disks:
                 return disks
 
