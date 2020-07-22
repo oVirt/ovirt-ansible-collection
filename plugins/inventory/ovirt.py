@@ -135,7 +135,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 if vm.name in [vm.name for vm in self.connection.follow_link(group.vms)]
             ],
             'statistics': dict(
-                (stat.name, stat.values[0].datum if stat.values else None) for stat in stats
+                (stat.name, stat.values[0].datum if stat.values and len(stat.values) > 0 else None) for stat in stats
             ),
             'devices': dict(
                 (device.name, [ip.address for ip in device.ips]) for device in devices if device.ips
