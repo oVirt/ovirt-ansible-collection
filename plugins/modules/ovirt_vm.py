@@ -1664,7 +1664,7 @@ class VmsModule(BaseModule):
         for sd in sds:
             if sd.disks is None:
                 continue
-            disks = list(filter(lambda x: x.name == self.param('cd_iso') or x.id == self.param('cd_iso') and x.content_type == otypes.DiskContentType.ISO,
+            disks = list(filter(lambda x: (x.name == self.param('cd_iso') or x.id == self.param('cd_iso')) and x.content_type == otypes.DiskContentType.ISO,
                                 self._connection.follow_link(sd.disks)))
             if disks:
                 return disks
