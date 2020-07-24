@@ -1664,13 +1664,12 @@ class VmsModule(BaseModule):
         for sd in sds:
             if sd.type == otypes.StorageDomainType.ISO:
                 disks = sd.files
-                is_iso = lambda x: True
             elif sd.type == otypes.StorageDomainType.DATA:
                 disks = sd.disks
-                is_iso = lambda x: x.content_type == otypes.DiskContentType.ISO
             else:
                 continue
-            disks = list(filter(lambda x: (x.name == self.param('cd_iso') or x.id == self.param('cd_iso')) and is_iso(x),
+            disks = list(filter(lambda x: (x.name == self.param('cd_iso') or x.id == self.param('cd_iso')) and
+                                (x.content_type == otypes.DiskContentType.ISO or sd.type == otypes.StorageDomainType.ISO),
                                 self._connection.follow_link(disks)))
             if disks:
                 return disks
