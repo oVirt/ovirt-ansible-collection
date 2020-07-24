@@ -1662,10 +1662,16 @@ class VmsModule(BaseModule):
 
     def __get_cds_from_sds(self, sds):
         for sd in sds:
-            if sd.disks is None:
+            if sd.type == otypes.StorageDomainType.ISO:
+                disks = sd.files
+                is_iso = lambda x: True
+            elif sd.type == otypes.StorageDomainType.DATA:
+                disks = sd.disks
+                is_iso = lambda x: x.content_type == otypes.DiskContentType.ISO
+            else:
                 continue
-            disks = list(filter(lambda x: (x.name == self.param('cd_iso') or x.id == self.param('cd_iso')) and x.content_type == otypes.DiskContentType.ISO,
-                                self._connection.follow_link(sd.disks)))
+            disks = list(filter(lambda x: (x.name == self.param('cd_iso') or x.id == self.param('cd_iso')) and is_iso(x),
+                                self._connection.follow_link(disks)))
             if disks:
                 return disks
 
