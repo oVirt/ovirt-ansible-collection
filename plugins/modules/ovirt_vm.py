@@ -1669,7 +1669,7 @@ class VmsModule(BaseModule):
             else:
                 continue
             disks = list(filter(lambda x: (x.name == self.param('cd_iso') or x.id == self.param('cd_iso')) and
-                                (x.content_type == otypes.DiskContentType.ISO or sd.type == otypes.StorageDomainType.ISO),
+                                (sd.type == otypes.StorageDomainType.ISO or x.content_type == otypes.DiskContentType.ISO),
                                 self._connection.follow_link(disks)))
             if disks:
                 return disks
