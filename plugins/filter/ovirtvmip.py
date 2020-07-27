@@ -1,6 +1,7 @@
 #!/usr/bin/python
 'Module to create filter to find IP addresses in VMs'
 
+from __future__ import absolute_import, division, print_function
 
 class FilterModule(object):
     'Filter for IP addresses on newly created VMs'
