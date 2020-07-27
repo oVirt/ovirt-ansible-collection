@@ -30,4 +30,4 @@ COLLECTION_DIR="/usr/local/share/ansible/collections/ansible_collections/ovirt/o
 mkdir -p $COLLECTION_DIR
 cp -r $PWD/* $COLLECTION_DIR
 cd $COLLECTION_DIR
-ansible-test sanity --test validate-modules --test pep8
+ansible-test sanity
