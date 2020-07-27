@@ -51,9 +51,11 @@ options:
     max:
         description:
             - "Sets the maximum number of templates to return. If not specified all the templates are returned."
+        type: int
     storage_domain:
         description:
             - "The storage domain name where the templates should be listed."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 

@@ -26,46 +26,56 @@ options:
     id:
         description:
             - "ID of the quota to manage."
+        type: str
     name:
         description:
             - "Name of the quota to manage."
+        type: str
         required: true
     state:
         description:
             - "Should the quota be present/absent."
+        type: str
         choices: ['present', 'absent']
         default: present
     data_center:
         description:
             - "Name of the datacenter where quota should be managed."
+        type: str
         required: true
     description:
         description:
             - "Description of the quota to manage."
+        type: str
     cluster_threshold:
         description:
             - "Cluster threshold(soft limit) defined in percentage (0-100)."
+        type: int
         aliases:
             - "cluster_soft_limit"
     cluster_grace:
         description:
             - "Cluster grace(hard limit) defined in percentage (1-100)."
+        type: int
         aliases:
             - "cluster_hard_limit"
     storage_threshold:
         description:
             - "Storage threshold(soft limit) defined in percentage (0-100)."
+        type: int
         aliases:
             - "storage_soft_limit"
     storage_grace:
         description:
             - "Storage grace(hard limit) defined in percentage (1-100)."
+        type: int
         aliases:
             - "storage_hard_limit"
     clusters:
         description:
             - "List of dictionary of cluster limits, which is valid to specific cluster."
             - "If cluster isn't specified it's valid to all clusters in system:"
+        type: list
         suboptions:
             cluster:
                 description:
@@ -80,6 +90,7 @@ options:
         description:
             - "List of dictionary of storage limits, which is valid to specific storage."
             - "If storage isn't specified it's valid to all storages in system:"
+        type: list
         suboptions:
             storage:
                 description:

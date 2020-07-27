@@ -46,9 +46,11 @@ options:
         description:
             - "ID of the scheduling policy."
         required: true
+        type: str
     name:
         description:
             - "Name of the scheduling policy, can be used as glob expression."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 

@@ -33,12 +33,15 @@ options:
         description:
             - "Name of the VM with snapshot."
         required: true
+        type: str
     description:
         description:
             - "Description of the snapshot, can be used as glob expression."
+        type: str
     snapshot_id:
         description:
             - "Id of the snapshot we want to retrieve information about."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 

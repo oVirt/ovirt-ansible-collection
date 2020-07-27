@@ -43,20 +43,25 @@ options:
         description:
             - "Name of the affinity label to manage."
         required: true
+        type: str
     state:
         description:
             - "Should the affinity label be present or absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     cluster:
         description:
             - "Name of the cluster where vms and hosts resides."
+        type: str
     vms:
         description:
             - "List of the VMs names, which should have assigned this affinity label."
+        type: str
     hosts:
         description:
             - "List of the hosts names, which should have assigned this affinity label."
+        type: list
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 

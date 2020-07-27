@@ -30,20 +30,21 @@ notes:
        the I(register) keyword to use it."
 options:
     pattern:
-      description:
-        - "Search term which is accepted by oVirt/RHV search backend."
-        - "For example to search host X from datacenter Y use following pattern:
-           name=X and datacenter=Y"
+        description:
+            - "Search term which is accepted by oVirt/RHV search backend."
+            - "For example to search host X from datacenter Y use following pattern:
+               name=X and datacenter=Y"
+        type: str
     all_content:
-      description:
-        - "If I(true) all the attributes of the hosts should be
-           included in the response."
-      default: False
-      type: bool
+        description:
+            - "If I(true) all the attributes of the hosts should be
+               included in the response."
+        default: False
+        type: bool
     cluster_version:
-      description:
-        - "Filter the hosts based on the cluster version."
-      type: str
+        description:
+            - "Filter the hosts based on the cluster version."
+        type: str
 
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''

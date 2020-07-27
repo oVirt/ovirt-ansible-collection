@@ -26,10 +26,12 @@ options:
     id:
         description:
             - "ID of the host to manage."
+        type: str
     name:
         description:
             - "Name of the host to manage."
         required: true
+        type: str
     state:
         description:
             - "State which should a host to be in after successful completion."
@@ -39,9 +41,11 @@ options:
             'restarted', 'stopped', 'reinstalled', 'iscsidiscover', 'iscsilogin'
         ]
         default: present
+        type: str
     comment:
         description:
             - "Description of the host."
+        type: str
     timeout:
         description:
             - "The amount of time in seconds the module should wait for the host to
@@ -50,12 +54,15 @@ options:
     cluster:
         description:
             - "Name of the cluster, where host should be created."
+        type: str
     address:
         description:
             - "Host address. It can be either FQDN (preferred) or IP address."
+        type: str
     password:
         description:
             - "Password of the root. It's required in case C(public_key) is set to I(False)."
+        type: str
     ssh_port:
         description:
             - "The host SSH port."
@@ -71,9 +78,11 @@ options:
         description:
             - "Specify if host will have enabled Kdump integration."
         choices: ['enabled', 'disabled']
+        type: str
     spm_priority:
         description:
             - "SPM priority of the host. Integer value from 1 to 10, where higher number means higher priority."
+        type: int
     override_iptables:
         description:
             - "If True host iptables will be overridden by host deploy script."
@@ -104,6 +113,7 @@ options:
             - "Kernel boot parameters changes require host deploy and restart. The host needs
                to be I(reinstalled) successfully and then to be I(rebooted) for kernel boot parameters
                to be applied."
+        type: list
     hosted_engine:
         description:
             - "If I(deploy) it means this host should deploy also hosted engine
@@ -114,6 +124,7 @@ options:
         choices:
             - 'deploy'
             - 'undeploy'
+        type: str
     power_management_enabled:
         description:
             - "Enable or disable power management of the host."
@@ -151,6 +162,7 @@ options:
             portal:
                 description:
                     - "The portal being used to connect with iscsi."
+        type: dict
     check_upgrade:
         description:
             - "If I(true) and C(state) is I(upgraded) run check for upgrade
@@ -170,6 +182,7 @@ options:
             - If I(separated), each vGPU is placed on a separate physical card, if
               possible. This can be useful for improving vGPU performance.
         choices: ['consolidated', 'separated']
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 

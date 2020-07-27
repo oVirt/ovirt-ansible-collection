@@ -31,7 +31,6 @@ options:
         required: false
         default: true
         type: bool
-
     from_:
         description:
             - "Indicates the event index after which events should be returned. The indexes of events are
@@ -39,32 +38,27 @@ options:
                will be returned."
         required: false
         type: int
-
     max:
         description:
             - "Sets the maximum number of events to return. If not specified all the events are returned."
         required: false
         type: int
-
     search:
         description:
             - "Search term which is accepted by the oVirt/RHV API."
             - "For example to search for events of severity alert use the following pattern: severity=alert"
         required: false
         type: str
-
     headers:
         description:
             - "Additional HTTP headers."
         required: false
         type: str
-
     query:
         description:
             - "Additional URL query parameters."
         required: false
         type: str
-
     wait:
         description:
             - "If True wait for the response."

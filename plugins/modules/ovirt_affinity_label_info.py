@@ -43,14 +43,16 @@ notes:
        the I(register) keyword to use it."
 options:
     name:
-      description:
-        - "Name of the affinity labels which should be listed."
+        description:
+            - "Name of the affinity labels which should be listed."
     vm:
-      description:
-        - "Name of the VM, which affinity labels should be listed."
+        description:
+            - "Name of the VM, which affinity labels should be listed."
+        type: str
     host:
-      description:
-        - "Name of the host, which affinity labels should be listed."
+        description:
+            - "Name of the host, which affinity labels should be listed."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 

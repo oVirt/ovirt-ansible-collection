@@ -41,25 +41,31 @@ options:
     snapshot_id:
         description:
             - "ID of the snapshot to manage."
+        type: str
     vm_name:
         description:
             - "Name of the Virtual Machine to manage."
         required: true
+        type: str
     state:
         description:
             - "Should the Virtual Machine snapshot be restore/present/absent."
         choices: ['restore', 'present', 'absent']
         default: present
+        type: str
     description:
         description:
             - "Description of the snapshot."
+        type: str
     disk_id:
         description:
             - "Disk id which you want to upload or download"
             - "To get disk, you need to define disk_id or disk_name"
+        type: str
     disk_name:
         description:
             - "Disk name which you want to upload or download"
+        type: str
     download_image_path:
         description:
             - "Path on a file system where snapshot should be downloaded."
@@ -67,9 +73,11 @@ options:
                or you must provide it in C(ca_file) parameter."
             - "Note that the snapshot is not downloaded when the file already exists,
                but you can forcibly download the snapshot when using C(force) I (true)."
+        type: str
     upload_image_path:
         description:
             - "Path to disk image, which should be uploaded."
+        type: str
     use_memory:
         description:
             - "If I(true) and C(state) is I(present) save memory of the Virtual
@@ -85,6 +93,7 @@ options:
         description:
             - "Number of days after which should snapshot be deleted."
             - "It will check all snapshots of virtual machine and delete them, if they are older."
+        type: int
     disks:
         description:
             - "List of disks which should be created with snapshot."

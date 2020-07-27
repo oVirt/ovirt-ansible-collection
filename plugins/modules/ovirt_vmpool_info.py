@@ -45,9 +45,10 @@ notes:
        the I(register) keyword to use it."
 options:
     pattern:
-      description:
-        - "Search term which is accepted by oVirt/RHV search backend."
-        - "For example to search vmpool X: name=X"
+        description:
+            - "Search term which is accepted by oVirt/RHV search backend."
+            - "For example to search vmpool X: name=X"
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 

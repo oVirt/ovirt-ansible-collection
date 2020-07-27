@@ -26,18 +26,22 @@ options:
     id:
         description:
             - "ID of the mac pool to manage."
+        type: str
     name:
         description:
             - "Name of the MAC pool to manage."
         required: true
+        type: str
     description:
         description:
             - "Description of the MAC pool."
+        type: str
     state:
         description:
             - "Should the mac pool be present or absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     allow_duplicates:
         description:
             - "If I(true) allow a MAC address to be used multiple times in a pool."
@@ -47,6 +51,7 @@ options:
         description:
             - "List of MAC ranges. The from and to should be split by comma."
             - "For example: 00:1a:4a:16:01:51,00:1a:4a:16:01:61"
+        type: list
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 

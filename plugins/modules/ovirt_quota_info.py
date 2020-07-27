@@ -46,9 +46,11 @@ options:
         description:
             - "Name of the datacenter where quota resides."
         required: true
+        type: str
     name:
         description:
             - "Name of the quota, can be used as glob expression."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 

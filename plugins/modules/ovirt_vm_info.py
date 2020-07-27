@@ -49,6 +49,7 @@ options:
         - "Search term which is accepted by oVirt/RHV search backend."
         - "For example to search VM X from cluster Y use following pattern:
            name=X and cluster=Y"
+        type: str
     all_content:
       description:
         - "If I(true) all the attributes of the virtual machines should be

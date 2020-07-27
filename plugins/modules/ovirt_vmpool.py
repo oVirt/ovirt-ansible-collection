@@ -41,28 +41,35 @@ options:
     id:
         description:
             - "ID of the vmpool to manage."
+        type: str
     name:
         description:
             - "Name of the VM pool to manage."
+        type: str
         required: true
     comment:
         description:
             - Comment of the Virtual Machine pool.
+        type: str
     state:
         description:
             - "Should the VM pool be present/absent."
             - "Note that when C(state) is I(absent) all VMs in VM pool are stopped and removed."
         choices: ['present', 'absent']
         default: present
+        type: str
     template:
         description:
             - "Name of the template, which will be used to create VM pool."
+        type: str
     description:
         description:
             - "Description of the VM pool."
+        type: str
     cluster:
         description:
             - "Name of the cluster, where VM pool should be created."
+        type: str
     type:
         description:
             - "Type of the VM pool. Either manual or automatic."
@@ -72,19 +79,23 @@ options:
                is returned to the virtual machine pool."
             - "Default value is set by engine."
         choices: ['manual', 'automatic']
+        type: str
     vm_per_user:
         description:
             - "Maximum number of VMs a single user can attach to from this pool."
             - "Default value is set by engine."
+        type: str
     prestarted:
         description:
             - "Number of pre-started VMs defines the number of VMs in run state, that are waiting
                to be attached to Users."
             - "Default value is set by engine."
+        type: str
     vm_count:
         description:
             - "Number of VMs in the pool."
             - "Default value is set by engine."
+        type: str
     vm:
         description:
             - "For creating vm pool without editing template."

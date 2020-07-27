@@ -26,6 +26,7 @@ options:
         description:
             - "Host to get device list from."
         required: true
+        type: str
     iscsi:
         description:
             - "Dictionary with values for iSCSI storage type:"
@@ -45,6 +46,7 @@ options:
             portal:
                 description:
                   - "The portal being used to connect with iscsi."
+        type: dict
     fcp:
         description:
             - "Dictionary with values for fibre channel storage type:"
@@ -58,6 +60,7 @@ options:
             lun_id:
                 description:
                   - "LUN id."
+        type: dict
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 

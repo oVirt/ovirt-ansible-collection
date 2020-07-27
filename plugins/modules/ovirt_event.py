@@ -27,13 +27,11 @@ options:
         choices: ['present', 'absent']
         type: str
         default: present
-
     description:
         description:
             - "Message for the event."
             - "Required when state is present."
         type: str
-
     severity:
         description:
             - "Severity of the event."
@@ -41,55 +39,45 @@ options:
         choices: ['error', 'normal', 'warning']
         default: normal
         type: str
-
     origin:
         description:
             - "Originator of the event."
             - "Required when state is present."
         type: str
-
     custom_id:
         description:
             - "Custom ID for the event. This ID must be unique for each event."
             - "Required when state is present."
         type: int
-
     id:
         description:
             - "The event ID in the oVirt/RHV audit_log table. This ID is not the same as custom_id and is only used when state is absent."
             - "Required when state is absent."
         type: str
-
     cluster:
         description:
             - "The id of the cluster associated with this event."
         type: str
-
     data_center:
         description:
             - "The id of the data center associated with this event."
         type: str
-
     host:
         description:
             - "The id of the host associated with this event."
         type: str
-
     storage_domain:
         description:
             - "The id of the storage domain associated with this event."
         type: str
-
     template:
         description:
             - "The id of the template associated with this event."
         type: str
-
     user:
         description:
             - "The id of the user associated with this event."
         type: str
-
     vm:
         description:
             - "The id of the VM associated with this event."

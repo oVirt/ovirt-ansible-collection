@@ -23,16 +23,20 @@ options:
     name:
         description:
             - "Name of the role to manage."
+        type: str
     id:
         description:
             - "ID of the role to manage."
+        type: str
     description:
         description:
             - "Description of the role."
+        type: str
     state:
         description:
             - "Should the role be present/absent."
         choices: ['present', 'absent']
+        type: str
         default: present
     administrative:
         description:
@@ -43,6 +47,7 @@ options:
             - "List of permits which role will have"
             - "Permit 'login' is default and all roles will have it."
             - "List can contain name of permit."
+        type: list
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 

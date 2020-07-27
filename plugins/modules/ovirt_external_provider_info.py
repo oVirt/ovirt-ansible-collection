@@ -47,9 +47,11 @@ options:
             - "Type of the external provider."
         choices: ['os_image', 'os_network', 'os_volume', 'foreman']
         required: true
+        type: str
     name:
         description:
             - "Name of the external provider, can be used as glob expression."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 

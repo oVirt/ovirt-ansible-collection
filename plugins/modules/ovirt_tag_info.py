@@ -45,14 +45,17 @@ notes:
        the I(register) keyword to use it."
 options:
     name:
-      description:
-        - "Name of the tag which should be listed."
+        description:
+            - "Name of the tag which should be listed."
+        type: str
     vm:
-      description:
-        - "Name of the VM, which tags should be listed."
+        description:
+            - "Name of the VM, which tags should be listed."
+        type: str
     host:
-      description:
-        - "Name of the host, which tags should be listed."
+        description:
+            - "Name of the host, which tags should be listed."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 

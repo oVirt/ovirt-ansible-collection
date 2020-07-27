@@ -41,6 +41,7 @@ options:
             - "Description of the job."
             - "When task with same description has already finished and you rerun taks it will create new job."
         required: true
+        type: str
     state:
         description:
             - "Should the job be C(present)/C(absent)/C(failed)."
@@ -48,6 +49,7 @@ options:
             - "Note when C(finished)/C(failed) it will finish/fail all steps."
         choices: ['present', 'absent', 'started', 'finished', 'failed']
         default: present
+        type: str
     steps:
         description:
             - "The steps of the job."

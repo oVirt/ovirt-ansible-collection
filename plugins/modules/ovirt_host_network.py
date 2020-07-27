@@ -42,6 +42,7 @@ options:
         description:
             - "Name of the host to manage networks for."
         required: true
+        type: str
         aliases:
             - 'host'
     state:
@@ -49,6 +50,7 @@ options:
             - "Should the host be present/absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     bond:
         description:
             - "Dictionary describing network bond:"
@@ -65,12 +67,15 @@ options:
             interfaces:
                 description:
                     - List of interfaces to create a bond.
+        type: dict
     interface:
         description:
             - "Name of the network interface where logical network should be attached."
+        type: str
     networks:
         description:
             - "List of dictionary describing networks to be attached to interface or bond:"
+        type: list
         suboptions:
             name:
                 description:
@@ -105,6 +110,7 @@ options:
     labels:
         description:
             - "List of names of the network label to be assigned to bond or interface."
+        type: list
     check:
         description:
             - "If I(true) verify connectivity between host and engine."

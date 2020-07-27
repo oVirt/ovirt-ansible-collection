@@ -25,38 +25,47 @@ options:
     id:
         description:
             - "ID of the nic to manage."
+        type: str
     name:
         description:
             - Name of the network interface to manage.
         required: true
+        type: str
     vm:
         description:
             - Name of the Virtual Machine to manage.
             - You must provide either C(vm) parameter or C(template) parameter.
+        type: str
     template:
         description:
             - Name of the template to manage.
             - You must provide either C(vm) parameter or C(template) parameter.
+        type: str
     state:
         description:
             - Should the Virtual Machine NIC be present/absent/plugged/unplugged.
         choices: [ absent, plugged, present, unplugged ]
         default: present
+        type: str
     network:
         description:
             - Logical network to which the VM network interface should use,
               by default Empty network is used if network is not specified.
+        type: str
     profile:
         description:
             - Virtual network interface profile to be attached to VM network interface.
             - When not specified and network has only single profile it will be auto-selected, otherwise you must specify profile.
+        type: str
     interface:
         description:
             - "Type of the network interface. For example e1000, pci_passthrough, rtl8139, rtl8139_virtio, spapr_vlan or virtio."
             - "It's required parameter when creating the new NIC."
+        type: str
     mac_address:
         description:
             - Custom MAC address of the network interface, by default it's obtained from MAC pool.
+        type: str
     linked:
         description:
             - Defines if the NIC is linked to the virtual machine.

@@ -45,10 +45,11 @@ notes:
        the I(register) keyword to use it."
 options:
     pattern:
-      description:
-        - "Search term which is accepted by oVirt/RHV search backend."
-        - "For example to search storage domain X from datacenter Y use following pattern:
-           name=X and datacenter=Y"
+        description:
+            - "Search term which is accepted by oVirt/RHV search backend."
+            - "For example to search storage domain X from datacenter Y use following pattern:
+               name=X and datacenter=Y"
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 

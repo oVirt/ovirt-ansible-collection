@@ -51,9 +51,11 @@ options:
     max:
         description:
             - "Sets the maximum number of virtual machines to return. If not specified all the virtual machines are returned."
+        type: int
     storage_domain:
         description:
             - "The storage domain name where the virtual machines should be listed."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 

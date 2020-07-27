@@ -40,20 +40,24 @@ options:
         description:
             - "Name of the group to manage."
         required: true
+        type: str
     state:
         description:
             - "Should the group be present/absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     authz_name:
         description:
             - "Authorization provider of the group. In previous versions of oVirt/RHV known as domain."
         required: true
         aliases: ['domain']
+        type: str
     namespace:
         description:
             - "Namespace of the authorization provider, where group resides."
         required: false
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 

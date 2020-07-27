@@ -41,24 +41,30 @@ options:
     id:
         description:
             - "ID of the network to manage."
+        type: str
     name:
         description:
             - "Name of the network to manage."
         required: true
+        type: str
     state:
         description:
             - "Should the network be present or absent"
         choices: ['present', 'absent']
         default: present
+        type: str
     data_center:
         description:
             - "Datacenter name where network reside."
+        type: str
     description:
         description:
             - "Description of the network."
+        type: str
     comment:
         description:
             - "Comment of the network."
+        type: str
     vlan_tag:
         description:
             - "Specify VLAN tag."
@@ -68,6 +74,7 @@ options:
         description:
             - "Name of external network provider."
             - "At first it tries to import the network when not found it will create network in external provider."
+        type: str
     vm_network:
         description:
             - "If I(True) network will be marked as network for VM."
@@ -76,9 +83,11 @@ options:
     mtu:
         description:
             - "Maximum transmission unit (MTU) of the network."
+        type: int
     clusters:
         description:
             - "List of dictionaries describing how the network is managed in specific cluster."
+        type: list
         suboptions:
             name:
                 description:
@@ -106,6 +115,7 @@ options:
     label:
         description:
             - "Name of the label to assign to the network."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 

@@ -27,6 +27,7 @@ options:
         description:
             - Name of the affinity group to manage.
         required: true
+        type: str
     state:
         description:
             - Should the affinity group be present or absent.
@@ -35,9 +36,11 @@ options:
     cluster:
         description:
             - Name of the cluster of the affinity group.
+        type: str
     description:
         description:
             - Description of the affinity group.
+        type: str
     host_enforcing:
         description:
             - If I(yes) VM cannot start on host if it does not satisfy the C(host_rule).
@@ -50,6 +53,7 @@ options:
             - If I(disabled) this affinity group doesn't take effect.
             - This parameter is support since oVirt/RHV 4.1 version.
         choices: [ disabled, negative, positive ]
+        type: list
     vm_enforcing:
         description:
             - If I(yes) VM cannot start if it does not satisfy the C(vm_rule).
@@ -60,13 +64,16 @@ options:
             - If I(negative) I(no) VMs in this group should run on the host defined by C(host_rule).
             - If I(disabled) this affinity group doesn't take effect.
         choices: [ disabled, negative, positive ]
+        type: str
     vms:
         description:
             - List of the VMs names, which should have assigned this affinity group.
+        type: list
     hosts:
         description:
             - List of the hosts names, which should have assigned this affinity group.
             - This parameter is support since oVirt/RHV 4.1 version.
+        type: list
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 

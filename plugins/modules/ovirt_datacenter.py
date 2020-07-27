@@ -26,21 +26,25 @@ options:
     id:
         description:
             - "ID of the datacenter to manage."
+        type: str
     name:
         description:
             - "Name of the data center to manage."
         required: true
+        type: str
     state:
         description:
             - "Should the data center be present or absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     description:
         description:
             - "Description of the data center."
     comment:
         description:
             - "Comment of the data center."
+        type: str
     local:
         description:
             - "I(True) if the data center should be local, I(False) if should be shared."
@@ -49,16 +53,19 @@ options:
     compatibility_version:
         description:
             - "Compatibility version of the data center."
+        type: str
     quota_mode:
         description:
             - "Quota mode of the data center. One of I(disabled), I(audit) or I(enabled)"
         choices: ['disabled', 'audit', 'enabled']
+        type: str
     mac_pool:
         description:
             - "MAC pool to be used by this datacenter."
             - "IMPORTANT: This option is deprecated in oVirt/RHV 4.1. You should
                use C(mac_pool) in C(ovirt_clusters) module, as MAC pools are
                set per cluster since 4.1."
+        type: str
     force:
         description:
             - "This parameter can be used only when removing a data center.

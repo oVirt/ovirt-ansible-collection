@@ -30,20 +30,24 @@ options:
         choices: ['present', 'absent']
         description:
             - "Specifies if a token should be created or revoked."
+        type: str
     username:
         required: False
         description:
             - "The name of the user. For example: I(admin@internal)
                Default value is set by I(OVIRT_USERNAME) environment variable."
+        type: str
     password:
         required: False
         description:
             - "The password of the user. Default value is set by I(OVIRT_PASSWORD) environment variable."
+        type: str
     token:
         required: False
         description:
             - "SSO token to be used instead of login with username/password.
                Default value is set by I(OVIRT_TOKEN) environment variable."
+        type: str
     url:
         required: False
         description:
@@ -51,6 +55,7 @@ options:
                For example: I(https://server.example.com/ovirt-engine/api).
                Default value is set by I(OVIRT_URL) environment variable."
             - "Either C(url) or C(hostname) is required."
+        type: str
     hostname:
         required: False
         description:
@@ -58,6 +63,7 @@ options:
                For example: I(server.example.com).
                Default value is set by I(OVIRT_HOSTNAME) environment variable."
             - "Either C(url) or C(hostname) is required."
+        type: str
     insecure:
         required: False
         description:
@@ -71,6 +77,7 @@ options:
                certificates. If C(ca_file) parameter is not set, system wide
                CA certificate store is used.
                Default value is set by I(OVIRT_CAFILE) environment variable."
+        type: path
     timeout:
         required: False
         description:
@@ -78,6 +85,7 @@ options:
                seconds. A value of zero (the default) means wait forever. If
                the timeout expires before the response is received an exception
                will be raised."
+        type: str
     compress:
         required: False
         description:
@@ -96,6 +104,7 @@ options:
         required: False
         description:
             - "A dictionary of HTTP headers to be added to each API call."
+        type: dict
 
 requirements:
   - python >= 2.7
