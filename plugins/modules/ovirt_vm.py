@@ -2339,9 +2339,9 @@ def import_vm(module, connection):
     wait(
         service=vms_service.vm_service(imported_vm.vm.id),
         condition=lambda vm: len(events_service.list(
-                from_=int(last_event.id),
-                search='type=1152 and vm.id=%s' % vm.id,
-            )
+            from_=int(last_event.id),
+            search='type=1152 and vm.id=%s' % vm.id,
+        )
         ) > 0 if vm is not None else False,
         fail_condition=lambda vm: vm is None,
         timeout=module.params['timeout'],

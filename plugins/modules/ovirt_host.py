@@ -579,9 +579,9 @@ def main():
                         ]) > 0
                     ),
                     fail_condition=lambda host: len(events_service.list(
-                            from_=int(last_event.id),
-                            search='type=839 or type=887 and host.name=%s' % host.name,
-                        )
+                        from_=int(last_event.id),
+                        search='type=839 or type=887 and host.name=%s' % host.name,
+                    )
                     ) > 0,
                 )
                 # Set to False, because upgrade_check isn't 'changing' action:
