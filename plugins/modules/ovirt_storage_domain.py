@@ -183,12 +183,12 @@ options:
                 description:
                     - "The options to be passed when creating a storage domain using a cinder driver."
                     - "List of dictionary containing C(name) and C(value) of driver option"
-                type: list 
+                type: list
             driver_sensitive_options:
                 description:
                     - "Parameters containing sensitive information, to be passed when creating a storage domain using a cinder driver."
                     - "List of dictionary containing C(name) and C(value) of driver sensitive option"
-                type: list 
+                type: list
     fcp:
         description:
             - "Dictionary with values for fibre channel storage type:"

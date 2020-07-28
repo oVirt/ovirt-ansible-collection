@@ -6,6 +6,7 @@ __metaclass__ = type
 import socket
 import struct
 
+
 class FilterModule(object):
     'Filter for IP addresses on newly created VMs'
 

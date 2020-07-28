@@ -305,7 +305,7 @@ options:
         description:
             - Single Root I/O Virtualization - technology that allows single device to expose multiple endpoints that can be passed to VMs
             - host_devices is an list which contain dictionary with name and state of device
-        type: int
+        type: list
     delete_protected:
         description:
             - If I(yes) Virtual Machine will be set as delete protected.

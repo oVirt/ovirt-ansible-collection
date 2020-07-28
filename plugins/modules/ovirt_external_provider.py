@@ -351,7 +351,6 @@ def main():
         name=dict(default=None),
         description=dict(default=None),
         type=dict(
-            default=None,
             required=True,
             choices=[
                 OS_IMAGE, NETWORK, OS_VOLUME, FOREMAN,
