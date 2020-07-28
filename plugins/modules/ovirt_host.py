@@ -578,13 +578,11 @@ def main():
                             ) if host.name in event.description
                         ]) > 0
                     ),
-                    fail_condition=lambda host: len([
-                        event
-                        for event in events_service.list(
+                    fail_condition=lambda host: len(events_service.list(
                             from_=int(last_event.id),
                             search='type=839 or type=887 and host.name=%s' % host.name,
                         )
-                    ]) > 0,
+                    ) > 0,
                 )
                 # Set to False, because upgrade_check isn't 'changing' action:
                 hosts_module._changed = False

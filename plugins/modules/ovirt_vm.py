@@ -2338,13 +2338,11 @@ def import_vm(module, connection):
     vms_service = connection.system_service().vms_service()
     wait(
         service=vms_service.vm_service(imported_vm.vm.id),
-        condition=lambda vm: len([
-            event
-            for event in events_service.list(
+        condition=lambda vm: len(events_service.list(
                 from_=int(last_event.id),
                 search='type=1152 and vm.id=%s' % vm.id,
             )
-        ]) > 0 if vm is not None else False,
+        ) > 0 if vm is not None else False,
         fail_condition=lambda vm: vm is None,
         timeout=module.params['timeout'],
         poll_interval=module.params['poll_interval'],

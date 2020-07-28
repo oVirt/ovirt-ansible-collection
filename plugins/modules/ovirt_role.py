@@ -132,7 +132,7 @@ class RoleModule(BaseModule):
                     self.param('permits').append('login')
                 permits_service = self._service.service(entity.id).permits_service()
                 current = [er.name for er in permits_service.list()]
-                passed = [pr for pr in self.param('permits')]
+                passed = self.param('permits')
                 if not sorted(current) == sorted(passed):
                     if self._module.check_mode:
                         return False
