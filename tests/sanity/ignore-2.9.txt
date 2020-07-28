@@ -1,0 +1,2 @@
+automation/ shebang!skip
+build.sh shebang!skip

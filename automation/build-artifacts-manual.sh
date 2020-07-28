@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -xe
 
 # remove any previous artifacts
 rm -rf output
