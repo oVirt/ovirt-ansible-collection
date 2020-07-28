@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -18,6 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
@@ -46,6 +49,7 @@ options:
         - "Search term which is accepted by oVirt/RHV search backend."
         - "For example to search VM X from cluster Y use following pattern:
            name=X and cluster=Y"
+      type: str
     all_content:
       description:
         - "If I(true) all the attributes of the virtual machines should be
@@ -59,6 +63,7 @@ options:
     max:
       description:
         - "The maximum number of results to return."
+      type: int
     next_run:
       description:
         - "Indicates if the returned result describes the virtual machine as it is currently running or if describes

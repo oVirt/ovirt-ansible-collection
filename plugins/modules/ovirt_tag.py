@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -18,6 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
@@ -39,28 +42,35 @@ options:
     id:
         description:
             - "ID of the tag to manage."
+        type: str
     name:
         description:
             - "Name of the tag to manage."
         required: true
+        type: str
     state:
         description:
             - "Should the tag be present/absent/attached/detached."
             - "C(Note): I(attached) and I(detached) states are supported since version 2.4."
         choices: ['present', 'absent', 'attached', 'detached']
         default: present
+        type: str
     description:
         description:
             - "Description of the tag to manage."
+        type: str
     parent:
         description:
             - "Name of the parent tag."
+        type: str
     vms:
         description:
             - "List of the VMs names, which should have assigned this tag."
+        type: list
     hosts:
         description:
             - "List of the hosts names, which should have assigned this tag."
+        type: list
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 

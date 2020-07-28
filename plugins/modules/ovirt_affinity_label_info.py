@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -18,6 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
@@ -40,14 +43,17 @@ notes:
        the I(register) keyword to use it."
 options:
     name:
-      description:
-        - "Name of the affinity labels which should be listed."
+        description:
+            - "Name of the affinity labels which should be listed."
+        type: str
     vm:
-      description:
-        - "Name of the VM, which affinity labels should be listed."
+        description:
+            - "Name of the VM, which affinity labels should be listed."
+        type: str
     host:
-      description:
-        - "Name of the host, which affinity labels should be listed."
+        description:
+            - "Name of the host, which affinity labels should be listed."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 

@@ -1,9 +1,10 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright: (c) 2019, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-from __future__ import absolute_import, division, print_function
+
+from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.1',
@@ -30,7 +31,6 @@ options:
         required: false
         default: true
         type: bool
-
     from_:
         description:
             - "Indicates the event index after which events should be returned. The indexes of events are
@@ -38,32 +38,27 @@ options:
                will be returned."
         required: false
         type: int
-
     max:
         description:
             - "Sets the maximum number of events to return. If not specified all the events are returned."
         required: false
         type: int
-
     search:
         description:
             - "Search term which is accepted by the oVirt/RHV API."
             - "For example to search for events of severity alert use the following pattern: severity=alert"
         required: false
         type: str
-
     headers:
         description:
             - "Additional HTTP headers."
         required: false
         type: str
-
     query:
         description:
             - "Additional URL query parameters."
         required: false
         type: str
-
     wait:
         description:
             - "If True wait for the response."

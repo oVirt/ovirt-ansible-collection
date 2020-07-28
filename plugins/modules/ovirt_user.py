@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,6 +19,9 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
+
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
@@ -37,20 +40,24 @@ options:
         description:
             - "Name of the user to manage. In most LDAPs it's I(uid) of the user, but in Active Directory you must specify I(UPN) of the user."
         required: true
+        type: str
     state:
         description:
             - "Should the user be present/absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     authz_name:
         description:
             - "Authorization provider of the user. In previous versions of oVirt/RHV known as domain."
         required: true
         aliases: ['domain']
+        type: str
     namespace:
         description:
             - "Namespace where the user resides. When using the authorization provider that stores users in the LDAP server,
                this attribute equals the naming context of the LDAP server."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 

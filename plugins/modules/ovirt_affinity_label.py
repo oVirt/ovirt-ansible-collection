@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -18,6 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
@@ -40,20 +43,25 @@ options:
         description:
             - "Name of the affinity label to manage."
         required: true
+        type: str
     state:
         description:
             - "Should the affinity label be present or absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     cluster:
         description:
             - "Name of the cluster where vms and hosts resides."
+        type: str
     vms:
         description:
             - "List of the VMs names, which should have assigned this affinity label."
+        type: list
     hosts:
         description:
             - "List of the hosts names, which should have assigned this affinity label."
+        type: list
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -171,7 +179,7 @@ def main():
             default='present',
         ),
         cluster=dict(default=None),
-        name=dict(default=None, required=True),
+        name=dict(required=True),
         vms=dict(default=None, type='list'),
         hosts=dict(default=None, type='list'),
     )

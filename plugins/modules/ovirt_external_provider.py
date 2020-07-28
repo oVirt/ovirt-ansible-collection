@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,6 +19,9 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
+
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
@@ -36,6 +39,7 @@ options:
     name:
         description:
             - "Name of the external provider to manage."
+        type: str
     state:
         description:
             - "Should the external be present or absent"
@@ -43,39 +47,50 @@ options:
                sure that SD is not attached to the data center!"
         choices: ['present', 'absent']
         default: present
+        type: str
     description:
         description:
             - "Description of the external provider."
+        type: str
     type:
         description:
             - "Type of the external provider."
         choices: ['os_image', 'network', 'os_volume', 'foreman']
+        required: true
+        type: str
+        aliases: ['provider']
     url:
         description:
             - "URL where external provider is hosted."
             - "Applicable for those types: I(os_image), I(os_volume), I(network) and I(foreman)."
+        type: str
     username:
         description:
             - "Username to be used for login to external provider."
             - "Applicable for all types."
+        type: str
     password:
         description:
             - "Password of the user specified in C(username) parameter."
             - "Applicable for all types."
+        type: str
     tenant_name:
         description:
             - "Name of the tenant."
             - "Applicable for those types: I(os_image), I(os_volume) and I(network)."
         aliases: ['tenant']
+        type: str
     authentication_url:
         description:
             - "Keystone authentication URL of the openstack provider."
             - "Applicable for those types: I(os_image), I(os_volume) and I(network)."
         aliases: ['auth_url']
+        type: str
     data_center:
         description:
             - "Name of the data center where provider should be attached."
             - "Applicable for those type: I(os_volume)."
+        type: str
     read_only:
         description:
             - "Specify if the network should be read only."
@@ -86,7 +101,8 @@ options:
             - "Type of the external network provider either external (for example OVN) or neutron."
             - "Applicable if C(type) is I(network)."
         choices: ['external', 'neutron']
-        default: ['external']
+        default: 'external'
+        type: str
     authentication_keys:
         description:
             - "List of authentication keys. Each key is represented by dict
@@ -95,6 +111,8 @@ options:
                of them defined in the system they will be removed."
             - "Applicable for I(os_volume)."
         default: []
+        type: list
+        aliases: ['auth_keys']
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -333,7 +351,6 @@ def main():
         name=dict(default=None),
         description=dict(default=None),
         type=dict(
-            default=None,
             required=True,
             choices=[
                 OS_IMAGE, NETWORK, OS_VOLUME, FOREMAN,

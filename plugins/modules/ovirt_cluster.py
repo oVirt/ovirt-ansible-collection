@@ -1,8 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
@@ -23,33 +26,41 @@ options:
     id:
         description:
             - "ID of the cluster to manage."
+        type: str
     name:
         description:
             - "Name of the cluster to manage."
         required: true
+        type: str
     state:
         description:
             - "Should the cluster be present or absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     data_center:
         description:
             - "Datacenter name where cluster reside."
+        type: str
     description:
         description:
             - "Description of the cluster."
+        type: str
     comment:
         description:
             - "Comment of the cluster."
+        type: str
     network:
         description:
             - "Management network of cluster to access cluster hosts."
+        type: str
     ballooning:
         description:
             - "If I(True) enable memory balloon optimization. Memory balloon is used to
                re-distribute / reclaim the host memory based on VM needs
                in a dynamic way."
         type: bool
+        aliases: ['balloon']
     virt:
         description:
             - "If I(True), hosts in this cluster will be used to run virtual machines."
@@ -102,14 +113,18 @@ options:
             - "I(server) - Sets the memory page sharing threshold to 150% of the system memory on each host."
             - "I(desktop) - Sets the memory page sharing threshold to 200% of the system memory on each host."
         choices: ['disabled', 'server', 'desktop']
+        type: str
+        aliases: ['performance_preset']
     rng_sources:
         description:
             - "List that specify the random number generator devices that all hosts in the cluster will use."
             - "Supported generators are: I(hwrng) and I(random)."
+        type: list
     spice_proxy:
         description:
             - "The proxy by which the SPICE client will connect to virtual machines."
             - "The address must be in the following format: I(protocol://[host]:[port])"
+        type: str
     fence_enabled:
         description:
             - "If I(True) enables fencing on the cluster."
@@ -141,6 +156,7 @@ options:
     fence_connectivity_threshold:
         description:
             - "The threshold used by C(fence_skip_if_connectivity_broken)."
+        type: int
     resilience_policy:
         description:
             - "The resilience policy defines how the virtual machines are prioritized in the migration."
@@ -149,6 +165,7 @@ options:
             - "C(migrate) - Migrates all virtual machines in order of their defined priority."
             - "C(migrate_highly_available) - Migrates only highly available virtual machines to prevent overloading other hosts."
         choices: ['do_not_migrate', 'migrate', 'migrate_highly_available']
+        type: str
     migration_bandwidth:
         description:
             - "The bandwidth settings define the maximum bandwidth of both outgoing and incoming migrations per host."
@@ -157,10 +174,12 @@ options:
             - "C(hypervisor_default) - Bandwidth is controlled by local VDSM setting on sending host."
             - "C(custom) - Defined by user (in Mbps)."
         choices: ['auto', 'hypervisor_default', 'custom']
+        type: str
     migration_bandwidth_limit:
         description:
             - "Set the I(custom) migration bandwidth limit."
             - "This parameter is used only when C(migration_bandwidth) is I(custom)."
+        type: int
     migration_auto_converge:
         description:
             - "If I(True) auto-convergence is used during live migration of virtual machines."
@@ -170,6 +189,7 @@ options:
             - "C(false) - Override the global setting to I(false)."
             - "C(inherit) - Use value which is set globally."
         choices: ['true', 'false', 'inherit']
+        type: str
     migration_compressed:
         description:
             - "If I(True) compression is used during live migration of the virtual machine."
@@ -179,6 +199,7 @@ options:
             - "C(false) - Override the global setting to I(false)."
             - "C(inherit) - Use value which is set globally."
         choices: ['true', 'false', 'inherit']
+        type: str
     migration_encrypted:
         description:
             - "If I(True) encryption is used during live migration of the virtual machine."
@@ -187,6 +208,7 @@ options:
             - "C(false) - Override the global setting to I(false)."
             - "C(inherit) - Use value which is set globally."
         choices: ['true', 'false', 'inherit']
+        type: str
     migration_policy:
         description:
             - "A migration policy defines the conditions for live migrating
@@ -199,6 +221,7 @@ options:
                If the VM migration is not converging for a long time, the migration will be switched to post-copy.
                Added in version I(2.4)."
         choices: ['legacy', 'minimal_downtime', 'suspend_workload', 'post_copy']
+        type: str
     serial_policy:
         description:
             - "Specify a serial number policy for the virtual machines in the cluster."
@@ -206,40 +229,50 @@ options:
             - "C(vm) - Sets the virtual machine's UUID as its serial number."
             - "C(host) - Sets the host's UUID as the virtual machine's serial number."
             - "C(custom) - Allows you to specify a custom serial number in C(serial_policy_value)."
+        choices: ['vm', 'host', 'custom']
+        type: str
     serial_policy_value:
         description:
             - "Allows you to specify a custom serial number."
             - "This parameter is used only when C(serial_policy) is I(custom)."
+        type: str
     scheduling_policy:
         description:
             - "Name of the scheduling policy to be used for cluster."
+        type: str
     scheduling_policy_properties:
         description:
             - "Custom scheduling policy properties of the cluster."
             - "These optional properties override the properties of the
                scheduling policy specified by the C(scheduling_policy) parameter."
+        type: list
     cpu_arch:
         description:
             - "CPU architecture of cluster."
         choices: ['x86_64', 'ppc64', 'undefined']
+        type: str
     cpu_type:
         description:
             - "CPU codename. For example I(Intel SandyBridge Family)."
+        type: str
     switch_type:
         description:
             - "Type of switch to be used by all networks in given cluster.
                Either I(legacy) which is using linux bridge or I(ovs) using
                Open vSwitch."
         choices: ['legacy', 'ovs']
+        type: str
     compatibility_version:
         description:
             - "The compatibility version of the cluster. All hosts in this
                cluster must support at least this compatibility version."
+        type: str
     mac_pool:
         description:
             - "MAC pool to be used by this cluster."
             - "C(Note:)"
             - "This is supported since oVirt version 4.1."
+        type: str
     external_network_providers:
         description:
             - "List of references to the external network providers available
@@ -254,6 +287,7 @@ options:
             id:
                 description:
                     - ID of the external network provider. Either C(name) or C(id) is required.
+        type: list
     firewall_type:
         description:
             - "The type of firewall to be used on hosts in this cluster."
@@ -671,7 +705,7 @@ def main():
             choices=['present', 'absent'],
             default='present',
         ),
-        name=dict(default=None, required=True),
+        name=dict(required=True),
         id=dict(default=None),
         ballooning=dict(default=None, type='bool', aliases=['balloon']),
         gluster=dict(default=None, type='bool'),

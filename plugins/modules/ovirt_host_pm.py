@@ -1,8 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
@@ -23,33 +26,41 @@ options:
             - "Name of the host to manage."
         required: true
         aliases: ['host']
+        type: str
     state:
         description:
             - "Should the host be present/absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     address:
         description:
             - "Address of the power management interface."
+        type: str
     username:
         description:
             - "Username to be used to connect to power management interface."
+        type: str
     password:
         description:
             - "Password of the user specified in C(username) parameter."
+        type: str
     type:
         description:
             - "Type of the power management. oVirt/RHV predefined values are I(drac5), I(ipmilan), I(rsa),
                I(bladecenter), I(alom), I(apc), I(apc_snmp), I(eps), I(wti), I(rsb), I(cisco_ucs),
                I(drac7), I(hpblade), I(ilo), I(ilo2), I(ilo3), I(ilo4), I(ilo_ssh),
                but user can have defined custom type."
+        type: str
     port:
         description:
             - "Power management interface port."
+        type: int
     options:
         description:
             - "Dictionary of additional fence agent options (including Power Management slot)."
             - "Additional information about options can be found at U(https://github.com/ClusterLabs/fence-agents/blob/master/doc/FenceAgentAPI.md)."
+        type: dict
     encrypt_options:
         description:
             - "If I(true) options will be encrypted when send to agent."
@@ -58,6 +69,7 @@ options:
     order:
         description:
             - "Integer value specifying, by default it's added at the end."
+        type: int
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -194,7 +206,7 @@ def main():
             choices=['present', 'absent'],
             default='present',
         ),
-        name=dict(default=None, required=True, aliases=['host']),
+        name=dict(required=True, aliases=['host']),
         address=dict(default=None),
         username=dict(default=None),
         password=dict(default=None, no_log=True),

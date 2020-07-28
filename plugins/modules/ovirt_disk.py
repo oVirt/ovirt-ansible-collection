@@ -1,8 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
@@ -23,24 +26,30 @@ options:
     id:
         description:
             - "ID of the disk to manage. Either C(id) or C(name) is required."
+        type: str
     name:
         description:
             - "Name of the disk to manage. Either C(id) or C(name)/C(alias) is required."
         aliases: ['alias']
+        type: str
     description:
         description:
             - "Description of the disk image to manage."
+        type: str
     vm_name:
         description:
             - "Name of the Virtual Machine to manage. Either C(vm_id) or C(vm_name) is required if C(state) is I(attached) or I(detached)."
+        type: str
     vm_id:
         description:
             - "ID of the Virtual Machine to manage. Either C(vm_id) or C(vm_name) is required if C(state) is I(attached) or I(detached)."
+        type: str
     state:
         description:
             - "Should the Virtual Machine disk be present/absent/attached/detached/exported/imported."
         choices: ['present', 'absent', 'attached', 'detached', 'exported', 'imported']
         default: 'present'
+        type: str
     download_image_path:
         description:
             - "Path on a file system where disk should be downloaded."
@@ -48,6 +57,7 @@ options:
                or you must provide it in C(ca_file) parameter."
             - "Note that the disk is not downloaded when the file already exists,
                but you can forcibly download the disk when using C(force) I (true)."
+        type: str
     upload_image_path:
         description:
             - "Path to disk image, which should be uploaded."
@@ -60,28 +70,34 @@ options:
                then please use C(force) I(true). If you will use C(force) I(false), which
                is default, then the disk image won't be uploaded."
             - "Note that to upload iso the C(format) should be 'raw'"
+        type: str
+        aliases: ['image_path']
     size:
         description:
             - "Size of the disk. Size should be specified using IEC standard units.
                For example 10GiB, 1024MiB, etc."
             - "Size can be only increased, not decreased."
+        type: str
     interface:
         description:
             - "Driver of the storage interface."
             - "It's required parameter when creating the new disk."
         choices: ['virtio', 'ide', 'virtio_scsi']
+        type: str
     format:
         description:
             - Specify format of the disk.
             - Note that this option isn't idempotent as it's not currently possible to change format of the disk via API.
         choices: ['raw', 'cow']
         default: 'cow'
+        type: str
     content_type:
         description:
             - Specify if the disk is a data disk or ISO image or a one of a the Hosted Engine disk types
             - The Hosted Engine disk content types are available with Engine 4.3+ and Ansible 2.8
         choices: ['data', 'iso', 'hosted_engine', 'hosted_engine_sanlock', 'hosted_engine_metadata', 'hosted_engine_configuration']
         default: 'data'
+        type: str
     sparse:
         required: False
         type: bool
@@ -92,6 +108,7 @@ options:
     storage_domain:
         description:
             - "Storage domain name where disk should be created."
+        type: str
     storage_domains:
         description:
             - "Storage domain names where disk should be copied."
@@ -101,6 +118,7 @@ options:
                your playbook accordingly to not copy the disks all the time. This
                is valid only for VM and floating disks, template disks works
                as expected."
+        type: list
     force:
         description:
             - "Please take a look at C(image_path) documentation to see the correct
@@ -109,9 +127,11 @@ options:
     profile:
         description:
             - "Disk profile name to be attached to disk. By default profile is chosen by oVirt/RHV engine."
+        type: str
     quota_id:
         description:
             - "Disk quota ID to be used for disk. By default quota is chosen by oVirt/RHV engine."
+        type: str
     bootable:
         description:
             - "I(True) if the disk should be bootable. By default when disk is created it isn't bootable."
@@ -146,6 +166,7 @@ options:
             storage_type:
                 description:
                     - Storage type either I(fcp) or I(iscsi).
+        type: dict
     sparsify:
         description:
             - "I(True) if the disk should be sparsified."
@@ -159,6 +180,7 @@ options:
         description:
             - "Name of the openstack volume type. This is valid when working
                with cinder."
+        type: str
     image_provider:
         description:
             - "When C(state) is I(exported) disk is exported to given Glance image provider."
@@ -168,6 +190,7 @@ options:
                you specify this parameter the disk is exported, so please handle
                your playbook accordingly to not export the disk all the time.
                This option is valid only for template disks."
+        type: str
     host:
         description:
             - "When the hypervisor name is specified the newly created disk or
@@ -177,6 +200,7 @@ options:
                related information. This option is only valid for passthrough
                disks. This option requires at least the logical_unit.id to be
                specified"
+        type: str
     wipe_after_delete:
         description:
             - "If the disk's Wipe After Delete is enabled, then the disk is first wiped."
@@ -191,6 +215,7 @@ options:
             - The backup behavior supported by the disk.
         choices: ['incremental']
         version_added: 1.0.1
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -660,7 +685,7 @@ def main():
         vm_name=dict(default=None),
         vm_id=dict(default=None),
         size=dict(default=None),
-        interface=dict(default=None,),
+        interface=dict(default=None, choices=['virtio', 'ide', 'virtio_scsi']),
         storage_domain=dict(default=None),
         storage_domains=dict(default=None, type='list'),
         profile=dict(default=None),

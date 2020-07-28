@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,6 +19,9 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
+
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
@@ -38,9 +41,11 @@ options:
     id:
         description:
             - "Id of the storage domain to be imported."
+        type: str
     name:
         description:
             - "Name of the storage domain to manage. (Not required when state is I(imported))"
+        type: str
     state:
         description:
             - "Should the storage domain be present/absent/maintenance/unattached/imported/update_ovf_store"
@@ -48,16 +53,20 @@ options:
             - "I(update_ovf_store) is supported since version 2.5, currently if C(wait) is (true), we don't wait for update."
         choices: ['present', 'absent', 'maintenance', 'unattached', 'imported', 'update_ovf_store']
         default: present
+        type: str
     description:
         description:
             - "Description of the storage domain."
+        type: str
     comment:
         description:
             - "Comment of the storage domain."
+        type: str
     data_center:
         description:
             - "Data center name where storage domain should be attached."
             - "This parameter isn't idempotent, it's not possible to change data center of storage domain."
+        type: str
     domain_function:
         description:
             - "Function of the storage domain."
@@ -65,9 +74,11 @@ options:
         choices: ['data', 'iso', 'export']
         default: 'data'
         aliases:  ['type']
+        type: str
     host:
         description:
             - "Host to be used to mount storage."
+        type: str
     localfs:
         description:
             - "Dictionary with values for localfs storage type:"
@@ -76,10 +87,12 @@ options:
             path:
                 description:
                     - "Path of the mount point. E.g.: /path/to/my/data"
+        type: dict
     nfs:
         description:
             - "Dictionary with values for NFS storage type:"
             - "Note that these parameters are not idempotent."
+        type: dict
         suboptions:
             address:
                 description:
@@ -103,6 +116,7 @@ options:
         description:
             - "Dictionary with values for iSCSI storage type:"
             - "Note that these parameters are not idempotent."
+        type: dict
         suboptions:
             address:
                 description:
@@ -133,6 +147,7 @@ options:
         description:
             - "Dictionary with values for PosixFS storage type:"
             - "Note that these parameters are not idempotent."
+        type: dict
         suboptions:
             path:
                 description:
@@ -147,6 +162,7 @@ options:
         description:
             - "Dictionary with values for GlusterFS storage type:"
             - "Note that these parameters are not idempotent."
+        type: dict
         suboptions:
             address:
                 description:
@@ -161,19 +177,23 @@ options:
         description:
             - "Dictionary with values for managed block storage type"
             - "Note: available from ovirt 4.3"
+        type: dict
         suboptions:
             driver_options:
                 description:
                     - "The options to be passed when creating a storage domain using a cinder driver."
                     - "List of dictionary containing C(name) and C(value) of driver option"
+                type: list
             driver_sensitive_options:
                 description:
                     - "Parameters containing sensitive information, to be passed when creating a storage domain using a cinder driver."
                     - "List of dictionary containing C(name) and C(value) of driver sensitive option"
+                type: list
     fcp:
         description:
             - "Dictionary with values for fibre channel storage type:"
             - "Note that these parameters are not idempotent."
+        type: dict
         suboptions:
             lun_id:
                 description:
@@ -193,9 +213,11 @@ options:
     critical_space_action_blocker:
         description:
             - "Indicates the minimal free space the storage domain should contain in percentages."
+        type: int
     warning_low_space:
         description:
             - "Indicates the minimum percentage of a free space in a storage domain to present a warning."
+        type: int
     destroy:
         description:
             - "Logical remove of the storage domain. If I(true) retains the storage domain's data for import."

@@ -1,8 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright: (c) 2017, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
@@ -23,25 +26,30 @@ options:
         description:
             - Name of the Instance Type to manage.
             - If instance type don't exists C(name) is required. Otherwise C(id) or C(name) can be used.
+        type: str
     id:
         description:
             - ID of the Instance Type to manage.
+        type: str
     state:
         description:
             - Should the Instance Type be present/absent.
             - I(present) state will create/update instance type and don't change its state if it already exists.
         choices: [ absent, present ]
         default: present
+        type: str
     memory:
         description:
             - Amount of memory of the Instance Type. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
             - Default value is set by engine.
+        type: str
     memory_guaranteed:
         description:
             - Amount of minimal guaranteed memory of the Instance Type.
               Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
             - C(memory_guaranteed) parameter can't be lower than C(memory) parameter.
             - Default value is set by engine.
+        type: str
     nics:
         description:
             - List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
@@ -51,33 +59,40 @@ options:
             - C(mac_address) - Custom MAC address of the network interface, by default it's obtained from MAC pool.
             - NOTE - This parameter is used only when C(state) is I(running) or I(present) and is able to only create NICs.
               To manage NICs of the instance type in more depth please use M(ovirt_nic) module instead.
+        type: list
     memory_max:
         description:
             - Upper bound of instance type memory up to which memory hot-plug can be performed.
               Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
             - Default value is set by engine.
+        type: str
     cpu_cores:
         description:
             - Number of virtual CPUs cores of the Instance Type.
             - Default value is set by oVirt/RHV engine.
+        type: int
     cpu_sockets:
         description:
             - Number of virtual CPUs sockets of the Instance Type.
             - Default value is set by oVirt/RHV engine.
+        type: int
     cpu_threads:
         description:
             - Number of virtual CPUs sockets of the Instance Type.
             - Default value is set by oVirt/RHV engine.
+        type: int
     operating_system:
         description:
             - Operating system of the Instance Type, for example 'rhel_8x64'.
             - Default value is set by oVirt/RHV engine.
             - Use the ovirt_vm_os_info module to obtain the current list.
+        type: str
     boot_devices:
         description:
             - List of boot devices which should be used to boot. For example C([ cdrom, hd ]).
             - Default value is set by oVirt/RHV engine.
         choices: [ cdrom, hd, network ]
+        type: list
     serial_console:
         description:
             - "I(True) enable VirtIO serial console, I(False) to disable it. By default is chosen by oVirt/RHV engine."
@@ -98,41 +113,50 @@ options:
               Instance Type with higher priorities will be started and migrated before instance types with lower
               priorities. The value is an integer between 0 and 100. The higher the value, the higher the priority.
             - If no value is passed, default value is set by oVirt/RHV engine.
+        type: int
     watchdog:
         description:
             - "Assign watchdog device for the instance type."
             - "Watchdogs is a dictionary which can have following values:"
             - "C(model) - Model of the watchdog device. For example: I(i6300esb), I(diag288) or I(null)."
             - "C(action) - Watchdog action to be performed when watchdog is triggered. For example: I(none), I(reset), I(poweroff), I(pause) or I(dump)."
+        type: dict
     host:
         description:
             - Specify host where Instance Type should be running. By default the host is chosen by engine scheduler.
             - This parameter is used only when C(state) is I(running) or I(present).
+        type: str
     graphical_console:
         description:
             - "Assign graphical console to the instance type."
             - "Graphical console is a dictionary which can have following values:"
             - "C(headless_mode) - If I(true) disable the graphics console for this instance type."
             - "C(protocol) - Graphical protocol, a list of I(spice), I(vnc), or both."
+        type: dict
     description:
         description:
             - "Description of the instance type."
+        type: str
     cpu_mode:
         description:
             - "CPU mode of the instance type. It can be some of the following: I(host_passthrough), I(host_model) or I(custom)."
             - "For I(host_passthrough) CPU type you need to set C(placement_policy) to I(pinned)."
             - "If no value is passed, default value is set by oVirt/RHV engine."
+        type: str
     rng_device:
         description:
             - "Random number generator (RNG). You can choose of one the following devices I(urandom), I(random) or I(hwrng)."
             - "In order to select I(hwrng), you must have it enabled on cluster first."
             - "/dev/urandom is used for cluster version >= 4.1, and /dev/random for cluster version <= 4.0"
+        type: str
     rng_bytes:
         description:
             - "Number of bytes allowed to consume per period."
+        type: int
     rng_period:
         description:
             - "Duration of one period in milliseconds."
+        type: int
     placement_policy:
         description:
             - "The configuration of the instance type's placement policy."
@@ -141,12 +165,14 @@ options:
             - "C(pinned) - Do not allow migration."
             - "C(user_migratable) - Allow manual migration only."
             - "If no value is passed, default value is set by oVirt/RHV engine."
+        type: str
     cpu_pinning:
         description:
             - "CPU Pinning topology to map instance type CPU to host CPU."
             - "CPU Pinning topology is a list of dictionary which can have following values:"
             - "C(cpu) - Number of the host CPU."
             - "C(vcpu) - Number of the instance type CPU."
+        type: list
     soundcard_enabled:
         description:
             - "If I(true), the sound card is added to the instance type."
@@ -162,6 +188,7 @@ options:
     io_threads:
         description:
             - "Number of IO threads used by instance type. I(0) means IO threading disabled."
+        type: int
     ballooning_enabled:
         description:
             - "If I(true), use memory ballooning."

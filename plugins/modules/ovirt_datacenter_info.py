@@ -1,8 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
@@ -27,9 +30,10 @@ notes:
        the I(register) keyword to use it."
 options:
     pattern:
-      description:
-        - "Search term which is accepted by oVirt/RHV search backend."
-        - "For example to search datacenter I(X) use following pattern: I(name=X)"
+        description:
+            - "Search term which is accepted by oVirt/RHV search backend."
+            - "For example to search datacenter I(X) use following pattern: I(name=X)"
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 

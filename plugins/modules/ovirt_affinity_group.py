@@ -1,8 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright: (c) 2017, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
@@ -24,17 +27,21 @@ options:
         description:
             - Name of the affinity group to manage.
         required: true
+        type: str
     state:
         description:
             - Should the affinity group be present or absent.
         choices: [ absent, present ]
+        type: str
         default: present
     cluster:
         description:
             - Name of the cluster of the affinity group.
+        type: str
     description:
         description:
             - Description of the affinity group.
+        type: str
     host_enforcing:
         description:
             - If I(yes) VM cannot start on host if it does not satisfy the C(host_rule).
@@ -47,6 +54,7 @@ options:
             - If I(disabled) this affinity group doesn't take effect.
             - This parameter is support since oVirt/RHV 4.1 version.
         choices: [ disabled, negative, positive ]
+        type: str
     vm_enforcing:
         description:
             - If I(yes) VM cannot start if it does not satisfy the C(vm_rule).
@@ -57,13 +65,16 @@ options:
             - If I(negative) I(no) VMs in this group should run on the host defined by C(host_rule).
             - If I(disabled) this affinity group doesn't take effect.
         choices: [ disabled, negative, positive ]
+        type: str
     vms:
         description:
             - List of the VMs names, which should have assigned this affinity group.
+        type: list
     hosts:
         description:
             - List of the hosts names, which should have assigned this affinity group.
             - This parameter is support since oVirt/RHV 4.1 version.
+        type: list
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 

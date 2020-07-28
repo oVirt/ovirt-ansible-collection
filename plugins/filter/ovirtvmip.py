@@ -1,5 +1,10 @@
-#!/usr/bin/python
 'Module to create filter to find IP addresses in VMs'
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
+
+import socket
+import struct
 
 
 class FilterModule(object):
@@ -115,8 +120,6 @@ class FilterModule(object):
     def __address_in_network(self, ip, net):
         "Return boolean if IP is in network."
         if net:
-            import socket
-            import struct
             ipaddr = int(''.join(['%02x' % int(x) for x in ip.split('.')]), 16)
             netstr, bits = net.split('/')
             netaddr = int(''.join(['%02x' % int(x)

@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,6 +19,9 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
+
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
                     'supported_by': 'community'}
@@ -38,6 +41,7 @@ options:
             - "Description of the job."
             - "When task with same description has already finished and you rerun taks it will create new job."
         required: true
+        type: str
     state:
         description:
             - "Should the job be C(present)/C(absent)/C(failed)."
@@ -45,6 +49,7 @@ options:
             - "Note when C(finished)/C(failed) it will finish/fail all steps."
         choices: ['present', 'absent', 'started', 'finished', 'failed']
         default: present
+        type: str
     steps:
         description:
             - "The steps of the job."

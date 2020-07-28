@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -18,6 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
@@ -44,9 +47,12 @@ options:
             - "Type of the external provider."
         choices: ['os_image', 'os_network', 'os_volume', 'foreman']
         required: true
+        type: str
+        aliases: ['provider']
     name:
         description:
             - "Name of the external provider, can be used as glob expression."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
@@ -106,7 +112,6 @@ def main():
     argument_spec = ovirt_info_full_argument_spec(
         name=dict(default=None, required=False),
         type=dict(
-            default=None,
             required=True,
             choices=[
                 'os_image', 'os_network', 'os_volume', 'foreman',

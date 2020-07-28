@@ -1,8 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
@@ -20,16 +23,20 @@ options:
     name:
         description:
             - "Name of the role to manage."
+        type: str
     id:
         description:
             - "ID of the role to manage."
+        type: str
     description:
         description:
             - "Description of the role."
+        type: str
     state:
         description:
             - "Should the role be present/absent."
         choices: ['present', 'absent']
+        type: str
         default: present
     administrative:
         description:
@@ -40,6 +47,7 @@ options:
             - "List of permits which role will have"
             - "Permit 'login' is default and all roles will have it."
             - "List can contain name of permit."
+        type: list
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -124,7 +132,7 @@ class RoleModule(BaseModule):
                     self.param('permits').append('login')
                 permits_service = self._service.service(entity.id).permits_service()
                 current = [er.name for er in permits_service.list()]
-                passed = [pr for pr in self.param('permits')]
+                passed = self.param('permits')
                 if not sorted(current) == sorted(passed):
                     if self._module.check_mode:
                         return False

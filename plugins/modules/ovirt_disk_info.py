@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2017 Red Hat, Inc.
@@ -18,6 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.1',
                     'status': ['preview'],
@@ -40,10 +43,11 @@ notes:
        the I(register) keyword to use it."
 options:
     pattern:
-      description:
-        - "Search term which is accepted by oVirt/RHV search backend."
-        - "For example to search Disk X from storage Y use following pattern:
-           name=X and storage.name=Y"
+        description:
+            - "Search term which is accepted by oVirt/RHV search backend."
+            - "For example to search Disk X from storage Y use following pattern:
+               name=X and storage.name=Y"
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
