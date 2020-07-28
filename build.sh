@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/bin/bash
 
 VERSION="1.0.0"
 MILESTONE=master
