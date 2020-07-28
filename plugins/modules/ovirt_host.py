@@ -98,7 +98,7 @@ options:
     override_display:
         description:
             - "Override the display address of all VMs on this host with specified address."
-        type: bool
+        type: str
     kernel_params:
         description:
             - "List of kernel boot parameters."

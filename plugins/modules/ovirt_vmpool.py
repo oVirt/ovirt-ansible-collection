@@ -84,18 +84,18 @@ options:
         description:
             - "Maximum number of VMs a single user can attach to from this pool."
             - "Default value is set by engine."
-        type: str
+        type: int
     prestarted:
         description:
             - "Number of pre-started VMs defines the number of VMs in run state, that are waiting
                to be attached to Users."
             - "Default value is set by engine."
-        type: str
+        type: int
     vm_count:
         description:
             - "Number of VMs in the pool."
             - "Default value is set by engine."
-        type: str
+        type: int
     vm:
         description:
             - "For creating vm pool without editing template."

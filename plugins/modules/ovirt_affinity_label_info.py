@@ -45,6 +45,7 @@ options:
     name:
         description:
             - "Name of the affinity labels which should be listed."
+        type: str
     vm:
         description:
             - "Name of the VM, which affinity labels should be listed."

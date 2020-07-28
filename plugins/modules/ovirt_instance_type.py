@@ -152,7 +152,7 @@ options:
     rng_bytes:
         description:
             - "Number of bytes allowed to consume per period."
-        type: str
+        type: int
     rng_period:
         description:
             - "Duration of one period in milliseconds."

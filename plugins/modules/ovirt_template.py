@@ -137,7 +137,7 @@ options:
     io_threads:
         description:
             - "Number of IO threads used by virtual machine. I(0) means IO threading disabled."
-        type: str
+        type: int
     template_image_disk_name:
         description:
             - "When C(state) is I(imported) and C(image_provider) is used this parameter specifies the new name for imported disk,
@@ -189,7 +189,7 @@ options:
         description:
             - "C(name) - The name of this version."
             - "C(number) - The index of this version in the versions hierarchy of the template. Used for editing of sub template."
-        type: str
+        type: dict
     clone_name:
         description:
             - Name for importing Template from storage domain.

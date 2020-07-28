@@ -60,6 +60,7 @@ options:
                re-distribute / reclaim the host memory based on VM needs
                in a dynamic way."
         type: bool
+        aliases: ['balloon']
     virt:
         description:
             - "If I(True), hosts in this cluster will be used to run virtual machines."
@@ -113,6 +114,7 @@ options:
             - "I(desktop) - Sets the memory page sharing threshold to 200% of the system memory on each host."
         choices: ['disabled', 'server', 'desktop']
         type: str
+        aliases: ['performance_preset']
     rng_sources:
         description:
             - "List that specify the random number generator devices that all hosts in the cluster will use."
@@ -703,7 +705,7 @@ def main():
             choices=['present', 'absent'],
             default='present',
         ),
-        name=dict(default=None, required=True),
+        name=dict(required=True),
         id=dict(default=None),
         ballooning=dict(default=None, type='bool', aliases=['balloon']),
         gluster=dict(default=None, type='bool'),

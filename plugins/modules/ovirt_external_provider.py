@@ -56,7 +56,9 @@ options:
         description:
             - "Type of the external provider."
         choices: ['os_image', 'network', 'os_volume', 'foreman']
+        required: true
         type: str
+        aliases: ['provider']
     url:
         description:
             - "URL where external provider is hosted."
@@ -109,7 +111,8 @@ options:
                of them defined in the system they will be removed."
             - "Applicable for I(os_volume)."
         default: []
-        type: str
+        type: list
+        aliases: ['auth_keys']
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 

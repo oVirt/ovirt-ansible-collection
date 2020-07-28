@@ -41,6 +41,7 @@ options:
     description:
         description:
             - "Description of the data center."
+        type: str
     comment:
         description:
             - "Comment of the data center."
@@ -263,7 +264,7 @@ def main():
             choices=['present', 'absent'],
             default='present',
         ),
-        name=dict(default=None, required=True),
+        name=dict(required=True),
         description=dict(default=None),
         local=dict(type='bool'),
         id=dict(default=None),

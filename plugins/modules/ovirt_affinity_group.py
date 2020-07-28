@@ -32,6 +32,7 @@ options:
         description:
             - Should the affinity group be present or absent.
         choices: [ absent, present ]
+        type: str
         default: present
     cluster:
         description:
@@ -53,7 +54,7 @@ options:
             - If I(disabled) this affinity group doesn't take effect.
             - This parameter is support since oVirt/RHV 4.1 version.
         choices: [ disabled, negative, positive ]
-        type: list
+        type: str
     vm_enforcing:
         description:
             - If I(yes) VM cannot start if it does not satisfy the C(vm_rule).

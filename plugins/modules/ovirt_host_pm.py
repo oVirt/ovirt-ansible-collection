@@ -35,8 +35,8 @@ options:
         type: str
     address:
         description:
-        type: str
             - "Address of the power management interface."
+        type: str
     username:
         description:
             - "Username to be used to connect to power management interface."
@@ -206,7 +206,7 @@ def main():
             choices=['present', 'absent'],
             default='present',
         ),
-        name=dict(default=None, required=True, aliases=['host']),
+        name=dict(required=True, aliases=['host']),
         address=dict(default=None),
         username=dict(default=None),
         password=dict(default=None, no_log=True),

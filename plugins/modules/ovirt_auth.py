@@ -85,7 +85,7 @@ options:
                seconds. A value of zero (the default) means wait forever. If
                the timeout expires before the response is received an exception
                will be raised."
-        type: str
+        type: int
     compress:
         required: False
         description:
@@ -94,6 +94,7 @@ options:
                Note that this is a hint for the server, and that it may return
                uncompressed data even when this parameter is set to I(True)."
         type: bool
+        default: true
     kerberos:
         required: False
         description:

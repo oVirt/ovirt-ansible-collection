@@ -57,7 +57,7 @@ options:
     vms:
         description:
             - "List of the VMs names, which should have assigned this affinity label."
-        type: str
+        type: list
     hosts:
         description:
             - "List of the hosts names, which should have assigned this affinity label."
@@ -179,7 +179,7 @@ def main():
             default='present',
         ),
         cluster=dict(default=None),
-        name=dict(default=None, required=True),
+        name=dict(required=True),
         vms=dict(default=None, type='list'),
         hosts=dict(default=None, type='list'),
     )

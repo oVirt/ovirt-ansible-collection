@@ -127,28 +127,28 @@ options:
                lun_mappings is described by the following dictionary:"
         type: list
         suboptions:
-            logical_unit_id: 
+            logical_unit_id:
                 description:
                     - The logical unit number to identify a logical unit,
-            logical_unit_port: 
+            logical_unit_port:
                 description:
                     - The port being used to connect with the LUN disk.
-            logical_unit_portal: 
+            logical_unit_portal:
                 description:
                     - The portal being used to connect with the LUN disk.
-            logical_unit_address: 
+            logical_unit_address:
                 description:
                     - The address of the block storage host.
-            logical_unit_target: 
+            logical_unit_target:
                 description:
                     - The iSCSI specification located on an iSCSI server
-            logical_unit_username: 
+            logical_unit_username:
                 description:
                     - Username to be used to connect to the block storage host.
-            logical_unit_password): 
+            logical_unit_password):
                 description:
                     - Password to be used to connect to the block storage host.
-            storage_type: 
+            storage_type:
                 description:
                     - The storage type which the LUN reside on (iscsi or fcp)"
     reassign_bad_macs:
@@ -165,7 +165,7 @@ options:
         description:
             - Version number of the template to be used for VM.
             - By default the latest available version of the template is used.
-        type: str
+        type: int
     use_latest_template_version:
         description:
             - Specify if latest template version should be used, when running a stateless VM.
@@ -210,21 +210,22 @@ options:
         description:
             - Set a CPU shares for this Virtual Machine.
             - Default value is set by oVirt/RHV engine.
-        type: str
+        type: int
     cpu_cores:
         description:
             - Number of virtual CPUs cores of the Virtual Machine.
             - Default value is set by oVirt/RHV engine.
-        type: str
+        type: int
     cpu_sockets:
         description:
             - Number of virtual CPUs sockets of the Virtual Machine.
             - Default value is set by oVirt/RHV engine.
-        type: str
+        type: int
     cpu_threads:
         description:
             - Number of threads per core of the Virtual Machine.
             - Default value is set by oVirt/RHV engine.
+        type: int
     type:
         description:
             - Type of the Virtual Machine.
@@ -247,7 +248,7 @@ options:
             - List of boot devices which should be used to boot. For example C([ cdrom, hd ]).
             - Default value is set by oVirt/RHV engine.
         choices: [ cdrom, hd, network ]
-        type: str
+        type: list
     boot_menu:
         description:
             - "I(True) enable menu to select boot device, I(False) to disable it. By default is chosen by oVirt/RHV engine."
@@ -288,7 +289,7 @@ options:
               Virtual machines with higher priorities will be started and migrated before virtual machines with lower
               priorities. The value is an integer between 0 and 100. The higher the value, the higher the priority.
             - If no value is passed, default value is set by oVirt/RHV engine.
-        type: str
+        type: int
     lease:
         description:
             - Name of the storage domain this virtual machine lease reside on. Pass an empty string to remove the lease.
@@ -304,7 +305,7 @@ options:
         description:
             - Single Root I/O Virtualization - technology that allows single device to expose multiple endpoints that can be passed to VMs
             - host_devices is an list which contain dictionary with name and state of device
-        type: str
+        type: int
     delete_protected:
         description:
             - If I(yes) Virtual Machine will be set as delete protected.
@@ -719,7 +720,7 @@ options:
     io_threads:
         description:
             - "Number of IO threads used by virtual machine. I(0) means IO threading disabled."
-        type: str
+        type: int
     ballooning_enabled:
         description:
             - "If I(true), use memory ballooning."
@@ -1746,9 +1747,9 @@ class VmsModule(BaseModule):
 
     def __get_cd_id(self):
         disks_service = self._connection.system_service().disks_service()
-        disks = disks_service.list(search='name="{}"'.format(self.param('cd_iso')))
+        disks = disks_service.list(search='name="{0}"'.format(self.param('cd_iso')))
         if len(disks) > 1:
-            raise ValueError('Found mutiple disks with same name "{}" please use \
+            raise ValueError('Found mutiple disks with same name "{0}" please use \
                 disk ID in "cd_iso" to specify which disk should be used.'.format(self.param('cd_iso')))
         if not disks:
             # The `cd_iso` is valid disk ID returning to _attach_cd

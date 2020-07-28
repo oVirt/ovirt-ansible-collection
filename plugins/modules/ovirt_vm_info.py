@@ -49,7 +49,7 @@ options:
         - "Search term which is accepted by oVirt/RHV search backend."
         - "For example to search VM X from cluster Y use following pattern:
            name=X and cluster=Y"
-        type: str
+      type: str
     all_content:
       description:
         - "If I(true) all the attributes of the virtual machines should be
@@ -63,6 +63,7 @@ options:
     max:
       description:
         - "The maximum number of results to return."
+      type: int
     next_run:
       description:
         - "Indicates if the returned result describes the virtual machine as it is currently running or if describes

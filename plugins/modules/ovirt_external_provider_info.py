@@ -48,6 +48,7 @@ options:
         choices: ['os_image', 'os_network', 'os_volume', 'foreman']
         required: true
         type: str
+        aliases: ['provider']
     name:
         description:
             - "Name of the external provider, can be used as glob expression."
@@ -111,7 +112,6 @@ def main():
     argument_spec = ovirt_info_full_argument_spec(
         name=dict(default=None, required=False),
         type=dict(
-            default=None,
             required=True,
             choices=[
                 'os_image', 'os_network', 'os_volume', 'foreman',

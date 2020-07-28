@@ -71,6 +71,7 @@ options:
                is default, then the disk image won't be uploaded."
             - "Note that to upload iso the C(format) should be 'raw'"
         type: str
+        aliases: ['image_path']
     size:
         description:
             - "Size of the disk. Size should be specified using IEC standard units.
@@ -104,7 +105,6 @@ options:
             - "I(True) if the disk should be sparse (also known as I(thin provision)).
               If the parameter is omitted, cow disks will be created as sparse and raw disks as I(preallocated)"
             - Note that this option isn't idempotent as it's not currently possible to change sparseness of the disk via API.
-        type: str
     storage_domain:
         description:
             - "Storage domain name where disk should be created."
@@ -685,7 +685,7 @@ def main():
         vm_name=dict(default=None),
         vm_id=dict(default=None),
         size=dict(default=None),
-        interface=dict(default=None,),
+        interface=dict(default=None, choices=['virtio', 'ide', 'virtio_scsi']),
         storage_domain=dict(default=None),
         storage_domains=dict(default=None, type='list'),
         profile=dict(default=None),
