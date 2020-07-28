@@ -106,7 +106,11 @@ options:
         description:
             - "A dictionary of HTTP headers to be added to each API call."
         type: dict
-
+    ovirt_auth:
+        description:
+            - "Previous run of the ovirt_auth used with C(state) absent"
+            - "Closes connection with the engine."
+        type: dict
 requirements:
   - python >= 2.7
   - ovirt-engine-sdk-python >= 4.4.0
