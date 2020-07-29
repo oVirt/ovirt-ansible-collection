@@ -45,9 +45,9 @@ Example Playbook
   tasks:
     - name: Login
       ovirt_auth:
-          url: "https://ovirt-engine.example.com/ovirt-engine/api"
-          password: "{{ engine_password | default(omit) }}"
-          username: "admin@internal"
+        url: "https://ovirt-engine.example.com/ovirt-engine/api"
+        password: "{{ engine_password | default(omit) }}"
+        username: "admin@internal"
     - name: Create vm
       ovirt_vm:
         auth: "{{ ovirt_auth }}"
