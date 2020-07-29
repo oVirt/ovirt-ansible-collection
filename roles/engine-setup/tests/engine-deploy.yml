@@ -13,5 +13,7 @@
     ovirt_engine_setup_firewall_manager: null
     ovirt_repositories_ovirt_release_rpm: "{{ ovirt_release_rpm }}"
   roles:
-    - role: oVirt.repositories
-    - role: oVirt.engine-setup
+    - role: repositories
+    - role: engine-setup
+  collections:
+    - ovirt.ovirt

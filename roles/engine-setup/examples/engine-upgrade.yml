@@ -12,7 +12,11 @@
     ovirt_engine_setup_firewall_manager: null
     ovirt_repositories_ovirt_release_rpm: "{{ ovirt_repositories_ovirt_release_rpm }}"
   roles:
-    - role: ovirt.repositories
-    - role: ovirt.engine-setup
+    - role: repositories
+    - role: engine-setup
       ovirt_engine_setup_update_packages: true
       ovirt_engine_setup_answer_file_path: "answerfile_{{ ovirt_engine_setup_version }}_upgrade.txt.j2"
+  roles:
+    - engine-setup
+  collections:
+    - ovirt.ovirt

@@ -5,35 +5,6 @@ Installs required packages for oVirt Engine deployment, generates answerfile
 and runs engine-setup.
 Optionally the role updates oVirt engine packages.
 
-Note
-----
-Please note that when installing this role from Ansible Galaxy you are instructed to run following command:
-
-```bash
-$ ansible-galaxy install ovirt.engine-setup
-```
-
-This will download the role to the directory with the same name as you specified on the
-command line, in this case `ovirt.engine-setup`. However note that this is case sensitive. Therefore if you specify
-for example `OVIRT.engine-setup`, the same role will be downloaded, but it will be placed in a directory named
-`OVIRT.engine-setup`. If this is the case, you always have to use this role with the upper case prefix.
-That's why you need to be careful how you specify the name of the role on command line.
-
-For the RPM installation we install three legacy names - `oVirt.engine-setup`, `ovirt.engine-setup` and `ovirt-engine-setup`.
-You can use any of these names. This documentation and examples in this repository use name `ovirt.engine-setup`.
-`oVirt.engine-setup` and `ovirt-engine-setup` role names have been deprecated.
-
-Target Systems
---------------
-
-* engine
-
-Requirements
-------------
-
- * Environment with configured repositories
- * Ansible version 2.9.0
-
 Role Variables
 --------------
 
@@ -125,7 +96,9 @@ Example Playbook
     ovirt_engine_setup_version: '4.2'
     ovirt_engine_setup_organization: 'of.ovirt.engine.com'
   roles:
-    - ovirt.engine-setup
+    - engine-setup
+  collections:
+    - ovirt.ovirt
 
 
 # Example of RHV setup:
@@ -139,7 +112,9 @@ Example Playbook
     ovirt_engine_setup_organization: 'rhv.redhat.com'
     ovirt_engine_setup_product_type: 'rhv'
   roles:
-    - ovirt.engine-setup
+    - engine-setup
+  collections:
+    - ovirt.ovirt
 
 
 # Example of oVirt setup with engine_configs:
@@ -157,5 +132,7 @@ Example Playbook
         version: general
 
   roles:
-    - ovirt.engine-setup
+    - engine-setup
+  collections:
+    - ovirt.ovirt
 ```
