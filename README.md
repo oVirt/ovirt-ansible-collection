@@ -24,7 +24,7 @@ Requirements
 
 Modules documentation
 --------------
-https://docs.ansible.com/ansible/latest/modules/list_of_cloud_modules.html#ovirt
+https://docs.ansible.com/ansible/2.10/collections/ovirt/ovirt/index.html
 
 Dependencies
 ------------
