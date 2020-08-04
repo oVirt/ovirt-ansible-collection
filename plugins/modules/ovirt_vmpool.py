@@ -153,8 +153,8 @@ options:
                     - C(interface) -  Type of the network interface. One of following I(virtio), I(e1000), I(rtl8139), default is I(virtio).
                     - C(mac_address) - Custom MAC address of the network interface, by default it's obtained from MAC pool.
                     - NOTE - This parameter is used only when C(state) is I(running) or I(present) and is able to only create NICs.
-                    - To manage NICs of the VM in more depth please use M(ovirt.ovirt.ovirt_nics) module instead.
-extends_documentation_fragment: ovirt.ovirt.ovirt
+                    - To manage NICs of the VM in more depth please use M(@NAMESPACE@.@NAME@.ovirt_nics) module instead.
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 EXAMPLES = '''
@@ -236,7 +236,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     BaseModule,
     check_params,
     check_sdk,

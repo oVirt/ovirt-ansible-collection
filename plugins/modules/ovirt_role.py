@@ -45,7 +45,7 @@ options:
             - "List can contain name of permit."
         type: list
         elements: str
-extends_documentation_fragment: ovirt.ovirt.ovirt
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 EXAMPLES = '''
@@ -81,7 +81,7 @@ ovirt_role:
     type: list
 '''
 
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     convert_to_bytes,

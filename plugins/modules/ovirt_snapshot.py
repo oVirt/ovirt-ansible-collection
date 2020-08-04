@@ -110,7 +110,7 @@ notes:
        machine - it simply removes a return-point. However, restoring a virtual
        machine from a snapshot deletes any content that was written to the
        virtual machine after the time the snapshot was taken."
-extends_documentation_fragment: ovirt.ovirt.ovirt
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 
@@ -207,7 +207,7 @@ from ansible.module_utils.six.moves.urllib.parse import urlparse
 
 from datetime import datetime
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

@@ -62,7 +62,7 @@ EXAMPLES = '''
 # Ensure the CA is available:
 # $ wget "https://engine/ovirt-engine/services/pki-resource?resource=ca-certificate&format=X509-PEM-CA" -O /path/to/ca.pem
 # Sample content of ovirt.yml:
-plugin: ovirt.ovirt.ovirt
+plugin: @NAMESPACE@.@NAME@.ovirt
 ovirt_url: https://engine/ovirt-engine/api
 ovirt_cafile: /path/to/ca.pem
 ovirt_username: ansible-tester
@@ -96,7 +96,7 @@ except ImportError:
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
-    NAME = 'ovirt.ovirt.ovirt'
+    NAME = '@NAMESPACE@.@NAME@.ovirt'
 
     def _get_dict_of_struct(self, vm):
         '''  Transform SDK Vm Struct type to Python dictionary.

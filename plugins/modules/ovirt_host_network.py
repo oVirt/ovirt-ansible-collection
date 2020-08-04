@@ -124,7 +124,7 @@ options:
             - "If I(true) all networks will be synchronized before modification"
         type: bool
         default: false
-extends_documentation_fragment: ovirt.ovirt.ovirt
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 EXAMPLES = '''
@@ -227,7 +227,7 @@ except ImportError:
 
 from ansible.module_utils import six
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,
