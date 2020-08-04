@@ -4,9 +4,16 @@ VERSION="1.1.3"
 MILESTONE=master
 RPM_RELEASE="0.1.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
 
-COLLECTION_NAME="ovirt"
-COLLECTION_NAMESPACE="ovirt"
+BUILD_TYPE=$2
+BUILD_PATH=$3
 
+if [[ $BUILD_TYPE = "rhv" ]]; then
+COLLECTION_NAMESPACE="redhat"
+COLLECTION_NAME="rhv"
+else
+COLLECTION_NAMESPACE="ovirt"
+COLLECTION_NAME="ovirt"
+fi
 PACKAGE_NAME="ovirt-ansible-collection"
 PREFIX=/usr/local
 DATAROOT_DIR=$PREFIX/share
@@ -44,6 +51,26 @@ install() {
   cp -pR plugins/ $PKG_DATA_DIR
 
   echo "Installation done."
+}
+
+rename() {
+  echo "Renaming @NAMESPACE@ to $COLLECTION_NAMESPACE and @NAME@ to $COLLECTION_NAME"
+  for file in $(git ls-files)
+  do
+    sed -i -e "s/@NAMESPACE@/$COLLECTION_NAMESPACE/g" -e "s/@NAME@/$COLLECTION_NAME/g" $file
+  done
+}
+
+build() {
+  if [[ -d $BUILD_PATH ]]; then
+    echo "The copying files to $BUILD_PATH"
+    cp -a ./ $BUILD_PATH
+    cd $BUILD_PATH
+    rename
+    dist
+  else
+    echo "The BUILD_PATH was not specified!"
+  fi
 }
 
 $1
