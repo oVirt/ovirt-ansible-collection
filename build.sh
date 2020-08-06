@@ -19,7 +19,7 @@ PREFIX=/usr/local
 DATAROOT_DIR=$PREFIX/share
 COLLECTIONS_DATAROOT_DIR=$DATAROOT_DIR/ansible/collections/ansible_collections
 DOC_DIR=$DATAROOT_DIR/doc
-PKG_DATA_DIR=${PKG_DATA_DIR:-$COLLECTIONS_DATAROOT_DIR/$COLLECTION_NAMESPACE/$COLLECTION_NAME}
+PKG_DATA_DIR=${PKG_DATA_DIR:-$COLLECTIONS_DATAROOT_DIR}
 PKG_DATA_DIR_ORIG=${PKG_DATA_DIR_ORIG:-$PKG_DATA_DIR}
 PKG_DOC_DIR=${PKG_DOC_DIR:-$DOC_DIR/$PACKAGE_NAME}
 
@@ -45,11 +45,16 @@ dist() {
 
 install() {
   echo "Installing data..."
-  mkdir -p $PKG_DATA_DIR
+  mkdir -p $PKG_DATA_DIR/$COLLECTION_NAMESPACE/$COLLECTION_NAME
   mkdir -p $PKG_DOC_DIR
 
-  cp -pR plugins/ $PKG_DATA_DIR
+  cp -pR plugins/ $PKG_DATA_DIR/$COLLECTION_NAMESPACE/$COLLECTION_NAME
 
+  if [[ $BUILD_TYPE = "rhv" ]]; then
+    echo "Creating link to ovirt.ovirt"
+    mkdir -p $PKG_DATA_DIR/ovirt
+    ln -f -s $PKG_DATA_DIR_ORIG/redhat/rhv $PKG_DATA_DIR/ovirt/ovirt
+  fi
   echo "Installation done."
 }
 
@@ -64,7 +69,7 @@ rename() {
 build() {
   if [[ -d $BUILD_PATH ]]; then
     echo "The copying files to $BUILD_PATH"
-    cp -a ./ $BUILD_PATH
+    cp -a ./* $BUILD_PATH
     cd $BUILD_PATH
     rename
     dist
