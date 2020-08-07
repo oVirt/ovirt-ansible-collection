@@ -1,0 +1,19 @@
+releases:
+  1.0.0:
+    release_date: 2020-04-09
+    changes:
+      release_summary: This is first release of the collection.
+      major_changes:
+        - ovirt_cluster - add migration_encrypted option 
+        - ovirt_vm - add Bios Type option
+        - ovirt_datacenter - add iscsi_bonds 
+      minor_changes:
+        - ovirt_vm - remove deprecated warning of boot params 
+        - ovirt - dynamic plugin improvements
+      bugfixes:
+        - ovirt_storage_domain - fix update_check warning_low_space
+    plugins:
+      inventory:
+        - name: ovirt
+          description: Inventory plugin for ovirt
+          namespace: ovirt.ovirt
