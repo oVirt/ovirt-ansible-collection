@@ -69,7 +69,7 @@ rename() {
 build() {
   if [[ -d $BUILD_PATH ]]; then
     echo "The copying files to $BUILD_PATH"
-    cp -a ./* $BUILD_PATH
+    cp -a ./ $BUILD_PATH
     cd $BUILD_PATH
     rename
     dist
