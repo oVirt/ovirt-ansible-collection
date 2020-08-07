@@ -214,7 +214,7 @@ options:
         description:
             - The backup behavior supported by the disk.
         choices: ['incremental']
-        version_added: 1.0.1
+        version_added: 1.1.0
         type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
