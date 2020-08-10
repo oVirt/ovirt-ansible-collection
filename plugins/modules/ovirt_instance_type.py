@@ -49,13 +49,29 @@ options:
     nics:
         description:
             - List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
-            - C(name) - Name of the NIC.
-            - C(profile_name) - Profile name where NIC should be attached.
-            - C(interface) -  Type of the network interface. One of following I(virtio), I(e1000), I(rtl8139), default is I(virtio).
-            - C(mac_address) - Custom MAC address of the network interface, by default it's obtained from MAC pool.
             - NOTE - This parameter is used only when C(state) is I(running) or I(present) and is able to only create NICs.
               To manage NICs of the instance type in more depth please use M(ovirt.ovirt.ovirt_nic) module instead.
+        suboptions:
+            name:
+                description:
+                    - "Name of the NIC."
+                type: str
+            profile_name:
+                description:
+                    - "Profile name where NIC should be attached."
+                type: str
+            interface:
+                description:
+                    - "Type of the network interface."
+                type: str
+                choices: [ virtio, e1000, rtl8139 ]
+                default: virtio
+            mac_address:
+                description:
+                    - "Custom MAC address of the network interface, by default it's obtained from MAC pool."
+                type: str
         type: list
+        elements: dict
     memory_max:
         description:
             - Upper bound of instance type memory up to which memory hot-plug can be performed.
@@ -89,6 +105,7 @@ options:
             - Default value is set by oVirt/RHV engine.
         choices: [ cdrom, hd, network ]
         type: list
+        elements: str
     serial_console:
         description:
             - "I(True) enable VirtIO serial console, I(False) to disable it. By default is chosen by oVirt/RHV engine."
@@ -166,9 +183,15 @@ options:
         description:
             - "CPU Pinning topology to map instance type CPU to host CPU."
             - "CPU Pinning topology is a list of dictionary which can have following values:"
-            - "C(cpu) - Number of the host CPU."
-            - "C(vcpu) - Number of the instance type CPU."
+        suboptions:
+            cpu:
+                description:
+                    - "Number of the host CPU."
+            vcpu:
+                description:
+                    - "Number of the instance type CPU."
         type: list
+        elements: dict
     soundcard_enabled:
         description:
             - "If I(true), the sound card is added to the instance type."
@@ -547,7 +570,7 @@ def main():
         cpu_cores=dict(type='int'),
         cpu_threads=dict(type='int'),
         operating_system=dict(type='str'),
-        boot_devices=dict(type='list', choices=['cdrom', 'hd', 'network']),
+        boot_devices=dict(type='list', choices=['cdrom', 'hd', 'network'], elements='str'),
         serial_console=dict(type='bool'),
         usb_support=dict(type='bool'),
         high_availability=dict(type='bool'),
@@ -561,12 +584,12 @@ def main():
         rng_bytes=dict(type='int', default=None),
         rng_period=dict(type='int', default=None),
         placement_policy=dict(type='str'),
-        cpu_pinning=dict(type='list'),
+        cpu_pinning=dict(type='list', elements='dict'),
         soundcard_enabled=dict(type='bool', default=None),
         virtio_scsi=dict(type='bool', default=None),
         smartcard_enabled=dict(type='bool', default=None),
         io_threads=dict(type='int', default=None),
-        nics=dict(type='list', default=[]),
+        nics=dict(type='list', default=[], elements='dict'),
         ballooning_enabled=dict(type='bool', default=None),
     )
     module = AnsibleModule(

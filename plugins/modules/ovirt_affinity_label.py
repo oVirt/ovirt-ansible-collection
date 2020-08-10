@@ -53,10 +53,12 @@ options:
         description:
             - "List of the VMs names, which should have assigned this affinity label."
         type: list
+        elements: str
     hosts:
         description:
             - "List of the hosts names, which should have assigned this affinity label."
         type: list
+        elements: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -175,8 +177,8 @@ def main():
         ),
         cluster=dict(default=None),
         name=dict(required=True),
-        vms=dict(default=None, type='list'),
-        hosts=dict(default=None, type='list'),
+        vms=dict(default=None, type='list', elements='str'),
+        hosts=dict(default=None, type='list', elements='str'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,

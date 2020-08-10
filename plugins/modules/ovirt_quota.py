@@ -71,6 +71,7 @@ options:
             - "List of dictionary of cluster limits, which is valid to specific cluster."
             - "If cluster isn't specified it's valid to all clusters in system:"
         type: list
+        elements: dict
         suboptions:
             cluster:
                 description:
@@ -86,6 +87,7 @@ options:
             - "List of dictionary of storage limits, which is valid to specific storage."
             - "If storage isn't specified it's valid to all storages in system:"
         type: list
+        elements: dict
         suboptions:
             storage:
                 description:
@@ -258,8 +260,8 @@ def main():
         cluster_grace=dict(default=None, type='int', aliases=['cluster_hard_limit']),
         storage_threshold=dict(default=None, type='int', aliases=['storage_soft_limit']),
         storage_grace=dict(default=None, type='int', aliases=['storage_hard_limit']),
-        clusters=dict(default=[], type='list'),
-        storages=dict(default=[], type='list'),
+        clusters=dict(default=[], type='list', elements='dict'),
+        storages=dict(default=[], type='list', elements='dict'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,

@@ -61,6 +61,7 @@ options:
                 choices: ['present', 'absent', 'started', 'finished', 'failed']
                 default: present
         type: list
+        elements: dict
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -181,8 +182,8 @@ def main():
             choices=['present', 'absent', 'started', 'finished', 'failed'],
             default='present',
         ),
-        description=dict(default=None),
-        steps=dict(default=None, type='list'),
+        description=dict(required=True),
+        steps=dict(default=None, type='list', elements='dict'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,

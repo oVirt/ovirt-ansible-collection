@@ -70,6 +70,7 @@ options:
                 description:
                     - The id of the target profile id to be mapped to in the engine.
         type: list
+        elements: dict
     cluster_mappings:
         description:
             - "Mapper which maps cluster name between Template's OVF and the destination cluster this Template should be registered to,
@@ -83,6 +84,7 @@ options:
                 description:
                     - The name of the destination cluster.
         type: list
+        elements: dict
     role_mappings:
         description:
             - "Mapper which maps role name between Template's OVF and the destination role this Template should be registered to,
@@ -96,6 +98,7 @@ options:
                 description:
                     - The name of the destination role.
         type: list
+        elements: dict
     domain_mappings:
         description:
             - "Mapper which maps aaa domain name between Template's OVF and the destination aaa domain this Template should be registered to,
@@ -109,6 +112,7 @@ options:
                 description:
                     - The name of the destination aaa domain.
         type: list
+        elements: dict
     exclusive:
         description:
             - "When C(state) is I(exported) this parameter indicates if the existing templates with the
@@ -269,6 +273,7 @@ options:
             - If one network interface is enough, user should use C(cloud_init) I(nic_*) parameters. C(cloud_init) I(nic_*) parameters
               are merged with C(cloud_init_nics) parameters.
         type: list
+        elements: dict
         suboptions:
             nic_boot_protocol:
                 description:
@@ -295,6 +300,7 @@ options:
         description:
             - List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
         type: list
+        elements: dict
         suboptions:
             name:
                 description:
@@ -897,17 +903,17 @@ def main():
         template_image_disk_name=dict(default=None),
         version=dict(default=None, type='dict'),
         seal=dict(type='bool'),
-        vnic_profile_mappings=dict(default=[], type='list'),
-        cluster_mappings=dict(default=[], type='list'),
-        role_mappings=dict(default=[], type='list'),
-        domain_mappings=dict(default=[], type='list'),
+        vnic_profile_mappings=dict(default=[], type='list', elements='dict'),
+        cluster_mappings=dict(default=[], type='list', elements='dict'),
+        role_mappings=dict(default=[], type='list', elements='dict'),
+        domain_mappings=dict(default=[], type='list', elements='dict'),
         operating_system=dict(type='str'),
         memory=dict(type='str'),
         memory_guaranteed=dict(type='str'),
         memory_max=dict(type='str'),
-        nics=dict(type='list', default=[]),
+        nics=dict(type='list', default=[], elements='dict'),
         cloud_init=dict(type='dict'),
-        cloud_init_nics=dict(type='list', default=[]),
+        cloud_init_nics=dict(type='list', default=[], elements='dict'),
         sysprep=dict(type='dict'),
     )
     module = AnsibleModule(

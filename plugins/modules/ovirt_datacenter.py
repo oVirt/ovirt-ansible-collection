@@ -93,6 +93,7 @@ options:
                 type: list
                 default: []
         type: list
+        elements: dict
 
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
@@ -268,7 +269,7 @@ def main():
         comment=dict(default=None),
         mac_pool=dict(default=None),
         force=dict(default=None, type='bool'),
-        iscsi_bonds=dict(type='list', default=None),
+        iscsi_bonds=dict(type='list', default=None, elements='dict'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,

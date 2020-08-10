@@ -47,6 +47,7 @@ options:
             - "List of MAC ranges. The from and to should be split by comma."
             - "For example: 00:1a:4a:16:01:51,00:1a:4a:16:01:61"
         type: list
+        elements: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -149,7 +150,7 @@ def main():
         id=dict(default=None),
         allow_duplicates=dict(default=None, type='bool'),
         description=dict(default=None),
-        ranges=dict(default=None, type='list'),
+        ranges=dict(default=None, type='list', elements='str'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
