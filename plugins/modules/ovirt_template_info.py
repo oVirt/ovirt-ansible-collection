@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV templates."
     - This module was called C(ovirt_template_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt_template_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_template_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_templates), which
        contains a list of templates. You need to register the result with

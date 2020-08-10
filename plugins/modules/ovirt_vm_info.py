@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV virtual machines."
     - This module was called C(ovirt_vm_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt_vm_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_vm_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_vms), which
        contains a list of virtual machines. You need to register the result with

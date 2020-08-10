@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV networks."
     - This module was called C(ovirt_network_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt_network_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_network_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_networks), which
        contains a list of networks. You need to register the result with

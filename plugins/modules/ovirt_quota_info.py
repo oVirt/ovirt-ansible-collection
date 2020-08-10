@@ -31,7 +31,7 @@ author: "Maor Lipchuk (@machacekondra)"
 description:
     - "Retrieve information about one or more oVirt/RHV quotas."
     - This module was called C(ovirt_quota_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt_quota_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_quota_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_quotas), which
        contains a list of quotas. You need to register the result with

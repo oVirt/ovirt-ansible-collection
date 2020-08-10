@@ -153,7 +153,7 @@ options:
                     - C(interface) -  Type of the network interface. One of following I(virtio), I(e1000), I(rtl8139), default is I(virtio).
                     - C(mac_address) - Custom MAC address of the network interface, by default it's obtained from MAC pool.
                     - NOTE - This parameter is used only when C(state) is I(running) or I(present) and is able to only create NICs.
-                    - To manage NICs of the VM in more depth please use M(ovirt_nics) module instead.
+                    - To manage NICs of the VM in more depth please use M(ovirt.ovirt.ovirt_nics) module instead.
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 

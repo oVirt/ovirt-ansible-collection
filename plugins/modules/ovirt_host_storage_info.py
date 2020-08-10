@@ -16,7 +16,7 @@ author: "Daniel Erez (@derez)"
 description:
     - "Retrieve information about one or more oVirt/RHV HostStorages (applicable only for block storage)."
     - This module was called C(ovirt_host_storage_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt_host_storage_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_host_storage_info) module no longer returns C(ansible_facts)!
 options:
     host:
         description:

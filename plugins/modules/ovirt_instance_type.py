@@ -54,7 +54,7 @@ options:
             - C(interface) -  Type of the network interface. One of following I(virtio), I(e1000), I(rtl8139), default is I(virtio).
             - C(mac_address) - Custom MAC address of the network interface, by default it's obtained from MAC pool.
             - NOTE - This parameter is used only when C(state) is I(running) or I(present) and is able to only create NICs.
-              To manage NICs of the instance type in more depth please use M(ovirt_nic) module instead.
+              To manage NICs of the instance type in more depth please use M(ovirt.ovirt.ovirt_nic) module instead.
         type: list
     memory_max:
         description:
@@ -81,7 +81,7 @@ options:
         description:
             - Operating system of the Instance Type, for example 'rhel_8x64'.
             - Default value is set by oVirt/RHV engine.
-            - Use the ovirt_vm_os_info module to obtain the current list.
+            - Use the M(ovirt.ovirt.ovirt_vm_os_info) module to obtain the current list.
         type: str
     boot_devices:
         description:
