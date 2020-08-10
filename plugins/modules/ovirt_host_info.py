@@ -53,14 +53,14 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_host_info:
     pattern: name=host* and datacenter=west
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_hosts }}"
 # All hosts with cluster version 4.2:
 - ovirt.ovirt.ovirt_host_info:
     pattern: name=host*
     cluster_version: "4.2"
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_hosts }}"
 '''
 

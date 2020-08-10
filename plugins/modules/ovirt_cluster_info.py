@@ -57,7 +57,7 @@ EXAMPLES = '''
     pattern:
       name: 'production*'
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_clusters }}"
 '''
 

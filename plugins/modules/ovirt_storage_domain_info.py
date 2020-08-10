@@ -57,7 +57,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_storage_domain_info:
     pattern: name=data* and datacenter=west
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_storage_domains }}"
 '''
 

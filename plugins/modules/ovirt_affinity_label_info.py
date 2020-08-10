@@ -60,7 +60,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_affinity_label_info:
     name: label*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_affinity_labels }}"
 
 # Gather information about all affinity labels, which are assigned to VMs
@@ -68,7 +68,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_affinity_label_info:
     vm: postgres*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_affinity_labels }}"
 
 # Gather information about all affinity labels, which are assigned to hosts
@@ -76,7 +76,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_affinity_label_info:
     host: west*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_affinity_labels }}"
 
 # Gather information about all affinity labels, which are assigned to hosts
@@ -85,7 +85,7 @@ EXAMPLES = '''
     host: west*
     vm: postgres*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_affinity_labels }}"
 '''
 

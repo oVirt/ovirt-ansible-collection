@@ -53,7 +53,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_user_info:
     pattern: name=john*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_users }}"
 '''
 

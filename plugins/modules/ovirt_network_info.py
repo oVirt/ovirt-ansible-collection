@@ -56,7 +56,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_network_info:
     pattern: name=vlan1*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_networks }}"
 '''
 

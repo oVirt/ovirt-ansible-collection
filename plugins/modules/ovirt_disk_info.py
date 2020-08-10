@@ -54,7 +54,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_disk_info:
     pattern: name=centos*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_disks }}"
 '''
 

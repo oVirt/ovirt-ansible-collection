@@ -58,7 +58,7 @@ EXAMPLES = '''
     data_center: Default
     name: myquota
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_quotas }}"
 '''
 
