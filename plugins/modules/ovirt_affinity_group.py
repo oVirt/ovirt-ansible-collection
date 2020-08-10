@@ -34,6 +34,7 @@ options:
         description:
             - Name of the cluster of the affinity group.
         type: str
+        required: true
     description:
         description:
             - Description of the affinity group.
@@ -66,11 +67,13 @@ options:
         description:
             - List of the VMs names, which should have assigned this affinity group.
         type: list
+        elements: str
     hosts:
         description:
             - List of the hosts names, which should have assigned this affinity group.
             - This parameter is support since oVirt/RHV 4.1 version.
         type: list
+        elements: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -266,8 +269,8 @@ def main():
         vm_rule=dict(type='str', choices=['disabled', 'negative', 'positive']),
         host_enforcing=dict(type='bool'),
         host_rule=dict(type='str', choices=['disabled', 'negative', 'positive']),
-        vms=dict(type='list'),
-        hosts=dict(type='list'),
+        vms=dict(type='list', elements='str'),
+        hosts=dict(type='list', elements='str'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,

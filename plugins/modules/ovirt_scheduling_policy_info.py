@@ -40,7 +40,6 @@ options:
     id:
         description:
             - "ID of the scheduling policy."
-        required: true
         type: str
     name:
         description:

@@ -52,6 +52,7 @@ options:
             - "Custom properties applied to the vNIC profile."
             - "Custom properties is a list of dictionary which can have following values:"
         type: list
+        elements: dict
         suboptions:
             name:
                 description:
@@ -285,7 +286,7 @@ def main():
         description=dict(type='str'),
         name=dict(type='str', required=True),
         network_filter=dict(type='str'),
-        custom_properties=dict(type='list'),
+        custom_properties=dict(type='list', elements='dict'),
         qos=dict(type='str'),
         pass_through=dict(type='str', choices=['disabled', 'enabled']),
         port_mirroring=dict(type='bool'),

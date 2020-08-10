@@ -179,11 +179,13 @@ options:
                     - "The options to be passed when creating a storage domain using a cinder driver."
                     - "List of dictionary containing C(name) and C(value) of driver option"
                 type: list
+                elements: dict
             driver_sensitive_options:
                 description:
                     - "Parameters containing sensitive information, to be passed when creating a storage domain using a cinder driver."
                     - "List of dictionary containing C(name) and C(value) of driver sensitive option"
                 type: list
+                elements: dict
     fcp:
         description:
             - "Dictionary with values for fibre channel storage type:"
@@ -728,8 +730,8 @@ def main():
         nfs=dict(default=None, type='dict'),
         iscsi=dict(default=None, type='dict'),
         managed_block_storage=dict(default=None, type='dict', options=dict(
-            driver_options=dict(type='list'),
-            driver_sensitive_options=dict(type='list', no_log=True))),
+            driver_options=dict(type='list', elements='dict'),
+            driver_sensitive_options=dict(type='list', no_log=True, elements='dict'))),
         posixfs=dict(default=None, type='dict'),
         glusterfs=dict(default=None, type='dict'),
         fcp=dict(default=None, type='dict'),

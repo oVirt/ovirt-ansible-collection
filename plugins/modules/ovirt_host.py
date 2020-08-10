@@ -109,6 +109,7 @@ options:
                to be I(reinstalled) successfully and then to be I(rebooted) for kernel boot parameters
                to be applied."
         type: list
+        elements: dict
     hosted_engine:
         description:
             - "If I(deploy) it means this host should deploy also hosted engine
@@ -492,7 +493,7 @@ def main():
         force=dict(default=False, type='bool'),
         timeout=dict(default=600, type='int'),
         override_display=dict(default=None),
-        kernel_params=dict(default=None, type='list'),
+        kernel_params=dict(default=None, type='list', elements='dict'),
         hosted_engine=dict(default=None, choices=['deploy', 'undeploy']),
         power_management_enabled=dict(default=None, type='bool'),
         activate=dict(default=True, type='bool'),

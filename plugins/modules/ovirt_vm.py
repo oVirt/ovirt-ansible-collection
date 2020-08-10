@@ -58,6 +58,7 @@ options:
             - "Mapper which maps an external virtual NIC profile to one that exists in the engine when C(state) is registered.
                vnic_profile is described by the following dictionary:"
         type: list
+        elements: dict
         suboptions:
             source_network_name:
                 description:
@@ -74,6 +75,7 @@ options:
                relevant when C(state) is registered.
                Cluster mapping is described by the following dictionary:"
         type: list
+        elements: dict
         suboptions:
             source_name:
                 description:
@@ -87,6 +89,7 @@ options:
                relevant when C(state) is registered.
                Role mapping is described by the following dictionary:"
         type: list
+        elements: dict
         suboptions:
             source_name:
                 description:
@@ -100,6 +103,7 @@ options:
                relevant when C(state) is registered.
                The aaa domain mapping is described by the following dictionary:"
         type: list
+        elements: dict
         suboptions:
             source_name:
                 description:
@@ -112,16 +116,19 @@ options:
         description:
             - "Mapper which maps affinity name between VM's OVF and the destination affinity this VM should be registered to,
                relevant when C(state) is registered."
+        elements: dict
     affinity_label_mappings:
         type: list
         description:
             - "Mapper which maps affinity label name between VM's OVF and the destination label this VM should be registered to,
                relevant when C(state) is registered."
+        elements: dict
     lun_mappings:
         description:
             - "Mapper which maps lun between VM's OVF and the destination lun this VM should contain, relevant when C(state) is registered.
                lun_mappings is described by the following dictionary:"
         type: list
+        elements: dict
         suboptions:
             logical_unit_id:
                 description:
@@ -244,6 +251,7 @@ options:
             - List of boot devices which should be used to boot. For example C([ cdrom, hd ]).
             - Default value is set by oVirt/RHV engine.
         choices: [ cdrom, hd, network ]
+        elements: str
         type: list
     boot_menu:
         description:
@@ -302,6 +310,7 @@ options:
             - Single Root I/O Virtualization - technology that allows single device to expose multiple endpoints that can be passed to VMs
             - host_devices is an list which contain dictionary with name and state of device
         type: list
+        elements: dict
     delete_protected:
         description:
             - If I(yes) Virtual Machine will be set as delete protected.
@@ -345,6 +354,7 @@ options:
         description:
             - List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
         type: list
+        elements: dict
         suboptions:
             name:
                 description:
@@ -366,6 +376,7 @@ options:
         description:
             - List of disks, which should be attached to Virtual Machine. Disk is described by following dictionary.
         type: list
+        elements: dict
         suboptions:
             name:
                 description:
@@ -501,6 +512,7 @@ options:
             - If one network interface is enough, user should use C(cloud_init) I(nic_*) parameters. C(cloud_init) I(nic_*) parameters
               are merged with C(cloud_init_nics) parameters.
         type: list
+        elements: dict
         suboptions:
             nic_boot_protocol:
                 description:
@@ -698,6 +710,7 @@ options:
             - "CPU Pinning topology to map virtual machine CPU to host CPU."
             - "CPU Pinning topology is a list of dictionary which can have following values:"
         type: list
+        elements: dict
         suboptions:
             cpu:
                 description:
@@ -735,6 +748,7 @@ options:
             - "List of vNUMA Nodes to set for this VM and pin them to assigned host's physical NUMA node."
             - "Each vNUMA node is described by following dictionary:"
         type: list
+        elements: dict
         suboptions:
             index:
                 description:
@@ -764,6 +778,7 @@ options:
             - "Properties sent to VDSM to configure various hooks."
             - "Custom properties is a list of dictionary which can have following values:"
         type: list
+        elements: dict
         suboptions:
             name:
                 description:
@@ -799,6 +814,7 @@ options:
                 description:
                     - Graphical protocol, a list of I(spice), I(vnc), or both.
                 type: list
+                elements: str
             disconnect_action:
                 description:
                     - "Returns the action that will take place when the graphic console(SPICE only) is disconnected. The options are:"
@@ -2416,7 +2432,7 @@ def main():
         use_latest_template_version=dict(type='bool'),
         storage_domain=dict(type='str'),
         disk_format=dict(type='str', default='cow', choices=['cow', 'raw']),
-        disks=dict(type='list', default=[]),
+        disks=dict(type='list', default=[], elements='dict'),
         memory=dict(type='str'),
         memory_guaranteed=dict(type='str'),
         memory_max=dict(type='str'),
@@ -2427,14 +2443,14 @@ def main():
         type=dict(type='str', choices=['server', 'desktop', 'high_performance']),
         operating_system=dict(type='str'),
         cd_iso=dict(type='str'),
-        boot_devices=dict(type='list', choices=['cdrom', 'hd', 'network']),
-        vnic_profile_mappings=dict(default=[], type='list'),
-        cluster_mappings=dict(default=[], type='list'),
-        role_mappings=dict(default=[], type='list'),
-        affinity_group_mappings=dict(default=[], type='list'),
-        affinity_label_mappings=dict(default=[], type='list'),
-        lun_mappings=dict(default=[], type='list'),
-        domain_mappings=dict(default=[], type='list'),
+        boot_devices=dict(type='list', choices=['cdrom', 'hd', 'network'], elements='str'),
+        vnic_profile_mappings=dict(default=[], type='list', elements='dict'),
+        cluster_mappings=dict(default=[], type='list', elements='dict'),
+        role_mappings=dict(default=[], type='list', elements='dict'),
+        affinity_group_mappings=dict(default=[], type='list', elements='dict'),
+        affinity_label_mappings=dict(default=[], type='list', elements='dict'),
+        lun_mappings=dict(default=[], type='list', elements='dict'),
+        domain_mappings=dict(default=[], type='list', elements='dict'),
         reassign_bad_macs=dict(default=None, type='bool'),
         boot_menu=dict(type='bool'),
         bios_type=dict(type='str', choices=['i440fx_sea_bios', 'q35_ovmf', 'q35_sea', 'q35_secure_boot']),
@@ -2449,9 +2465,9 @@ def main():
         delete_protected=dict(type='bool'),
         custom_emulated_machine=dict(type='str'),
         force=dict(type='bool', default=False),
-        nics=dict(type='list', default=[]),
+        nics=dict(type='list', default=[], elements='dict'),
         cloud_init=dict(type='dict'),
-        cloud_init_nics=dict(type='list', default=[]),
+        cloud_init_nics=dict(type='list', default=[], elements='dict'),
         cloud_init_persist=dict(type='bool', default=False, aliases=['sysprep_persist']),
         kernel_params_persist=dict(type='bool', default=False),
         sysprep=dict(type='dict'),
@@ -2474,22 +2490,22 @@ def main():
         placement_policy=dict(type='str'),
         custom_compatibility_version=dict(type='str'),
         ticket=dict(type='bool', default=None),
-        cpu_pinning=dict(type='list'),
+        cpu_pinning=dict(type='list', elements='dict'),
         soundcard_enabled=dict(type='bool', default=None),
         smartcard_enabled=dict(type='bool', default=None),
         io_threads=dict(type='int', default=None),
         ballooning_enabled=dict(type='bool', default=None),
         rng_device=dict(type='str'),
         numa_tune_mode=dict(type='str', choices=['interleave', 'preferred', 'strict']),
-        numa_nodes=dict(type='list', default=[]),
-        custom_properties=dict(type='list'),
+        numa_nodes=dict(type='list', default=[], elements='dict'),
+        custom_properties=dict(type='list', elements='dict'),
         watchdog=dict(type='dict'),
-        host_devices=dict(type='list'),
+        host_devices=dict(type='list', elements='dict'),
         graphical_console=dict(
             type='dict',
             options=dict(
                 headless_mode=dict(type='bool'),
-                protocol=dict(type='list'),
+                protocol=dict(type='list', elements='str'),
                 disconnect_action=dict(type='str'),
                 keyboard_layout=dict(type='str'),
                 monitors=dict(type='int'),

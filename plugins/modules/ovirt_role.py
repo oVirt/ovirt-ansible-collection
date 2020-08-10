@@ -44,6 +44,7 @@ options:
             - "Permit 'login' is default and all roles will have it."
             - "List can contain name of permit."
         type: list
+        elements: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -159,7 +160,7 @@ def main():
         name=dict(default=None),
         description=dict(default=None),
         administrative=dict(type='bool', default=False),
-        permits=dict(type='list', default=[]),
+        permits=dict(type='list', default=[], elements='str'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
