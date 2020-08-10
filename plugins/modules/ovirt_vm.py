@@ -1180,7 +1180,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_quotas_info:
     data_center: Default
     name: myquota
-  register ovirt_quotas
+  register: ovirt_quotas
 - ovirt.ovirt.ovirt_vm:
     name: myvm
     sso: False
