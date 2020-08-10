@@ -234,7 +234,7 @@ def main():
             headers=dict(required=False, type='dict'),
             state=dict(default='present', choices=['present', 'absent']),
             token=dict(default=None),
-            ovirt_auth=dict(required=None, type='dict'),
+            ovirt_auth=dict(required=False, type='dict'),
         ),
         required_if=[
             ('state', 'absent', ['ovirt_auth']),

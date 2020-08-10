@@ -410,7 +410,7 @@ def ovirt_info_full_argument_spec(**kwargs):
     spec = dict(
         auth=__get_auth_dict(),
         fetch_nested=dict(default=False, type='bool'),
-        nested_attributes=dict(type='list', default=list()),
+        nested_attributes=dict(type='list', default=list(), elements='str'),
     )
     spec.update(kwargs)
     return spec
@@ -440,7 +440,7 @@ def ovirt_full_argument_spec(**kwargs):
         wait=dict(default=True, type='bool'),
         poll_interval=dict(default=3, type='int'),
         fetch_nested=dict(default=False, type='bool'),
-        nested_attributes=dict(type='list', default=list()),
+        nested_attributes=dict(type='list', default=list(), elements='str'),
     )
     spec.update(kwargs)
     return spec

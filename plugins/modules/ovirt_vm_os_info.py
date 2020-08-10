@@ -41,6 +41,7 @@ options:
       description:
         - "List of attributes which should be in returned."
       type: list
+      elements: str
     name:
       description:
         - "Name of the operating system which should be returned."
@@ -87,7 +88,7 @@ from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
 
 def main():
     argument_spec = ovirt_info_full_argument_spec(
-        filter_keys=dict(default=None, type='list'),
+        filter_keys=dict(default=None, type='list', elements='str'),
         name=dict(default=None, type='str'),
     )
     module = AnsibleModule(argument_spec)

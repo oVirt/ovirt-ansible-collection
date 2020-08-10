@@ -114,6 +114,7 @@ options:
                is valid only for VM and floating disks, template disks works
                as expected."
         type: list
+        elements: str
     force:
         description:
             - "Please take a look at C(image_path) documentation to see the correct
@@ -682,7 +683,7 @@ def main():
         size=dict(default=None),
         interface=dict(default=None, choices=['virtio', 'ide', 'virtio_scsi']),
         storage_domain=dict(default=None),
-        storage_domains=dict(default=None, type='list'),
+        storage_domains=dict(default=None, type='list', elements='str'),
         profile=dict(default=None),
         quota_id=dict(default=None),
         format=dict(default='cow', choices=['raw', 'cow']),

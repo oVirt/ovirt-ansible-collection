@@ -52,6 +52,7 @@ options:
         description:
             - "Datacenter name where network reside."
         type: str
+        required: true
     description:
         description:
             - "Description of the network."
@@ -83,6 +84,7 @@ options:
         description:
             - "List of dictionaries describing how the network is managed in specific cluster."
         type: list
+        elements: dict
         suboptions:
             name:
                 description:
@@ -305,7 +307,7 @@ def main():
         vlan_tag=dict(default=None, type='int'),
         vm_network=dict(default=None, type='bool'),
         mtu=dict(default=None, type='int'),
-        clusters=dict(default=None, type='list'),
+        clusters=dict(default=None, type='list', elements='dict'),
         label=dict(default=None),
     )
     module = AnsibleModule(

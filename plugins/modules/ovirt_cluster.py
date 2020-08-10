@@ -115,6 +115,7 @@ options:
             - "List that specify the random number generator devices that all hosts in the cluster will use."
             - "Supported generators are: I(hwrng) and I(random)."
         type: list
+        elements: str
     spice_proxy:
         description:
             - "The proxy by which the SPICE client will connect to virtual machines."
@@ -240,7 +241,15 @@ options:
             - "Custom scheduling policy properties of the cluster."
             - "These optional properties override the properties of the
                scheduling policy specified by the C(scheduling_policy) parameter."
+        suboptions:
+            name:
+                description:
+                    - Name of the scheduling policy property.
+            value:
+                description:
+                    - Value of scheduling policy property.
         type: list
+        elements: dict
     cpu_arch:
         description:
             - "CPU architecture of cluster."
@@ -283,6 +292,7 @@ options:
                 description:
                     - ID of the external network provider. Either C(name) or C(id) is required.
         type: list
+        elements: dict
     firewall_type:
         description:
             - "The type of firewall to be used on hosts in this cluster."
@@ -713,7 +723,7 @@ def main():
         vm_reason=dict(default=None, type='bool'),
         host_reason=dict(default=None, type='bool'),
         memory_policy=dict(default=None, choices=['disabled', 'server', 'desktop'], aliases=['performance_preset']),
-        rng_sources=dict(default=None, type='list'),
+        rng_sources=dict(default=None, type='list', elements='str'),
         spice_proxy=dict(default=None),
         fence_enabled=dict(default=None, type='bool'),
         fence_skip_if_gluster_bricks_up=dict(default=None, type='bool'),
@@ -743,8 +753,8 @@ def main():
         switch_type=dict(default=None, choices=['legacy', 'ovs']),
         compatibility_version=dict(default=None),
         mac_pool=dict(default=None),
-        external_network_providers=dict(default=None, type='list'),
-        scheduling_policy_properties=dict(type='list'),
+        external_network_providers=dict(default=None, type='list', elements='dict'),
+        scheduling_policy_properties=dict(type='list', elements='dict'),
         firewall_type=dict(choices=['iptables', 'firewalld'], default=None),
         gluster_tuned_profile=dict(default=None),
     )

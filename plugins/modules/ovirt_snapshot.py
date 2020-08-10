@@ -102,6 +102,7 @@ options:
                     - "Name of the disk which should will be created."
                 type: str
         type: list
+        elements: dict
 notes:
     - "Note that without a guest agent the data on the created snapshot may be
        inconsistent."
@@ -486,6 +487,7 @@ def main():
         snapshot_id=dict(default=None),
         disks=dict(
             type='list',
+            elements='dict',
             options=dict(
                 name=dict(default=None, type='str'),
                 id=dict(default=None, type='str'),
