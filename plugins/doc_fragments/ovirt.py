@@ -28,6 +28,7 @@ options:
             - "Specifies list of the attributes which should be fetched from the API."
             - "This parameter apply only when C(fetch_nested) is I(true)."
         type: list
+        elements: str
     auth:
         description:
             - "Dictionary with values needed to create HTTP/HTTPS connection to oVirt:"

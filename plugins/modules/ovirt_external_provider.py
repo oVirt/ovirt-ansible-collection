@@ -100,13 +100,20 @@ options:
         type: str
     authentication_keys:
         description:
-            - "List of authentication keys. Each key is represented by dict
-               like {'uuid': 'our-uuid', 'value': 'YourSecretValue=='}"
+            - "List of authentication keys."
             - "When you will not pass these keys and there are already some
                of them defined in the system they will be removed."
             - "Applicable for I(os_volume)."
+        suboptions:
+            uuid:
+                description:
+                    - The uuid which will be used.
+            value:
+                description:
+                    - The value which will be used.
         default: []
         type: list
+        elements: dict
         aliases: ['auth_keys']
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
@@ -364,7 +371,7 @@ def main():
             choices=['external', 'neutron'],
         ),
         authentication_keys=dict(
-            default=[], aliases=['auth_keys'], type='list', no_log=True,
+            default=[], aliases=['auth_keys'], type='list', no_log=True, elements='dict'
         ),
     )
     module = AnsibleModule(

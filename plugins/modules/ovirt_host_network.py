@@ -71,6 +71,7 @@ options:
         description:
             - "List of dictionary describing networks to be attached to interface or bond:"
         type: list
+        elements: dict
         suboptions:
             name:
                 description:
@@ -106,6 +107,7 @@ options:
         description:
             - "List of names of the network label to be assigned to bond or interface."
         type: list
+        elements: str
     check:
         description:
             - "If I(true) verify connectivity between host and engine."
@@ -416,8 +418,8 @@ def main():
         name=dict(aliases=['host'], required=True),
         bond=dict(default=None, type='dict'),
         interface=dict(default=None),
-        networks=dict(default=None, type='list'),
-        labels=dict(default=None, type='list'),
+        networks=dict(default=None, type='list', elements='dict'),
+        labels=dict(default=None, type='list', elements='str'),
         check=dict(default=None, type='bool'),
         save=dict(default=True, type='bool'),
         sync_networks=dict(default=False, type='bool'),
