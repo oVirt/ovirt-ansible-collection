@@ -54,7 +54,7 @@ EXAMPLES = '''
 
 # Gather information about all templates which names start with C(centos) and
 # belongs to data center C(west):
-- ovirt_template_info:
+- ovirt.ovirt.ovirt_template_info:
     pattern: name=centos* and datacenter=west
   register: result
 - debug:

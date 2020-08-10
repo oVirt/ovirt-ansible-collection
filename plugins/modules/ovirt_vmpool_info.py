@@ -52,7 +52,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all vm pools which names start with C(centos):
-- ovirt_vmpool_info:
+- ovirt.ovirt.ovirt_vmpool_info:
     pattern: name=centos*
   register: result
 - debug:

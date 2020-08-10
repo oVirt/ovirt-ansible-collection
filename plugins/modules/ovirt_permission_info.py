@@ -66,7 +66,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all permissions of user with username C(john):
-- ovirt_permission_info:
+- ovirt.ovirt.ovirt_permission_info:
     user_name: john
     authz_name: example.com-authz
   register: result

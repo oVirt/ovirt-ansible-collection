@@ -200,7 +200,7 @@ EXAMPLES = '''
 
 # Create instance type
 - name: Create instance type
-  ovirt_instance_type:
+  ovirt.ovirt.ovirt_instance_type:
     state: present
     name: myit
     rng_device: hwrng
@@ -212,13 +212,13 @@ EXAMPLES = '''
       - network
 
 # Remove instance type
-- ovirt_instance_type:
+- ovirt.ovirt.ovirt_instance_type:
     state: absent
     name: myit
 
 
 # Create instance type with predefined memory and cpu limits.
-- ovirt_instance_type:
+- ovirt.ovirt.ovirt_instance_type:
     state: present
     name: myit
     memory: 2GiB
@@ -228,14 +228,14 @@ EXAMPLES = '''
       - name: nic1
 
 # Enable usb support and serial console
-- ovirt_instance_type:
+- ovirt.ovirt.ovirt_instance_type:
     name: myit
     usb_support: True
     serial_console: True
 
 # Use graphical console with spice and vnc
 - name: Create a instance type that has the console configured for both Spice and VNC
-  ovirt_instance_type:
+  ovirt.ovirt.ovirt_instance_type:
     name: myit
     graphical_console:
       protocol:

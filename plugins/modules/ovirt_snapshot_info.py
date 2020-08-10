@@ -45,7 +45,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all snapshots which description start with C(update) for VM named C(centos7):
-- ovirt_snapshot_info:
+- ovirt.ovirt.ovirt_snapshot_info:
     vm: centos7
     description: update*
   register: result

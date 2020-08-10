@@ -57,7 +57,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all affinity labels, which names start with C(label):
-- ovirt_affinity_label_info:
+- ovirt.ovirt.ovirt_affinity_label_info:
     name: label*
   register: result
 - debug:
@@ -65,7 +65,7 @@ EXAMPLES = '''
 
 # Gather information about all affinity labels, which are assigned to VMs
 # which names start with C(postgres):
-- ovirt_affinity_label_info:
+- ovirt.ovirt.ovirt_affinity_label_info:
     vm: postgres*
   register: result
 - debug:
@@ -73,7 +73,7 @@ EXAMPLES = '''
 
 # Gather information about all affinity labels, which are assigned to hosts
 # which names start with C(west):
-- ovirt_affinity_label_info:
+- ovirt.ovirt.ovirt_affinity_label_info:
     host: west*
   register: result
 - debug:
@@ -81,7 +81,7 @@ EXAMPLES = '''
 
 # Gather information about all affinity labels, which are assigned to hosts
 # which names start with C(west) or VMs which names start with C(postgres):
-- ovirt_affinity_label_info:
+- ovirt.ovirt.ovirt_affinity_label_info:
     host: west*
     vm: postgres*
   register: result

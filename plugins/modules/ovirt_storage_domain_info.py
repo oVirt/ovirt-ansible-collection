@@ -54,7 +54,7 @@ EXAMPLES = '''
 
 # Gather information about all storage domains which names start with C(data) and
 # belong to data center C(west):
-- ovirt_storage_domain_info:
+- ovirt.ovirt.ovirt_storage_domain_info:
     pattern: name=data* and datacenter=west
   register: result
 - debug:

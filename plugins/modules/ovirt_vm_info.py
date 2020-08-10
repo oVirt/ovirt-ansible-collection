@@ -74,14 +74,14 @@ EXAMPLES = '''
 
 # Gather information about all VMs which names start with C(centos) and
 # belong to cluster C(west):
-- ovirt_vm_info:
+- ovirt.ovirt.ovirt_vm_info:
     pattern: name=centos* and cluster=west
   register: result
 - debug:
     msg: "{{ result.ovirt_vms }}"
 
 # Gather info about next run configuration of virtual machine named myvm
-- ovirt_vm_info:
+- ovirt.ovirt.ovirt_vm_info:
     pattern: name=myvm
     next_run: true
   register: result

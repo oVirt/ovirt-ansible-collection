@@ -56,7 +56,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all image external providers named C<glance>:
-- ovirt_external_provider_info:
+- ovirt.ovirt.ovirt_external_provider_info:
     type: os_image
     name: glance
   register: result

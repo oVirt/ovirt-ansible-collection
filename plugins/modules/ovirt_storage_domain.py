@@ -236,7 +236,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Add data NFS storage domain
-- ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: data_nfs
     host: myhost
     data_center: mydatacenter
@@ -245,7 +245,7 @@ EXAMPLES = '''
       path: /path/data
 
 # Add data NFS storage domain with id for data center
-- ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: data_nfs
     host: myhost
     data_center: 11111
@@ -255,7 +255,7 @@ EXAMPLES = '''
       mount_options: noexec,nosuid
 
 # Add data localfs storage domain
-- ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: data_localfs
     host: myhost
     data_center: mydatacenter
@@ -263,7 +263,7 @@ EXAMPLES = '''
       path: /path/to/data
 
 # Add data iSCSI storage domain:
-- ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: data_iscsi
     host: myhost
     data_center: mydatacenter
@@ -280,7 +280,7 @@ EXAMPLES = '''
 
 # Since Ansible 2.5 you can specify multiple targets for storage domain,
 # Add data iSCSI storage domain with multiple targets:
-- ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: data_iscsi
     host: myhost
     data_center: mydatacenter
@@ -294,7 +294,7 @@ EXAMPLES = '''
     discard_after_delete: True
 
 # Add data glusterfs storage domain
--  ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: glusterfs_1
     host: myhost
     data_center: mydatacenter
@@ -303,7 +303,7 @@ EXAMPLES = '''
       path: /path/data
 
 # Create export NFS storage domain:
-- ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: myexportdomain
     domain_function: export
     host: myhost
@@ -317,7 +317,7 @@ EXAMPLES = '''
     warning_low_space: 5
 
 # Import export NFS storage domain:
-- ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     state: imported
     domain_function: export
     host: myhost
@@ -327,7 +327,7 @@ EXAMPLES = '''
       path: /path/export
 
 # Import FCP storage domain:
-- ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     state: imported
     name: data_fcp
     host: myhost
@@ -335,12 +335,12 @@ EXAMPLES = '''
     fcp: {}
 
 # Update OVF_STORE:
-- ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     state: update_ovf_store
     name: domain
 
 # Create ISO NFS storage domain
-- ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: myiso
     domain_function: iso
     host: myhost
@@ -351,7 +351,7 @@ EXAMPLES = '''
 
 # Create managed storage domain
 # Available from ovirt 4.3 and ansible 2.9
-- ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: my_managed_domain
     host: myhost
     data_center: mydatacenter
@@ -370,7 +370,7 @@ EXAMPLES = '''
           value: password
 
 # Remove storage domain
-- ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     state: absent
     name: mystorage_domain
     format: true

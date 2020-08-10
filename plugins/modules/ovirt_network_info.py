@@ -53,7 +53,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all networks which names start with C(vlan1):
-- ovirt_network_info:
+- ovirt.ovirt.ovirt_network_info:
     pattern: name=vlan1*
   register: result
 - debug:

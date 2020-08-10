@@ -65,7 +65,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about HostStorages with specified target and address:
-- ovirt_host_storage_info:
+- ovirt.ovirt.ovirt_host_storage_info:
     host: myhost
     iscsi:
       target: iqn.2016-08-09.domain-01:nickname

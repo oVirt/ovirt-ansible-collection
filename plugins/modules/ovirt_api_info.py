@@ -29,7 +29,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information oVirt API:
-- ovirt_api_info:
+- ovirt.ovirt.ovirt_api_info:
   register: result
 - debug:
     msg: "{{ result.ovirt_api }}"

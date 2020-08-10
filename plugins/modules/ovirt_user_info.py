@@ -50,7 +50,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all users which first names start with C(john):
-- ovirt_user_info:
+- ovirt.ovirt.ovirt_user_info:
     pattern: name=john*
   register: result
 - debug:

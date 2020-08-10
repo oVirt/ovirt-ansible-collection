@@ -54,7 +54,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all scheduling policies with name InClusterUpgrade:
-- ovirt_scheduling_policy_info:
+- ovirt.ovirt.ovirt_scheduling_policy_info:
     name: InClusterUpgrade
   register: result
 - debug:

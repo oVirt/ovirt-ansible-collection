@@ -53,7 +53,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all clusters which names start with C<production>:
-- ovirt_cluster_info:
+- ovirt.ovirt.ovirt_cluster_info:
     pattern:
       name: 'production*'
   register: result

@@ -68,16 +68,16 @@ EXAMPLES = '''
 # look at the ovirt_auth module to see how to reuse authentication.
 
 - name: Return all events
-  ovirt_event_info:
+  ovirt.ovirt.ovirt_event_info:
   register: result
 
 - name: Return the last 10 events
-  ovirt_event_info:
+  ovirt.ovirt.ovirt_event_info:
     max: 10
   register: result
 
 - name: Return all events of type alert
-  ovirt_event_info:
+  ovirt.ovirt.ovirt_event_info:
     search: "severity=alert"
   register: result
 - debug:
