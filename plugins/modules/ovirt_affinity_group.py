@@ -82,7 +82,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Create(if not exists) and assign affinity group to VMs vm1 and vm2 and host host1
-  ovirt_affinity_group:
+  ovirt.ovirt.ovirt_affinity_group:
     name: mygroup
     cluster: mycluster
     vm_enforcing: true
@@ -96,7 +96,7 @@ EXAMPLES = '''
       - host1
 
 - name: Detach VMs from affinity group and disable VM rule
-  ovirt_affinity_group:
+  ovirt.ovirt.ovirt_affinity_group:
     name: mygroup
     cluster: mycluster
     vm_enforcing: false
@@ -109,7 +109,7 @@ EXAMPLES = '''
       - host2
 
 - name: Remove affinity group
-  ovirt_affinity_group:
+  ovirt.ovirt.ovirt_affinity_group:
     state: absent
     cluster: mycluster
     name: mygroup

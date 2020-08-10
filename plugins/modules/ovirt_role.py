@@ -53,7 +53,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create administrative role with two permits
-- ovirt_role:
+- ovirt.ovirt.ovirt_role:
     name: role
     administrative: true
     permits:
@@ -61,12 +61,12 @@ EXAMPLES = '''
       - create_instance
 
 # Remove role
-- ovirt_role:
+- ovirt.ovirt.ovirt_role:
     name: role
     state: absent
 
 # Remove all permit
-- ovirt_role:
+- ovirt.ovirt.ovirt_role:
     name: role
     administrative: ture
     permits:

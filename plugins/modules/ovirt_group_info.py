@@ -31,7 +31,7 @@ author: "Ondra Machacek (@machacekondra)"
 description:
     - "Retrieve information about one or more oVirt/RHV groups."
     - This module was called C(ovirt_group_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt_group_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_group_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_groups), which
        contains a list of groups. You need to register the result with
@@ -50,7 +50,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all groups which names start with C(admin):
-- ovirt_group_info:
+- ovirt.ovirt.ovirt_group_info:
     pattern: name=admin*
   register: result
 - debug:

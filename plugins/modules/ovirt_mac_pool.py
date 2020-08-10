@@ -56,7 +56,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create MAC pool:
-- ovirt_mac_pool:
+- ovirt.ovirt.ovirt_mac_pool:
     name: mymacpool
     allow_duplicates: false
     ranges:
@@ -64,12 +64,12 @@ EXAMPLES = '''
       - 00:1a:4a:16:02:51,00:1a:4a:16:02:61
 
 # Remove MAC pool:
-- ovirt_mac_pool:
+- ovirt.ovirt.ovirt_mac_pool:
     state: absent
     name: mymacpool
 
 # Change MAC pool Name
-- ovirt_nic:
+- ovirt.ovirt.ovirt_nic:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_mac_pool_name"
 '''

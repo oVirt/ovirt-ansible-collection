@@ -314,7 +314,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create cluster
-- ovirt_cluster:
+- ovirt.ovirt.ovirt_cluster:
     data_center: mydatacenter
     name: mycluster
     cpu_type: Intel SandyBridge Family
@@ -322,7 +322,7 @@ EXAMPLES = '''
     compatibility_version: 4.0
 
 # Create virt service cluster:
-- ovirt_cluster:
+- ovirt.ovirt.ovirt_cluster:
     data_center: mydatacenter
     name: mycluster
     cpu_type: Intel Nehalem Family
@@ -343,7 +343,7 @@ EXAMPLES = '''
       - random
 
 # Create cluster with default network provider
-- ovirt_cluster:
+- ovirt.ovirt.ovirt_cluster:
     name: mycluster
     data_center: Default
     cpu_type: Intel SandyBridge Family
@@ -351,12 +351,12 @@ EXAMPLES = '''
       - name: ovirt-provider-ovn
 
 # Remove cluster
-- ovirt_cluster:
+- ovirt.ovirt.ovirt_cluster:
     state: absent
     name: mycluster
 
 # Change cluster Name
-- ovirt_cluster:
+- ovirt.ovirt.ovirt_cluster:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_cluster_name"
 '''

@@ -188,7 +188,7 @@ EXAMPLES = '''
 
 # Add host with username/password supporting SR-IOV.
 # Note that override_iptables is false by default in oVirt/RHV:
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     cluster: Default
     name: myhost
     address: 10.34.61.145
@@ -198,7 +198,7 @@ EXAMPLES = '''
       - intel_iommu=on
 
 # Add host using public key
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     public_key: true
     cluster: Default
     name: myhost2
@@ -206,7 +206,7 @@ EXAMPLES = '''
     override_iptables: true
 
 # Deploy hosted engine host
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     cluster: Default
     name: myhost2
     password: secret
@@ -215,22 +215,22 @@ EXAMPLES = '''
     hosted_engine: deploy
 
 # Maintenance
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: maintenance
     name: myhost
 
 # Restart host using power management:
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: restarted
     name: myhost
 
 # Upgrade host
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: upgraded
     name: myhost
 
 # discover iscsi targets
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: iscsidiscover
     name: myhost
     iscsi:
@@ -241,7 +241,7 @@ EXAMPLES = '''
 
 
 # login to iscsi targets
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: iscsilogin
     name: myhost
     iscsi:
@@ -253,19 +253,19 @@ EXAMPLES = '''
 
 
 # Reinstall host using public key
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: reinstalled
     name: myhost
     public_key: true
 
 # Remove host
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: absent
     name: myhost
     force: True
 
 # Retry removing host when failed (https://bugzilla.redhat.com/show_bug.cgi?id=1719271)
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: absent
     name: myhost
   register: result
@@ -274,7 +274,7 @@ EXAMPLES = '''
   delay: 20
 
 # Change host Name
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     id: 00000000-0000-0000-0000-000000000000
     name: "new host name"
 '''

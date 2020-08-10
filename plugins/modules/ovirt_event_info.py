@@ -16,7 +16,7 @@ author: "Chris Keller (@nasx)"
 description:
     - "Retrieve information about one or more oVirt/RHV events."
     - This module was called C(ovirt_event_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt_event_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_event_info) module no longer returns C(ansible_facts)!
 options:
     case_sensitive:
         description:
@@ -68,16 +68,16 @@ EXAMPLES = '''
 # look at the ovirt_auth module to see how to reuse authentication.
 
 - name: Return all events
-  ovirt_event_info:
+  ovirt.ovirt.ovirt_event_info:
   register: result
 
 - name: Return the last 10 events
-  ovirt_event_info:
+  ovirt.ovirt.ovirt_event_info:
     max: 10
   register: result
 
 - name: Return all events of type alert
-  ovirt_event_info:
+  ovirt.ovirt.ovirt_event_info:
     search: "severity=alert"
   register: result
 - debug:

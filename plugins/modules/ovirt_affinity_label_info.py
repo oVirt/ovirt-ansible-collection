@@ -31,7 +31,7 @@ author: "Ondra Machacek (@machacekondra)"
 description:
     - "Retrieve information about one or more oVirt/RHV affinity labels."
     - This module was called C(ovirt_affinity_label_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt_affinity_label_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_affinity_label_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_affinity_labels), which
        contains a list of affinity labels. You need to register the result with
@@ -57,7 +57,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all affinity labels, which names start with C(label):
-- ovirt_affinity_label_info:
+- ovirt.ovirt.ovirt_affinity_label_info:
     name: label*
   register: result
 - debug:
@@ -65,7 +65,7 @@ EXAMPLES = '''
 
 # Gather information about all affinity labels, which are assigned to VMs
 # which names start with C(postgres):
-- ovirt_affinity_label_info:
+- ovirt.ovirt.ovirt_affinity_label_info:
     vm: postgres*
   register: result
 - debug:
@@ -73,7 +73,7 @@ EXAMPLES = '''
 
 # Gather information about all affinity labels, which are assigned to hosts
 # which names start with C(west):
-- ovirt_affinity_label_info:
+- ovirt.ovirt.ovirt_affinity_label_info:
     host: west*
   register: result
 - debug:
@@ -81,7 +81,7 @@ EXAMPLES = '''
 
 # Gather information about all affinity labels, which are assigned to hosts
 # which names start with C(west) or VMs which names start with C(postgres):
-- ovirt_affinity_label_info:
+- ovirt.ovirt.ovirt_affinity_label_info:
     host: west*
     vm: postgres*
   register: result

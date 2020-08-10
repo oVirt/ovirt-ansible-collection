@@ -92,7 +92,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Add new storage connection:
-- ovirt_storage_connection:
+- ovirt.ovirt.ovirt_storage_connection:
     storage: myiscsi
     address: 10.34.63.199
     target: iqn.2016-08-09.domain-01:nickname
@@ -100,13 +100,13 @@ EXAMPLES = '''
     type: iscsi
 
 # Update the existing storage connection address:
-- ovirt_storage_connection:
+- ovirt.ovirt.ovirt_storage_connection:
     id: 26915c96-92ff-47e5-9e77-b581db2f2d36
     address: 10.34.63.204
     force: true
 
 # Remove storage connection:
-- ovirt_storage_connection:
+- ovirt.ovirt.ovirt_storage_connection:
     id: 26915c96-92ff-47e5-9e77-b581db2f2d36
 '''
 
