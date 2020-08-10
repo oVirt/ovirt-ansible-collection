@@ -31,7 +31,7 @@ EXAMPLES = '''
 # Gather information oVirt API:
 - ovirt.ovirt.ovirt_api_info:
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_api }}"
 '''
 

@@ -125,7 +125,7 @@ EXAMPLES = '''
   - block:
        # Create a vault with `ovirt_password` variable which store your
        # oVirt/RHV user's password, and include that yaml file with variable:
-       - include_vars: ovirt_password.yml
+       - ansible.builtin.include_vars: ovirt_password.yml
 
        - name: Obtain SSO token with using username/password credentials
          ovirt.ovirt.ovirt_auth:

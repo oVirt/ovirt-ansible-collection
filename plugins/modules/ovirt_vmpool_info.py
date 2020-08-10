@@ -55,7 +55,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_vmpool_info:
     pattern: name=centos*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_vm_pools }}"
 '''
 

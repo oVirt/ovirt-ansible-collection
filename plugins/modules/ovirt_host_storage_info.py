@@ -71,7 +71,7 @@ EXAMPLES = '''
       target: iqn.2016-08-09.domain-01:nickname
       address: 10.34.63.204
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_host_storages }}"
 '''
 

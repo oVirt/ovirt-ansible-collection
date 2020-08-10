@@ -57,7 +57,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_template_info:
     pattern: name=centos* and datacenter=west
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_templates }}"
 '''
 

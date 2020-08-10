@@ -70,7 +70,7 @@ EXAMPLES = '''
     user_name: john
     authz_name: example.com-authz
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_permissions }}"
 '''
 

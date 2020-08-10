@@ -60,7 +60,7 @@ EXAMPLES = '''
     vm: centos7
     name: eth*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_nics }}"
 '''
 

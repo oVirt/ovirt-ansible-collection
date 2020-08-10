@@ -56,7 +56,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_scheduling_policy_info:
     name: InClusterUpgrade
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_scheduling_policies }}"
 '''
 

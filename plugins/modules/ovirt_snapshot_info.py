@@ -49,7 +49,7 @@ EXAMPLES = '''
     vm: centos7
     description: update*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_snapshots }}"
 '''
 

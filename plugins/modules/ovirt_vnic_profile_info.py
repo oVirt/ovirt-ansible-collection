@@ -54,7 +54,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_vnic_profile_info:
     max: 10
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_vnic_profiles }}"
 '''
 

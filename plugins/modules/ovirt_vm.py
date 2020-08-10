@@ -1226,12 +1226,12 @@ EXAMPLES = '''
     register: myvm
 
   - name: Save ticket to file
-    copy:
+    ansible.builtin.copy:
       content: "{{ myvm.vm.remote_vv_file }}"
       dest: ~/vvfile.vv
 
   - name: Run remote viewer with file
-    command: remote-viewer ~/vvfile.vv
+    ansible.builtin.command: remote-viewer ~/vvfile.vv
 
 # Default value of host_device state is present
 - name: Attach host devices to virtual machine

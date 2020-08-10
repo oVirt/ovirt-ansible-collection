@@ -53,7 +53,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_group_info:
     pattern: name=admin*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_groups }}"
 '''
 

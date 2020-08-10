@@ -63,7 +63,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_storage_vm_info:
     unregistered=True
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_storage_vms }}"
 '''
 

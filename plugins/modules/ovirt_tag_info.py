@@ -62,21 +62,21 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_tag_info:
     name: tag*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_tags }}"
 
 # Gather information about all tags, which are assigned to VM C(postgres):
 - ovirt.ovirt.ovirt_tag_info:
     vm: postgres
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_tags }}"
 
 # Gather information about all tags, which are assigned to host C(west):
 - ovirt.ovirt.ovirt_tag_info:
     host: west
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_tags }}"
 '''
 

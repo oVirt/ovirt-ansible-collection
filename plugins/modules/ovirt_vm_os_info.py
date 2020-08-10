@@ -55,14 +55,14 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_vm_os_info:
     auth: "{{ ovirt_auth }}"
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_operating_systems }}"
 
 - ovirt.ovirt.ovirt_vm_os_info:
     auth: "{{ ovirt_auth }}"
     filter_keys: name,architecture
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_operating_systems }}"
 '''
 

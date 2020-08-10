@@ -40,7 +40,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_datacenter_info:
     pattern: name=production*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_datacenters }}"
 '''
 

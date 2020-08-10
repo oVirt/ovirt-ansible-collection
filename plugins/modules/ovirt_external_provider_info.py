@@ -60,7 +60,7 @@ EXAMPLES = '''
     type: os_image
     name: glance
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_external_providers }}"
 '''
 
