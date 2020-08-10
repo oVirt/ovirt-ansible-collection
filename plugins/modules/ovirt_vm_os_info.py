@@ -22,16 +22,11 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
-
 DOCUMENTATION = '''
 ---
 module: ovirt_vm_os_info
 short_description: Retrieve information on all supported oVirt/RHV operating systems
-version_added: "1.0.1"
+version_added: "1.1.0"
 author:
 - "Martin Necas (@mnecas)"
 - "Chris Brown (@snecklifter)"

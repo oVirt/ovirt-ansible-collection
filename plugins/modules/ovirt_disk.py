@@ -7,11 +7,6 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
-
 DOCUMENTATION = '''
 ---
 module: ovirt_disk
@@ -214,7 +209,7 @@ options:
         description:
             - The backup behavior supported by the disk.
         choices: ['incremental']
-        version_added: 1.0.1
+        version_added: 1.1.0
         type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
