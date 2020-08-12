@@ -38,5 +38,14 @@ sh build.sh install
 %license LICENSE
 
 %changelog
+* Wed Aug 12 2020 Martin Necas <mnecas@redhat.com> - 1.1.0-1
+- Add ovirt_vm_os_info module
+- Add ovirt_disk backup
+- Add ovirt_disk autodetect size when uploading
+- Add ovirt_host add ssh_port
+- Add ovirt_network support of removing vlan_tag
+- Fix ovirt_disk upload
+
+
 * Thu Apr 9 2020 Martin Necas <mnecas@redhat.com> - 1.0.0-1
 - Initial release

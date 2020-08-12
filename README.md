@@ -20,7 +20,7 @@ Requirements
 ------------
 
  * Ansible version 2.9 or higher
- * Python SDK version 4.3 or higher
+ * Python SDK version 4.4 or higher
 
 Modules documentation
 --------------

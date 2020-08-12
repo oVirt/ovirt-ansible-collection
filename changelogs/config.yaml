@@ -17,3 +17,29 @@ releases:
         - name: ovirt
           description: Inventory plugin for ovirt
           namespace: ovirt.ovirt
+  1.1.0:
+    release_date: 2020-08-12
+    changes:
+      release_summary: This is second release of the collection.
+      minor_changes:
+        - ovirt_vm - fix quotas example
+        - ovirt_disk - add backup
+        - ovirt_disk - add upload image warning for correct format
+        - ovirt_disk- upload_image_path autodetect size
+        - ovirt_host - add ssh_port
+        - ovirt inventory - add creation_time
+        - ovirt_network - add support of removing vlan_tag
+      bugfixes:
+        - ovirt_vm - fix cd_iso get all disks from storage domains
+        - ovirt_vm - Add documentation for custom_script under sysprep
+        - ovirt_vm - fix cd_iso search by name
+        - ovirt_disk - fix activate
+        - ovirt_disk - fix upload
+        - ovirt_disk - force wait when uploading disk
+        - ovirt_host_network - fix custom_properties default value
+        - ovirt_quota - fix vcpu_limit
+        - ovirt inventory - Set plugin insecure if no cafile defined
+      modules:
+        - name: ovirt_vm_os_info
+          description: Automatically gets a list of all available OS in oVirt.
+          namespace: 'ovirt.ovirt'
