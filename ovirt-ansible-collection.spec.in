@@ -38,6 +38,9 @@ sh build.sh install
 %license LICENSE
 
 %changelog
+* Wed Aug 12 2020 Martin Necas <mnecas@redhat.com> - 1.1.1-1
+- Fix ovirt_permission FQCNs
+
 * Wed Aug 12 2020 Martin Necas <mnecas@redhat.com> - 1.1.0-1
 - Add ovirt_vm_os_info module
 - Add ovirt_disk backup

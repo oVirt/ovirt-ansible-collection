@@ -43,3 +43,9 @@ releases:
         - name: ovirt_vm_os_info
           description: Automatically gets a list of all available OS in oVirt.
           namespace: 'ovirt.ovirt'
+  1.1.1:
+    release_date: 2020-08-12
+    changes:
+      release_summary: Small fixes
+      minor_changes:
+        - ovirt_permission - fix FQCN documentation
