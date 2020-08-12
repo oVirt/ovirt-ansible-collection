@@ -1,18 +1,10 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Copyright (c) 2017 Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import absolute_import, division, print_function
+from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
-
-
-ANSIBLE_METADATA = {
-    'metadata_version': '1.1',
-    'status': ['preview'],
-    'supported_by': 'community'
-}
-
 
 DOCUMENTATION = '''
 ---
@@ -37,9 +29,9 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information oVirt API:
-- ovirt_api_info:
+- ovirt.ovirt.ovirt_api_info:
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_api }}"
 '''
 

@@ -1,13 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -23,21 +21,26 @@ options:
     id:
         description:
             - "ID of the datacenter to manage."
+        type: str
     name:
         description:
             - "Name of the data center to manage."
         required: true
+        type: str
     state:
         description:
             - "Should the data center be present or absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     description:
         description:
             - "Description of the data center."
+        type: str
     comment:
         description:
             - "Comment of the data center."
+        type: str
     local:
         description:
             - "I(True) if the data center should be local, I(False) if should be shared."
@@ -46,16 +49,19 @@ options:
     compatibility_version:
         description:
             - "Compatibility version of the data center."
+        type: str
     quota_mode:
         description:
             - "Quota mode of the data center. One of I(disabled), I(audit) or I(enabled)"
         choices: ['disabled', 'audit', 'enabled']
+        type: str
     mac_pool:
         description:
             - "MAC pool to be used by this datacenter."
             - "IMPORTANT: This option is deprecated in oVirt/RHV 4.1. You should
                use C(mac_pool) in C(ovirt_clusters) module, as MAC pools are
                set per cluster since 4.1."
+        type: str
     force:
         description:
             - "This parameter can be used only when removing a data center.
@@ -87,6 +93,7 @@ options:
                 type: list
                 default: []
         type: list
+        elements: dict
 
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
@@ -96,24 +103,24 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create datacenter
-- ovirt_datacenter:
+- ovirt.ovirt.ovirt_datacenter:
     name: mydatacenter
     local: True
     compatibility_version: 4.0
     quota_mode: enabled
 
 # Remove datacenter
-- ovirt_datacenter:
+- ovirt.ovirt.ovirt_datacenter:
     state: absent
     name: mydatacenter
 
 # Change Datacenter Name
-- ovirt_datacenter:
+- ovirt.ovirt.ovirt_datacenter:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_datacenter_name"
 
 # Create datacenter with iscsi bond
-- ovirt_datacenter:
+- ovirt.ovirt.ovirt_datacenter:
     name: mydatacenter
     iscsi_bonds:
       - name: bond1
@@ -129,7 +136,7 @@ EXAMPLES = '''
             - cf780201-6a4f-43c1-a019-e65c4220ab73
 
 # Remove all iscsi bonds
-- ovirt_datacenter:
+- ovirt.ovirt.ovirt_datacenter:
     name: mydatacenter
     iscsi_bonds: []
 '''
@@ -253,7 +260,7 @@ def main():
             choices=['present', 'absent'],
             default='present',
         ),
-        name=dict(default=None, required=True),
+        name=dict(required=True),
         description=dict(default=None),
         local=dict(type='bool'),
         id=dict(default=None),
@@ -262,7 +269,7 @@ def main():
         comment=dict(default=None),
         mac_pool=dict(default=None),
         force=dict(default=None, type='bool'),
-        iscsi_bonds=dict(type='list', default=None),
+        iscsi_bonds=dict(type='list', default=None, elements='dict'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,

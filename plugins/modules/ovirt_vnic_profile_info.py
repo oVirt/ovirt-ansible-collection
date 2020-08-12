@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,13 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import absolute_import, division, print_function
+from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
-
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
 
 DOCUMENTATION = '''
 ---
@@ -56,10 +51,10 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information 10 vnic profiles
-- ovirt_vnic_profile_info:
+- ovirt.ovirt.ovirt_vnic_profile_info:
     max: 10
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_vnic_profiles }}"
 '''
 

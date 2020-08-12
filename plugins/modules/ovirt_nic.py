@@ -1,12 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright: (c) 2017, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -22,38 +21,47 @@ options:
     id:
         description:
             - "ID of the nic to manage."
+        type: str
     name:
         description:
             - Name of the network interface to manage.
         required: true
+        type: str
     vm:
         description:
             - Name of the Virtual Machine to manage.
             - You must provide either C(vm) parameter or C(template) parameter.
+        type: str
     template:
         description:
             - Name of the template to manage.
             - You must provide either C(vm) parameter or C(template) parameter.
+        type: str
     state:
         description:
             - Should the Virtual Machine NIC be present/absent/plugged/unplugged.
         choices: [ absent, plugged, present, unplugged ]
         default: present
+        type: str
     network:
         description:
             - Logical network to which the VM network interface should use,
               by default Empty network is used if network is not specified.
+        type: str
     profile:
         description:
             - Virtual network interface profile to be attached to VM network interface.
             - When not specified and network has only single profile it will be auto-selected, otherwise you must specify profile.
+        type: str
     interface:
         description:
             - "Type of the network interface. For example e1000, pci_passthrough, rtl8139, rtl8139_virtio, spapr_vlan or virtio."
             - "It's required parameter when creating the new NIC."
+        type: str
     mac_address:
         description:
             - Custom MAC address of the network interface, by default it's obtained from MAC pool.
+        type: str
     linked:
         description:
             - Defines if the NIC is linked to the virtual machine.
@@ -66,7 +74,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Add NIC to VM
-  ovirt_nic:
+  ovirt.ovirt.ovirt_nic:
     state: present
     vm: myvm
     name: mynic
@@ -76,20 +84,20 @@ EXAMPLES = '''
     network: ovirtmgmt
 
 - name: Plug NIC to VM
-  ovirt_nic:
+  ovirt.ovirt.ovirt_nic:
     state: plugged
     vm: myvm
     name: mynic
 
 - name: Unplug NIC from VM
-  ovirt_nic:
+  ovirt.ovirt.ovirt_nic:
     state: unplugged
     linked: false
     vm: myvm
     name: mynic
 
 - name: Add NIC to template
-  ovirt_nic:
+  ovirt.ovirt.ovirt_nic:
     auth: "{{ ovirt_auth }}"
     state: present
     template: my_template
@@ -99,13 +107,13 @@ EXAMPLES = '''
     network: ovirtmgmt
 
 - name: Remove NIC from VM
-  ovirt_nic:
+  ovirt.ovirt.ovirt_nic:
     state: absent
     vm: myvm
     name: mynic
 
 # Change NIC Name
-- ovirt_nic:
+- ovirt.ovirt.ovirt_nic:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_nic_name"
     vm: myvm

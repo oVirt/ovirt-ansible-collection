@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -42,14 +40,17 @@ notes:
        the I(register) keyword to use it."
 options:
     name:
-      description:
-        - "Name of the tag which should be listed."
+        description:
+            - "Name of the tag which should be listed."
+        type: str
     vm:
-      description:
-        - "Name of the VM, which tags should be listed."
+        description:
+            - "Name of the VM, which tags should be listed."
+        type: str
     host:
-      description:
-        - "Name of the host, which tags should be listed."
+        description:
+            - "Name of the host, which tags should be listed."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
@@ -58,24 +59,24 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all tags, which names start with C(tag):
-- ovirt_tag_info:
+- ovirt.ovirt.ovirt_tag_info:
     name: tag*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_tags }}"
 
 # Gather information about all tags, which are assigned to VM C(postgres):
-- ovirt_tag_info:
+- ovirt.ovirt.ovirt_tag_info:
     vm: postgres
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_tags }}"
 
 # Gather information about all tags, which are assigned to host C(west):
-- ovirt_tag_info:
+- ovirt.ovirt.ovirt_tag_info:
     host: west
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_tags }}"
 '''
 
@@ -125,17 +126,13 @@ def main():
             host = search_by_name(hosts_service, module.params['host'])
             if host is None:
                 raise Exception("Host '%s' was not found." % module.params['host'])
-            tags.extend([
-                tag for tag in hosts_service.host_service(host.id).tags_service().list()
-            ])
+            tags.extend(hosts_service.host_service(host.id).tags_service().list())
         if module.params['vm']:
             vms_service = connection.system_service().vms_service()
             vm = search_by_name(vms_service, module.params['vm'])
             if vm is None:
                 raise Exception("Vm '%s' was not found." % module.params['vm'])
-            tags.extend([
-                tag for tag in vms_service.vm_service(vm.id).tags_service().list()
-            ])
+            tags.extend(vms_service.vm_service(vm.id).tags_service().list())
 
         if not (module.params['vm'] or module.params['host'] or module.params['name']):
             tags = all_tags

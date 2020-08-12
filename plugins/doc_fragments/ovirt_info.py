@@ -3,6 +3,9 @@
 # Copyright: (c) 2016, Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
+
 
 class ModuleDocFragment(object):
 
@@ -21,6 +24,7 @@ options:
             - Specifies list of the attributes which should be fetched from the API.
             - This parameter apply only when C(fetch_nested) is I(true).
         type: list
+        elements: str
     auth:
         description:
             - "Dictionary with values needed to create HTTP/HTTPS connection to oVirt:"

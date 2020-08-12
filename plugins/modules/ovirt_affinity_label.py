@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -40,20 +38,27 @@ options:
         description:
             - "Name of the affinity label to manage."
         required: true
+        type: str
     state:
         description:
             - "Should the affinity label be present or absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     cluster:
         description:
             - "Name of the cluster where vms and hosts resides."
+        type: str
     vms:
         description:
             - "List of the VMs names, which should have assigned this affinity label."
+        type: list
+        elements: str
     hosts:
         description:
             - "List of the hosts names, which should have assigned this affinity label."
+        type: list
+        elements: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -62,7 +67,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create(if not exists) and assign affinity label to vms vm1 and vm2 and host host1
-- ovirt_affinity_label:
+- ovirt.ovirt.ovirt_affinity_label:
     name: mylabel
     cluster: mycluster
     vms:
@@ -72,13 +77,13 @@ EXAMPLES = '''
       - host1
 
 # To detach all VMs from label
-- ovirt_affinity_label:
+- ovirt.ovirt.ovirt_affinity_label:
     name: mylabel
     cluster: mycluster
     vms: []
 
 # Remove affinity label
-- ovirt_affinity_label:
+- ovirt.ovirt.ovirt_affinity_label:
     state: absent
     name: mylabel
 '''
@@ -171,9 +176,9 @@ def main():
             default='present',
         ),
         cluster=dict(default=None),
-        name=dict(default=None, required=True),
-        vms=dict(default=None, type='list'),
-        hosts=dict(default=None, type='list'),
+        name=dict(required=True),
+        vms=dict(default=None, type='list', elements='str'),
+        hosts=dict(default=None, type='list', elements='str'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,

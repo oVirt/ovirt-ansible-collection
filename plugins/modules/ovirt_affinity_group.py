@@ -1,12 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright: (c) 2017, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -24,17 +23,22 @@ options:
         description:
             - Name of the affinity group to manage.
         required: true
+        type: str
     state:
         description:
             - Should the affinity group be present or absent.
         choices: [ absent, present ]
+        type: str
         default: present
     cluster:
         description:
             - Name of the cluster of the affinity group.
+        type: str
+        required: true
     description:
         description:
             - Description of the affinity group.
+        type: str
     host_enforcing:
         description:
             - If I(yes) VM cannot start on host if it does not satisfy the C(host_rule).
@@ -47,6 +51,7 @@ options:
             - If I(disabled) this affinity group doesn't take effect.
             - This parameter is support since oVirt/RHV 4.1 version.
         choices: [ disabled, negative, positive ]
+        type: str
     vm_enforcing:
         description:
             - If I(yes) VM cannot start if it does not satisfy the C(vm_rule).
@@ -57,13 +62,18 @@ options:
             - If I(negative) I(no) VMs in this group should run on the host defined by C(host_rule).
             - If I(disabled) this affinity group doesn't take effect.
         choices: [ disabled, negative, positive ]
+        type: str
     vms:
         description:
             - List of the VMs names, which should have assigned this affinity group.
+        type: list
+        elements: str
     hosts:
         description:
             - List of the hosts names, which should have assigned this affinity group.
             - This parameter is support since oVirt/RHV 4.1 version.
+        type: list
+        elements: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -72,7 +82,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Create(if not exists) and assign affinity group to VMs vm1 and vm2 and host host1
-  ovirt_affinity_group:
+  ovirt.ovirt.ovirt_affinity_group:
     name: mygroup
     cluster: mycluster
     vm_enforcing: true
@@ -86,7 +96,7 @@ EXAMPLES = '''
       - host1
 
 - name: Detach VMs from affinity group and disable VM rule
-  ovirt_affinity_group:
+  ovirt.ovirt.ovirt_affinity_group:
     name: mygroup
     cluster: mycluster
     vm_enforcing: false
@@ -99,7 +109,7 @@ EXAMPLES = '''
       - host2
 
 - name: Remove affinity group
-  ovirt_affinity_group:
+  ovirt.ovirt.ovirt_affinity_group:
     state: absent
     cluster: mycluster
     name: mygroup
@@ -259,8 +269,8 @@ def main():
         vm_rule=dict(type='str', choices=['disabled', 'negative', 'positive']),
         host_enforcing=dict(type='bool'),
         host_rule=dict(type='str', choices=['disabled', 'negative', 'positive']),
-        vms=dict(type='list'),
-        hosts=dict(type='list'),
+        vms=dict(type='list', elements='str'),
+        hosts=dict(type='list', elements='str'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,

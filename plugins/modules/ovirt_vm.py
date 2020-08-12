@@ -1,12 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright: (c) 2017, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -24,9 +23,11 @@ options:
         description:
             - Name of the Virtual Machine to manage.
             - If VM don't exists C(name) is required. Otherwise C(id) or C(name) can be used.
+        type: str
     id:
         description:
             - ID of the Virtual Machine to manage.
+        type: str
     state:
         description:
             - Should the Virtual Machine be running/stopped/present/absent/suspended/next_run/registered/exported/reboot.
@@ -42,10 +43,12 @@ options:
             - I(reboot) is supported since 2.10, virtual machine is rebooted only if it's in up state.
         choices: [ absent, next_run, present, registered, running, stopped, suspended, exported, reboot ]
         default: present
+        type: str
     cluster:
         description:
             - Name of the cluster, where Virtual Machine should be created.
             - Required if creating VM.
+        type: str
     allow_partial_import:
         description:
             - Boolean indication whether to allow partial registration of Virtual Machine when C(state) is registered.
@@ -54,6 +57,8 @@ options:
         description:
             - "Mapper which maps an external virtual NIC profile to one that exists in the engine when C(state) is registered.
                vnic_profile is described by the following dictionary:"
+        type: list
+        elements: dict
         suboptions:
             source_network_name:
                 description:
@@ -69,6 +74,8 @@ options:
             - "Mapper which maps cluster name between VM's OVF and the destination cluster this VM should be registered to,
                relevant when C(state) is registered.
                Cluster mapping is described by the following dictionary:"
+        type: list
+        elements: dict
         suboptions:
             source_name:
                 description:
@@ -81,6 +88,8 @@ options:
             - "Mapper which maps role name between VM's OVF and the destination role this VM should be registered to,
                relevant when C(state) is registered.
                Role mapping is described by the following dictionary:"
+        type: list
+        elements: dict
         suboptions:
             source_name:
                 description:
@@ -93,6 +102,8 @@ options:
             - "Mapper which maps aaa domain name between VM's OVF and the destination aaa domain this VM should be registered to,
                relevant when C(state) is registered.
                The aaa domain mapping is described by the following dictionary:"
+        type: list
+        elements: dict
         suboptions:
             source_name:
                 description:
@@ -101,25 +112,48 @@ options:
                 description:
                     - The name of the destination aaa domain.
     affinity_group_mappings:
+        type: list
         description:
             - "Mapper which maps affinity name between VM's OVF and the destination affinity this VM should be registered to,
                relevant when C(state) is registered."
+        elements: dict
     affinity_label_mappings:
+        type: list
         description:
             - "Mapper which maps affinity label name between VM's OVF and the destination label this VM should be registered to,
                relevant when C(state) is registered."
+        elements: dict
     lun_mappings:
         description:
             - "Mapper which maps lun between VM's OVF and the destination lun this VM should contain, relevant when C(state) is registered.
-               lun_mappings is described by the following dictionary:
-               - C(logical_unit_id): The logical unit number to identify a logical unit,
-               - C(logical_unit_port): The port being used to connect with the LUN disk.
-               - C(logical_unit_portal): The portal being used to connect with the LUN disk.
-               - C(logical_unit_address): The address of the block storage host.
-               - C(logical_unit_target): The iSCSI specification located on an iSCSI server
-               - C(logical_unit_username): Username to be used to connect to the block storage host.
-               - C(logical_unit_password): Password to be used to connect to the block storage host.
-               - C(storage_type): The storage type which the LUN reside on (iscsi or fcp)"
+               lun_mappings is described by the following dictionary:"
+        type: list
+        elements: dict
+        suboptions:
+            logical_unit_id:
+                description:
+                    - The logical unit number to identify a logical unit,
+            logical_unit_port:
+                description:
+                    - The port being used to connect with the LUN disk.
+            logical_unit_portal:
+                description:
+                    - The portal being used to connect with the LUN disk.
+            logical_unit_address:
+                description:
+                    - The address of the block storage host.
+            logical_unit_target:
+                description:
+                    - The iSCSI specification located on an iSCSI server
+            logical_unit_username:
+                description:
+                    - Username to be used to connect to the block storage host.
+            logical_unit_password):
+                description:
+                    - Password to be used to connect to the block storage host.
+            storage_type:
+                description:
+                    - The storage type which the LUN reside on (iscsi or fcp)"
     reassign_bad_macs:
         description:
             - "Boolean indication whether to reassign bad macs when C(state) is registered."
@@ -129,10 +163,12 @@ options:
             - Name of the template, which should be used to create Virtual Machine.
             - Required if creating VM.
             - If template is not specified and VM doesn't exist, VM will be created from I(Blank) template.
+        type: str
     template_version:
         description:
             - Version number of the template to be used for VM.
             - By default the latest available version of the template is used.
+        type: int
     use_latest_template_version:
         description:
             - Specify if latest template version should be used, when running a stateless VM.
@@ -144,6 +180,7 @@ options:
             - This parameter is considered only when C(template) is provided.
             - IMPORTANT - This parameter is not idempotent, if the VM exists and you specify different storage domain,
               disk won't move.
+        type: str
     disk_format:
         description:
             - Specify format of the disk.
@@ -153,56 +190,69 @@ options:
             - This parameter is considered only when C(template) and C(storage domain) is provided.
         choices: [ cow, raw ]
         default: cow
+        type: str
     memory:
         description:
             - Amount of memory of the Virtual Machine. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
             - Default value is set by engine.
+        type: str
     memory_guaranteed:
         description:
             - Amount of minimal guaranteed memory of the Virtual Machine.
               Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
             - C(memory_guaranteed) parameter can't be lower than C(memory) parameter.
             - Default value is set by engine.
+        type: str
     memory_max:
         description:
             - Upper bound of virtual machine memory up to which memory hot-plug can be performed.
               Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
             - Default value is set by engine.
+        type: str
     cpu_shares:
         description:
             - Set a CPU shares for this Virtual Machine.
             - Default value is set by oVirt/RHV engine.
+        type: int
     cpu_cores:
         description:
             - Number of virtual CPUs cores of the Virtual Machine.
             - Default value is set by oVirt/RHV engine.
+        type: int
     cpu_sockets:
         description:
             - Number of virtual CPUs sockets of the Virtual Machine.
             - Default value is set by oVirt/RHV engine.
+        type: int
     cpu_threads:
         description:
             - Number of threads per core of the Virtual Machine.
             - Default value is set by oVirt/RHV engine.
+        type: int
     type:
         description:
             - Type of the Virtual Machine.
             - Default value is set by oVirt/RHV engine.
             - I(high_performance) is supported since Ansible 2.5 and oVirt/RHV 4.2.
         choices: [ desktop, server, high_performance ]
+        type: str
     quota_id:
         description:
             - "Virtual Machine quota ID to be used for disk. By default quota is chosen by oVirt/RHV engine."
+        type: str
     operating_system:
         description:
             - Operating system of the Virtual Machine, for example 'rhel_8x64'.
             - Default value is set by oVirt/RHV engine.
-            - Use the ovirt_vm_os_info module to obtain the current list.
+            - Use the M(ovirt.ovirt.ovirt_vm_os_info) module to obtain the current list.
+        type: str
     boot_devices:
         description:
             - List of boot devices which should be used to boot. For example C([ cdrom, hd ]).
             - Default value is set by oVirt/RHV engine.
         choices: [ cdrom, hd, network ]
+        elements: str
+        type: list
     boot_menu:
         description:
             - "I(True) enable menu to select boot device, I(False) to disable it. By default is chosen by oVirt/RHV engine."
@@ -213,6 +263,7 @@ options:
             - "If no value is passed, default value is set from cluster."
             - "NOTE - Supported since oVirt 4.3."
         choices: [ i440fx_sea_bios, q35_ovmf, q35_sea, q35_secure_boot ]
+        type: str
     usb_support:
         description:
             - "I(True) enable USB support, I(False) to disable it. By default is chosen by oVirt/RHV engine."
@@ -229,6 +280,7 @@ options:
         description:
             - Specify host where Virtual Machine should be running. By default the host is chosen by engine scheduler.
             - This parameter is used only when C(state) is I(running) or I(present).
+        type: str
     high_availability:
         description:
             - If I(yes) Virtual Machine will be set as highly available.
@@ -241,19 +293,24 @@ options:
               Virtual machines with higher priorities will be started and migrated before virtual machines with lower
               priorities. The value is an integer between 0 and 100. The higher the value, the higher the priority.
             - If no value is passed, default value is set by oVirt/RHV engine.
+        type: int
     lease:
         description:
             - Name of the storage domain this virtual machine lease reside on. Pass an empty string to remove the lease.
             - NOTE - Supported since oVirt 4.1.
+        type: str
     custom_compatibility_version:
         description:
             - "Enables a virtual machine to be customized to its own compatibility version. If
             'C(custom_compatibility_version)' is set, it overrides the cluster's compatibility version
             for this particular virtual machine."
+        type: str
     host_devices:
         description:
             - Single Root I/O Virtualization - technology that allows single device to expose multiple endpoints that can be passed to VMs
             - host_devices is an list which contain dictionary with name and state of device
+        type: list
+        elements: dict
     delete_protected:
         description:
             - If I(yes) Virtual Machine will be set as delete protected.
@@ -282,10 +339,11 @@ options:
     cd_iso:
         description:
             - ISO file from ISO storage domain which should be attached to Virtual Machine.
-            - If you have multiple ISO disks with the same name use disk ID to specify which should be used.
+            - If you have multiple ISO disks with the same name use disk ID to specify which should be used or use C(storage_domain) to filter disks.
             - If you pass empty string the CD will be ejected from VM.
             - If used with C(state) I(running) or I(present) and VM is running the CD will be attached to VM.
             - If used with C(state) I(running) or I(present) and VM is down the CD will be attached to VM persistently.
+        type: str
     force:
         description:
             - Please check to I(Synopsis) to more detailed description of force parameter, it can behave differently
@@ -295,6 +353,8 @@ options:
     nics:
         description:
             - List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
+        type: list
+        elements: dict
         suboptions:
             name:
                 description:
@@ -315,6 +375,8 @@ options:
     disks:
         description:
             - List of disks, which should be attached to Virtual Machine. Disk is described by following dictionary.
+        type: list
+        elements: dict
         suboptions:
             name:
                 description:
@@ -340,6 +402,7 @@ options:
     sysprep:
         description:
             - Dictionary with values for Windows Virtual Machine initialization using sysprep.
+        type: dict
         suboptions:
             host_name:
                 description:
@@ -380,6 +443,7 @@ options:
     cloud_init:
         description:
             - Dictionary with values for Unix-like Virtual Machine initialization using cloud init.
+        type: dict
         suboptions:
             host_name:
                 description:
@@ -447,6 +511,8 @@ options:
             - This option is used, when user needs to setup more network interfaces via cloud init.
             - If one network interface is enough, user should use C(cloud_init) I(nic_*) parameters. C(cloud_init) I(nic_*) parameters
               are merged with C(cloud_init_nics) parameters.
+        type: list
+        elements: dict
         suboptions:
             nic_boot_protocol:
                 description:
@@ -492,27 +558,34 @@ options:
         description:
             - Path to a kernel image used to boot the virtual machine.
             - Kernel image must be stored on either the ISO domain or on the host's storage.
+        type: str
     initrd_path:
         description:
             - Path to an initial ramdisk to be used with the kernel specified by C(kernel_path) option.
             - Ramdisk image must be stored on either the ISO domain or on the host's storage.
+        type: str
     kernel_params:
         description:
             - Kernel command line parameters (formatted as string) to be used with the kernel specified by C(kernel_path) option.
+        type: str
     instance_type:
         description:
             - Name of virtual machine's hardware configuration.
             - By default no instance type is used.
+        type: str
     description:
         description:
             - Description of the Virtual Machine.
+        type: str
     comment:
         description:
             - Comment of the Virtual Machine.
+        type: str
     timezone:
         description:
             - Sets time zone offset of the guest hardware clock.
             - For example C(Etc/GMT)
+        type: str
     serial_policy:
         description:
             - Specify a serial number policy for the Virtual Machine.
@@ -521,14 +594,17 @@ options:
             - C(host) - Sets the host's UUID as the Virtual Machine's serial number.
             - C(custom) - Allows you to specify a custom serial number in C(serial_policy_value).
         choices: ['vm', 'host', 'custom']
+        type: str
     serial_policy_value:
         description:
             - Allows you to specify a custom serial number.
             - This parameter is used only when C(serial_policy) is I(custom).
+        type: str
     vmware:
         description:
             - Dictionary of values to be used to connect to VMware and import
               a virtual machine to oVirt.
+        type: dict
         suboptions:
             username:
                 description:
@@ -555,6 +631,7 @@ options:
         description:
             - Dictionary of values to be used to connect to XEN and import
               a virtual machine to oVirt.
+        type: dict
         suboptions:
             url:
                 description:
@@ -575,6 +652,7 @@ options:
         description:
             - Dictionary of values to be used to connect to kvm and import
               a virtual machine to oVirt.
+        type: dict
         suboptions:
             name:
                 description:
@@ -605,11 +683,13 @@ options:
             - "CPU mode of the virtual machine. It can be some of the following: I(host_passthrough), I(host_model) or I(custom)."
             - "For I(host_passthrough) CPU type you need to set C(placement_policy) to I(pinned)."
             - "If no value is passed, default value is set by oVirt/RHV engine."
+        type: str
     placement_policy:
         description:
             - "The configuration of the virtual machine's placement policy."
             - "If no value is passed, default value is set by oVirt/RHV engine."
             - "Placement policy can be one of the following values:"
+        type: str
         suboptions:
             migratable:
                 description:
@@ -629,6 +709,8 @@ options:
         description:
             - "CPU Pinning topology to map virtual machine CPU to host CPU."
             - "CPU Pinning topology is a list of dictionary which can have following values:"
+        type: list
+        elements: dict
         suboptions:
             cpu:
                 description:
@@ -647,6 +729,7 @@ options:
     io_threads:
         description:
             - "Number of IO threads used by virtual machine. I(0) means IO threading disabled."
+        type: int
     ballooning_enabled:
         description:
             - "If I(true), use memory ballooning."
@@ -659,10 +742,13 @@ options:
             - "It can be one of the following: I(interleave), I(preferred) or I(strict)."
             - "If no value is passed, default value is set by oVirt/RHV engine."
         choices: ['interleave', 'preferred', 'strict']
+        type: str
     numa_nodes:
         description:
             - "List of vNUMA Nodes to set for this VM and pin them to assigned host's physical NUMA node."
             - "Each vNUMA node is described by following dictionary:"
+        type: list
+        elements: dict
         suboptions:
             index:
                 description:
@@ -686,10 +772,13 @@ options:
             - "Random number generator (RNG). You can choose of one the following devices I(urandom), I(random) or I(hwrng)."
             - "In order to select I(hwrng), you must have it enabled on cluster first."
             - "/dev/urandom is used for cluster version >= 4.1, and /dev/random for cluster version <= 4.0"
+        type: str
     custom_properties:
         description:
             - "Properties sent to VDSM to configure various hooks."
             - "Custom properties is a list of dictionary which can have following values:"
+        type: list
+        elements: dict
         suboptions:
             name:
                 description:
@@ -704,6 +793,7 @@ options:
         description:
             - "Assign watchdog device for the virtual machine."
             - "Watchdogs is a dictionary which can have following values:"
+        type: dict
         suboptions:
             model:
                 description:
@@ -714,6 +804,7 @@ options:
     graphical_console:
         description:
             - "Assign graphical console to the virtual machine."
+        type: dict
         suboptions:
             headless_mode:
                 description:
@@ -723,6 +814,7 @@ options:
                 description:
                     - Graphical protocol, a list of I(spice), I(vnc), or both.
                 type: list
+                elements: str
             disconnect_action:
                 description:
                     - "Returns the action that will take place when the graphic console(SPICE only) is disconnected. The options are:"
@@ -752,9 +844,11 @@ options:
     export_domain:
         description:
             - "When C(state) is I(exported)this parameter specifies the name of the export storage domain."
+        type: str
     export_ova:
         description:
             - Dictionary of values to be used to export VM as OVA.
+        type: dict
         suboptions:
             host:
                 description:
@@ -783,14 +877,17 @@ options:
             - "Snapshot to clone VM from."
             - "Snapshot with description specified should exist."
             - "You have to specify C(snapshot_vm) parameter with virtual machine name of this snapshot."
+        type: str
     snapshot_vm:
         description:
             - "Source VM to clone VM from."
             - "VM should have snapshot specified by C(snapshot)."
             - "If C(snapshot_name) specified C(snapshot_vm) is required."
+        type: str
     custom_emulated_machine:
         description:
             - "Sets the value of the custom_emulated_machine attribute."
+        type: str
 
 notes:
     - If VM is in I(UNASSIGNED) or I(UNKNOWN) state before any operation, the module will fail.
@@ -819,28 +916,28 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Creates a new Virtual Machine from template named 'rhel7_template'
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: present
     name: myvm
     template: rhel7_template
     cluster: mycluster
 
 - name: Register VM
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: registered
     storage_domain: mystorage
     cluster: mycluster
     name: myvm
 
 - name: Register VM using id
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: registered
     storage_domain: mystorage
     cluster: mycluster
     id: 1111-1111-1111-1111
 
 - name: Register VM, allowing partial import
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: registered
     storage_domain: mystorage
     allow_partial_import: "True"
@@ -848,7 +945,7 @@ EXAMPLES = '''
     id: 1111-1111-1111-1111
 
 - name: Register VM with vnic profile mappings and reassign bad macs
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: registered
     storage_domain: mystorage
     cluster: mycluster
@@ -863,7 +960,7 @@ EXAMPLES = '''
     reassign_bad_macs: "True"
 
 - name: Register VM with mappings
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: registered
     storage_domain: mystorage
     cluster: mycluster
@@ -898,7 +995,7 @@ EXAMPLES = '''
         dest_name: cluster_B
 
 - name: Creates a stateless VM which will always use latest template version
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     template: rhel7
     cluster: mycluster
@@ -907,7 +1004,7 @@ EXAMPLES = '''
 # Creates a new server rhel7 Virtual Machine from Blank template
 # on brq01 cluster with 2GiB memory and 2 vcpu cores/sockets
 # and attach bootable disk with name rhel7_disk and attach virtio NIC
-- ovirt_vm:
+- ovirt.ovirt.ovirt_vm:
     state: present
     cluster: brq01
     name: myvm
@@ -924,12 +1021,12 @@ EXAMPLES = '''
       - name: nic1
 
 # Change VM Name
-- ovirt_vm:
+- ovirt.ovirt.ovirt_vm:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_vm_name"
 
 - name: Run VM with cloud init
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: rhel7
     template: rhel7
     cluster: Default
@@ -954,7 +1051,7 @@ EXAMPLES = '''
       root_password: super_password
 
 - name: Run VM with cloud init, with multiple network interfaces
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: rhel7_4
     template: rhel7
     cluster: mycluster
@@ -976,7 +1073,7 @@ EXAMPLES = '''
       nic_boot_protocol_v6: dhcp
 
 - name: Run VM with sysprep
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: windows2012R2_AD
     template: windows2012R2
     cluster: Default
@@ -988,53 +1085,53 @@ EXAMPLES = '''
       root_password: SuperPassword123
 
 - name: Migrate/Run VM to/on host named 'host1'
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: running
     name: myvm
     host: host1
 
 - name: Migrate VM to any available host
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: running
     name: myvm
     migrate: true
 
 - name: Change VMs CD
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     cd_iso: drivers.iso
 
 - name: Eject VMs CD
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     cd_iso: ''
 
 - name: Boot VM from CD
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     cd_iso: centos7_x64.iso
     boot_devices:
         - cdrom
 
 - name: Stop vm
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: stopped
     name: myvm
 
 - name: Upgrade memory to already created VM
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     memory: 4GiB
 
 - name: Hot plug memory to already created and running VM (VM won't be restarted)
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     memory: 4GiB
 
 # Create/update a VM to run with two vNUMA nodes and pin them to physical NUMA nodes as follows:
 # vnuma index 0-> numa index 0, vnuma index 1-> numa index 1
 - name: Create a VM to run with two vNUMA nodes
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     cluster: mycluster
     numa_tune_mode: "interleave"
@@ -1049,7 +1146,7 @@ EXAMPLES = '''
       numa_node_pins: [1]
 
 - name: Update an existing VM to run without previously created vNUMA nodes (i.e. remove all vNUMA nodes+NUMA pinning setting)
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     cluster: mycluster
     state: "present"
@@ -1060,14 +1157,14 @@ EXAMPLES = '''
 # When change on the VM needs restart of the VM, use next_run state,
 # The VM will be updated and rebooted if there are any changes.
 # If present state would be used, VM won't be restarted.
-- ovirt_vm:
+- ovirt.ovirt.ovirt_vm:
     state: next_run
     name: myvm
     boot_devices:
       - network
 
 - name: Import virtual machine from VMware
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: stopped
     cluster: mycluster
     name: vmware_win10
@@ -1081,7 +1178,7 @@ EXAMPLES = '''
       password: password
 
 - name: Create vm from template and create all disks on specific storage domain
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: vm_test
     cluster: mycluster
     template: mytemplate
@@ -1090,16 +1187,17 @@ EXAMPLES = '''
     - name: nic1
 
 - name: Remove VM, if VM is running it will be stopped
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: absent
     name: myvm
 
 # Defining a specific quota for a VM:
 # Since Ansible 2.5
-- ovirt_quotas_facts:
+- ovirt.ovirt.ovirt_quotas_info:
     data_center: Default
     name: myquota
-- ovirt_vm:
+  register: ovirt_quotas
+- ovirt.ovirt.ovirt_vm:
     name: myvm
     sso: False
     boot_menu: True
@@ -1109,7 +1207,7 @@ EXAMPLES = '''
     quota_id: "{{ ovirt_quotas[0]['id'] }}"
 
 - name: Create a VM that has the console configured for both Spice and VNC
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     template: mytemplate
     cluster: mycluster
@@ -1121,23 +1219,23 @@ EXAMPLES = '''
 # Execute remote viewer to VM
 - block:
   - name: Create a ticket for console for a running VM
-    ovirt_vm:
+    ovirt.ovirt.ovirt_vm:
       name: myvm
       ticket: true
       state: running
     register: myvm
 
   - name: Save ticket to file
-    copy:
+    ansible.builtin.copy:
       content: "{{ myvm.vm.remote_vv_file }}"
       dest: ~/vvfile.vv
 
   - name: Run remote viewer with file
-    command: remote-viewer ~/vvfile.vv
+    ansible.builtin.command: remote-viewer ~/vvfile.vv
 
 # Default value of host_device state is present
 - name: Attach host devices to virtual machine
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     host: myhost
     placement_policy: pinned
@@ -1149,7 +1247,7 @@ EXAMPLES = '''
         state: present
 
 - name: Export the VM as OVA
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     state: exported
     cluster: mycluster
@@ -1159,14 +1257,14 @@ EXAMPLES = '''
         directory: /tmp/
 
 - name: Clone VM from snapshot
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     snapshot_vm: myvm
     snapshot_name: myvm_snap
     name: myvm_clone
     state: present
 
 - name: Import external ova VM
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     cluster: mycluster
     name: myvm
     host: myhost
@@ -1178,7 +1276,7 @@ EXAMPLES = '''
       storage_domain: mystorage
 
 - name: Cpu pinning of 0#12_1#13_2#14_3#15
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: present
     cluster: mycluster
     name: myvm
@@ -1660,15 +1758,29 @@ class VmsModule(BaseModule):
         self._wait_for_UP(vm_service)
         self._attach_cd(vm_service.get())
 
+    def __get_cds_from_sds(self, sds):
+        for sd in sds:
+            if sd.type == otypes.StorageDomainType.ISO:
+                disks = sd.files
+            elif sd.type == otypes.StorageDomainType.DATA:
+                disks = sd.disks
+            else:
+                continue
+            disks = list(filter(lambda x: (x.name == self.param('cd_iso') or x.id == self.param('cd_iso')) and
+                                (sd.type == otypes.StorageDomainType.ISO or x.content_type == otypes.DiskContentType.ISO),
+                                self._connection.follow_link(disks)))
+            if disks:
+                return disks
+
     def __get_cd_id(self):
-        disks_service = self._connection.system_service().disks_service()
-        disks = disks_service.list(search='name="{}"'.format(self.param('cd_iso')))
-        if len(disks) > 1:
-            raise ValueError('Found mutiple disks with same name "{}" please use \
-                disk ID in "cd_iso" to specify which disk should be used.'.format(self.param('cd_iso')))
+        sds_service = self._connection.system_service().storage_domains_service()
+        sds = sds_service.list(search='name="{0}"'.format(self.param('storage_domain') if self.param('storage_domain') else "*"))
+        disks = self.__get_cds_from_sds(sds)
         if not disks:
-            # The `cd_iso` is valid disk ID returning to _attach_cd
-            return disks_service.disk_service(self.param('cd_iso')).get().id
+            raise ValueError('Was not able to find disk with name or id "{0}".'.format(self.param('cd_iso')))
+        if len(disks) > 1:
+            raise ValueError('Found mutiple disks with same name "{0}" please use \
+                disk ID in "cd_iso" to specify which disk should be used.'.format(self.param('cd_iso')))
         return disks[0].id
 
     def _attach_cd(self, entity):
@@ -2253,13 +2365,11 @@ def import_vm(module, connection):
     vms_service = connection.system_service().vms_service()
     wait(
         service=vms_service.vm_service(imported_vm.vm.id),
-        condition=lambda vm: len([
-            event
-            for event in events_service.list(
-                from_=int(last_event.id),
-                search='type=1152 and vm.id=%s' % vm.id,
-            )
-        ]) > 0 if vm is not None else False,
+        condition=lambda vm: len(events_service.list(
+            from_=int(last_event.id),
+            search='type=1152 and vm.id=%s' % vm.id,
+        )
+        ) > 0 if vm is not None else False,
         fail_condition=lambda vm: vm is None,
         timeout=module.params['timeout'],
         poll_interval=module.params['poll_interval'],
@@ -2323,7 +2433,7 @@ def main():
         use_latest_template_version=dict(type='bool'),
         storage_domain=dict(type='str'),
         disk_format=dict(type='str', default='cow', choices=['cow', 'raw']),
-        disks=dict(type='list', default=[]),
+        disks=dict(type='list', default=[], elements='dict'),
         memory=dict(type='str'),
         memory_guaranteed=dict(type='str'),
         memory_max=dict(type='str'),
@@ -2334,14 +2444,14 @@ def main():
         type=dict(type='str', choices=['server', 'desktop', 'high_performance']),
         operating_system=dict(type='str'),
         cd_iso=dict(type='str'),
-        boot_devices=dict(type='list', choices=['cdrom', 'hd', 'network']),
-        vnic_profile_mappings=dict(default=[], type='list'),
-        cluster_mappings=dict(default=[], type='list'),
-        role_mappings=dict(default=[], type='list'),
-        affinity_group_mappings=dict(default=[], type='list'),
-        affinity_label_mappings=dict(default=[], type='list'),
-        lun_mappings=dict(default=[], type='list'),
-        domain_mappings=dict(default=[], type='list'),
+        boot_devices=dict(type='list', choices=['cdrom', 'hd', 'network'], elements='str'),
+        vnic_profile_mappings=dict(default=[], type='list', elements='dict'),
+        cluster_mappings=dict(default=[], type='list', elements='dict'),
+        role_mappings=dict(default=[], type='list', elements='dict'),
+        affinity_group_mappings=dict(default=[], type='list', elements='dict'),
+        affinity_label_mappings=dict(default=[], type='list', elements='dict'),
+        lun_mappings=dict(default=[], type='list', elements='dict'),
+        domain_mappings=dict(default=[], type='list', elements='dict'),
         reassign_bad_macs=dict(default=None, type='bool'),
         boot_menu=dict(type='bool'),
         bios_type=dict(type='str', choices=['i440fx_sea_bios', 'q35_ovmf', 'q35_sea', 'q35_secure_boot']),
@@ -2356,9 +2466,9 @@ def main():
         delete_protected=dict(type='bool'),
         custom_emulated_machine=dict(type='str'),
         force=dict(type='bool', default=False),
-        nics=dict(type='list', default=[]),
+        nics=dict(type='list', default=[], elements='dict'),
         cloud_init=dict(type='dict'),
-        cloud_init_nics=dict(type='list', default=[]),
+        cloud_init_nics=dict(type='list', default=[], elements='dict'),
         cloud_init_persist=dict(type='bool', default=False, aliases=['sysprep_persist']),
         kernel_params_persist=dict(type='bool', default=False),
         sysprep=dict(type='dict'),
@@ -2381,22 +2491,22 @@ def main():
         placement_policy=dict(type='str'),
         custom_compatibility_version=dict(type='str'),
         ticket=dict(type='bool', default=None),
-        cpu_pinning=dict(type='list'),
+        cpu_pinning=dict(type='list', elements='dict'),
         soundcard_enabled=dict(type='bool', default=None),
         smartcard_enabled=dict(type='bool', default=None),
         io_threads=dict(type='int', default=None),
         ballooning_enabled=dict(type='bool', default=None),
         rng_device=dict(type='str'),
         numa_tune_mode=dict(type='str', choices=['interleave', 'preferred', 'strict']),
-        numa_nodes=dict(type='list', default=[]),
-        custom_properties=dict(type='list'),
+        numa_nodes=dict(type='list', default=[], elements='dict'),
+        custom_properties=dict(type='list', elements='dict'),
         watchdog=dict(type='dict'),
-        host_devices=dict(type='list'),
+        host_devices=dict(type='list', elements='dict'),
         graphical_console=dict(
             type='dict',
             options=dict(
                 headless_mode=dict(type='bool'),
-                protocol=dict(type='list'),
+                protocol=dict(type='list', elements='str'),
                 disconnect_action=dict(type='str'),
                 keyboard_layout=dict(type='str'),
                 monitors=dict(type='int'),

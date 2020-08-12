@@ -1,13 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -23,10 +21,12 @@ options:
     id:
         description:
             - "ID of the host to manage."
+        type: str
     name:
         description:
             - "Name of the host to manage."
         required: true
+        type: str
     state:
         description:
             - "State which should a host to be in after successful completion."
@@ -36,9 +36,11 @@ options:
             'restarted', 'stopped', 'reinstalled', 'iscsidiscover', 'iscsilogin'
         ]
         default: present
+        type: str
     comment:
         description:
             - "Description of the host."
+        type: str
     timeout:
         description:
             - "The amount of time in seconds the module should wait for the host to
@@ -47,12 +49,15 @@ options:
     cluster:
         description:
             - "Name of the cluster, where host should be created."
+        type: str
     address:
         description:
             - "Host address. It can be either FQDN (preferred) or IP address."
+        type: str
     password:
         description:
             - "Password of the root. It's required in case C(public_key) is set to I(False)."
+        type: str
     ssh_port:
         description:
             - "The host SSH port."
@@ -68,9 +73,11 @@ options:
         description:
             - "Specify if host will have enabled Kdump integration."
         choices: ['enabled', 'disabled']
+        type: str
     spm_priority:
         description:
             - "SPM priority of the host. Integer value from 1 to 10, where higher number means higher priority."
+        type: int
     override_iptables:
         description:
             - "If True host iptables will be overridden by host deploy script."
@@ -86,7 +93,7 @@ options:
     override_display:
         description:
             - "Override the display address of all VMs on this host with specified address."
-        type: bool
+        type: str
     kernel_params:
         description:
             - "List of kernel boot parameters."
@@ -101,6 +108,8 @@ options:
             - "Kernel boot parameters changes require host deploy and restart. The host needs
                to be I(reinstalled) successfully and then to be I(rebooted) for kernel boot parameters
                to be applied."
+        type: list
+        elements: dict
     hosted_engine:
         description:
             - "If I(deploy) it means this host should deploy also hosted engine
@@ -111,6 +120,7 @@ options:
         choices:
             - 'deploy'
             - 'undeploy'
+        type: str
     power_management_enabled:
         description:
             - "Enable or disable power management of the host."
@@ -148,6 +158,7 @@ options:
             portal:
                 description:
                     - "The portal being used to connect with iscsi."
+        type: dict
     check_upgrade:
         description:
             - "If I(true) and C(state) is I(upgraded) run check for upgrade
@@ -167,6 +178,7 @@ options:
             - If I(separated), each vGPU is placed on a separate physical card, if
               possible. This can be useful for improving vGPU performance.
         choices: ['consolidated', 'separated']
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -176,7 +188,7 @@ EXAMPLES = '''
 
 # Add host with username/password supporting SR-IOV.
 # Note that override_iptables is false by default in oVirt/RHV:
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     cluster: Default
     name: myhost
     address: 10.34.61.145
@@ -186,7 +198,7 @@ EXAMPLES = '''
       - intel_iommu=on
 
 # Add host using public key
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     public_key: true
     cluster: Default
     name: myhost2
@@ -194,7 +206,7 @@ EXAMPLES = '''
     override_iptables: true
 
 # Deploy hosted engine host
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     cluster: Default
     name: myhost2
     password: secret
@@ -203,22 +215,22 @@ EXAMPLES = '''
     hosted_engine: deploy
 
 # Maintenance
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: maintenance
     name: myhost
 
 # Restart host using power management:
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: restarted
     name: myhost
 
 # Upgrade host
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: upgraded
     name: myhost
 
 # discover iscsi targets
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: iscsidiscover
     name: myhost
     iscsi:
@@ -229,7 +241,7 @@ EXAMPLES = '''
 
 
 # login to iscsi targets
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: iscsilogin
     name: myhost
     iscsi:
@@ -241,19 +253,19 @@ EXAMPLES = '''
 
 
 # Reinstall host using public key
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: reinstalled
     name: myhost
     public_key: true
 
 # Remove host
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: absent
     name: myhost
     force: True
 
 # Retry removing host when failed (https://bugzilla.redhat.com/show_bug.cgi?id=1719271)
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: absent
     name: myhost
   register: result
@@ -262,7 +274,7 @@ EXAMPLES = '''
   delay: 20
 
 # Change host Name
-- ovirt_host:
+- ovirt.ovirt.ovirt_host:
     id: 00000000-0000-0000-0000-000000000000
     name: "new host name"
 '''
@@ -481,7 +493,7 @@ def main():
         force=dict(default=False, type='bool'),
         timeout=dict(default=600, type='int'),
         override_display=dict(default=None),
-        kernel_params=dict(default=None, type='list'),
+        kernel_params=dict(default=None, type='list', elements='dict'),
         hosted_engine=dict(default=None, choices=['deploy', 'undeploy']),
         power_management_enabled=dict(default=None, type='bool'),
         activate=dict(default=True, type='bool'),
@@ -562,13 +574,11 @@ def main():
                             ) if host.name in event.description
                         ]) > 0
                     ),
-                    fail_condition=lambda host: len([
-                        event
-                        for event in events_service.list(
-                            from_=int(last_event.id),
-                            search='type=839 or type=887 and host.name=%s' % host.name,
-                        )
-                    ]) > 0,
+                    fail_condition=lambda host: len(events_service.list(
+                        from_=int(last_event.id),
+                        search='type=839 or type=887 and host.name=%s' % host.name,
+                    )
+                    ) > 0,
                 )
                 # Set to False, because upgrade_check isn't 'changing' action:
                 hosts_module._changed = False

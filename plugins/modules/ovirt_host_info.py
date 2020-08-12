@@ -1,13 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -27,20 +25,21 @@ notes:
        the I(register) keyword to use it."
 options:
     pattern:
-      description:
-        - "Search term which is accepted by oVirt/RHV search backend."
-        - "For example to search host X from datacenter Y use following pattern:
-           name=X and datacenter=Y"
+        description:
+            - "Search term which is accepted by oVirt/RHV search backend."
+            - "For example to search host X from datacenter Y use following pattern:
+               name=X and datacenter=Y"
+        type: str
     all_content:
-      description:
-        - "If I(true) all the attributes of the hosts should be
-           included in the response."
-      default: False
-      type: bool
+        description:
+            - "If I(true) all the attributes of the hosts should be
+               included in the response."
+        default: False
+        type: bool
     cluster_version:
-      description:
-        - "Filter the hosts based on the cluster version."
-      type: str
+        description:
+            - "Filter the hosts based on the cluster version."
+        type: str
 
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
@@ -51,17 +50,17 @@ EXAMPLES = '''
 
 # Gather information about all hosts which names start with C(host) and
 # belong to data center C(west):
-- ovirt_host_info:
+- ovirt.ovirt.ovirt_host_info:
     pattern: name=host* and datacenter=west
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_hosts }}"
 # All hosts with cluster version 4.2:
-- ovirt_host_info:
+- ovirt.ovirt.ovirt_host_info:
     pattern: name=host*
     cluster_version: "4.2"
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_hosts }}"
 '''
 

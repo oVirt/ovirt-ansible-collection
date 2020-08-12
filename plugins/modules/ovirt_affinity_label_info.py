@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -40,14 +38,17 @@ notes:
        the I(register) keyword to use it."
 options:
     name:
-      description:
-        - "Name of the affinity labels which should be listed."
+        description:
+            - "Name of the affinity labels which should be listed."
+        type: str
     vm:
-      description:
-        - "Name of the VM, which affinity labels should be listed."
+        description:
+            - "Name of the VM, which affinity labels should be listed."
+        type: str
     host:
-      description:
-        - "Name of the host, which affinity labels should be listed."
+        description:
+            - "Name of the host, which affinity labels should be listed."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
@@ -56,35 +57,35 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all affinity labels, which names start with C(label):
-- ovirt_affinity_label_info:
+- ovirt.ovirt.ovirt_affinity_label_info:
     name: label*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_affinity_labels }}"
 
 # Gather information about all affinity labels, which are assigned to VMs
 # which names start with C(postgres):
-- ovirt_affinity_label_info:
+- ovirt.ovirt.ovirt_affinity_label_info:
     vm: postgres*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_affinity_labels }}"
 
 # Gather information about all affinity labels, which are assigned to hosts
 # which names start with C(west):
-- ovirt_affinity_label_info:
+- ovirt.ovirt.ovirt_affinity_label_info:
     host: west*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_affinity_labels }}"
 
 # Gather information about all affinity labels, which are assigned to hosts
 # which names start with C(west) or VMs which names start with C(postgres):
-- ovirt_affinity_label_info:
+- ovirt.ovirt.ovirt_affinity_label_info:
     host: west*
     vm: postgres*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_affinity_labels }}"
 '''
 

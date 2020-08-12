@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -39,28 +37,37 @@ options:
     id:
         description:
             - "ID of the tag to manage."
+        type: str
     name:
         description:
             - "Name of the tag to manage."
         required: true
+        type: str
     state:
         description:
             - "Should the tag be present/absent/attached/detached."
             - "C(Note): I(attached) and I(detached) states are supported since version 2.4."
         choices: ['present', 'absent', 'attached', 'detached']
         default: present
+        type: str
     description:
         description:
             - "Description of the tag to manage."
+        type: str
     parent:
         description:
             - "Name of the parent tag."
+        type: str
     vms:
         description:
             - "List of the VMs names, which should have assigned this tag."
+        type: list
+        elements: str
     hosts:
         description:
             - "List of the hosts names, which should have assigned this tag."
+        type: list
+        elements: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -69,38 +76,38 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create(if not exists) and assign tag to vms vm1 and vm2:
-- ovirt_tag:
+- ovirt.ovirt.ovirt_tag:
     name: mytag
     vms:
       - vm1
       - vm2
 
 # Attach a tag to VM 'vm3', keeping the rest already attached tags on VM:
-- ovirt_tag:
+- ovirt.ovirt.ovirt_tag:
     name: mytag
     state: attached
     vms:
       - vm3
 
 # Detach a tag from VM 'vm3', keeping the rest already attached tags on VM:
-- ovirt_tag:
+- ovirt.ovirt.ovirt_tag:
     name: mytag
     state: detached
     vms:
       - vm3
 
 # To detach all VMs from tag:
-- ovirt_tag:
+- ovirt.ovirt.ovirt_tag:
     name: mytag
     vms: []
 
 # Remove tag
-- ovirt_tag:
+- ovirt.ovirt.ovirt_tag:
     state: absent
     name: mytag
 
 # Change Tag Name
-- ovirt_tag:
+- ovirt.ovirt.ovirt_tag:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_tag_name"
 '''
@@ -221,8 +228,8 @@ def main():
         name=dict(required=True),
         description=dict(default=None),
         parent=dict(default=None),
-        vms=dict(default=None, type='list'),
-        hosts=dict(default=None, type='list'),
+        vms=dict(default=None, type='list', elements='str'),
+        hosts=dict(default=None, type='list', elements='str'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,

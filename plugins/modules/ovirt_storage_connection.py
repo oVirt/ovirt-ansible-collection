@@ -1,12 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2017 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -20,50 +19,65 @@ options:
     id:
         description:
             - "Id of the storage connection to manage."
+        type: str
     state:
         description:
             - "Should the storage connection be present or absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     storage:
         description:
             - "Name of the storage domain to be used with storage connection."
+        type: str
     address:
         description:
             - "Address of the storage server. E.g.: myserver.mydomain.com"
+        type: str
     path:
         description:
             - "Path of the mount point of the storage. E.g.: /path/to/my/data"
+        type: str
     nfs_version:
         description:
             - "NFS version. One of: I(auto), I(v3), I(v4) or I(v4_1)."
+        type: str
     nfs_timeout:
         description:
             - "The time in tenths of a second to wait for a response before retrying NFS requests. Range 0 to 65535."
+        type: int
     nfs_retrans:
         description:
             - "The number of times to retry a request before attempting further recovery actions. Range 0 to 65535."
+        type: int
     mount_options:
         description:
             - "Option which will be passed when mounting storage."
+        type: str
     password:
         description:
             - "A CHAP password for logging into a target."
+        type: str
     username:
         description:
             - "A CHAP username for logging into a target."
+        type: str
     port:
         description:
             - "Port of the iSCSI storage server."
+        type: int
     target:
         description:
             - "The target IQN for the storage device."
+        type: str
     type:
         description:
             - "Storage type. For example: I(nfs), I(iscsi), etc."
+        type: str
     vfs_type:
         description:
             - "Virtual File System type."
+        type: str
     force:
         description:
             - "This parameter is relevant only when updating a connection."
@@ -78,7 +92,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Add new storage connection:
-- ovirt_storage_connection:
+- ovirt.ovirt.ovirt_storage_connection:
     storage: myiscsi
     address: 10.34.63.199
     target: iqn.2016-08-09.domain-01:nickname
@@ -86,13 +100,13 @@ EXAMPLES = '''
     type: iscsi
 
 # Update the existing storage connection address:
-- ovirt_storage_connection:
+- ovirt.ovirt.ovirt_storage_connection:
     id: 26915c96-92ff-47e5-9e77-b581db2f2d36
     address: 10.34.63.204
     force: true
 
 # Remove storage connection:
-- ovirt_storage_connection:
+- ovirt.ovirt.ovirt_storage_connection:
     id: 26915c96-92ff-47e5-9e77-b581db2f2d36
 '''
 

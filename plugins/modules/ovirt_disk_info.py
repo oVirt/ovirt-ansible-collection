@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2017 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -40,10 +38,11 @@ notes:
        the I(register) keyword to use it."
 options:
     pattern:
-      description:
-        - "Search term which is accepted by oVirt/RHV search backend."
-        - "For example to search Disk X from storage Y use following pattern:
-           name=X and storage.name=Y"
+        description:
+            - "Search term which is accepted by oVirt/RHV search backend."
+            - "For example to search Disk X from storage Y use following pattern:
+               name=X and storage.name=Y"
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
@@ -52,10 +51,10 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all Disks which names start with C(centos)
-- ovirt_disk_info:
+- ovirt.ovirt.ovirt_disk_info:
     pattern: name=centos*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_disks }}"
 '''
 

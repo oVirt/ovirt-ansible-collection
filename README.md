@@ -20,11 +20,11 @@ Requirements
 ------------
 
  * Ansible version 2.9 or higher
- * Python SDK version 4.3 or higher
+ * Python SDK version 4.4 or higher
 
 Modules documentation
 --------------
-https://docs.ansible.com/ansible/latest/modules/list_of_cloud_modules.html#ovirt
+https://docs.ansible.com/ansible/2.10/collections/ovirt/ovirt/index.html
 
 Dependencies
 ------------
@@ -45,9 +45,9 @@ Example Playbook
   tasks:
     - name: Login
       ovirt_auth:
-          url: "https://ovirt-engine.example.com/ovirt-engine/api"
-          password: "{{ engine_password | default(omit) }}"
-          username: "admin@internal"
+        url: "https://ovirt-engine.example.com/ovirt-engine/api"
+        password: "{{ engine_password | default(omit) }}"
+        username: "admin@internal"
     - name: Create vm
       ovirt_vm:
         auth: "{{ ovirt_auth }}"

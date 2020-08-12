@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -46,6 +44,7 @@ options:
         - "Search term which is accepted by oVirt/RHV search backend."
         - "For example to search VM X from cluster Y use following pattern:
            name=X and cluster=Y"
+      type: str
     all_content:
       description:
         - "If I(true) all the attributes of the virtual machines should be
@@ -59,6 +58,7 @@ options:
     max:
       description:
         - "The maximum number of results to return."
+      type: int
     next_run:
       description:
         - "Indicates if the returned result describes the virtual machine as it is currently running or if describes
@@ -74,18 +74,18 @@ EXAMPLES = '''
 
 # Gather information about all VMs which names start with C(centos) and
 # belong to cluster C(west):
-- ovirt_vm_info:
+- ovirt.ovirt.ovirt_vm_info:
     pattern: name=centos* and cluster=west
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_vms }}"
 
 # Gather info about next run configuration of virtual machine named myvm
-- ovirt_vm_info:
+- ovirt.ovirt.ovirt_vm_info:
     pattern: name=myvm
     next_run: true
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_vms[0] }}"
 '''
 

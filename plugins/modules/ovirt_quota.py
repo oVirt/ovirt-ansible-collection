@@ -1,13 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -23,46 +21,57 @@ options:
     id:
         description:
             - "ID of the quota to manage."
+        type: str
     name:
         description:
             - "Name of the quota to manage."
+        type: str
         required: true
     state:
         description:
             - "Should the quota be present/absent."
+        type: str
         choices: ['present', 'absent']
         default: present
     data_center:
         description:
             - "Name of the datacenter where quota should be managed."
+        type: str
         required: true
     description:
         description:
             - "Description of the quota to manage."
+        type: str
     cluster_threshold:
         description:
             - "Cluster threshold(soft limit) defined in percentage (0-100)."
+        type: int
         aliases:
             - "cluster_soft_limit"
     cluster_grace:
         description:
             - "Cluster grace(hard limit) defined in percentage (1-100)."
+        type: int
         aliases:
             - "cluster_hard_limit"
     storage_threshold:
         description:
             - "Storage threshold(soft limit) defined in percentage (0-100)."
+        type: int
         aliases:
             - "storage_soft_limit"
     storage_grace:
         description:
             - "Storage grace(hard limit) defined in percentage (1-100)."
+        type: int
         aliases:
             - "storage_hard_limit"
     clusters:
         description:
             - "List of dictionary of cluster limits, which is valid to specific cluster."
             - "If cluster isn't specified it's valid to all clusters in system:"
+        type: list
+        elements: dict
         suboptions:
             cluster:
                 description:
@@ -77,6 +86,8 @@ options:
         description:
             - "List of dictionary of storage limits, which is valid to specific storage."
             - "If storage isn't specified it's valid to all storages in system:"
+        type: list
+        elements: dict
         suboptions:
             storage:
                 description:
@@ -92,7 +103,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Add cluster quota to cluster cluster1 with memory limit 20GiB and CPU limit to 10:
-- ovirt_quota:
+- ovirt.ovirt.ovirt_quota:
     name: quota1
     data_center: dcX
     clusters:
@@ -101,7 +112,7 @@ EXAMPLES = '''
           cpu: 10
 
 # Add cluster quota to all clusters with memory limit 30GiB and CPU limit to 15:
-- ovirt_quota:
+- ovirt.ovirt.ovirt_quota:
     name: quota2
     data_center: dcX
     clusters:
@@ -109,7 +120,7 @@ EXAMPLES = '''
           cpu: 15
 
 # Add storage quota to storage data1 with size limit to 100GiB
-- ovirt_quota:
+- ovirt.ovirt.ovirt_quota:
     name: quota3
     data_center: dcX
     storage_grace: 40
@@ -119,13 +130,13 @@ EXAMPLES = '''
           size: 100
 
 # Remove quota quota1 (Note the quota must not be assigned to any VM/disk):
-- ovirt_quota:
+- ovirt.ovirt.ovirt_quota:
     state: absent
     data_center: dcX
     name: quota1
 
 # Change Quota Name
-- ovirt_quota:
+- ovirt.ovirt.ovirt_quota:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_quota_name"
     data_center: dcX
@@ -249,8 +260,8 @@ def main():
         cluster_grace=dict(default=None, type='int', aliases=['cluster_hard_limit']),
         storage_threshold=dict(default=None, type='int', aliases=['storage_soft_limit']),
         storage_grace=dict(default=None, type='int', aliases=['storage_hard_limit']),
-        clusters=dict(default=[], type='list'),
-        storages=dict(default=[], type='list'),
+        clusters=dict(default=[], type='list', elements='dict'),
+        storages=dict(default=[], type='list', elements='dict'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,

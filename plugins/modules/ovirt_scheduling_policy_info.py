@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2017 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -42,10 +40,11 @@ options:
     id:
         description:
             - "ID of the scheduling policy."
-        required: true
+        type: str
     name:
         description:
             - "Name of the scheduling policy, can be used as glob expression."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
@@ -54,10 +53,10 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all scheduling policies with name InClusterUpgrade:
-- ovirt_scheduling_policy_info:
+- ovirt.ovirt.ovirt_scheduling_policy_info:
     name: InClusterUpgrade
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_scheduling_policies }}"
 '''
 

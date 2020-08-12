@@ -1,12 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -20,16 +19,20 @@ options:
     name:
         description:
             - "Name of the role to manage."
+        type: str
     id:
         description:
             - "ID of the role to manage."
+        type: str
     description:
         description:
             - "Description of the role."
+        type: str
     state:
         description:
             - "Should the role be present/absent."
         choices: ['present', 'absent']
+        type: str
         default: present
     administrative:
         description:
@@ -40,6 +43,8 @@ options:
             - "List of permits which role will have"
             - "Permit 'login' is default and all roles will have it."
             - "List can contain name of permit."
+        type: list
+        elements: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -48,7 +53,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create administrative role with two permits
-- ovirt_role:
+- ovirt.ovirt.ovirt_role:
     name: role
     administrative: true
     permits:
@@ -56,12 +61,12 @@ EXAMPLES = '''
       - create_instance
 
 # Remove role
-- ovirt_role:
+- ovirt.ovirt.ovirt_role:
     name: role
     state: absent
 
 # Remove all permit
-- ovirt_role:
+- ovirt.ovirt.ovirt_role:
     name: role
     administrative: ture
     permits:
@@ -124,7 +129,7 @@ class RoleModule(BaseModule):
                     self.param('permits').append('login')
                 permits_service = self._service.service(entity.id).permits_service()
                 current = [er.name for er in permits_service.list()]
-                passed = [pr for pr in self.param('permits')]
+                passed = self.param('permits')
                 if not sorted(current) == sorted(passed):
                     if self._module.check_mode:
                         return False
@@ -155,7 +160,7 @@ def main():
         name=dict(default=None),
         description=dict(default=None),
         administrative=dict(type='bool', default=False),
-        permits=dict(type='list', default=[]),
+        permits=dict(type='list', default=[], elements='str'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,

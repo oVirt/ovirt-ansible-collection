@@ -1,13 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -27,9 +25,10 @@ notes:
        the I(register) keyword to use it."
 options:
     pattern:
-      description:
-        - "Search term which is accepted by oVirt/RHV search backend."
-        - "For example to search datacenter I(X) use following pattern: I(name=X)"
+        description:
+            - "Search term which is accepted by oVirt/RHV search backend."
+            - "For example to search datacenter I(X) use following pattern: I(name=X)"
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
@@ -38,10 +37,10 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all data centers which names start with C(production):
-- ovirt_datacenter_info:
+- ovirt.ovirt.ovirt_datacenter_info:
     pattern: name=production*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_datacenters }}"
 '''
 

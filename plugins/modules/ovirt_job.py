@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -38,6 +36,7 @@ options:
             - "Description of the job."
             - "When task with same description has already finished and you rerun taks it will create new job."
         required: true
+        type: str
     state:
         description:
             - "Should the job be C(present)/C(absent)/C(failed)."
@@ -45,6 +44,7 @@ options:
             - "Note when C(finished)/C(failed) it will finish/fail all steps."
         choices: ['present', 'absent', 'started', 'finished', 'failed']
         default: present
+        type: str
     steps:
         description:
             - "The steps of the job."
@@ -61,6 +61,7 @@ options:
                 choices: ['present', 'absent', 'started', 'finished', 'failed']
                 default: present
         type: list
+        elements: dict
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -69,28 +70,28 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Create job with two steps
-  ovirt_job:
+  ovirt.ovirt.ovirt_job:
     description: job_name
     steps:
       - description: step_name_A
       - description: step_name_B
 
 - name: Finish one step
-  ovirt_job:
+  ovirt.ovirt.ovirt_job:
     description: job_name
     steps:
       - description: step_name_A
         state: finished
 
 - name: When you fail one step whole job will stop
-  ovirt_job:
+  ovirt.ovirt.ovirt_job:
     description: job_name
     steps:
       - description: step_name_B
         state: failed
 
 - name: Finish all steps
-  ovirt_job:
+  ovirt.ovirt.ovirt_job:
     description: job_name
     state: finished
 '''
@@ -181,8 +182,8 @@ def main():
             choices=['present', 'absent', 'started', 'finished', 'failed'],
             default='present',
         ),
-        description=dict(default=None),
-        steps=dict(default=None, type='list'),
+        description=dict(required=True),
+        steps=dict(default=None, type='list', elements='dict'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,

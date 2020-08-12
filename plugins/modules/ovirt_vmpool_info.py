@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -42,9 +40,10 @@ notes:
        the I(register) keyword to use it."
 options:
     pattern:
-      description:
-        - "Search term which is accepted by oVirt/RHV search backend."
-        - "For example to search vmpool X: name=X"
+        description:
+            - "Search term which is accepted by oVirt/RHV search backend."
+            - "For example to search vmpool X: name=X"
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
@@ -53,10 +52,10 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all vm pools which names start with C(centos):
-- ovirt_vmpool_info:
+- ovirt.ovirt.ovirt_vmpool_info:
     pattern: name=centos*
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_vm_pools }}"
 '''
 

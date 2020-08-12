@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016, 2018 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -39,6 +37,7 @@ options:
         description:
             - "Name of the host to manage networks for."
         required: true
+        type: str
         aliases:
             - 'host'
     state:
@@ -46,6 +45,7 @@ options:
             - "Should the host be present/absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     bond:
         description:
             - "Dictionary describing network bond:"
@@ -62,12 +62,16 @@ options:
             interfaces:
                 description:
                     - List of interfaces to create a bond.
+        type: dict
     interface:
         description:
             - "Name of the network interface where logical network should be attached."
+        type: str
     networks:
         description:
             - "List of dictionary describing networks to be attached to interface or bond:"
+        type: list
+        elements: dict
         suboptions:
             name:
                 description:
@@ -102,6 +106,8 @@ options:
     labels:
         description:
             - "List of names of the network label to be assigned to bond or interface."
+        type: list
+        elements: str
     check:
         description:
             - "If I(true) verify connectivity between host and engine."
@@ -129,7 +135,7 @@ EXAMPLES = '''
 
 # Create bond on eth0 and eth1 interface, and put 'myvlan' network on top of it and persist the new configuration:
 - name: Bonds
-  ovirt_host_network:
+  ovirt.ovirt.ovirt_host_network:
     name: myhost
     save: yes
     bond:
@@ -148,7 +154,7 @@ EXAMPLES = '''
 
 # Create bond on eth1 and eth2 interface, specifying both mode and miimon:
 - name: Bonds
-  ovirt_host_network:
+  ovirt.ovirt.ovirt_host_network:
     name: myhost
     bond:
       name: bond0
@@ -160,14 +166,14 @@ EXAMPLES = '''
         - eth2
 
 # Remove bond0 bond from host interfaces:
-- ovirt_host_network:
+- ovirt.ovirt.ovirt_host_network:
     state: absent
     name: myhost
     bond:
       name: bond0
 
 # Assign myvlan1 and myvlan2 vlans to host eth0 interface:
-- ovirt_host_network:
+- ovirt.ovirt.ovirt_host_network:
     name: myhost
     interface: eth0
     networks:
@@ -175,7 +181,7 @@ EXAMPLES = '''
       - name: myvlan2
 
 # Remove myvlan2 vlan from host eth0 interface:
-- ovirt_host_network:
+- ovirt.ovirt.ovirt_host_network:
     state: absent
     name: myhost
     interface: eth0
@@ -183,13 +189,13 @@ EXAMPLES = '''
       - name: myvlan2
 
 # Remove all networks/vlans from host eth0 interface:
-- ovirt_host_network:
+- ovirt.ovirt.ovirt_host_network:
     state: absent
     name: myhost
     interface: eth0
 
 # Add custom_properties to network:
-- ovirt_host_network:
+- ovirt.ovirt.ovirt_host_network:
     name: myhost
     interface: eth0
     networks:
@@ -412,8 +418,8 @@ def main():
         name=dict(aliases=['host'], required=True),
         bond=dict(default=None, type='dict'),
         interface=dict(default=None),
-        networks=dict(default=None, type='list'),
-        labels=dict(default=None, type='list'),
+        networks=dict(default=None, type='list', elements='dict'),
+        labels=dict(default=None, type='list', elements='str'),
         check=dict(default=None, type='bool'),
         save=dict(default=True, type='bool'),
         sync_networks=dict(default=False, type='bool'),
@@ -530,7 +536,7 @@ def main():
                             otypes.Property(
                                 name=prop.get('name'),
                                 value=prop.get('value')
-                            ) for prop in network.get('custom_properties')
+                            ) for prop in network.get('custom_properties', [])
                         ]
                     ) for network in networks
                 ] if networks else None,

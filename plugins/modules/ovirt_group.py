@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -37,20 +35,24 @@ options:
         description:
             - "Name of the group to manage."
         required: true
+        type: str
     state:
         description:
             - "Should the group be present/absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     authz_name:
         description:
             - "Authorization provider of the group. In previous versions of oVirt/RHV known as domain."
         required: true
         aliases: ['domain']
+        type: str
     namespace:
         description:
             - "Namespace of the authorization provider, where group resides."
         required: false
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -59,20 +61,20 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Add group group1 from authorization provider example.com-authz
-- ovirt_group:
+- ovirt.ovirt.ovirt_group:
     name: group1
     domain: example.com-authz
 
 # Add group group1 from authorization provider example.com-authz
 # In case of multi-domain Active Directory setup, you should pass
 # also namespace, so it adds correct group:
-- ovirt_group:
+- ovirt.ovirt.ovirt_group:
     name: group1
     namespace: dc=ad2,dc=example,dc=com
     domain: example.com-authz
 
 # Remove group group1 with authorization provider example.com-authz
-- ovirt_group:
+- ovirt.ovirt.ovirt_group:
     state: absent
     name: group1
     domain: example.com-authz

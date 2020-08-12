@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -38,24 +36,31 @@ options:
     id:
         description:
             - "ID of the network to manage."
+        type: str
     name:
         description:
             - "Name of the network to manage."
         required: true
+        type: str
     state:
         description:
             - "Should the network be present or absent"
         choices: ['present', 'absent']
         default: present
+        type: str
     data_center:
         description:
             - "Datacenter name where network reside."
+        type: str
+        required: true
     description:
         description:
             - "Description of the network."
+        type: str
     comment:
         description:
             - "Comment of the network."
+        type: str
     vlan_tag:
         description:
             - "Specify VLAN tag."
@@ -65,6 +70,7 @@ options:
         description:
             - "Name of external network provider."
             - "At first it tries to import the network when not found it will create network in external provider."
+        type: str
     vm_network:
         description:
             - "If I(True) network will be marked as network for VM."
@@ -73,9 +79,12 @@ options:
     mtu:
         description:
             - "Maximum transmission unit (MTU) of the network."
+        type: int
     clusters:
         description:
             - "List of dictionaries describing how the network is managed in specific cluster."
+        type: list
+        elements: dict
         suboptions:
             name:
                 description:
@@ -103,6 +112,7 @@ options:
     label:
         description:
             - "Name of the label to assign to the network."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -111,31 +121,31 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create network
-- ovirt_network:
+- ovirt.ovirt.ovirt_network:
     data_center: mydatacenter
     name: mynetwork
     vlan_tag: 10
     vm_network: true
 
 # Remove network
-- ovirt_network:
+- ovirt.ovirt.ovirt_network:
     state: absent
     name: mynetwork
 
 # Change Network Name
-- ovirt_network:
+- ovirt.ovirt.ovirt_network:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_network_name"
     data_center: mydatacenter
 
 # Add network from external provider
-- ovirt_network:
+- ovirt.ovirt.ovirt_network:
     data_center: mydatacenter
     name: mynetwork
     external_provider: ovirt-provider-ovn
 
 # Remove vlan_tag
-- ovirt_network:
+- ovirt.ovirt.ovirt_network:
     data_center: mydatacenter
     name: mynetwork
     vlan_tag: -1
@@ -297,7 +307,7 @@ def main():
         vlan_tag=dict(default=None, type='int'),
         vm_network=dict(default=None, type='bool'),
         mtu=dict(default=None, type='int'),
-        clusters=dict(default=None, type='list'),
+        clusters=dict(default=None, type='list', elements='dict'),
         label=dict(default=None),
     )
     module = AnsibleModule(

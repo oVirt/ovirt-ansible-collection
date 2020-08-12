@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,16 +19,14 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
 module: ovirt_vm_os_info
 short_description: Retrieve information on all supported oVirt/RHV operating systems
-version_added: "1.0.1"
+version_added: "1.1.0"
 author:
 - "Martin Necas (@mnecas)"
 - "Chris Brown (@snecklifter)"
@@ -43,6 +41,7 @@ options:
       description:
         - "List of attributes which should be in returned."
       type: list
+      elements: str
     name:
       description:
         - "Name of the operating system which should be returned."
@@ -53,17 +52,17 @@ extends_documentation_fragment: ovirt.ovirt.ovirt_info
 EXAMPLES = '''
 # Look at ovirt_auth module to see how to reuse authentication:
 
-- ovirt_vm_os_info:
+- ovirt.ovirt.ovirt_vm_os_info:
     auth: "{{ ovirt_auth }}"
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_operating_systems }}"
 
-- ovirt_vm_os_info:
+- ovirt.ovirt.ovirt_vm_os_info:
     auth: "{{ ovirt_auth }}"
     filter_keys: name,architecture
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_operating_systems }}"
 '''
 
@@ -89,7 +88,7 @@ from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
 
 def main():
     argument_spec = ovirt_info_full_argument_spec(
-        filter_keys=dict(default=None, type='list'),
+        filter_keys=dict(default=None, type='list', elements='str'),
         name=dict(default=None, type='str'),
     )
     module = AnsibleModule(argument_spec)

@@ -1,12 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright: (c) 2017, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -23,57 +22,67 @@ options:
         description:
             - Name of the role to be assigned to user/group on specific object.
         default: UserRole
+        type: str
     state:
         description:
             - Should the permission be present/absent.
         choices: [ absent, present ]
         default: present
+        type: str
     object_id:
         description:
             - ID of the object where the permissions should be managed.
+        type: str
     object_name:
         description:
             - Name of the object where the permissions should be managed.
+        type: str
     object_type:
         description:
             - The object where the permissions should be managed.
         choices:
-        - cluster
-        - cpu_profile
-        - data_center
-        - disk
-        - disk_profile
-        - host
-        - network
-        - storage_domain
-        - system
-        - template
-        - vm
-        - vm_pool
-        - vnic_profile
+            - cluster
+            - cpu_profile
+            - data_center
+            - disk
+            - disk_profile
+            - host
+            - network
+            - storage_domain
+            - system
+            - template
+            - vm
+            - vm_pool
+            - vnic_profile
         default: vm
+        type: str
     user_name:
         description:
             - Username of the user to manage. In most LDAPs it's I(uid) of the user,
               but in Active Directory you must specify I(UPN) of the user.
             - Note that if user does not exist in the system this module will fail,
               you should ensure the user exists by using M(ovirt.ovirt.ovirt_users) module.
+        type: str
     group_name:
         description:
             - Name of the group to manage.
             - Note that if group does not exist in the system this module will fail,
                you should ensure the group exists by using M(ovirt.ovirt.ovirt_groups) module.
+        type: str
     authz_name:
         description:
             - Authorization provider of the user/group.
         required: true
         aliases: [ domain ]
+        type: str
     namespace:
         description:
             - Namespace of the authorization provider, where user/group resides.
+        type: str
     quota_name:
         description:
             - Name of the quota to assign permission. Works only with C(object_type) I(data_center).
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -82,7 +91,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Add user user1 from authorization provider example.com-authz
-  ovirt_permission:
+  ovirt.ovirt.ovirt_permission:
     user_name: user1
     authz_name: example.com-authz
     object_type: vm
@@ -90,7 +99,7 @@ EXAMPLES = '''
     role: UserVmManager
 
 - name: Remove permission from user
-  ovirt_permission:
+  ovirt.ovirt.ovirt_permission:
     state: absent
     user_name: user1
     authz_name: example.com-authz
@@ -99,7 +108,7 @@ EXAMPLES = '''
     role: ClusterAdmin
 
 - name: Assign QuotaConsumer role to user
-  ovirt_permissions:
+  ovirt.ovirt.ovirt_permissions:
     state: present
     user_name: user1
     authz_name: example.com-authz
@@ -109,7 +118,7 @@ EXAMPLES = '''
     role: QuotaConsumer
 
 - name: Assign QuotaConsumer role to group
-  ovirt_permissions:
+  ovirt.ovirt.ovirt_permissions:
     state: present
     group_name: group1
     authz_name: example.com-authz

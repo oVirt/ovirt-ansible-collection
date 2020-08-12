@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # Copyright: (c) 2018, Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -47,7 +46,6 @@ DOCUMENTATION = '''
       ovirt_insecure:
         description: A boolean flag that indicates if the server TLS certificate and host name should be checked.
         required: False
-        default: False
       ovirt_query_filter:
         required: False
         description: dictionary of filter key-values to query VM's. See U(https://ovirt.github.io/ovirt-engine-sdk/master/services.m.html#ovirtsdk4\
@@ -244,7 +242,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             username=self.get_option('ovirt_username'),
             password=self.get_option('ovirt_password'),
             ca_file=self.get_option('ovirt_cafile'),
-            insecure=self.get_option('ovirt_insecure'),
+            insecure=self.get_option('ovirt_insecure') if self.get_option('ovirt_insecure') is not None else not self.get_option('ovirt_cafile'),
         )
 
         query_filter = self._get_query_options(self.get_option('ovirt_query_filter', None))

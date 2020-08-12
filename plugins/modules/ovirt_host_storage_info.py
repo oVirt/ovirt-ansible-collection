@@ -1,12 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2017 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -23,6 +22,7 @@ options:
         description:
             - "Host to get device list from."
         required: true
+        type: str
     iscsi:
         description:
             - "Dictionary with values for iSCSI storage type:"
@@ -42,6 +42,7 @@ options:
             portal:
                 description:
                   - "The portal being used to connect with iscsi."
+        type: dict
     fcp:
         description:
             - "Dictionary with values for fibre channel storage type:"
@@ -55,6 +56,7 @@ options:
             lun_id:
                 description:
                   - "LUN id."
+        type: dict
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
@@ -63,13 +65,13 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about HostStorages with specified target and address:
-- ovirt_host_storage_info:
+- ovirt.ovirt.ovirt_host_storage_info:
     host: myhost
     iscsi:
       target: iqn.2016-08-09.domain-01:nickname
       address: 10.34.63.204
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_host_storages }}"
 '''
 

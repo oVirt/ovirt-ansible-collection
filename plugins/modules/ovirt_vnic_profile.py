@@ -1,12 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright: (c) 2017, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -23,29 +22,37 @@ options:
         description:
             - "A human-readable name in plain text."
         required: true
+        type: str
     state:
         description:
             - "Should the vNIC be absent/present."
         choices: ['absent', 'present']
         default: present
+        type: str
     description:
         description:
             - "A human-readable description in plain text."
+        type: str
     data_center:
         description:
             - "Datacenter name where network reside."
+        type: str
         required: true
     network:
         description:
             - "Name of network to which is vNIC attached."
+        type: str
         required: true
     network_filter:
         description:
             - "The network filter enables to filter packets send to/from the VM's nic according to defined rules."
+        type: str
     custom_properties:
         description:
             - "Custom properties applied to the vNIC profile."
             - "Custom properties is a list of dictionary which can have following values:"
+        type: list
+        elements: dict
         suboptions:
             name:
                 description:
@@ -59,6 +66,7 @@ options:
     qos:
         description:
             - "Quality of Service attributes regulate inbound and outbound network traffic of the NIC."
+        type: str
     port_mirroring:
         description:
             - "Enables port mirroring."
@@ -70,6 +78,7 @@ options:
             - "When enabled and C(migratable) not specified then C(migratable) is enabled."
             - "Port mirroring, QoS and network filters are not supported on passthrough profiles."
         choices: ['disabled', 'enabled']
+        type: str
     migratable:
         description:
             - "Marks whether pass_through NIC is migratable or not."
@@ -81,14 +90,14 @@ EXAMPLES = '''
 # Examples don't contain auth parameter for simplicity,
 # look at ovirt_auth module to see how to reuse authentication:
 - name: Add vNIC
-  ovirt_vnic_profile:
+  ovirt.ovirt.ovirt_vnic_profile:
     name: myvnic
     network: mynetwork
     state: present
     data_center: datacenter
 
 - name: Editing vNICs network_filter, custom_properties, qos
-  ovirt_vnic_profile:
+  ovirt.ovirt.ovirt_vnic_profile:
     name: myvnic
     network: mynetwork
     data_center: datacenter
@@ -99,7 +108,7 @@ EXAMPLES = '''
     network_filter: allow-dhcp
 
 - name: Remove vNICs network_filter, custom_properties, qos
-  ovirt_vnic_profile:
+  ovirt.ovirt.ovirt_vnic_profile:
     name: myvnic
     network: mynetwork
     data_center: datacenter
@@ -108,7 +117,7 @@ EXAMPLES = '''
     network_filter: ""
 
 - name: Dont use migratable
-  ovirt_vnic_profile:
+  ovirt.ovirt.ovirt_vnic_profile:
     name: myvnic
     network: mynetwork
     data_center: datacenter
@@ -116,7 +125,7 @@ EXAMPLES = '''
     pass_through: enabled
 
 - name: Remove vNIC
-  ovirt_vnic_profile:
+  ovirt.ovirt.ovirt_vnic_profile:
     name: myvnic
     network: mynetwork
     state: absent
@@ -277,7 +286,7 @@ def main():
         description=dict(type='str'),
         name=dict(type='str', required=True),
         network_filter=dict(type='str'),
-        custom_properties=dict(type='list'),
+        custom_properties=dict(type='list', elements='dict'),
         qos=dict(type='str'),
         pass_through=dict(type='str', choices=['disabled', 'enabled']),
         port_mirroring=dict(type='bool'),

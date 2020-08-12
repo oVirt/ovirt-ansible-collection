@@ -1,13 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -27,20 +25,24 @@ options:
         choices: ['present', 'absent']
         description:
             - "Specifies if a token should be created or revoked."
+        type: str
     username:
         required: False
         description:
             - "The name of the user. For example: I(admin@internal)
                Default value is set by I(OVIRT_USERNAME) environment variable."
+        type: str
     password:
         required: False
         description:
             - "The password of the user. Default value is set by I(OVIRT_PASSWORD) environment variable."
+        type: str
     token:
         required: False
         description:
             - "SSO token to be used instead of login with username/password.
                Default value is set by I(OVIRT_TOKEN) environment variable."
+        type: str
     url:
         required: False
         description:
@@ -48,6 +50,7 @@ options:
                For example: I(https://server.example.com/ovirt-engine/api).
                Default value is set by I(OVIRT_URL) environment variable."
             - "Either C(url) or C(hostname) is required."
+        type: str
     hostname:
         required: False
         description:
@@ -55,6 +58,7 @@ options:
                For example: I(server.example.com).
                Default value is set by I(OVIRT_HOSTNAME) environment variable."
             - "Either C(url) or C(hostname) is required."
+        type: str
     insecure:
         required: False
         description:
@@ -68,6 +72,7 @@ options:
                certificates. If C(ca_file) parameter is not set, system wide
                CA certificate store is used.
                Default value is set by I(OVIRT_CAFILE) environment variable."
+        type: path
     timeout:
         required: False
         description:
@@ -75,6 +80,7 @@ options:
                seconds. A value of zero (the default) means wait forever. If
                the timeout expires before the response is received an exception
                will be raised."
+        type: int
     compress:
         required: False
         description:
@@ -83,6 +89,7 @@ options:
                Note that this is a hint for the server, and that it may return
                uncompressed data even when this parameter is set to I(True)."
         type: bool
+        default: true
     kerberos:
         required: False
         description:
@@ -93,7 +100,12 @@ options:
         required: False
         description:
             - "A dictionary of HTTP headers to be added to each API call."
-
+        type: dict
+    ovirt_auth:
+        description:
+            - "Previous run of the ovirt_auth used with C(state) absent"
+            - "Closes connection with the engine."
+        type: dict
 requirements:
   - python >= 2.7
   - ovirt-engine-sdk-python >= 4.4.0
@@ -113,10 +125,10 @@ EXAMPLES = '''
   - block:
        # Create a vault with `ovirt_password` variable which store your
        # oVirt/RHV user's password, and include that yaml file with variable:
-       - include_vars: ovirt_password.yml
+       - ansible.builtin.include_vars: ovirt_password.yml
 
        - name: Obtain SSO token with using username/password credentials
-         ovirt_auth:
+         ovirt.ovirt.ovirt_auth:
            url: https://ovirt.example.com/ovirt-engine/api
            username: admin@internal
            ca_file: ca.pem
@@ -124,14 +136,14 @@ EXAMPLES = '''
 
        # Previous task generated I(ovirt_auth) fact, which you can later use
        # in different modules as follows:
-       - ovirt_vm:
+       - ovirt.ovirt.ovirt_vm:
            auth: "{{ ovirt_auth }}"
            state: absent
            name: myvm
 
     always:
       - name: Always revoke the SSO token
-        ovirt_auth:
+        ovirt.ovirt.ovirt_auth:
           state: absent
           ovirt_auth: "{{ ovirt_auth }}"
 
@@ -222,7 +234,7 @@ def main():
             headers=dict(required=False, type='dict'),
             state=dict(default='present', choices=['present', 'absent']),
             token=dict(default=None),
-            ovirt_auth=dict(required=None, type='dict'),
+            ovirt_auth=dict(required=False, type='dict'),
         ),
         required_if=[
             ('state', 'absent', ['ovirt_auth']),

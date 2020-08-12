@@ -1,13 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -23,9 +21,11 @@ options:
     name:
         description:
             - "Name of the template to manage."
+        type: str
     id:
         description:
             - "ID of the template to be registered."
+        type: str
     state:
         description:
             - "Should the template be present/absent/exported/imported/registered.
@@ -34,18 +34,23 @@ options:
                then we fail to register the unregistered template."
         choices: ['present', 'absent', 'exported', 'imported', 'registered']
         default: present
+        type: str
     vm:
         description:
             - "Name of the VM, which will be used to create template."
+        type: str
     description:
         description:
             - "Description of the template."
+        type: str
     cpu_profile:
         description:
             - "CPU profile to be set to template."
+        type: str
     cluster:
         description:
             - "Name of the cluster, where template should be created/imported."
+        type: str
     allow_partial_import:
         description:
             - "Boolean indication whether to allow partial registration of a template when C(state) is registered."
@@ -64,6 +69,8 @@ options:
             target_profile_id:
                 description:
                     - The id of the target profile id to be mapped to in the engine.
+        type: list
+        elements: dict
     cluster_mappings:
         description:
             - "Mapper which maps cluster name between Template's OVF and the destination cluster this Template should be registered to,
@@ -76,6 +83,8 @@ options:
             dest_name:
                 description:
                     - The name of the destination cluster.
+        type: list
+        elements: dict
     role_mappings:
         description:
             - "Mapper which maps role name between Template's OVF and the destination role this Template should be registered to,
@@ -88,6 +97,8 @@ options:
             dest_name:
                 description:
                     - The name of the destination role.
+        type: list
+        elements: dict
     domain_mappings:
         description:
             - "Mapper which maps aaa domain name between Template's OVF and the destination aaa domain this Template should be registered to,
@@ -100,6 +111,8 @@ options:
             dest_name:
                 description:
                     - The name of the destination aaa domain.
+        type: list
+        elements: dict
     exclusive:
         description:
             - "When C(state) is I(exported) this parameter indicates if the existing templates with the
@@ -109,26 +122,32 @@ options:
         description:
             - "When C(state) is I(exported) or I(imported) this parameter specifies the name of the
                export storage domain."
+        type: str
     image_provider:
         description:
             - "When C(state) is I(imported) this parameter specifies the name of the image provider to be used."
+        type: str
     image_disk:
         description:
             - "When C(state) is I(imported) and C(image_provider) is used this parameter specifies the name of disk
                to be imported as template."
         aliases: ['glance_image_disk_name']
+        type: str
     io_threads:
         description:
             - "Number of IO threads used by virtual machine. I(0) means IO threading disabled."
+        type: int
     template_image_disk_name:
         description:
             - "When C(state) is I(imported) and C(image_provider) is used this parameter specifies the new name for imported disk,
                if omitted then I(image_disk) name is used by default.
                This parameter is used only in case of importing disk image from Glance domain."
+        type: str
     storage_domain:
         description:
             - "When C(state) is I(imported) this parameter specifies the name of the destination data storage domain.
                When C(state) is I(registered) this parameter specifies the name of the data storage domain of the unregistered template."
+        type: str
     clone_permissions:
         description:
             - "If I(True) then the permissions of the VM (only the direct ones, not the inherited ones)
@@ -148,27 +167,33 @@ options:
         description:
             - Operating system of the template, for example 'rhel_8x64'.
             - Default value is set by oVirt/RHV engine.
-            - Use the ovirt_vm_os_info module to obtain the current list.
+            - Use the M(ovirt_vm_os_info) module to obtain the current list.
+        type: str
     memory:
         description:
             - Amount of memory of the template. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
+        type: str
     memory_guaranteed:
         description:
             - Amount of minimal guaranteed memory of the template.
               Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
             - C(memory_guaranteed) parameter can't be lower than C(memory) parameter.
+        type: str
     memory_max:
         description:
             - Upper bound of template memory up to which memory hot-plug can be performed.
               Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB).
+        type: str
     version:
         description:
             - "C(name) - The name of this version."
             - "C(number) - The index of this version in the versions hierarchy of the template. Used for editing of sub template."
+        type: dict
     clone_name:
         description:
             - Name for importing Template from storage domain.
             - If not defined, C(name) will be used.
+        type: str
     usb_support:
         description:
             - "I(True) enable USB support, I(False) to disable it. By default is chosen by oVirt/RHV engine."
@@ -177,6 +202,7 @@ options:
         description:
             - Sets time zone offset of the guest hardware clock.
             - For example C(Etc/GMT)
+        type: str
     sso:
         description:
             - "I(True) enable Single Sign On by Guest Agent, I(False) to disable it. By default is chosen by oVirt/RHV engine."
@@ -192,6 +218,7 @@ options:
     cloud_init:
         description:
             - Dictionary with values for Unix-like Virtual Machine initialization using cloud init.
+        type: dict
         suboptions:
             host_name:
                 description:
@@ -245,6 +272,8 @@ options:
             - This option is used, when user needs to setup more network interfaces via cloud init.
             - If one network interface is enough, user should use C(cloud_init) I(nic_*) parameters. C(cloud_init) I(nic_*) parameters
               are merged with C(cloud_init_nics) parameters.
+        type: list
+        elements: dict
         suboptions:
             nic_boot_protocol:
                 description:
@@ -270,6 +299,8 @@ options:
     nics:
         description:
             - List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
+        type: list
+        elements: dict
         suboptions:
             name:
                 description:
@@ -288,6 +319,7 @@ options:
     sysprep:
         description:
             - Dictionary with values for Windows Virtual Machine initialization using sysprep.
+        type: dict
         suboptions:
             host_name:
                 description:
@@ -333,7 +365,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create template from vm
-- ovirt_template:
+- ovirt.ovirt.ovirt_template:
     cluster: Default
     name: mytemplate
     vm: rhel7
@@ -341,7 +373,7 @@ EXAMPLES = '''
     description: Test
 
 # Import template
-- ovirt_template:
+- ovirt.ovirt.ovirt_template:
     state: imported
     name: mytemplate
     export_domain: myexport
@@ -349,39 +381,39 @@ EXAMPLES = '''
     cluster: mycluster
 
 # Remove template
-- ovirt_template:
+- ovirt.ovirt.ovirt_template:
     state: absent
     name: mytemplate
 
 # Change Template Name
-- ovirt_template:
+- ovirt.ovirt.ovirt_template:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_template_name"
 
 # Register template
-- ovirt_template:
-  state: registered
-  storage_domain: mystorage
-  cluster: mycluster
-  name: mytemplate
+- ovirt.ovirt.ovirt_template:
+    state: registered
+    storage_domain: mystorage
+    cluster: mycluster
+    name: mytemplate
 
 # Register template using id
-- ovirt_template:
-  state: registered
-  storage_domain: mystorage
-  cluster: mycluster
-  id: 1111-1111-1111-1111
+- ovirt.ovirt.ovirt_template:
+    state: registered
+    storage_domain: mystorage
+    cluster: mycluster
+    id: 1111-1111-1111-1111
 
 # Register template, allowing partial import
-- ovirt_template:
-  state: registered
-  storage_domain: mystorage
-  allow_partial_import: "True"
-  cluster: mycluster
-  id: 1111-1111-1111-1111
+- ovirt.ovirt.ovirt_template:
+    state: registered
+    storage_domain: mystorage
+    allow_partial_import: "True"
+    cluster: mycluster
+    id: 1111-1111-1111-1111
 
 # Register template with vnic profile mappings
-- ovirt_template:
+- ovirt.ovirt.ovirt_template:
     state: registered
     storage_domain: mystorage
     cluster: mycluster
@@ -395,7 +427,7 @@ EXAMPLES = '''
         target_profile_id: 4444-4444-4444-4444
 
 # Register template with mapping
-- ovirt_template:
+- ovirt.ovirt.ovirt_template:
     state: registered
     storage_domain: mystorage
     cluster: mycluster
@@ -411,7 +443,7 @@ EXAMPLES = '''
         dest_name: cluster_B
 
 # Import image from Glance s a template
-- ovirt_template:
+- ovirt.ovirt.ovirt_template:
     state: imported
     name: mytemplate
     image_disk: "centos7"
@@ -421,7 +453,7 @@ EXAMPLES = '''
     cluster: mycluster
 
 # Edit template subversion
-- ovirt_template:
+- ovirt.ovirt.ovirt_template:
     cluster: mycluster
     name: mytemplate
     vm: rhel7
@@ -430,7 +462,7 @@ EXAMPLES = '''
         name: subversion
 
 # Create new template subversion
-- ovirt_template:
+- ovirt.ovirt.ovirt_template:
     cluster: mycluster
     name: mytemplate
     vm: rhel7
@@ -438,7 +470,7 @@ EXAMPLES = '''
         name: subversion
 
 - name: Template with cloud init
-  ovirt_template:
+  ovirt.ovirt.ovirt_template:
     name: mytemplate
     cluster: Default
     vm: rhel8
@@ -461,7 +493,7 @@ EXAMPLES = '''
       root_password: super_password
 
 - name: Template with cloud init, with multiple network interfaces
-  ovirt_template:
+  ovirt.ovirt.ovirt_template:
     name: mytemplate
     cluster: mycluster
     vm: rhel8
@@ -475,7 +507,7 @@ EXAMPLES = '''
       nic_gateway: 10.34.63.254
 
 - name: Template with timezone and nic
-  ovirt_template:
+  ovirt.ovirt.ovirt_template:
     cluster: MyCluster
     name: mytemplate
     vm: rhel8
@@ -485,7 +517,7 @@ EXAMPLES = '''
       - name: nic1
 
 - name: Template with sysprep
-  ovirt_vm:
+  ovirt.ovirt.ovirt_template:
     name: windows2012R2_AD
     cluster: Default
     vm: windows2012
@@ -871,17 +903,17 @@ def main():
         template_image_disk_name=dict(default=None),
         version=dict(default=None, type='dict'),
         seal=dict(type='bool'),
-        vnic_profile_mappings=dict(default=[], type='list'),
-        cluster_mappings=dict(default=[], type='list'),
-        role_mappings=dict(default=[], type='list'),
-        domain_mappings=dict(default=[], type='list'),
+        vnic_profile_mappings=dict(default=[], type='list', elements='dict'),
+        cluster_mappings=dict(default=[], type='list', elements='dict'),
+        role_mappings=dict(default=[], type='list', elements='dict'),
+        domain_mappings=dict(default=[], type='list', elements='dict'),
         operating_system=dict(type='str'),
         memory=dict(type='str'),
         memory_guaranteed=dict(type='str'),
         memory_max=dict(type='str'),
-        nics=dict(type='list', default=[]),
+        nics=dict(type='list', default=[], elements='dict'),
         cloud_init=dict(type='dict'),
-        cloud_init_nics=dict(type='list', default=[]),
+        cloud_init_nics=dict(type='list', default=[], elements='dict'),
         sysprep=dict(type='dict'),
     )
     module = AnsibleModule(

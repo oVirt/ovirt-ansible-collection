@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -44,9 +42,12 @@ options:
             - "Type of the external provider."
         choices: ['os_image', 'os_network', 'os_volume', 'foreman']
         required: true
+        type: str
+        aliases: ['provider']
     name:
         description:
             - "Name of the external provider, can be used as glob expression."
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
@@ -55,11 +56,11 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all image external providers named C<glance>:
-- ovirt_external_provider_info:
+- ovirt.ovirt.ovirt_external_provider_info:
     type: os_image
     name: glance
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_external_providers }}"
 '''
 
@@ -106,7 +107,6 @@ def main():
     argument_spec = ovirt_info_full_argument_spec(
         name=dict(default=None, required=False),
         type=dict(
-            default=None,
             required=True,
             choices=[
                 'os_image', 'os_network', 'os_volume', 'foreman',

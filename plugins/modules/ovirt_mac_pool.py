@@ -1,13 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -23,18 +21,22 @@ options:
     id:
         description:
             - "ID of the mac pool to manage."
+        type: str
     name:
         description:
             - "Name of the MAC pool to manage."
         required: true
+        type: str
     description:
         description:
             - "Description of the MAC pool."
+        type: str
     state:
         description:
             - "Should the mac pool be present or absent."
         choices: ['present', 'absent']
         default: present
+        type: str
     allow_duplicates:
         description:
             - "If I(true) allow a MAC address to be used multiple times in a pool."
@@ -44,6 +46,8 @@ options:
         description:
             - "List of MAC ranges. The from and to should be split by comma."
             - "For example: 00:1a:4a:16:01:51,00:1a:4a:16:01:61"
+        type: list
+        elements: str
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -52,7 +56,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create MAC pool:
-- ovirt_mac_pool:
+- ovirt.ovirt.ovirt_mac_pool:
     name: mymacpool
     allow_duplicates: false
     ranges:
@@ -60,12 +64,12 @@ EXAMPLES = '''
       - 00:1a:4a:16:02:51,00:1a:4a:16:02:61
 
 # Remove MAC pool:
-- ovirt_mac_pool:
+- ovirt.ovirt.ovirt_mac_pool:
     state: absent
     name: mymacpool
 
 # Change MAC pool Name
-- ovirt_nic:
+- ovirt.ovirt.ovirt_nic:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_mac_pool_name"
 '''
@@ -146,7 +150,7 @@ def main():
         id=dict(default=None),
         allow_duplicates=dict(default=None, type='bool'),
         description=dict(default=None),
-        ranges=dict(default=None, type='list'),
+        ranges=dict(default=None, type='list', elements='str'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,

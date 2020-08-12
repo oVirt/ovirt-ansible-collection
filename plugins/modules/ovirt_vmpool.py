@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -38,28 +36,35 @@ options:
     id:
         description:
             - "ID of the vmpool to manage."
+        type: str
     name:
         description:
             - "Name of the VM pool to manage."
+        type: str
         required: true
     comment:
         description:
             - Comment of the Virtual Machine pool.
+        type: str
     state:
         description:
             - "Should the VM pool be present/absent."
             - "Note that when C(state) is I(absent) all VMs in VM pool are stopped and removed."
         choices: ['present', 'absent']
         default: present
+        type: str
     template:
         description:
             - "Name of the template, which will be used to create VM pool."
+        type: str
     description:
         description:
             - "Description of the VM pool."
+        type: str
     cluster:
         description:
             - "Name of the cluster, where VM pool should be created."
+        type: str
     type:
         description:
             - "Type of the VM pool. Either manual or automatic."
@@ -69,19 +74,23 @@ options:
                is returned to the virtual machine pool."
             - "Default value is set by engine."
         choices: ['manual', 'automatic']
+        type: str
     vm_per_user:
         description:
             - "Maximum number of VMs a single user can attach to from this pool."
             - "Default value is set by engine."
+        type: int
     prestarted:
         description:
             - "Number of pre-started VMs defines the number of VMs in run state, that are waiting
                to be attached to Users."
             - "Default value is set by engine."
+        type: int
     vm_count:
         description:
             - "Number of VMs in the pool."
             - "Default value is set by engine."
+        type: int
     vm:
         description:
             - "For creating vm pool without editing template."
@@ -153,7 +162,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Create VM pool from template
-  ovirt_vmpool:
+  ovirt.ovirt.ovirt_vmpool:
     cluster: mycluster
     name: myvmpool
     template: rhel7
@@ -162,17 +171,17 @@ EXAMPLES = '''
     vm_per_user: 1
 
 - name: Remove vmpool, note that all VMs in pool will be stopped and removed
-  ovirt_vmpool:
+  ovirt.ovirt.ovirt_vmpool:
     state: absent
     name: myvmpool
 
 - name: Change Pool Name
-  ovirt_vmpool:
+  ovirt.ovirt.ovirt_vmpool:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_pool_name"
 
 - name: Create vm pool and override the pool values
-  ovirt_vmpool:
+  ovirt.ovirt.ovirt_vmpool:
     cluster: mycluster
     name: vmpool
     template: blank

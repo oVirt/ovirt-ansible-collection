@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -36,6 +34,7 @@ options:
     name:
         description:
             - "Name of the external provider to manage."
+        type: str
     state:
         description:
             - "Should the external be present or absent"
@@ -43,39 +42,50 @@ options:
                sure that SD is not attached to the data center!"
         choices: ['present', 'absent']
         default: present
+        type: str
     description:
         description:
             - "Description of the external provider."
+        type: str
     type:
         description:
             - "Type of the external provider."
         choices: ['os_image', 'network', 'os_volume', 'foreman']
+        required: true
+        type: str
+        aliases: ['provider']
     url:
         description:
             - "URL where external provider is hosted."
             - "Applicable for those types: I(os_image), I(os_volume), I(network) and I(foreman)."
+        type: str
     username:
         description:
             - "Username to be used for login to external provider."
             - "Applicable for all types."
+        type: str
     password:
         description:
             - "Password of the user specified in C(username) parameter."
             - "Applicable for all types."
+        type: str
     tenant_name:
         description:
             - "Name of the tenant."
             - "Applicable for those types: I(os_image), I(os_volume) and I(network)."
         aliases: ['tenant']
+        type: str
     authentication_url:
         description:
             - "Keystone authentication URL of the openstack provider."
             - "Applicable for those types: I(os_image), I(os_volume) and I(network)."
         aliases: ['auth_url']
+        type: str
     data_center:
         description:
             - "Name of the data center where provider should be attached."
             - "Applicable for those type: I(os_volume)."
+        type: str
     read_only:
         description:
             - "Specify if the network should be read only."
@@ -86,15 +96,25 @@ options:
             - "Type of the external network provider either external (for example OVN) or neutron."
             - "Applicable if C(type) is I(network)."
         choices: ['external', 'neutron']
-        default: ['external']
+        default: 'external'
+        type: str
     authentication_keys:
         description:
-            - "List of authentication keys. Each key is represented by dict
-               like {'uuid': 'our-uuid', 'value': 'YourSecretValue=='}"
+            - "List of authentication keys."
             - "When you will not pass these keys and there are already some
                of them defined in the system they will be removed."
             - "Applicable for I(os_volume)."
+        suboptions:
+            uuid:
+                description:
+                    - The uuid which will be used.
+            value:
+                description:
+                    - The value which will be used.
         default: []
+        type: list
+        elements: dict
+        aliases: ['auth_keys']
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -103,7 +123,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Add image external provider:
-- ovirt_external_provider:
+- ovirt.ovirt.ovirt_external_provider:
     name: image_provider
     type: os_image
     url: http://1.2.3.4:9292
@@ -113,7 +133,7 @@ EXAMPLES = '''
     auth_url: http://1.2.3.4:35357/v2.0
 
 # Add volume external provider:
-- ovirt_external_provider:
+- ovirt.ovirt.ovirt_external_provider:
     name: image_provider
     type: os_volume
     url: http://1.2.3.4:9292
@@ -127,7 +147,7 @@ EXAMPLES = '''
         value: "ABCD00000000111111222333445w=="
 
 # Add foreman provider:
-- ovirt_external_provider:
+- ovirt.ovirt.ovirt_external_provider:
     name: foreman_provider
     type: foreman
     url: https://foreman.example.com
@@ -135,14 +155,14 @@ EXAMPLES = '''
     password: 123456
 
 # Add external network provider for OVN:
-- ovirt_external_provider:
+- ovirt.ovirt.ovirt_external_provider:
     name: ovn_provider
     type: network
     network_type: external
     url: http://1.2.3.4:9696
 
 # Remove image external provider:
-- ovirt_external_provider:
+- ovirt.ovirt.ovirt_external_provider:
     state: absent
     name: image_provider
     type: os_image
@@ -333,7 +353,6 @@ def main():
         name=dict(default=None),
         description=dict(default=None),
         type=dict(
-            default=None,
             required=True,
             choices=[
                 OS_IMAGE, NETWORK, OS_VOLUME, FOREMAN,
@@ -352,7 +371,7 @@ def main():
             choices=['external', 'neutron'],
         ),
         authentication_keys=dict(
-            default=[], aliases=['auth_keys'], type='list', no_log=True,
+            default=[], aliases=['auth_keys'], type='list', no_log=True, elements='dict'
         ),
     )
     module = AnsibleModule(

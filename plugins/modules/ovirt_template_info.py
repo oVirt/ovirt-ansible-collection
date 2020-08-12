@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -42,10 +40,11 @@ notes:
        the I(register) keyword to use it."
 options:
     pattern:
-      description:
-        - "Search term which is accepted by oVirt/RHV search backend."
-        - "For example to search template X from datacenter Y use following pattern:
-           name=X and datacenter=Y"
+        description:
+            - "Search term which is accepted by oVirt/RHV search backend."
+            - "For example to search template X from datacenter Y use following pattern:
+               name=X and datacenter=Y"
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
@@ -55,10 +54,10 @@ EXAMPLES = '''
 
 # Gather information about all templates which names start with C(centos) and
 # belongs to data center C(west):
-- ovirt_template_info:
+- ovirt.ovirt.ovirt_template_info:
     pattern: name=centos* and datacenter=west
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_templates }}"
 '''
 

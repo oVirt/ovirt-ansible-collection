@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -19,10 +19,8 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 DOCUMENTATION = '''
 ---
@@ -44,18 +42,22 @@ options:
     user_name:
         description:
             - "Username of the user to manage. In most LDAPs it's I(uid) of the user, but in Active Directory you must specify I(UPN) of the user."
+        type: str
     group_name:
         description:
             - "Name of the group to manage."
+        type: str
     authz_name:
         description:
             - "Authorization provider of the user/group. In previous versions of oVirt/RHV known as domain."
+        type: str
         required: true
         aliases: ['domain']
     namespace:
         description:
             - "Namespace of the authorization provider, where user/group resides."
         required: false
+        type: str
 extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
@@ -64,11 +66,11 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all permissions of user with username C(john):
-- ovirt_permission_info:
+- ovirt.ovirt.ovirt_permission_info:
     user_name: john
     authz_name: example.com-authz
   register: result
-- debug:
+- ansible.builtin.debug:
     msg: "{{ result.ovirt_permissions }}"
 '''
 
