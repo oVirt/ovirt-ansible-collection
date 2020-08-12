@@ -1,6 +1,9 @@
 #!/bin/bash -xe
 
 ROOT_PATH=$PWD
+
+pip3 install rstcheck
+
 # remove any previous artifacts
 rm -rf ../ovirt-build ../rhv-build
 rm -f ./*tar.gz
