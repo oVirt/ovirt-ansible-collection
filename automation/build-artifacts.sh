@@ -2,7 +2,7 @@
 
 ROOT_PATH=$PWD
 
-pip3 install rstcheck
+pip3 install rstcheck antsibull-changelog
 
 # remove any previous artifacts
 rm -rf ../ovirt-build ../rhv-build
@@ -63,5 +63,6 @@ mkdir -p $COLLECTION_DIR
 cp -r ../ovirt-build/* $COLLECTION_DIR
 cd $COLLECTION_DIR
 ansible-test sanity
+antsibull-changelog lint
 
 cd $ROOT_PATH
