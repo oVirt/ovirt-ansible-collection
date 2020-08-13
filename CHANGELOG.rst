@@ -1,5 +1,5 @@
 =========================
-Ovirt.Ovirt Release Notes
+ovirt.ovirt Release Notes
 =========================
 
 .. contents:: Topics
@@ -8,73 +8,63 @@ Ovirt.Ovirt Release Notes
 v1.1.1
 ======
 
-Release Summary
----------------
-
-Small fixes
-
 Minor Changes
 -------------
 
-- ovirt_permission - fix FQCN documentation
+- ovirt_permission - Fix FQCN documentation (https://github.com/oVirt/ovirt-ansible-collection/pull/63).
 
 v1.1.0
 ======
 
-Release Summary
----------------
+Major Changes
+-------------
 
-This is second release of the collection.
+- ovirt_disk - Add backup (https://github.com/oVirt/ovirt-ansible-collection/pull/57).
+- ovirt_disk - Support direct upload/download (https://github.com/oVirt/ovirt-ansible-collection/pull/35).
+- ovirt_host - Add ssh_port (https://github.com/oVirt/ovirt-ansible-collection/pull/60).
+- ovirt_vm_os_info - Creation of module (https://github.com/oVirt/ovirt-ansible-collection/pull/26).
 
 Minor Changes
 -------------
 
-- ovirt inventory - add creation_time
-- ovirt_disk - add backup
-- ovirt_disk - add upload image warning for correct format
-- ovirt_disk- upload_image_path autodetect size
-- ovirt_host - add ssh_port
-- ovirt_network - add support of removing vlan_tag
-- ovirt_vm - fix quotas example
+- ovirt inventory - Add creation_time (https://github.com/oVirt/ovirt-ansible-collection/pull/34).
+- ovirt inventory - Set inventory plugin insecure if no cafile defined (https://github.com/oVirt/ovirt-ansible-collection/pull/58).
+- ovirt_disk - Add upload image warning for correct format (https://github.com/oVirt/ovirt-ansible-collection/pull/22).
+- ovirt_disk - Upload_image_path autodetect size (https://github.com/oVirt/ovirt-ansible-collection/pull/19).
+- ovirt_network - Add support of removing vlan_tag (https://github.com/oVirt/ovirt-ansible-collection/pull/21).
+- ovirt_vm - Add documentation for custom_script under sysprep (https://github.com/oVirt/ovirt-ansible-collection/pull/52).
+- ovirt_vm - Hard code nic on_boot to true (https://github.com/oVirt/ovirt-ansible-collection/pull/45).
 
 Bugfixes
 --------
 
-- ovirt inventory - Set plugin insecure if no cafile defined
-- ovirt_disk - fix activate
-- ovirt_disk - fix upload
-- ovirt_disk - force wait when uploading disk
-- ovirt_host_network - fix custom_properties default value
-- ovirt_quota - fix vcpu_limit
-- ovirt_vm - Add documentation for custom_script under sysprep
-- ovirt_vm - fix cd_iso get all disks from storage domains
-- ovirt_vm - fix cd_iso search by name
+- ovirt_disk - Fix activate (https://github.com/oVirt/ovirt-ansible-collection/pull/61).
+- ovirt_disk - Force wait when uploading disk (https://github.com/oVirt/ovirt-ansible-collection/pull/43).
+- ovirt_host_network - Fix custom_properties default value (https://github.com/oVirt/ovirt-ansible-collection/pull/65).
+- ovirt_quota - Fix vcpu_limit (https://github.com/oVirt/ovirt-ansible-collection/pull/44).
+- ovirt_vm - Fix cd_iso get all disks from storage domains (https://github.com/oVirt/ovirt-ansible-collection/pull/66).
+- ovirt_vm - Fix cd_iso search by name (https://github.com/oVirt/ovirt-ansible-collection/pull/51).
+
+New Modules
+-----------
+
+- ovirt.ovirt.ovirt_vm_os_info - Retrieve information on all supported oVirt/RHV operating systems
 
 v1.0.0
 ======
 
-Release Summary
----------------
-
-This is first release of the collection.
-
-Major Changes
--------------
-
-- ovirt_cluster - add migration_encrypted option
-- ovirt_datacenter - add iscsi_bonds
-- ovirt_vm - add Bios Type option
-
 Minor Changes
 -------------
 
-- ovirt - dynamic plugin improvements
-- ovirt_vm - remove deprecated warning of boot params
+- ovirt_cluster - Add migration_encrypted option (https://github.com/oVirt/ovirt-ansible-collection/pull/17).
+- ovirt_vm - Add bios_type (https://github.com/oVirt/ovirt-ansible-collection/pull/15).
 
 Bugfixes
 --------
 
-- ovirt_storage_domain - fix update_check warning_low_space
+- ovirt_snapshot - Disk id was incorrectly set as disk_snapshot_id (https://github.com/oVirt/ovirt-ansible-collection/pull/5).
+- ovirt_storage_domain - Fix update_check warning_low_space (https://github.com/oVirt/ovirt-ansible-collection/pull/10).
+- ovirt_vm - Remove deprecated warning of boot params (https://github.com/oVirt/ovirt-ansible-collection/pull/3).
 
 New Plugins
 -----------
@@ -82,4 +72,62 @@ New Plugins
 Inventory
 ~~~~~~~~~
 
-- ovirt.ovirt.ovirt - Inventory plugin for ovirt
+- ovirt.ovirt.ovirt - oVirt inventory source
+
+New Modules
+-----------
+
+- ovirt.ovirt.ovirt_affinity_group - Module to manage affinity groups in oVirt/RHV
+- ovirt.ovirt.ovirt_affinity_label - Module to manage affinity labels in oVirt/RHV
+- ovirt.ovirt.ovirt_affinity_label_info - Retrieve information about one or more oVirt/RHV affinity labels
+- ovirt.ovirt.ovirt_api_info - Retrieve information about the oVirt/RHV API
+- ovirt.ovirt.ovirt_auth - Module to manage authentication to oVirt/RHV
+- ovirt.ovirt.ovirt_cluster - Module to manage clusters in oVirt/RHV
+- ovirt.ovirt.ovirt_cluster_info - Retrieve information about one or more oVirt/RHV clusters
+- ovirt.ovirt.ovirt_datacenter - Module to manage data centers in oVirt/RHV
+- ovirt.ovirt.ovirt_datacenter_info - Retrieve information about one or more oVirt/RHV datacenters
+- ovirt.ovirt.ovirt_disk - Module to manage Virtual Machine and floating disks in oVirt/RHV
+- ovirt.ovirt.ovirt_disk_info - Retrieve information about one or more oVirt/RHV disks
+- ovirt.ovirt.ovirt_event - Create or delete an event in oVirt/RHV
+- ovirt.ovirt.ovirt_event_info - This module can be used to retrieve information about one or more oVirt/RHV events
+- ovirt.ovirt.ovirt_external_provider - Module to manage external providers in oVirt/RHV
+- ovirt.ovirt.ovirt_external_provider_info - Retrieve information about one or more oVirt/RHV external providers
+- ovirt.ovirt.ovirt_group - Module to manage groups in oVirt/RHV
+- ovirt.ovirt.ovirt_group_info - Retrieve information about one or more oVirt/RHV groups
+- ovirt.ovirt.ovirt_host - Module to manage hosts in oVirt/RHV
+- ovirt.ovirt.ovirt_host_info - Retrieve information about one or more oVirt/RHV hosts
+- ovirt.ovirt.ovirt_host_network - Module to manage host networks in oVirt/RHV
+- ovirt.ovirt.ovirt_host_pm - Module to manage power management of hosts in oVirt/RHV
+- ovirt.ovirt.ovirt_host_storage_info - Retrieve information about one or more oVirt/RHV HostStorages (applicable only for block storage)
+- ovirt.ovirt.ovirt_instance_type - Module to manage Instance Types in oVirt/RHV
+- ovirt.ovirt.ovirt_job - Module to manage jobs in oVirt/RHV
+- ovirt.ovirt.ovirt_mac_pool - Module to manage MAC pools in oVirt/RHV
+- ovirt.ovirt.ovirt_network - Module to manage logical networks in oVirt/RHV
+- ovirt.ovirt.ovirt_network_info - Retrieve information about one or more oVirt/RHV networks
+- ovirt.ovirt.ovirt_nic - Module to manage network interfaces of Virtual Machines in oVirt/RHV
+- ovirt.ovirt.ovirt_nic_info - Retrieve information about one or more oVirt/RHV virtual machine network interfaces
+- ovirt.ovirt.ovirt_permission - Module to manage permissions of users/groups in oVirt/RHV
+- ovirt.ovirt.ovirt_permission_info - Retrieve information about one or more oVirt/RHV permissions
+- ovirt.ovirt.ovirt_quota - Module to manage datacenter quotas in oVirt/RHV
+- ovirt.ovirt.ovirt_quota_info - Retrieve information about one or more oVirt/RHV quotas
+- ovirt.ovirt.ovirt_role - Module to manage roles in oVirt/RHV
+- ovirt.ovirt.ovirt_scheduling_policy_info - Retrieve information about one or more oVirt scheduling policies
+- ovirt.ovirt.ovirt_snapshot - Module to manage Virtual Machine Snapshots in oVirt/RHV
+- ovirt.ovirt.ovirt_snapshot_info - Retrieve information about one or more oVirt/RHV virtual machine snapshots
+- ovirt.ovirt.ovirt_storage_connection - Module to manage storage connections in oVirt
+- ovirt.ovirt.ovirt_storage_domain - Module to manage storage domains in oVirt/RHV
+- ovirt.ovirt.ovirt_storage_domain_info - Retrieve information about one or more oVirt/RHV storage domains
+- ovirt.ovirt.ovirt_storage_template_info - Retrieve information about one or more oVirt/RHV templates relate to a storage domain.
+- ovirt.ovirt.ovirt_storage_vm_info - Retrieve information about one or more oVirt/RHV virtual machines relate to a storage domain.
+- ovirt.ovirt.ovirt_tag - Module to manage tags in oVirt/RHV
+- ovirt.ovirt.ovirt_tag_info - Retrieve information about one or more oVirt/RHV tags
+- ovirt.ovirt.ovirt_template - Module to manage virtual machine templates in oVirt/RHV
+- ovirt.ovirt.ovirt_template_info - Retrieve information about one or more oVirt/RHV templates
+- ovirt.ovirt.ovirt_user - Module to manage users in oVirt/RHV
+- ovirt.ovirt.ovirt_user_info - Retrieve information about one or more oVirt/RHV users
+- ovirt.ovirt.ovirt_vm - Module to manage Virtual Machines in oVirt/RHV
+- ovirt.ovirt.ovirt_vm_info - Retrieve information about one or more oVirt/RHV virtual machines
+- ovirt.ovirt.ovirt_vmpool - Module to manage VM pools in oVirt/RHV
+- ovirt.ovirt.ovirt_vmpool_info - Retrieve information about one or more oVirt/RHV vmpools
+- ovirt.ovirt.ovirt_vnic_profile - Module to manage vNIC profile of network in oVirt/RHV
+- ovirt.ovirt.ovirt_vnic_profile_info - Retrieve information about one or more oVirt/RHV vnic profiles
