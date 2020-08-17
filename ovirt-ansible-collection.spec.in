@@ -38,6 +38,9 @@ sh build.sh install
 %license LICENSE
 
 %changelog
+* Mon Aug 17 2020 Martin Necas <mnecas@redhat.com> - 1.1.2-1
+- Add ansible changelogs
+
 * Wed Aug 12 2020 Martin Necas <mnecas@redhat.com> - 1.1.1-1
 - Fix ovirt_permission FQCNs
 

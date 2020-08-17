@@ -204,10 +204,10 @@ releases:
       - ovirt_host - Add ssh_port (https://github.com/oVirt/ovirt-ansible-collection/pull/60).
       - ovirt_vm_os_info - Creation of module (https://github.com/oVirt/ovirt-ansible-collection/pull/26).
       minor_changes:
-      - ovirt_disk - Force wait when uploading disk (https://github.com/oVirt/ovirt-ansible-collection/pull/43).
       - ovirt inventory - Add creation_time (https://github.com/oVirt/ovirt-ansible-collection/pull/34).
       - ovirt inventory - Set inventory plugin insecure if no cafile defined (https://github.com/oVirt/ovirt-ansible-collection/pull/58).
       - ovirt_disk - Add upload image warning for correct format (https://github.com/oVirt/ovirt-ansible-collection/pull/22).
+      - ovirt_disk - Force wait when uploading disk (https://github.com/oVirt/ovirt-ansible-collection/pull/43).
       - ovirt_disk - Upload_image_path autodetect size (https://github.com/oVirt/ovirt-ansible-collection/pull/19).
       - ovirt_network - Add support of removing vlan_tag (https://github.com/oVirt/ovirt-ansible-collection/pull/21).
       - ovirt_vm - Add documentation for custom_script under sysprep (https://github.com/oVirt/ovirt-ansible-collection/pull/52).
@@ -236,7 +236,9 @@ releases:
       namespace: ''
     release_date: '2020-08-12'
   1.1.1:
-    release_date: '2020-08-12'
     changes:
       minor_changes:
       - ovirt_permission - Fix FQCN documentation (https://github.com/oVirt/ovirt-ansible-collection/pull/63).
+    release_date: '2020-08-12'
+  1.1.2:
+    release_date: '2020-08-17'
