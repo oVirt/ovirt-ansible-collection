@@ -5,6 +5,9 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.1.2
+======
+
 v1.1.1
 ======
 
@@ -30,6 +33,7 @@ Minor Changes
 - ovirt inventory - Add creation_time (https://github.com/oVirt/ovirt-ansible-collection/pull/34).
 - ovirt inventory - Set inventory plugin insecure if no cafile defined (https://github.com/oVirt/ovirt-ansible-collection/pull/58).
 - ovirt_disk - Add upload image warning for correct format (https://github.com/oVirt/ovirt-ansible-collection/pull/22).
+- ovirt_disk - Force wait when uploading disk (https://github.com/oVirt/ovirt-ansible-collection/pull/43).
 - ovirt_disk - Upload_image_path autodetect size (https://github.com/oVirt/ovirt-ansible-collection/pull/19).
 - ovirt_network - Add support of removing vlan_tag (https://github.com/oVirt/ovirt-ansible-collection/pull/21).
 - ovirt_vm - Add documentation for custom_script under sysprep (https://github.com/oVirt/ovirt-ansible-collection/pull/52).
@@ -39,7 +43,6 @@ Bugfixes
 --------
 
 - ovirt_disk - Fix activate (https://github.com/oVirt/ovirt-ansible-collection/pull/61).
-- ovirt_disk - Force wait when uploading disk (https://github.com/oVirt/ovirt-ansible-collection/pull/43).
 - ovirt_host_network - Fix custom_properties default value (https://github.com/oVirt/ovirt-ansible-collection/pull/65).
 - ovirt_quota - Fix vcpu_limit (https://github.com/oVirt/ovirt-ansible-collection/pull/44).
 - ovirt_vm - Fix cd_iso get all disks from storage domains (https://github.com/oVirt/ovirt-ansible-collection/pull/66).
