@@ -31,7 +31,7 @@ author: "Ondra Machacek (@machacekondra)"
 description:
     - "Retrieve information about one or more oVirt/RHV users."
     - This module was called C(ovirt_user_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt.ovirt.ovirt_user_info) module no longer returns C(ansible_facts)!
+      Note that the M(@NAMESPACE@.@NAME@.ovirt_user_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_users), which
        contains a list of users. You need to register the result with
@@ -50,7 +50,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all users which first names start with C(john):
-- ovirt.ovirt.ovirt_user_info:
+- @NAMESPACE@.@NAME@.ovirt_user_info:
     pattern: name=john*
   register: result
 - ansible.builtin.debug:

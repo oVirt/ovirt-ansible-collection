@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV storage domains."
     - This module was called C(ovirt_storage_domain_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt.ovirt.ovirt_storage_domain_info) module no longer returns C(ansible_facts)!
+      Note that the M(@NAMESPACE@.@NAME@.ovirt_storage_domain_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_storage_domains), which
        contains a list of storage domains. You need to register the result with
@@ -54,7 +54,7 @@ EXAMPLES = '''
 
 # Gather information about all storage domains which names start with C(data) and
 # belong to data center C(west):
-- ovirt.ovirt.ovirt_storage_domain_info:
+- @NAMESPACE@.@NAME@.ovirt_storage_domain_info:
     pattern: name=data* and datacenter=west
   register: result
 - ansible.builtin.debug:

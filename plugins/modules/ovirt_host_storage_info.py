@@ -16,7 +16,7 @@ author: "Daniel Erez (@derez)"
 description:
     - "Retrieve information about one or more oVirt/RHV HostStorages (applicable only for block storage)."
     - This module was called C(ovirt_host_storage_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt.ovirt.ovirt_host_storage_info) module no longer returns C(ansible_facts)!
+      Note that the M(@NAMESPACE@.@NAME@.ovirt_host_storage_info) module no longer returns C(ansible_facts)!
 options:
     host:
         description:
@@ -65,7 +65,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about HostStorages with specified target and address:
-- ovirt.ovirt.ovirt_host_storage_info:
+- @NAMESPACE@.@NAME@.ovirt_host_storage_info:
     host: myhost
     iscsi:
       target: iqn.2016-08-09.domain-01:nickname

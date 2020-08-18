@@ -52,13 +52,13 @@ extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 EXAMPLES = '''
 # Look at ovirt_auth module to see how to reuse authentication:
 
-- ovirt.ovirt.ovirt_vm_os_info:
+- @NAMESPACE@.@NAME@.ovirt_vm_os_info:
     auth: "{{ ovirt_auth }}"
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_operating_systems }}"
 
-- ovirt.ovirt.ovirt_vm_os_info:
+- @NAMESPACE@.@NAME@.ovirt_vm_os_info:
     auth: "{{ ovirt_auth }}"
     filter_keys: name,architecture
   register: result

@@ -70,28 +70,28 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Create job with two steps
-  ovirt.ovirt.ovirt_job:
+  @NAMESPACE@.@NAME@.ovirt_job:
     description: job_name
     steps:
       - description: step_name_A
       - description: step_name_B
 
 - name: Finish one step
-  ovirt.ovirt.ovirt_job:
+  @NAMESPACE@.@NAME@.ovirt_job:
     description: job_name
     steps:
       - description: step_name_A
         state: finished
 
 - name: When you fail one step whole job will stop
-  ovirt.ovirt.ovirt_job:
+  @NAMESPACE@.@NAME@.ovirt_job:
     description: job_name
     steps:
       - description: step_name_B
         state: failed
 
 - name: Finish all steps
-  ovirt.ovirt.ovirt_job:
+  @NAMESPACE@.@NAME@.ovirt_job:
     description: job_name
     state: finished
 '''

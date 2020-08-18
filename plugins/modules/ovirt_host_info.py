@@ -18,7 +18,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV hosts."
     - This module was called C(ovirt_host_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt.ovirt.ovirt_host_info) module no longer returns C(ansible_facts)!
+      Note that the M(@NAMESPACE@.@NAME@.ovirt_host_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_hosts), which
        contains a list of hosts. You need to register the result with
@@ -50,13 +50,13 @@ EXAMPLES = '''
 
 # Gather information about all hosts which names start with C(host) and
 # belong to data center C(west):
-- ovirt.ovirt.ovirt_host_info:
+- @NAMESPACE@.@NAME@.ovirt_host_info:
     pattern: name=host* and datacenter=west
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_hosts }}"
 # All hosts with cluster version 4.2:
-- ovirt.ovirt.ovirt_host_info:
+- @NAMESPACE@.@NAME@.ovirt_host_info:
     pattern: name=host*
     cluster_version: "4.2"
   register: result

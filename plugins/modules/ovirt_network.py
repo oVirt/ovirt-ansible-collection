@@ -121,31 +121,31 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create network
-- ovirt.ovirt.ovirt_network:
+- @NAMESPACE@.@NAME@.ovirt_network:
     data_center: mydatacenter
     name: mynetwork
     vlan_tag: 10
     vm_network: true
 
 # Remove network
-- ovirt.ovirt.ovirt_network:
+- @NAMESPACE@.@NAME@.ovirt_network:
     state: absent
     name: mynetwork
 
 # Change Network Name
-- ovirt.ovirt.ovirt_network:
+- @NAMESPACE@.@NAME@.ovirt_network:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_network_name"
     data_center: mydatacenter
 
 # Add network from external provider
-- ovirt.ovirt.ovirt_network:
+- @NAMESPACE@.@NAME@.ovirt_network:
     data_center: mydatacenter
     name: mynetwork
     external_provider: ovirt-provider-ovn
 
 # Remove vlan_tag
-- ovirt.ovirt.ovirt_network:
+- @NAMESPACE@.@NAME@.ovirt_network:
     data_center: mydatacenter
     name: mynetwork
     vlan_tag: -1

@@ -103,24 +103,24 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create datacenter
-- ovirt.ovirt.ovirt_datacenter:
+- @NAMESPACE@.@NAME@.ovirt_datacenter:
     name: mydatacenter
     local: True
     compatibility_version: 4.0
     quota_mode: enabled
 
 # Remove datacenter
-- ovirt.ovirt.ovirt_datacenter:
+- @NAMESPACE@.@NAME@.ovirt_datacenter:
     state: absent
     name: mydatacenter
 
 # Change Datacenter Name
-- ovirt.ovirt.ovirt_datacenter:
+- @NAMESPACE@.@NAME@.ovirt_datacenter:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_datacenter_name"
 
 # Create datacenter with iscsi bond
-- ovirt.ovirt.ovirt_datacenter:
+- @NAMESPACE@.@NAME@.ovirt_datacenter:
     name: mydatacenter
     iscsi_bonds:
       - name: bond1
@@ -136,7 +136,7 @@ EXAMPLES = '''
             - cf780201-6a4f-43c1-a019-e65c4220ab73
 
 # Remove all iscsi bonds
-- ovirt.ovirt.ovirt_datacenter:
+- @NAMESPACE@.@NAME@.ovirt_datacenter:
     name: mydatacenter
     iscsi_bonds: []
 '''

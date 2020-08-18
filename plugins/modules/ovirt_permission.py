@@ -91,7 +91,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Add user user1 from authorization provider example.com-authz
-  ovirt.ovirt.ovirt_permission:
+  @NAMESPACE@.@NAME@.ovirt_permission:
     user_name: user1
     authz_name: example.com-authz
     object_type: vm
@@ -99,7 +99,7 @@ EXAMPLES = '''
     role: UserVmManager
 
 - name: Remove permission from user
-  ovirt.ovirt.ovirt_permission:
+  @NAMESPACE@.@NAME@.ovirt_permission:
     state: absent
     user_name: user1
     authz_name: example.com-authz
@@ -108,7 +108,7 @@ EXAMPLES = '''
     role: ClusterAdmin
 
 - name: Assign QuotaConsumer role to user
-  ovirt.ovirt.ovirt_permissions:
+  @NAMESPACE@.@NAME@.ovirt_permissions:
     state: present
     user_name: user1
     authz_name: example.com-authz
@@ -118,7 +118,7 @@ EXAMPLES = '''
     role: QuotaConsumer
 
 - name: Assign QuotaConsumer role to group
-  ovirt.ovirt.ovirt_permissions:
+  @NAMESPACE@.@NAME@.ovirt_permissions:
     state: present
     group_name: group1
     authz_name: example.com-authz

@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV clusters."
     - This module was called C(ovirt_cluster_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt.ovirt.ovirt_cluster_info) module no longer returns C(ansible_facts)!
+      Note that the M(@NAMESPACE@.@NAME@.ovirt_cluster_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_clusters), which
        contains a list of clusters. You need to register the result with
@@ -53,7 +53,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all clusters which names start with C<production>:
-- ovirt.ovirt.ovirt_cluster_info:
+- @NAMESPACE@.@NAME@.ovirt_cluster_info:
     pattern:
       name: 'production*'
   register: result

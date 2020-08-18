@@ -51,7 +51,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information 10 vnic profiles
-- ovirt.ovirt.ovirt_vnic_profile_info:
+- @NAMESPACE@.@NAME@.ovirt_vnic_profile_info:
     max: 10
   register: result
 - ansible.builtin.debug:

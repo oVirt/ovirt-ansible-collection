@@ -162,7 +162,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Create VM pool from template
-  ovirt.ovirt.ovirt_vmpool:
+  @NAMESPACE@.@NAME@.ovirt_vmpool:
     cluster: mycluster
     name: myvmpool
     template: rhel7
@@ -171,17 +171,17 @@ EXAMPLES = '''
     vm_per_user: 1
 
 - name: Remove vmpool, note that all VMs in pool will be stopped and removed
-  ovirt.ovirt.ovirt_vmpool:
+  @NAMESPACE@.@NAME@.ovirt_vmpool:
     state: absent
     name: myvmpool
 
 - name: Change Pool Name
-  ovirt.ovirt.ovirt_vmpool:
+  @NAMESPACE@.@NAME@.ovirt_vmpool:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_pool_name"
 
 - name: Create vm pool and override the pool values
-  ovirt.ovirt.ovirt_vmpool:
+  @NAMESPACE@.@NAME@.ovirt_vmpool:
     cluster: mycluster
     name: vmpool
     template: blank

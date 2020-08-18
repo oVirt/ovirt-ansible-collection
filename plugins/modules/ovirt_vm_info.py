@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV virtual machines."
     - This module was called C(ovirt_vm_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt.ovirt.ovirt_vm_info) module no longer returns C(ansible_facts)!
+      Note that the M(@NAMESPACE@.@NAME@.ovirt_vm_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_vms), which
        contains a list of virtual machines. You need to register the result with
@@ -74,14 +74,14 @@ EXAMPLES = '''
 
 # Gather information about all VMs which names start with C(centos) and
 # belong to cluster C(west):
-- ovirt.ovirt.ovirt_vm_info:
+- @NAMESPACE@.@NAME@.ovirt_vm_info:
     pattern: name=centos* and cluster=west
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_vms }}"
 
 # Gather info about next run configuration of virtual machine named myvm
-- ovirt.ovirt.ovirt_vm_info:
+- @NAMESPACE@.@NAME@.ovirt_vm_info:
     pattern: name=myvm
     next_run: true
   register: result

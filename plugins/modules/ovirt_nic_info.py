@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV virtual machine network interfaces."
     - This module was called C(ovirt_nic_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt.ovirt.ovirt_nic_info) module no longer returns C(ansible_facts)!
+      Note that the M(@NAMESPACE@.@NAME@.ovirt_nic_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_nics), which
        contains a list of NICs. You need to register the result with
@@ -56,7 +56,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all NICs which names start with C(eth) for VM named C(centos7):
-- ovirt.ovirt.ovirt_nic_info:
+- @NAMESPACE@.@NAME@.ovirt_nic_info:
     vm: centos7
     name: eth*
   register: result
