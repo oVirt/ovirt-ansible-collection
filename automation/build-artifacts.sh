@@ -61,8 +61,9 @@ mkdir -p $COLLECTION_DIR
 cp -r ../ovirt-build/* $COLLECTION_DIR
 cd $COLLECTION_DIR
 
-pip3 install rstcheck
+pip3 install rstcheck antsibull-changelog
 
 ansible-test sanity
+/usr/local/bin/antsibull-changelog lint
 
 cd $ROOT_PATH
