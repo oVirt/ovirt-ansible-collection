@@ -20,3 +20,9 @@
 - deprecated_features
 - removed_features
 - security_fixes
+
+## Commands
+
+`antsibull-changelog lint`
+
+`antsibull-changelog release`
