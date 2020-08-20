@@ -53,7 +53,7 @@ options:
             - "Namespace of the authorization provider, where group resides."
         required: false
         type: str
-extends_documentation_fragment: ovirt.ovirt.ovirt
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 EXAMPLES = '''
@@ -61,20 +61,20 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Add group group1 from authorization provider example.com-authz
-- ovirt.ovirt.ovirt_group:
+- @NAMESPACE@.@NAME@.ovirt_group:
     name: group1
     domain: example.com-authz
 
 # Add group group1 from authorization provider example.com-authz
 # In case of multi-domain Active Directory setup, you should pass
 # also namespace, so it adds correct group:
-- ovirt.ovirt.ovirt_group:
+- @NAMESPACE@.@NAME@.ovirt_group:
     name: group1
     namespace: dc=ad2,dc=example,dc=com
     domain: example.com-authz
 
 # Remove group group1 with authorization provider example.com-authz
-- ovirt.ovirt.ovirt_group:
+- @NAMESPACE@.@NAME@.ovirt_group:
     state: absent
     name: group1
     domain: example.com-authz
@@ -101,7 +101,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     check_params,

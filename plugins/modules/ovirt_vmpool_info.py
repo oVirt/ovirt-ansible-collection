@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV vmpools."
     - This module was called C(ovirt_vmpool_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt.ovirt.ovirt_vmpool_info) module no longer returns C(ansible_facts)!
+      Note that the M(@NAMESPACE@.@NAME@.ovirt_vmpool_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_vmpools), which
        contains a list of vmpools. You need to register the result with
@@ -44,7 +44,7 @@ options:
             - "Search term which is accepted by oVirt/RHV search backend."
             - "For example to search vmpool X: name=X"
         type: str
-extends_documentation_fragment: ovirt.ovirt.ovirt_info
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -52,7 +52,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all vm pools which names start with C(centos):
-- ovirt.ovirt.ovirt_vmpool_info:
+- @NAMESPACE@.@NAME@.ovirt_vmpool_info:
     pattern: name=centos*
   register: result
 - ansible.builtin.debug:
@@ -70,7 +70,7 @@ ovirt_vm_pools:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

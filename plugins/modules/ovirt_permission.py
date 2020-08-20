@@ -83,7 +83,7 @@ options:
         description:
             - Name of the quota to assign permission. Works only with C(object_type) I(data_center).
         type: str
-extends_documentation_fragment: ovirt.ovirt.ovirt
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 EXAMPLES = '''
@@ -91,7 +91,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Add user user1 from authorization provider example.com-authz
-  ovirt.ovirt.ovirt_permission:
+  @NAMESPACE@.@NAME@.ovirt_permission:
     user_name: user1
     authz_name: example.com-authz
     object_type: vm
@@ -99,7 +99,7 @@ EXAMPLES = '''
     role: UserVmManager
 
 - name: Remove permission from user
-  ovirt.ovirt.ovirt_permission:
+  @NAMESPACE@.@NAME@.ovirt_permission:
     state: absent
     user_name: user1
     authz_name: example.com-authz
@@ -108,7 +108,7 @@ EXAMPLES = '''
     role: ClusterAdmin
 
 - name: Assign QuotaConsumer role to user
-  ovirt.ovirt.ovirt_permissions:
+  @NAMESPACE@.@NAME@.ovirt_permissions:
     state: present
     user_name: user1
     authz_name: example.com-authz
@@ -118,7 +118,7 @@ EXAMPLES = '''
     role: QuotaConsumer
 
 - name: Assign QuotaConsumer role to group
-  ovirt.ovirt.ovirt_permissions:
+  @NAMESPACE@.@NAME@.ovirt_permissions:
     state: present
     group_name: group1
     authz_name: example.com-authz
@@ -149,7 +149,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

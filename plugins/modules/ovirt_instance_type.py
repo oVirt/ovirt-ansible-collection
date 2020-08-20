@@ -50,7 +50,7 @@ options:
         description:
             - List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
             - NOTE - This parameter is used only when C(state) is I(running) or I(present) and is able to only create NICs.
-              To manage NICs of the instance type in more depth please use M(ovirt.ovirt.ovirt_nic) module instead.
+              To manage NICs of the instance type in more depth please use M(@NAMESPACE@.@NAME@.ovirt_nic) module instead.
         suboptions:
             name:
                 description:
@@ -97,7 +97,7 @@ options:
         description:
             - Operating system of the Instance Type, for example 'rhel_8x64'.
             - Default value is set by oVirt/RHV engine.
-            - Use the M(ovirt.ovirt.ovirt_vm_os_info) module to obtain the current list.
+            - Use the M(@NAMESPACE@.@NAME@.ovirt_vm_os_info) module to obtain the current list.
         type: str
     boot_devices:
         description:
@@ -214,7 +214,7 @@ options:
             - "Memory balloon is a guest device, which may be used to re-distribute / reclaim the host memory
                based on instance type needs in a dynamic way. In this way it's possible to create memory over commitment states."
         type: bool
-extends_documentation_fragment: ovirt.ovirt.ovirt
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 EXAMPLES = '''
@@ -223,7 +223,7 @@ EXAMPLES = '''
 
 # Create instance type
 - name: Create instance type
-  ovirt.ovirt.ovirt_instance_type:
+  @NAMESPACE@.@NAME@.ovirt_instance_type:
     state: present
     name: myit
     rng_device: hwrng
@@ -235,13 +235,13 @@ EXAMPLES = '''
       - network
 
 # Remove instance type
-- ovirt.ovirt.ovirt_instance_type:
+- @NAMESPACE@.@NAME@.ovirt_instance_type:
     state: absent
     name: myit
 
 
 # Create instance type with predefined memory and cpu limits.
-- ovirt.ovirt.ovirt_instance_type:
+- @NAMESPACE@.@NAME@.ovirt_instance_type:
     state: present
     name: myit
     memory: 2GiB
@@ -251,14 +251,14 @@ EXAMPLES = '''
       - name: nic1
 
 # Enable usb support and serial console
-- ovirt.ovirt.ovirt_instance_type:
+- @NAMESPACE@.@NAME@.ovirt_instance_type:
     name: myit
     usb_support: True
     serial_console: True
 
 # Use graphical console with spice and vnc
 - name: Create a instance type that has the console configured for both Spice and VNC
-  ovirt.ovirt.ovirt_instance_type:
+  @NAMESPACE@.@NAME@.ovirt_instance_type:
     name: myit
     graphical_console:
       protocol:
@@ -284,7 +284,7 @@ instancetype:
 from ansible.module_utils.basic import AnsibleModule
 import traceback
 
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     BaseModule,
     check_params,
     check_sdk,

@@ -357,7 +357,7 @@ options:
             custom_script:
                 description:
                     - A custom Sysprep definition in the format of a complete unattended installation answer file.
-extends_documentation_fragment: ovirt.ovirt.ovirt
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 EXAMPLES = '''
@@ -365,7 +365,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create template from vm
-- ovirt.ovirt.ovirt_template:
+- @NAMESPACE@.@NAME@.ovirt_template:
     cluster: Default
     name: mytemplate
     vm: rhel7
@@ -373,7 +373,7 @@ EXAMPLES = '''
     description: Test
 
 # Import template
-- ovirt.ovirt.ovirt_template:
+- @NAMESPACE@.@NAME@.ovirt_template:
     state: imported
     name: mytemplate
     export_domain: myexport
@@ -381,31 +381,31 @@ EXAMPLES = '''
     cluster: mycluster
 
 # Remove template
-- ovirt.ovirt.ovirt_template:
+- @NAMESPACE@.@NAME@.ovirt_template:
     state: absent
     name: mytemplate
 
 # Change Template Name
-- ovirt.ovirt.ovirt_template:
+- @NAMESPACE@.@NAME@.ovirt_template:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_template_name"
 
 # Register template
-- ovirt.ovirt.ovirt_template:
+- @NAMESPACE@.@NAME@.ovirt_template:
     state: registered
     storage_domain: mystorage
     cluster: mycluster
     name: mytemplate
 
 # Register template using id
-- ovirt.ovirt.ovirt_template:
+- @NAMESPACE@.@NAME@.ovirt_template:
     state: registered
     storage_domain: mystorage
     cluster: mycluster
     id: 1111-1111-1111-1111
 
 # Register template, allowing partial import
-- ovirt.ovirt.ovirt_template:
+- @NAMESPACE@.@NAME@.ovirt_template:
     state: registered
     storage_domain: mystorage
     allow_partial_import: "True"
@@ -413,7 +413,7 @@ EXAMPLES = '''
     id: 1111-1111-1111-1111
 
 # Register template with vnic profile mappings
-- ovirt.ovirt.ovirt_template:
+- @NAMESPACE@.@NAME@.ovirt_template:
     state: registered
     storage_domain: mystorage
     cluster: mycluster
@@ -427,7 +427,7 @@ EXAMPLES = '''
         target_profile_id: 4444-4444-4444-4444
 
 # Register template with mapping
-- ovirt.ovirt.ovirt_template:
+- @NAMESPACE@.@NAME@.ovirt_template:
     state: registered
     storage_domain: mystorage
     cluster: mycluster
@@ -443,7 +443,7 @@ EXAMPLES = '''
         dest_name: cluster_B
 
 # Import image from Glance s a template
-- ovirt.ovirt.ovirt_template:
+- @NAMESPACE@.@NAME@.ovirt_template:
     state: imported
     name: mytemplate
     image_disk: "centos7"
@@ -453,7 +453,7 @@ EXAMPLES = '''
     cluster: mycluster
 
 # Edit template subversion
-- ovirt.ovirt.ovirt_template:
+- @NAMESPACE@.@NAME@.ovirt_template:
     cluster: mycluster
     name: mytemplate
     vm: rhel7
@@ -462,7 +462,7 @@ EXAMPLES = '''
         name: subversion
 
 # Create new template subversion
-- ovirt.ovirt.ovirt_template:
+- @NAMESPACE@.@NAME@.ovirt_template:
     cluster: mycluster
     name: mytemplate
     vm: rhel7
@@ -470,7 +470,7 @@ EXAMPLES = '''
         name: subversion
 
 - name: Template with cloud init
-  ovirt.ovirt.ovirt_template:
+  @NAMESPACE@.@NAME@.ovirt_template:
     name: mytemplate
     cluster: Default
     vm: rhel8
@@ -493,7 +493,7 @@ EXAMPLES = '''
       root_password: super_password
 
 - name: Template with cloud init, with multiple network interfaces
-  ovirt.ovirt.ovirt_template:
+  @NAMESPACE@.@NAME@.ovirt_template:
     name: mytemplate
     cluster: mycluster
     vm: rhel8
@@ -507,7 +507,7 @@ EXAMPLES = '''
       nic_gateway: 10.34.63.254
 
 - name: Template with timezone and nic
-  ovirt.ovirt.ovirt_template:
+  @NAMESPACE@.@NAME@.ovirt_template:
     cluster: MyCluster
     name: mytemplate
     vm: rhel8
@@ -517,7 +517,7 @@ EXAMPLES = '''
       - name: nic1
 
 - name: Template with sysprep
-  ovirt.ovirt.ovirt_template:
+  @NAMESPACE@.@NAME@.ovirt_template:
     name: windows2012R2_AD
     cluster: Default
     vm: windows2012
@@ -550,7 +550,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     convert_to_bytes,
