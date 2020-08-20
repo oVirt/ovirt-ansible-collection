@@ -39,7 +39,7 @@ dist() {
    -e "s|@PACKAGE_VERSION@|$PACKAGE_VERSION|g" \
    < ovirt-ansible-collection.spec.in > ovirt-ansible-collection.spec
 
-  find ./* -not -name '*.in' | tar --files-from /proc/self/fd/0 -czf "$TARBALL" ovirt-ansible-collection.spec
+  find ./* -not -name '*.spec' -type f | tar --files-from /proc/self/fd/0 -czf "$TARBALL" ovirt-ansible-collection.spec
   echo "tar archive '$TARBALL' created."
 }
 
@@ -60,7 +60,7 @@ install() {
 
 rename() {
   echo "Renaming @NAMESPACE@ to $COLLECTION_NAMESPACE and @NAME@ to $COLLECTION_NAME"
-  for file in $(find ./* -not -name '*.in')
+  for file in $(find ./* -type f)
   do
     sed -i -e "s/@NAMESPACE@/$COLLECTION_NAMESPACE/g" -e "s/@NAME@/$COLLECTION_NAME/g" $file
   done
