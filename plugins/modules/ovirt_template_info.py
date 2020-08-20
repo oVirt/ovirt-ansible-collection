@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV templates."
     - This module was called C(ovirt_template_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt.ovirt.ovirt_template_info) module no longer returns C(ansible_facts)!
+      Note that the M(@NAMESPACE@.@NAME@.ovirt_template_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_templates), which
        contains a list of templates. You need to register the result with
@@ -45,7 +45,7 @@ options:
             - "For example to search template X from datacenter Y use following pattern:
                name=X and datacenter=Y"
         type: str
-extends_documentation_fragment: ovirt.ovirt.ovirt_info
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -54,7 +54,7 @@ EXAMPLES = '''
 
 # Gather information about all templates which names start with C(centos) and
 # belongs to data center C(west):
-- ovirt.ovirt.ovirt_template_info:
+- @NAMESPACE@.@NAME@.ovirt_template_info:
     pattern: name=centos* and datacenter=west
   register: result
 - ansible.builtin.debug:
@@ -72,7 +72,7 @@ ovirt_templates:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

@@ -236,7 +236,7 @@ options:
             - Defines whether SCSI reservation is enabled for this disk.
         type: bool
         version_added: 1.2.0
-extends_documentation_fragment: ovirt.ovirt.ovirt
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 
@@ -245,7 +245,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create and attach new disk to VM
-- ovirt.ovirt.ovirt_disk:
+- @NAMESPACE@.@NAME@.ovirt_disk:
     name: myvm_disk
     vm_name: rhel7
     size: 10GiB
@@ -254,7 +254,7 @@ EXAMPLES = '''
     storage_domain: data
 
 # Attach logical unit to VM rhel7
-- ovirt.ovirt.ovirt_disk:
+- @NAMESPACE@.@NAME@.ovirt_disk:
     vm_name: rhel7
     logical_unit:
       target: iqn.2016-08-09.brq.str-01:omachace
@@ -263,7 +263,7 @@ EXAMPLES = '''
     interface: virtio
 
 # Detach disk from VM
-- ovirt.ovirt.ovirt_disk:
+- @NAMESPACE@.@NAME@.ovirt_disk:
     state: detached
     name: myvm_disk
     vm_name: rhel7
@@ -272,7 +272,7 @@ EXAMPLES = '''
     interface: virtio
 
 # Change Disk Name
-- ovirt.ovirt.ovirt_disk:
+- @NAMESPACE@.@NAME@.ovirt_disk:
     id: 00000000-0000-0000-0000-000000000000
     storage_domain: data
     name: "new_disk_name"
@@ -280,7 +280,7 @@ EXAMPLES = '''
 
 # Upload local image to disk and attach it to vm:
 # Since Ansible 2.3
-- ovirt.ovirt.ovirt_disk:
+- @NAMESPACE@.@NAME@.ovirt_disk:
     name: mydisk
     vm_name: myvm
     interface: virtio
@@ -291,24 +291,24 @@ EXAMPLES = '''
 
 # Download disk to local file system:
 # Since Ansible 2.3
-- ovirt.ovirt.ovirt_disk:
+- @NAMESPACE@.@NAME@.ovirt_disk:
     id: 7de90f31-222c-436c-a1ca-7e655bd5b60c
     download_image_path: /home/user/mydisk.qcow2
 
 # Export disk as image to Glance domain
 # Since Ansible 2.4
-- ovirt.ovirt.ovirt_disk:
+- @NAMESPACE@.@NAME@.ovirt_disk:
     id: 7de90f31-222c-436c-a1ca-7e655bd5b60c
     image_provider: myglance
     state: exported
 
 # Defining a specific quota while creating a disk image:
 # Since Ansible 2.5
-- ovirt.ovirt.ovirt_quotas_info:
+- @NAMESPACE@.@NAME@.ovirt_quotas_info:
     data_center: Default
     name: myquota
   register: quota
-- ovirt.ovirt.ovirt_disk:
+- @NAMESPACE@.@NAME@.ovirt_disk:
     name: mydisk
     size: 10GiB
     storage_domain: data
@@ -317,7 +317,7 @@ EXAMPLES = '''
 
 # Upload an ISO image
 # Since Ansible 2.8
-- ovirt.ovirt.ovirt_disk:
+- @NAMESPACE@.@NAME@.ovirt_disk:
     name: myiso
     upload_image_path: /path/to/iso/image
     storage_domain: data
@@ -329,7 +329,7 @@ EXAMPLES = '''
 
 # Add fiber chanel disk
 - name: Create disk
-  ovirt.ovirt.ovirt_disk:
+  @NAMESPACE@.@NAME@.ovirt_disk:
     name: fcp_disk
     host: my_host
     logical_unit:
@@ -370,7 +370,7 @@ try:
 except ImportError:
     pass
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     check_params,

@@ -306,7 +306,7 @@ options:
                and relevant only for clusters with Gluster service."
             - "Could be for example I(virtual-host), I(rhgs-sequential-io), I(rhgs-random-io)"
         type: str
-extends_documentation_fragment: ovirt.ovirt.ovirt
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 EXAMPLES = '''
@@ -314,7 +314,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create cluster
-- ovirt.ovirt.ovirt_cluster:
+- @NAMESPACE@.@NAME@.ovirt_cluster:
     data_center: mydatacenter
     name: mycluster
     cpu_type: Intel SandyBridge Family
@@ -322,7 +322,7 @@ EXAMPLES = '''
     compatibility_version: 4.0
 
 # Create virt service cluster:
-- ovirt.ovirt.ovirt_cluster:
+- @NAMESPACE@.@NAME@.ovirt_cluster:
     data_center: mydatacenter
     name: mycluster
     cpu_type: Intel Nehalem Family
@@ -343,7 +343,7 @@ EXAMPLES = '''
       - random
 
 # Create cluster with default network provider
-- ovirt.ovirt.ovirt_cluster:
+- @NAMESPACE@.@NAME@.ovirt_cluster:
     name: mycluster
     data_center: Default
     cpu_type: Intel SandyBridge Family
@@ -351,12 +351,12 @@ EXAMPLES = '''
       - name: ovirt-provider-ovn
 
 # Remove cluster
-- ovirt.ovirt.ovirt_cluster:
+- @NAMESPACE@.@NAME@.ovirt_cluster:
     state: absent
     name: mycluster
 
 # Change cluster Name
-- ovirt.ovirt.ovirt_cluster:
+- @NAMESPACE@.@NAME@.ovirt_cluster:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_cluster_name"
 '''
@@ -382,7 +382,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

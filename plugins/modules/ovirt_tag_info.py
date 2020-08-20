@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV tags."
     - This module was called C(ovirt_tag_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt.ovirt.ovirt_tag_info) module no longer returns C(ansible_facts)!
+      Note that the M(@NAMESPACE@.@NAME@.ovirt_tag_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_tags), which
        contains a list of tags. You need to register the result with
@@ -51,7 +51,7 @@ options:
         description:
             - "Name of the host, which tags should be listed."
         type: str
-extends_documentation_fragment: ovirt.ovirt.ovirt_info
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -59,21 +59,21 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all tags, which names start with C(tag):
-- ovirt.ovirt.ovirt_tag_info:
+- @NAMESPACE@.@NAME@.ovirt_tag_info:
     name: tag*
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_tags }}"
 
 # Gather information about all tags, which are assigned to VM C(postgres):
-- ovirt.ovirt.ovirt_tag_info:
+- @NAMESPACE@.@NAME@.ovirt_tag_info:
     vm: postgres
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_tags }}"
 
 # Gather information about all tags, which are assigned to host C(west):
-- ovirt.ovirt.ovirt_tag_info:
+- @NAMESPACE@.@NAME@.ovirt_tag_info:
     host: west
   register: result
 - ansible.builtin.debug:
@@ -92,7 +92,7 @@ import fnmatch
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

@@ -65,7 +65,7 @@ options:
         description:
             - "Integer value specifying, by default it's added at the end."
         type: int
-extends_documentation_fragment: ovirt.ovirt.ovirt
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 EXAMPLES = '''
@@ -73,7 +73,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Add fence agent to host 'myhost'
-- ovirt.ovirt.ovirt_host_pm:
+- @NAMESPACE@.@NAME@.ovirt_host_pm:
     name: myhost
     address: 1.2.3.4
     options:
@@ -85,7 +85,7 @@ EXAMPLES = '''
     type: ipmilan
 
 # Add fence agent to host 'myhost' using 'slot' option
-- ovirt.ovirt.ovirt_host_pm:
+- @NAMESPACE@.@NAME@.ovirt_host_pm:
     name: myhost
     address: 1.2.3.4
     options:
@@ -99,7 +99,7 @@ EXAMPLES = '''
 
 
 # Remove ipmilan fence agent with address 1.2.3.4 on host 'myhost'
-- ovirt.ovirt.ovirt_host_pm:
+- @NAMESPACE@.@NAME@.ovirt_host_pm:
     state: absent
     name: myhost
     address: 1.2.3.4
@@ -127,7 +127,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

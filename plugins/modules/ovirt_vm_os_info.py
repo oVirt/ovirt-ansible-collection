@@ -46,19 +46,19 @@ options:
       description:
         - "Name of the operating system which should be returned."
       type: str
-extends_documentation_fragment: ovirt.ovirt.ovirt_info
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
 EXAMPLES = '''
 # Look at ovirt_auth module to see how to reuse authentication:
 
-- ovirt.ovirt.ovirt_vm_os_info:
+- @NAMESPACE@.@NAME@.ovirt_vm_os_info:
     auth: "{{ ovirt_auth }}"
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_operating_systems }}"
 
-- ovirt.ovirt.ovirt_vm_os_info:
+- @NAMESPACE@.@NAME@.ovirt_vm_os_info:
     auth: "{{ ovirt_auth }}"
     filter_keys: name,architecture
   register: result
@@ -78,7 +78,7 @@ ovirt_operating_systems:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

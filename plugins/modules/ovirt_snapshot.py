@@ -110,7 +110,7 @@ notes:
        machine - it simply removes a return-point. However, restoring a virtual
        machine from a snapshot deletes any content that was written to the
        virtual machine after the time the snapshot was taken."
-extends_documentation_fragment: ovirt.ovirt.ovirt
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 
@@ -119,52 +119,52 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create snapshot:
-- ovirt.ovirt.ovirt_snapshot:
+- @NAMESPACE@.@NAME@.ovirt_snapshot:
     vm_name: rhel7
     description: MySnapshot
   register: snapshot
 
 # Create snapshot and save memory:
-- ovirt.ovirt.ovirt_snapshot:
+- @NAMESPACE@.@NAME@.ovirt_snapshot:
     vm_name: rhel7
     description: SnapWithMem
     use_memory: true
   register: snapshot
 
 # Restore snapshot:
-- ovirt.ovirt.ovirt_snapshot:
+- @NAMESPACE@.@NAME@.ovirt_snapshot:
     state: restore
     vm_name: rhel7
     snapshot_id: "{{ snapshot.id }}"
 
 # Remove snapshot:
-- ovirt.ovirt.ovirt_snapshot:
+- @NAMESPACE@.@NAME@.ovirt_snapshot:
     state: absent
     vm_name: rhel7
     snapshot_id: "{{ snapshot.id }}"
 
 # Upload local image to disk and attach it to vm:
 # Since Ansible 2.8
-- ovirt.ovirt.ovirt_snapshot:
+- @NAMESPACE@.@NAME@.ovirt_snapshot:
     name: mydisk
     vm_name: myvm
     upload_image_path: /path/to/mydisk.qcow2
 
 # Download snapshot to local file system:
 # Since Ansible 2.8
-- ovirt.ovirt.ovirt_snapshot:
+- @NAMESPACE@.@NAME@.ovirt_snapshot:
     snapshot_id: 7de90f31-222c-436c-a1ca-7e655bd5b60c
     disk_name: DiskName
     vm_name: myvm
     download_image_path: /home/user/mysnaphost.qcow2
 
 # Delete all snapshots older than 2 days
-- ovirt.ovirt.ovirt_snapshot:
+- @NAMESPACE@.@NAME@.ovirt_snapshot:
     vm_name: test
     keep_days_old: 2
 
 - name: Select which disks should be add to snapshot
-  ovirt.ovirt.ovirt_snapshot:
+  @NAMESPACE@.@NAME@.ovirt_snapshot:
     vm_name: test
     disks:
       - id: 7de90f31-222c-436c-a1ca-7e655bd5b60c
@@ -207,7 +207,7 @@ from ansible.module_utils.six.moves.urllib.parse import urlparse
 
 from datetime import datetime
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

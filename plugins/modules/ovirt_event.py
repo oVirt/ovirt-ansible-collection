@@ -78,7 +78,7 @@ options:
         description:
             - "The id of the VM associated with this event."
         type: str
-extends_documentation_fragment: ovirt.ovirt.ovirt
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 EXAMPLES = '''
@@ -86,7 +86,7 @@ EXAMPLES = '''
 # look at the ovirt_auth module to see how to reuse authentication.
 
 - name: Create an event
-  ovirt.ovirt.ovirt_event:
+  @NAMESPACE@.@NAME@.ovirt_event:
     state: present
     description: "The file system /home on host xyz is almost full!"
     origin: "mymonitor"
@@ -94,7 +94,7 @@ EXAMPLES = '''
     severity: warning
 
 - name: Create an event and link it to a specific object
-  ovirt.ovirt.ovirt_event:
+  @NAMESPACE@.@NAME@.ovirt_event:
     state: present
     description: "The file system /home is almost full!"
     origin: "mymonitor"
@@ -103,7 +103,7 @@ EXAMPLES = '''
     vm: "c79db183-46ef-44d1-95f9-1a368c516c19"
 
 - name: Remove an event
-  ovirt.ovirt.ovirt_event:
+  @NAMESPACE@.@NAME@.ovirt_event:
     state: absent
     id: 123456789
     wait: false
@@ -129,7 +129,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     check_params,

@@ -31,7 +31,7 @@ author: "Katerina Koukiou (@KKoukiou)"
 description:
     - "Retrieve information about one or more oVirt/RHV disks."
     - This module was called C(ovirt_disk_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt.ovirt.ovirt_disk_info) module no longer returns C(ansible_facts)!
+      Note that the M(@NAMESPACE@.@NAME@.ovirt_disk_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_disks), which
        contains a list of disks. You need to register the result with
@@ -43,7 +43,7 @@ options:
             - "For example to search Disk X from storage Y use following pattern:
                name=X and storage.name=Y"
         type: str
-extends_documentation_fragment: ovirt.ovirt.ovirt_info
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -51,7 +51,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all Disks which names start with C(centos)
-- ovirt.ovirt.ovirt_disk_info:
+- @NAMESPACE@.@NAME@.ovirt_disk_info:
     pattern: name=centos*
   register: result
 - ansible.builtin.debug:
@@ -69,7 +69,7 @@ ovirt_disks:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

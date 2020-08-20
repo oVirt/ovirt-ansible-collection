@@ -84,7 +84,7 @@ options:
             - "If I(true) the storage domain don't have to be in I(MAINTENANCE)
                state, so the storage connection is updated."
         type: bool
-extends_documentation_fragment: ovirt.ovirt.ovirt
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 EXAMPLES = '''
@@ -92,7 +92,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Add new storage connection:
-- ovirt.ovirt.ovirt_storage_connection:
+- @NAMESPACE@.@NAME@.ovirt_storage_connection:
     storage: myiscsi
     address: 10.34.63.199
     target: iqn.2016-08-09.domain-01:nickname
@@ -100,13 +100,13 @@ EXAMPLES = '''
     type: iscsi
 
 # Update the existing storage connection address:
-- ovirt.ovirt.ovirt_storage_connection:
+- @NAMESPACE@.@NAME@.ovirt_storage_connection:
     id: 26915c96-92ff-47e5-9e77-b581db2f2d36
     address: 10.34.63.204
     force: true
 
 # Remove storage connection:
-- ovirt.ovirt.ovirt_storage_connection:
+- @NAMESPACE@.@NAME@.ovirt_storage_connection:
     id: 26915c96-92ff-47e5-9e77-b581db2f2d36
 '''
 
@@ -131,7 +131,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

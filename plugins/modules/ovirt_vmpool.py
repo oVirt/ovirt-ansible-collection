@@ -153,8 +153,8 @@ options:
                     - C(interface) -  Type of the network interface. One of following I(virtio), I(e1000), I(rtl8139), default is I(virtio).
                     - C(mac_address) - Custom MAC address of the network interface, by default it's obtained from MAC pool.
                     - NOTE - This parameter is used only when C(state) is I(running) or I(present) and is able to only create NICs.
-                    - To manage NICs of the VM in more depth please use M(ovirt.ovirt.ovirt_nics) module instead.
-extends_documentation_fragment: ovirt.ovirt.ovirt
+                    - To manage NICs of the VM in more depth please use M(@NAMESPACE@.@NAME@.ovirt_nics) module instead.
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 EXAMPLES = '''
@@ -162,7 +162,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Create VM pool from template
-  ovirt.ovirt.ovirt_vmpool:
+  @NAMESPACE@.@NAME@.ovirt_vmpool:
     cluster: mycluster
     name: myvmpool
     template: rhel7
@@ -171,17 +171,17 @@ EXAMPLES = '''
     vm_per_user: 1
 
 - name: Remove vmpool, note that all VMs in pool will be stopped and removed
-  ovirt.ovirt.ovirt_vmpool:
+  @NAMESPACE@.@NAME@.ovirt_vmpool:
     state: absent
     name: myvmpool
 
 - name: Change Pool Name
-  ovirt.ovirt.ovirt_vmpool:
+  @NAMESPACE@.@NAME@.ovirt_vmpool:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_pool_name"
 
 - name: Create vm pool and override the pool values
-  ovirt.ovirt.ovirt_vmpool:
+  @NAMESPACE@.@NAME@.ovirt_vmpool:
     cluster: mycluster
     name: vmpool
     template: blank
@@ -236,7 +236,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     BaseModule,
     check_params,
     check_sdk,

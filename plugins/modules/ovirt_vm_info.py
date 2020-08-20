@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV virtual machines."
     - This module was called C(ovirt_vm_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(ovirt.ovirt.ovirt_vm_info) module no longer returns C(ansible_facts)!
+      Note that the M(@NAMESPACE@.@NAME@.ovirt_vm_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_vms), which
        contains a list of virtual machines. You need to register the result with
@@ -65,7 +65,7 @@ options:
            the virtual machine with the modifications that have already been performed but that will only come into
            effect when the virtual machine is restarted. By default the value is set by engine."
       type: bool
-extends_documentation_fragment: ovirt.ovirt.ovirt_info
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -74,14 +74,14 @@ EXAMPLES = '''
 
 # Gather information about all VMs which names start with C(centos) and
 # belong to cluster C(west):
-- ovirt.ovirt.ovirt_vm_info:
+- @NAMESPACE@.@NAME@.ovirt_vm_info:
     pattern: name=centos* and cluster=west
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_vms }}"
 
 # Gather info about next run configuration of virtual machine named myvm
-- ovirt.ovirt.ovirt_vm_info:
+- @NAMESPACE@.@NAME@.ovirt_vm_info:
     pattern: name=myvm
     next_run: true
   register: result
@@ -100,7 +100,7 @@ ovirt_vms:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,
