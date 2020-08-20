@@ -67,14 +67,13 @@ rename() {
 }
 
 build() {
-  if [[ -d $BUILD_PATH ]]; then
+  if [[ $BUILD_PATH ]]; then
+    mkdir -p $BUILD_PATH
     echo "The copying files to $BUILD_PATH"
     cp -a ./ $BUILD_PATH
     cd $BUILD_PATH
     rename
     dist
-  else
-    echo "The BUILD_PATH was not specified!"
   fi
 }
 
