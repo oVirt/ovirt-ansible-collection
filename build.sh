@@ -70,7 +70,7 @@ build() {
   if [[ $BUILD_PATH ]]; then
     mkdir -p $BUILD_PATH
     echo "The copying files to $BUILD_PATH"
-    cp -r ./ $BUILD_PATH
+    cp -r ./* $BUILD_PATH
     cd $BUILD_PATH
     rename
     dist
