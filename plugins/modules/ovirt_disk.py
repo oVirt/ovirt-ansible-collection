@@ -642,7 +642,7 @@ class DisksModule(BaseModule):
             equal(convert_to_bytes(self._module.params.get('size')), entity.provisioned_size) and
             equal(self._module.params.get('shareable'), entity.shareable) and
             equal(self.param('propagate_errors'), entity.propagate_errors) and
-            equal(otypes.ScsiGenericIO(self.param('scsi_passthrough') if self.param('scsi_passthrough') else None), entity.sgio) and
+            equal(otypes.ScsiGenericIO(self.param('scsi_passthrough')) if self.param('scsi_passthrough') else None, entity.sgio) and
             equal(self.param('wipe_after_delete'), entity.wipe_after_delete)
         )
 
