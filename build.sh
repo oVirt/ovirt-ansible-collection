@@ -39,7 +39,7 @@ dist() {
    -e "s|@PACKAGE_VERSION@|$PACKAGE_VERSION|g" \
    < ovirt-ansible-collection.spec.in > ovirt-ansible-collection.spec
 
-  git ls-files | tar --files-from /proc/self/fd/0 -czf "$TARBALL" ovirt-ansible-collection.spec
+  find ./* -not -name '*.in' | tar --files-from /proc/self/fd/0 -czf "$TARBALL" ovirt-ansible-collection.spec
   echo "tar archive '$TARBALL' created."
 }
 
@@ -60,7 +60,7 @@ install() {
 
 rename() {
   echo "Renaming @NAMESPACE@ to $COLLECTION_NAMESPACE and @NAME@ to $COLLECTION_NAME"
-  for file in $(git ls-files)
+  for file in $(find ./* -not -name '*.in')
   do
     sed -i -e "s/@NAMESPACE@/$COLLECTION_NAMESPACE/g" -e "s/@NAME@/$COLLECTION_NAME/g" $file
   done
@@ -70,7 +70,7 @@ build() {
   if [[ $BUILD_PATH ]]; then
     mkdir -p $BUILD_PATH
     echo "The copying files to $BUILD_PATH"
-    cp -a ./ $BUILD_PATH
+    cp -r ./ $BUILD_PATH
     cd $BUILD_PATH
     rename
     dist
