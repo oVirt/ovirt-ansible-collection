@@ -2,13 +2,13 @@ oVirt Engine Setup
 ==================
 
 Installs required packages for oVirt Engine deployment, generates answerfile
-and runs engine-setup.
+and runs engine_setup.
 Optionally the role updates oVirt engine packages.
 
 Role Variables
 --------------
 
-By default engine-setup uses an answer file specific for version of oVirt
+By default engine_setup uses an answer file specific for version of oVirt
 based on ``ovirt_engine_setup_version`` parameter. You can provide your own answer file
 to ``ovirt_engine_setup_answer_file_path`` variable.
 
@@ -28,7 +28,7 @@ to ``ovirt_engine_setup_answer_file_path`` variable.
 | Name                            | Default value         |  Description                                              |
 |---------------------------------|-----------------------|-----------------------------------------------------------|
 | ovirt_engine_setup_version            | 4.4                   | Allowed versions: [4.1, 4.2, 4.3, 4.4]. |
-| ovirt_engine_setup_package_list       | []                    | List of extra packages to be installed on engine apart from `ovirt_engine` package. |
+| ovirt_engine_setup_package_list       | []                    | List of extra packages to be installed on engine apart from `ovirt-engine` package. |
 | ovirt_engine_setup_fqdn               | UNDEF                 | Host fully qualified DNS name of the server. |
 | ovirt_engine_setup_organization       | UNDEF                 | Organization name for certificate. |
 | ovirt_engine_setup_firewall_manager   | firewalld             | Specify the type of firewall manager to configure on Engine host, following values are available: `firewalld`,`iptables` or empty value (`null`) to skip firewall configuration. |
@@ -73,7 +73,7 @@ to ``ovirt_engine_setup_answer_file_path`` variable.
 
 | Name                            | Default value         |  Description                                              |
 |---------------------------------|-----------------------|-----------------------------------------------------------|
-| ovirt_engine_setup_apache_config_root_redirection | True               | If `True`, `engine-setup` will configure the default page in Apache to automatically redirect clients to ovirt_engine default page.   |
+| ovirt_engine_setup_apache_config_root_redirection | True               | If `True`, `engine-setup` will configure the default page in Apache to automatically redirect clients to ovirt-engine default page.   |
 | ovirt_engine_setup_apache_config_ssl | True     | If `False`, `engine-setup` will not configure Apache SSL settings and administrators will need to configure it manually. |
 
 Dependencies
@@ -96,7 +96,7 @@ Example Playbook
     ovirt_engine_setup_version: '4.2'
     ovirt_engine_setup_organization: 'of.ovirt.engine.com'
   roles:
-    - engine-setup
+    - engine_setup
   collections:
     - ovirt.ovirt
 
@@ -112,7 +112,7 @@ Example Playbook
     ovirt_engine_setup_organization: 'rhv.redhat.com'
     ovirt_engine_setup_product_type: 'rhv'
   roles:
-    - engine-setup
+    - engine_setup
   collections:
     - ovirt.ovirt
 
@@ -132,7 +132,7 @@ Example Playbook
         version: general
 
   roles:
-    - engine-setup
+    - engine_setup
   collections:
     - ovirt.ovirt
 ```

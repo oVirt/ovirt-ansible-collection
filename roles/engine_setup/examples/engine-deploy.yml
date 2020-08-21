@@ -14,6 +14,6 @@
     ovirt_repositories_ovirt_release_rpm: "http://plain.resources.ovirt.org/pub/yum-repo/ovirt-release44.rpm"
   roles:
     - role: repositories
-    - role: engine-setup
+    - role: engine_setup
   collections:
     - ovirt.ovirt

@@ -14,6 +14,6 @@
     ovirt_repositories_ovirt_release_rpm: "{{ ovirt_release_rpm }}"
   roles:
     - role: repositories
-    - role: engine-setup
+    - role: engine_setup
   collections:
     - ovirt.ovirt
