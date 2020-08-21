@@ -1,0 +1,2 @@
+libxml2-devel [platform:rpm]
+python3-pycurl [platform:rpm]
