@@ -212,6 +212,30 @@ options:
         choices: ['incremental']
         version_added: 1.1.0
         type: str
+    scsi_passthrough:
+        description:
+            - Indicates whether SCSI passthrough is enable and its policy.
+            - Setting a value of `filtered`/`unfiltered` will enable SCSI passthrough for a LUN disk with unprivileged/privileged SCSI I/O.
+            - To disable SCSI passthrough the value should be set to `disabled`
+        choices: ['disabled', 'filtered', 'unfiltered']
+        type: str
+        version_added: 1.2.0
+    propagate_errors:
+        description:
+            - Indicates if disk errors should cause virtual machine to be paused or if disk errors should be
+            - propagated to the the guest operating system instead.
+        type: bool
+        version_added: 1.2.0
+    pass_discard:
+        description:
+            - Defines whether the virtual machine passes discard commands to the storage.
+        type: bool
+        version_added: 1.2.0
+    uses_scsi_reservation:
+        description:
+            - Defines whether SCSI reservation is enabled for this disk.
+        type: bool
+        version_added: 1.2.0
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
@@ -541,6 +565,8 @@ class DisksModule(BaseModule):
             ],
             quota=otypes.Quota(id=self._module.params.get('quota_id')) if self.param('quota_id') else None,
             shareable=self._module.params.get('shareable'),
+            sgio=otypes.ScsiGenericIO(self.param('scsi_passthrough')) if self.param('scsi_passthrough') else None,
+            propagate_errors=self.param('propagate_errors'),
             backup=otypes.DiskBackup(self.param('backup')) if self.param('backup') else None,
             wipe_after_delete=self.param('wipe_after_delete'),
             lun_storage=otypes.HostStorage(
@@ -615,6 +641,8 @@ class DisksModule(BaseModule):
             equal(self.param('quota_id'), getattr(entity.quota, 'id', None)) and
             equal(convert_to_bytes(self._module.params.get('size')), entity.provisioned_size) and
             equal(self._module.params.get('shareable'), entity.shareable) and
+            equal(self.param('propagate_errors'), entity.propagate_errors) and
+            equal(otypes.ScsiGenericIO(self.param('scsi_passthrough')) if self.param('scsi_passthrough') else None, entity.sgio) and
             equal(self.param('wipe_after_delete'), entity.wipe_after_delete)
         )
 
@@ -629,6 +657,8 @@ class DiskAttachmentsModule(DisksModule):
             ) if self._module.params.get('interface') else None,
             bootable=self._module.params.get('bootable'),
             active=self.param('activate'),
+            uses_scsi_reservation=self.param('uses_scsi_reservation'),
+            pass_discard=self.param('pass_discard'),
         )
 
     def update_check(self, entity):
@@ -636,6 +666,8 @@ class DiskAttachmentsModule(DisksModule):
             super(DiskAttachmentsModule, self)._update_check(follow_link(self._connection, entity.disk)) and
             equal(self._module.params.get('interface'), str(entity.interface)) and
             equal(self._module.params.get('bootable'), entity.bootable) and
+            equal(self._module.params.get('pass_discard'), entity.pass_discard) and
+            equal(self._module.params.get('uses_scsi_reservation'), entity.uses_scsi_reservation) and
             equal(self.param('activate'), entity.active)
         )
 
@@ -695,6 +727,10 @@ def main():
         sparse=dict(default=None, type='bool'),
         bootable=dict(default=None, type='bool'),
         shareable=dict(default=None, type='bool'),
+        scsi_passthrough=dict(default=None, type='str', choices=['disabled', 'filtered', 'unfiltered']),
+        uses_scsi_reservation=dict(default=None, type='bool'),
+        pass_discard=dict(default=None, type='bool'),
+        propagate_errors=dict(default=None, type='bool'),
         logical_unit=dict(default=None, type='dict'),
         download_image_path=dict(default=None),
         upload_image_path=dict(default=None, aliases=['image_path']),
