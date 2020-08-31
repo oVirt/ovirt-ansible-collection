@@ -93,7 +93,7 @@ Example Playbook
     # Contains encrypted `ovirt_engine_setup_admin_password` variable using ansible-vault
     - passwords.yml
   vars:
-    ovirt_engine_setup_version: '4.2'
+    ovirt_engine_setup_version: '4.4'
     ovirt_engine_setup_organization: 'of.ovirt.engine.com'
   roles:
     - engine_setup
@@ -108,7 +108,7 @@ Example Playbook
     # Contains encrypted `ovirt_engine_setup_admin_password` variable using ansible-vault
     - passwords.yml
   vars:
-    ovirt_engine_setup_version: '4.2'
+    ovirt_engine_setup_version: '4.4'
     ovirt_engine_setup_organization: 'rhv.redhat.com'
     ovirt_engine_setup_product_type: 'rhv'
   roles:
