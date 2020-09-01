@@ -45,4 +45,6 @@
       - embedded_ansible
 
   roles:
-    - ovirt.manageiq
+    - manageiq
+  collections:
+    - ovirt.ovirt
