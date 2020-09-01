@@ -1,0 +1,3 @@
+---
+major_changes:
+  - image_template - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/95).
