@@ -1,0 +1,3 @@
+---
+major_changes:
+  - infra - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/92).
