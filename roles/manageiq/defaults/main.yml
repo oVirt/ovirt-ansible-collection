@@ -1,0 +1,81 @@
+---
+### This option disables no_log of tasks using sensistive data:
+miq_debug_create: false
+
+### Wait for IP version (v4 or v6):
+miq_wait_for_ip_version: v4
+miq_wait_for_ip_timeout: 240
+
+### ManageIQ/CloudForms ###
+miq_image_path: /tmp
+
+# QCOW2 ManageIQ/CloudForms image URL:
+miq_qcow_url: http://releases.manageiq.org/manageiq-ovirt-hammer-6.qc2
+
+# ManageIQ/CloudForms application credentials
+# We keep miq_{username,password} for backward compatibility
+miq_username: admin
+miq_password: smartvm
+miq_app_username: "{{ miq_username }}"
+miq_app_password: "{{ miq_password }}"
+
+# ManageIQ/CloudForms database credentials
+miq_db_username: root
+miq_db_password: "{{ miq_app_password }}"
+
+# ManageIQ/CloudForms region
+miq_region: 0
+miq_region_id: 1
+
+# ManageIQ/CloudForms company name
+miq_company: My Company
+
+# Providers:
+miq_rhv_provider_name: RHV provider
+miq_initialize: true
+
+### oVirt/RHV ###
+# VM variables:
+miq_vm_name: manageiq_gaprindashvili-5
+miq_vm_cluster: Default
+miq_vm_memory: 16GiB
+miq_vm_cpu: 4
+miq_vm_os: rhel_7x64
+miq_vm_root_password: "{{ miq_app_password }}"
+miq_vm_high_availability: true
+miq_vm_high_availability_priority: 50
+miq_vm_delete_protected: true
+
+# Vm disks
+miq_vm_disk_interface: virtio
+miq_vm_disk_format: cow
+miq_disk_deploy_failed: false
+
+# Additional disks.
+# Default one is database disk.
+miq_vm_disks:
+  database:
+    name: "{{ miq_vm_name }}_database"
+    size: 50GiB
+    interface: virtio_scsi
+    format: raw
+    timeout: 900
+
+# Vm NICS:
+miq_vm_nics:
+  - name: nic1
+    profile_name: ovirtmgmt
+    interface: virtio
+
+# Metrics DB name
+metrics_db_name: ovirt_engine_history
+metrics_port: 5432
+metrics_user: engine_history
+metrics_password: ''
+
+# ManageIQ/CloudForms roles
+miq_disabled_roles: []
+miq_enabled_roles: []
+
+# Command to initialize cloudforms
+miq_init_cmd: "appliance_console_cli -i -r {{ miq_region }} -U {{ miq_db_username }} -p '{{ miq_db_password }}' -k -f"

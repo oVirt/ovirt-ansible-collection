@@ -1,0 +1,10 @@
+---
+miq_vm_disks_types:
+  - database
+  - log
+  - tmp
+miq_init_cmd_options:
+  disks:
+    database: "-b"
+    log: "-l"
+    tmp: "-t"

@@ -1,0 +1,43 @@
+{
+  "type": "ManageIQ::Providers::Redhat::InfraManager",
+  "name": "{{ miq_rhv_provider_name }}",
+  "connection_configurations": [{
+    "endpoint": {
+      "role": "default",
+      {% if engine_fqdn is defined %}
+        "hostname": "{{ engine_fqdn.split(':')[0] }}",
+        {% if engine_fqdn.split(':') | length > 1  %}
+          "port": "{{ engine_fqdn.split(':')[1]  }}",
+        {% endif %}
+      {% else %}
+        "hostname": "{{ engine_url | urlsplit('hostname') }}",
+        {% if engine_url | urlsplit('port') != "" %}
+          "port": "{{ engine_url | urlsplit('port') }}",
+        {% endif %}
+      {% endif %}
+      "verify_ssl": {{ engine_cafile != '' }},
+      {% if engine_cafile != '' %}
+         "certificate_authority": {{ lookup('file', engine_cafile) | to_json }}
+      {% endif %}
+    },
+    "authentication": {
+      "userid": "{{ engine_user }}",
+      "password": "{{ engine_password }}"
+    }
+  }{% if metrics_fqdn is defined %},{% endif %}
+  {% if metrics_fqdn is defined %}
+  {
+   "endpoint": {
+      "role": "metrics",
+      "path": "{{ metrics_db_name }}",
+      "hostname": "{{ metrics_fqdn }}",
+      "port": "{{ metrics_port }}"
+    },
+    "authentication": {
+      "userid": "{{ metrics_user }}",
+      "password": "{{ metrics_password }}"
+    }
+  }
+  {% endif %}
+  ]
+}
