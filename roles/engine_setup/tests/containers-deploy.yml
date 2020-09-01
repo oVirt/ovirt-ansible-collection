@@ -1,0 +1,17 @@
+---
+- name: Bring up docker containers
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - role: provision_docker
+      provision_docker_inventory_group: "{{ groups['engine'] }}"
+
+- name: "Update python because of ovirt-imageio-proxy"
+  hosts: engine
+  tasks:
+    - name: Update python
+      yum:
+        name: python-libs
+        state: latest
+      tags:
+        - skip_ansible_lint  # ANSIBLE0010

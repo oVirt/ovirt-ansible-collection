@@ -6,7 +6,7 @@
 
 ```yaml
 ---
-- minor_changes:
+minor_changes:
   - ovirt_disk - Add backup (https://github.com/oVirt/ovirt-ansible-collection/pull/57).
 
 ```

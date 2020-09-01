@@ -48,7 +48,7 @@ install() {
   mkdir -p $PKG_DATA_DIR/$COLLECTION_NAMESPACE/$COLLECTION_NAME
   mkdir -p $PKG_DOC_DIR
 
-  cp -pR plugins/ $PKG_DATA_DIR/$COLLECTION_NAMESPACE/$COLLECTION_NAME
+  cp -pR plugins/ roles/ $PKG_DATA_DIR/$COLLECTION_NAMESPACE/$COLLECTION_NAME
 
   if [[ $BUILD_TYPE = "rhv" ]]; then
     echo "Creating link to ovirt.ovirt"

@@ -1,0 +1,88 @@
+---
+- block:
+  - name: Set answer file path
+    set_fact:
+      answer_file_path: "/tmp/answerfile-{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}.txt"
+
+  - name: Use the default answerfile
+    template:
+      src: answerfile_{{ ovirt_engine_setup_version }}_basic.txt.j2
+      dest: "{{ answer_file_path }}"
+      mode: 0600
+      owner: root
+      group: root
+    when: ovirt_engine_setup_answer_file_path is undefined
+    no_log: yes
+
+  - name: Copy custom answer file
+    template:
+      src: "{{ ovirt_engine_setup_answer_file_path }}"
+      dest: "{{ answer_file_path }}"
+      mode: 0600
+      owner: root
+      group: root
+    when: ovirt_engine_setup_answer_file_path is defined and (
+      ovirt_engine_setup_use_remote_answer_file is not defined or not
+      ovirt_engine_setup_use_remote_answer_file)
+    no_log: yes
+
+  - name: Use remote's answer file
+    set_fact:
+      answer_file_path: "{{ ovirt_engine_setup_answer_file_path }}"
+    when: ovirt_engine_setup_use_remote_answer_file|bool
+
+  - name: Update setup packages
+    yum:
+      name: "ovirt*setup*"
+      update_only: true
+      state: latest
+    when: ovirt_engine_setup_update_setup_packages or ovirt_engine_setup_perform_upgrade
+    tags:
+      - "skip_ansible_lint"  # ANSIBLE0006
+
+  - name: Update all packages
+    package:
+      name: "*"
+      state: latest
+    when: not ovirt_engine_setup_offline|bool
+    tags:
+      - "skip_ansible_lint"  # ANSIBLE0010
+
+  - name: Set offline parameter if variable is set
+    set_fact:
+      offline: "{{ '--offline' if ovirt_engine_setup_offline|bool else '' }}"
+
+  - name: Run engine-setup with answerfile
+    command: "engine-setup --accept-defaults --config-append={{ answer_file_path }} {{ offline }}"
+    tags:
+      - skip_ansible_lint
+
+  - name: Make sure `ovirt-engine` service is running
+    service:
+      name: ovirt-engine
+      state: started
+
+  - name: Check if Engine health page is up
+    uri:
+      url: "http://localhost/ovirt-engine/services/health"
+      status_code: 200
+    register: health_page
+    retries: 30
+    delay: 10
+    until: health_page is success
+
+  - name: Run engine-config
+    command: "engine-config -s {{ item.key }}='{{ item.value }}' {% if item.version is defined %} --cver={{ item.version }} {% endif %}"
+    loop: "{{ ovirt_engine_setup_engine_configs | default([]) }}"
+
+  - name: Restart engine after engine-config
+    service:
+      name: ovirt-engine
+      state: restarted
+    when: ovirt_engine_setup_engine_configs is defined
+
+  always:
+    - name: Clean temporary files
+      file:
+        path: "{{ answer_file_path }}"
+        state: 'absent'
