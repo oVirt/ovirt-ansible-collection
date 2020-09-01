@@ -1,0 +1,100 @@
+- name: Get list of VMs in host
+  ovirt_vm_info:
+    auth: "{{ ovirt_auth }}"
+    pattern: "cluster={{ cluster_name }} and host={{ item.name }} and status=up"
+  check_mode: "no"
+
+- name: Move user migratable vms
+  ovirt_vm:
+    auth: "{{ ovirt_auth }}"
+    force_migrate: true
+    migrate: true
+    state: running
+    name: "{{ item.name }}"
+  register: resp
+  when:
+    - "item['placement_policy']['affinity'] == 'user_migratable'"
+  with_items:
+    - "{{ vms_in_cluster.ovirt_vms }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Shutdown non-migratable VMs
+  ovirt_vm:
+    auth: "{{ ovirt_auth }}"
+    state: stopped
+    force: true
+    name: "{{ item.name }}"
+  with_items:
+    - "{{ vms_in_cluster.ovirt_vms }}"
+  when:
+    - "item['placement_policy']['affinity'] == 'pinned'"
+  loop_control:
+    label: "{{ item.name }}"
+  register: pinned_to_host_vms
+
+- name: Create list of VM names which was shutted down
+  set_fact:
+    pinned_vms_names: "{{ pinned_vms_names + pinned_to_host_vms.results | selectattr('changed') | map(attribute='item.name') | list }}"
+
+- name: Start ovirt job step
+  ovirt_job:
+    auth: "{{ ovirt_auth }}"
+    description: "Upgrading hosts"
+    steps:
+      - description: "Upgrading host: {{ item.name }}"
+
+- name: Gather self-heal facts about all gluster hosts in the cluster
+  gluster_heal_info:
+    name: "{{ volume_item.name }}"
+    status_filter: self-heal
+  register: self_heal_status
+  retries: "{{ healing_in_progress_checks }}"
+  delay: "{{ healing_in_progress_check_delay }}"
+  until: >
+     self_heal_status is defined and
+     self_heal_status.glusterfs.heal_info | map(attribute='no_of_entries') | select('defined') | list | map('int') | sum == 0
+  delegate_to: "{{ host_info.ovirt_hosts[0].address }}"
+  connection: ssh
+  with_items:
+    - "{{ cluster_info.ovirt_clusters[0].gluster_volumes }}"
+  loop_control:
+    loop_var: volume_item
+  when:  cluster_info.ovirt_clusters[0].gluster_service | bool
+
+- name: Refresh gluster heal info entries to database
+  uri:
+    url: "{{ ovirt_auth.url }}/clusters/{{ cluster_info.ovirt_clusters[0].id }}/refreshglusterhealstatus"
+    method: POST
+    body_format: json
+    validate_certs: false
+    headers:
+      Authorization: "Bearer {{ ovirt_auth.token }}"
+    body: "{}"
+  when:
+    - cluster_info.ovirt_clusters[0].gluster_service | bool
+    - api_info.ovirt_api.product_info.version.major >= 4 and api_info.ovirt_api.product_info.version.minor >= 4
+
+- name: Upgrade host
+  ovirt_host:
+    auth: "{{ ovirt_auth }}"
+    name: "{{ item.name }}"
+    state: upgraded
+    check_upgrade: "{{ check_upgrade }}"
+    reboot_after_upgrade: "{{ reboot_after_upgrade }}"
+    timeout: "{{ upgrade_timeout }}"
+
+- name: Delay in minutes to wait to finish gluster healing process after successful host upgrade
+  pause:
+    minutes: "{{ wait_to_finish_healing }}"
+  when:
+    - cluster_info.ovirt_clusters[0].gluster_service | bool
+    - host_info.ovirt_hosts | length > 1
+
+- name: Finish ovirt job step
+  ovirt_job:
+    auth: "{{ ovirt_auth }}"
+    description: "Upgrading hosts"
+    steps:
+      - description: "Upgrading host: {{ item.name }}"
+        state: finished
