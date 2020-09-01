@@ -1,0 +1,3 @@
+---
+major_changes:
+  - cluster_upgrade - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/94).
