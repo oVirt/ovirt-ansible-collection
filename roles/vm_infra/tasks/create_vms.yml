@@ -30,9 +30,9 @@
     storage_domain: "{{ current_vm.storage_domain | default(current_vm.profile.storage_domain) | default(omit) }}"
     disk_format: "{{ current_vm.disk_format | default(current_vm.profile.disk_format) | default(omit) }}"
     lease: "{{ current_vm.lease | default(current_vm.profile.lease) | default(omit) }}"
-    serial_console : "{{ current_vm.serial_console | default(current_vm.profile.serial_console) | default(omit) }}"
-    serial_policy : "{{ current_vm.serial_policy | default(current_vm.profile.serial_policy) | default(omit) }}"
-    serial_policy_value : "{{ current_vm.serial_policy_value | default(current_vm.profile.serial_policy_value) | default(omit) }}"
+    serial_console: "{{ current_vm.serial_console | default(current_vm.profile.serial_console) | default(omit) }}"
+    serial_policy: "{{ current_vm.serial_policy | default(current_vm.profile.serial_policy) | default(omit) }}"
+    serial_policy_value: "{{ current_vm.serial_policy_value | default(current_vm.profile.serial_policy_value) | default(omit) }}"
     timeout: "{{ vm_infra_create_single_timeout }}"
     comment: "{{ current_vm.comment | default(current_vm.profile.comment) | default(omit) }}"
   changed_when: false
