@@ -1,0 +1,10 @@
+---
+ovirt_repositories_repos_backup: true
+ovirt_repositories_repos_backup_path: "/tmp/repo-backup-{{ '%Y-%m-%d-%H:%M:%S' | strftime(ansible_date_time.epoch) }}"
+ovirt_repositories_use_subscription_manager: False
+ovirt_repositories_force_register: False
+ovirt_repositories_clear: False
+ovirt_repositories_ovirt_version: 4.4
+ovirt_repositories_target_host: engine
+ovirt_repositories_ovirt_dnf_modules: ["pki-deps", "postgresql:12", "javapackages-tools"]
+ovirt_repositories_rh_dnf_modules: ["pki-deps", "postgresql:12"]
