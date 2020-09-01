@@ -65,6 +65,6 @@ pip3 install rstcheck antsibull-changelog ansible-lint
 
 ansible-test sanity
 /usr/local/bin/antsibull-changelog lint
-ansible-lint roles/*
+/usr/local/bin/ansible-lint roles/*
 
 cd $ROOT_PATH
