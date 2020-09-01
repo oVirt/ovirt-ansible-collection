@@ -93,7 +93,7 @@ Example Playbook
 
   vars:
    data_center_name: mydatacenter
-   compatibility_version: 4.1
+   compatibility_version: 4.4
 
    clusters:
      - name: production

@@ -31,7 +31,7 @@ Example Playbooks
    data_center_name: mydatacenter
    data_center_description: mydatacenter
    data_center_local: false
-   compatibility_version: 4.1
+   compatibility_version: 4.4
 
   roles:
     - infra/roles/datacenters

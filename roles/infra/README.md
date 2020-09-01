@@ -286,7 +286,7 @@ Example Playbook
      engine_password: 123456
      engine_cafile: /etc/pki/ovirt-engine/ca.pem
      data_center_name: mydatacenter
-     compatibility_version: 4.1
+     compatibility_version: 4.4
 
      mac_pools:
       - mac_pool_name: "Default"

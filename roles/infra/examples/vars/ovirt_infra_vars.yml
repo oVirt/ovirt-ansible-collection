@@ -9,7 +9,7 @@ engine_cafile: /etc/pki/ovirt-engine/ca.pem
 ###########################
 # Common
 ###########################
-compatibility_version: 4.2
+compatibility_version: 4.4
 
 # Data center
 data_center_name: Default
