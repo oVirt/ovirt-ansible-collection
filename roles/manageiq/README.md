@@ -8,10 +8,7 @@ The role also enables you to create a virtual machine and attach the ManageIQ di
 Requirements
 ------------
 
-* oVirt has to be 4.4 or higher.
-* Ansible has to be 2.9 or higher.
 * [ovirt-imageio](http://www.ovirt.org/develop/release-management/features/storage/image-upload/) must be installed and running.
-* [oVirt Python SDK version 4](https://pypi.python.org/pypi/ovirt-engine-sdk-python/4.2.4).
 
 Additionally, perform the following checks to ensure the required processes are running.
 * Check whether `ovirt-imageio-proxy` is running on the engine:
