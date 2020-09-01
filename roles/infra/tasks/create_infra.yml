@@ -1,7 +1,7 @@
 ---
 - name: Run mac-pools sub-role
   import_role:
-    name: "infra/roles/mac-pools"
+    name: "infra/roles/mac_pools"
 
 - name: Run datacenters sub-role
   import_role:
