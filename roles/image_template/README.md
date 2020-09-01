@@ -6,8 +6,6 @@ The `image_template` role creates a template from external image. Currently the 
 Requirements
 ------------
 
- * Ansible version 2.9 or higher.
- * Python SDK version 4.3 or higher.
  * oVirt has to be 4.1 or higher and [ovirt-imageio] must be installed and running.
  * CA certificate of oVirt engine. The path to CA certificate must be specified in the `ovirt_ca` variable.
  * file
