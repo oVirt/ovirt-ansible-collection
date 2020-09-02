@@ -1,0 +1,68 @@
+- name: Wait for ManageIQ/CloudForms API
+  no_log: "{{ not miq_debug_create }}"
+  uri:
+    url: "https://{{ miq_ip_addr }}/api/"
+    validate_certs: no
+    user: "{{ miq_app_username }}"
+    password: smartvm
+  register: miq_vm
+  until: "miq_vm.status == 200"
+  retries: 50
+  delay: 20
+
+- name: Set application admin password
+  no_log: "{{ not miq_debug_create }}"
+  uri:
+    url: "https://{{ miq_ip_addr }}/api/users/{{ miq_region_id }}"
+    validate_certs: no
+    method: POST
+    user: "{{ miq_app_username }}"
+    password: smartvm
+    force_basic_auth: yes
+    body_format: json
+    body:
+      action: "edit"
+      resource:
+        password: "{{ miq_app_password | string }}"
+  register: miq_admin_password
+  changed_when: "miq_admin_password.status == 201 or miq_admin_password.status == 200"
+  failed_when:
+    - "miq_admin_password.json is defined and 'error' in miq_admin_password.json"
+
+- name: Update ManageIQ company name
+  uri:
+    url: "https://{{ miq_ip_addr }}/api/servers/{{ miq_region_id }}/settings"
+    user: "{{ miq_app_username }}"
+    password: "{{ miq_app_password }}"
+    method: PATCH
+    validate_certs: no
+    body_format: json
+    body:
+      server:
+        company: "{{ miq_company }}"
+  register: miq_update_company
+  changed_when: "miq_update_company.status == 201 or miq_update_company.status == 200"
+  failed_when:
+    - "miq_update_company.json is defined and 'error' in miq_update_company.json"
+
+- include_tasks: manage_appliance_roles.yml
+
+- name: Add oVirt/RHV provider to ManageIQ/CloudForms
+  no_log: "{{ not miq_debug_create }}"
+  uri:
+    url: "https://{{ miq_ip_addr }}/api/providers"
+    validate_certs: no
+    method: POST
+    user: "{{ miq_app_username }}"
+    password: "{{ miq_app_password }}"
+    body: "{{ lookup('template', 'add_rhv_provider.j2') }}"
+    force_basic_auth: yes
+    body_format: json
+  register: miq_rhv_provider
+  changed_when: "miq_rhv_provider.status == 201 or miq_rhv_provider.status == 200"
+  failed_when:
+    - "miq_rhv_provider.json is defined and 'error' in miq_rhv_provider.json"
+    - "miq_rhv_provider.json.error.message is defined and 'has already been taken' not in miq_rhv_provider.json.error.message"
+    # FIXME: If provider already exists with different name, don't fail, but we should change the name
+    # when there will exist any ansible module for managing providers:
+    - "miq_rhv_provider.json.error.message is defined and 'Host Name has to be unique per provider type' not in miq_rhv_provider.json.error.message"

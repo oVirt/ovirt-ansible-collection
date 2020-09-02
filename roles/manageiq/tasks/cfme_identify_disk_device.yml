@@ -1,0 +1,78 @@
+- name: Set database disk to /dev/vdb if disk interface is virtio
+  set_fact:
+    miq_vm_disks_db_device: /dev/vdb
+  when: "miq_vm_disks.database.interface == 'virtio'"
+
+- name: Set database disk to /dev/sdb if disk interface is virtio_scsi
+  set_fact:
+    miq_vm_disks_db_device: /dev/sdb
+  when: "miq_vm_disks.database.interface == 'virtio_scsi'"
+
+- name: Set miq_vm_disks_devices database
+  set_fact:
+    miq_vm_disks_devices:
+      database: "{{ miq_vm_disks_db_device }}"
+
+- block:
+
+  - name: Set log disk to /dev/vdc if disk interface is virtio
+    set_fact:
+      miq_vm_disks_log_device: /dev/vdc
+    when: "miq_vm_disks.log.interface == 'virtio'"
+
+  - name: Set log disk to /dev/sdc if disk interface is virtio_scsi
+    set_fact:
+      miq_vm_disks_log_device: /dev/sdc
+    when: "miq_vm_disks.log.interface == 'virtio_scsi'"
+
+  - name: Set fact miq_vm_disks_log_device_dict
+    set_fact:
+      miq_vm_disks_log_device_dict:
+        log: "{{ miq_vm_disks_log_device }}"
+
+  - name: Combine miq_vm_disks_devices with miq_vm_disks_log_device_dict
+    set_fact:
+      miq_vm_disks_devices: "{{ miq_vm_disks_devices | combine(miq_vm_disks_log_device_dict) }}"
+
+  when: "'log' in miq_vm_disks"
+
+- block:
+
+  - block:
+
+    - name: Set tmp disk to /dev/vdc if disk interface is virtio
+      set_fact:
+        miq_vm_disks_tmp_device: /dev/vdc
+      when: "miq_vm_disks.tmp.interface == 'virtio'"
+
+    - name: Set tmp disk to /dev/sdc if disk interface is virtio_scsi
+      set_fact:
+        miq_vm_disks_tmp_device: /dev/sdc
+      when: "miq_vm_disks.tmp.interface == 'virtio_scsi'"
+
+    when: "'log' not in miq_vm_disks"
+
+  - block:
+
+    - name: Set tmp disk to /dev/vdd if disk interface is virtio
+      set_fact:
+        miq_vm_disks_tmp_device: /dev/vdd
+      when: "miq_vm_disks.tmp.interface == 'virtio'"
+
+    - name: Set tmp disk to /dev/sdd if disk interface is virtio_scsi
+      set_fact:
+        miq_vm_disks_tmp_device: /dev/sdd
+      when: "miq_vm_disks.tmp.interface == 'virtio_scsi'"
+
+    when: "'log' in miq_vm_disks"
+
+  - name: Set fact miq_vm_disks_tmp_device_dict with tmp miq_vm_disks_tmp_device
+    set_fact:
+      miq_vm_disks_tmp_device_dict:
+        tmp: "{{ miq_vm_disks_tmp_device }}"
+
+  - name: Combine miq_vm_disks_devices with miq_vm_disks_tmp_device_dict
+    set_fact:
+      miq_vm_disks_devices: "{{ miq_vm_disks_devices | combine(miq_vm_disks_tmp_device_dict) }}"
+
+  when: "'tmp' in miq_vm_disks"

@@ -1,0 +1,50 @@
+---
+- name: RHV CFME deployment
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    # Contains encrypted `engine_password` and `metrics_password`
+    # varibale using ansible-vault
+    - passwords.yml
+
+  vars:
+    engine_fqdn: ovirt-engine.example.com
+    engine_user: admin@internal
+
+    miq_vm_name: cfme_59
+    miq_qcow_url: https://cdn.example.com/cfme-rhevm-5.9.1.2-1.x86_64.qcow2
+    miq_vm_cluster: mycluster
+    miq_vm_root_password: securepassword
+    miq_vm_cloud_init:
+      host_name: "{{ miq_vm_name }}"
+    miq_vm_disks:
+      database:
+        name: "{{ miq_vm_name }}_database"
+        size: 10GiB
+        interface: virtio_scsi
+        format: raw
+      log:
+        name: "{{ miq_vm_name }}_log"
+        size: 10GiB
+        interface: virtio_scsi
+        format: cow
+      tmp:
+        name: "{{ miq_vm_name }}_tmp"
+        size: 10GiB
+        interface: virtio_scsi
+        format: raw
+    miq_disabled_roles:
+      - smartstate
+    miq_enabled_roles:
+      - notifier
+      - ems_metrics_coordinator
+      - ems_metrics_collector
+      - ems_metrics_processor
+      - embedded_ansible
+
+  roles:
+    - manageiq
+  collections:
+    - ovirt.ovirt

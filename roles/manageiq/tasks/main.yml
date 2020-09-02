@@ -1,0 +1,111 @@
+---
+- block:
+  ## Initialize authentication parameters:
+  - name: Set engine_url from engine_fqdn
+    set_fact:
+      engine_url: "{{ 'https://' ~engine_fqdn | default(lookup('env', 'OVIRT_HOSTNAME')) ~ '/ovirt-engine/api' }}"
+    when: engine_fqdn is defined or lookup('env', 'OVIRT_HOSTNAME')
+
+  - name: Set engine credentials
+    set_fact:
+      engine_user: "{{ engine_user | default(lookup('env', 'OVIRT_USERNAME')) }}"
+      engine_password: "{{ engine_password | default(lookup('env', 'OVIRT_PASSWORD')) }}"
+      engine_url: "{{ engine_url | default(lookup('env', 'OVIRT_URL')) }}"
+      engine_cafile: "{{ engine_cafile | default(lookup('env', 'OVIRT_CAFILE')) }}"
+
+  - name: Login to oVirt engine
+    ovirt_auth:
+      username: "{{ engine_user }}"
+      password: "{{ engine_password }}"
+      url: "{{ engine_url }}"
+      ca_file: "{{ engine_cafile }}"
+      insecure: "{{ engine_cafile | length > 0 }}"
+    when: ovirt_auth is undefined or not ovirt_auth
+    register: loggedin
+    tags:
+      - always
+
+  - name: Deploy qcow disk
+    include_tasks: deploy_qcow2.yml
+
+  - block:
+    - name: Create ManageIQ virtual machine
+      ovirt_vm:
+        auth: "{{ ovirt_auth }}"
+        state: present
+        name: "{{ miq_vm_name }}"
+        cluster: "{{ miq_vm_cluster }}"
+        memory: "{{ miq_vm_memory }}"
+        memory_max: "{{ miq_vm_memory_max | default(omit) }}"
+        memory_guaranteed: "{{ miq_vm_memory_guaranteed | default(omit) }}"
+        cpu_cores: "{{ miq_vm_cpu }}"
+        cpu_shares: "{{ miq_vm_cpu_shares | default(omit) }}"
+        cpu_sockets: "{{ miq_vm_cpu_sockets | default(omit) }}"
+        cpu_threads: "{{ miq_vm_cpu_threads | default(omit) }}"
+        operating_system: "{{ miq_vm_os }}"
+        high_availability: "{{ miq_vm_high_availability }}"
+        high_availability_priority: "{{ miq_vm_high_availability_priority }}"
+        delete_protected: "{{ miq_vm_delete_protected }}"
+        type: server
+        disks:
+          - id: "{{ ovirt_disk.id }}"
+            bootable: true
+        nics: "{{ miq_vm_nics }}"
+      register: create_vm
+
+    - name: Duplicate miq_init_cmd variable to override it
+      set_fact:
+        miq_init_cmd2: "{{ miq_init_cmd }}"
+
+    - include_tasks: cfme_identify_disk_device.yml
+
+    - include_tasks: cfme_add_disk.yml
+      when: "item in miq_vm_disks"
+      with_items: "{{ miq_vm_disks_types }}"
+
+    - name: Ensure virtual machine is running
+      ovirt_vm:
+        auth: "{{ ovirt_auth }}"
+        state: running
+        name: "{{ miq_vm_name }}"
+        cloud_init: "{{ miq_vm_cloud_init | default(omit) }}"
+
+    - set_fact:
+        ip_cond: "vm_info.ovirt_vms | ovirt.ovirt.ovirtvmip{{ miq_wait_for_ip_version }} | length > 0"
+
+    - name: Wait for VM IP
+      ovirt_vm_info:
+        auth: "{{ ovirt_auth }}"
+        pattern: "name={{ miq_vm_name }}"
+        fetch_nested: true
+        nested_attributes: ips
+      until: "ip_cond"
+      retries: "{{ miq_wait_for_ip_timeout // 10 }}"
+      delay: 10
+      register: vm_info
+
+    - name: ManageIQ host IPv4 address
+      set_fact:
+        miq_ip_addr: "{{ vm_info.ovirt_vms | ovirt.ovirt.ovirtvmipv4 }}"
+      when: miq_wait_for_ip_version == 'v4'
+
+    - name: ManageIQ host IPv6 address
+      set_fact:
+        miq_ip_addr: "{{ vm_info.ovirt_vms | ovirt.ovirt.ovirtvmipv6 }}"
+      when: miq_wait_for_ip_version == 'v6'
+
+    - block:
+      - include: init_cfme.yml
+      - include: wait_for_api.yml
+
+      when: "miq_initialize"
+    when: "not miq_disk_deploy_failed"
+
+  always:
+    - name: Logout from oVirt engine
+      ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"
+      when: not loggedin.skipped | default(false)
+      tags:
+        - always

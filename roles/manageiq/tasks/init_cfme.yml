@@ -1,0 +1,66 @@
+- name: Add host alias of appliance
+  no_log: "{{ not miq_debug_create }}"
+  add_host:
+    hostname: "{{ miq_ip_addr }}"
+    ansible_host: "{{ miq_ip_addr }}"
+    ansible_user: root
+    ansible_password: smartvm
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+  changed_when: false
+
+- name: Wait for SSH port of appliance
+  wait_for:
+    host: "{{ miq_ip_addr }}"
+    port: 22
+    delay: 10
+
+- name: Fetch info about appliance
+  command: "rpm -qi cfme"
+  args:
+    warn: no
+  register: cfme_rpm
+  ignore_errors: yes
+  changed_when: false
+  delegate_to: "{{ miq_ip_addr }}"
+
+- name: Start ManageIQ server
+  systemd:
+    name: evmserverd
+    state: started
+    enabled: yes
+  delegate_to: "{{ miq_ip_addr }}"
+  when: "not cfme_rpm.rc == 0"
+
+- name: Check if ManageIQ/CloudForms was initilized
+  no_log: "{{ not miq_debug_create }}"
+  uri:
+    url: "https://{{ miq_ip_addr }}/api/"
+    validate_certs: no
+    user: "{{ miq_app_username }}"
+    password: smartvm
+  register: init_miq_vm
+  ignore_errors: yes
+
+- block:
+  - name: Set region id
+    set_fact:
+      miq_region_id: "{{ miq_region|int * 1000000000000  + 1 }}"
+
+  - name: Initialize CloudForms
+    command: "{{ miq_init_cmd2 }}"
+    delegate_to: "{{ miq_ip_addr }}"
+    when: "init_miq_vm.failed"
+
+  when: "cfme_rpm.rc == 0 and init_miq_vm.failed"
+
+- name: Set root password of appliance
+  no_log: "{{ not miq_debug_create }}"
+  shell: set -o pipefail | echo '{{ miq_vm_root_password }}' | passwd --stdin root
+  delegate_to: "{{ miq_ip_addr }}"
+  changed_when: false
+
+- name: Disable cloud-init service
+  service:
+    enabled: no
+    name: cloud-init
+  delegate_to: "{{ miq_ip_addr }}"

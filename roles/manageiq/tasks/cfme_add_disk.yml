@@ -1,0 +1,16 @@
+- name: Add {{ item }} disk for CFME
+  ovirt_disk:
+    auth: "{{ ovirt_auth }}"
+    name: "{{ miq_vm_disks[item].name | default(miq_vm_name ~ '_' ~ item) }}"
+    vm_name: "{{ miq_vm_name }}"
+    interface: "{{ miq_vm_disks[item].interface | default('virtio_scsi') }}"
+    size: "{{ miq_vm_disks[item].size | default(omit) }}"
+    format: "{{ miq_vm_disks[item].format | default(omit) }}"
+    timeout: "{{ miq_vm_disks[item].timeout | default(omit) }}"
+    storage_domain: "{{ miq_vm_disks[item].storage | default(disk_storage_domain.name if disk_storage_domain is defined else miq_vm_disk_storage) }}"
+    activate: yes
+
+- name: Add {{ item }} disk to CloudForms initialization command
+  no_log: "{{ not miq_debug_create }}"
+  set_fact:
+    miq_init_cmd2: "{{ miq_init_cmd2 }} {{ miq_init_cmd_options.disks[item] }} {{ miq_vm_disks_devices[item] }}"

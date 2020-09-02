@@ -1,0 +1,33 @@
+---
+- name: Get the list of enabled roles
+  uri:
+    url: "https://{{ miq_ip_addr }}/api/servers/{{ miq_region_id }}/settings"
+    user: "{{ miq_app_username }}"
+    password: "{{ miq_app_password }}"
+    method: GET
+    validate_certs: no
+  register: miq_active_roles_json
+
+- name: Extracting the roles from the JSON output
+  set_fact:
+    miq_active_roles: "{{ miq_active_roles_json.json.server.role.split(',') }}"
+
+- name: Remove roles from the list of active roles
+  set_fact:
+    miq_active_roles: "{{ miq_active_roles | difference(miq_disabled_roles) }}"
+
+- name: Add extra roles to list of active roles
+  set_fact:
+    miq_active_roles: "{{ miq_active_roles | union(miq_enabled_roles) }}"
+
+- name: Update list of active roles
+  uri:
+    url: https://{{ miq_ip_addr }}/api/servers/{{ miq_region_id }}/settings
+    user: "{{ miq_app_username }}"
+    password: "{{ miq_app_password }}"
+    method: PATCH
+    validate_certs: no
+    body_format: json
+    body:
+      server:
+        role: "{{ miq_active_roles | join(',') }}"
