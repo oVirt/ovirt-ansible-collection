@@ -10,6 +10,7 @@
   file:
     path: "{{ ovirt_repositories_repos_backup_path }}"
     state: directory
+    mode: 0755
   tags: backup
   when: files_to_backup.files
 
