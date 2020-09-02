@@ -55,8 +55,9 @@
 
 - name: Set root password of appliance
   no_log: "{{ not miq_debug_create }}"
-  shell: echo '{{ miq_vm_root_password }}' | passwd --stdin root
+  shell: set -o pipefail | echo '{{ miq_vm_root_password }}' | passwd --stdin root
   delegate_to: "{{ miq_ip_addr }}"
+  changed_when: false
 
 - name: Disable cloud-init service
   service:

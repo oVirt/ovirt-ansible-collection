@@ -8,7 +8,8 @@
     miq_vm_disks_db_device: /dev/sdb
   when: "miq_vm_disks.database.interface == 'virtio_scsi'"
 
-- set_fact:
+- name: Set miq_vm_disks_devices database
+  set_fact:
     miq_vm_disks_devices:
       database: "{{ miq_vm_disks_db_device }}"
 
@@ -24,11 +25,13 @@
       miq_vm_disks_log_device: /dev/sdc
     when: "miq_vm_disks.log.interface == 'virtio_scsi'"
 
-  - set_fact:
+  - name: Set fact miq_vm_disks_log_device_dict
+    set_fact:
       miq_vm_disks_log_device_dict:
         log: "{{ miq_vm_disks_log_device }}"
 
-  - set_fact:
+  - name: Combine miq_vm_disks_devices with miq_vm_disks_log_device_dict
+    set_fact:
       miq_vm_disks_devices: "{{ miq_vm_disks_devices | combine(miq_vm_disks_log_device_dict) }}"
 
   when: "'log' in miq_vm_disks"
@@ -63,11 +66,13 @@
 
     when: "'log' in miq_vm_disks"
 
-  - set_fact:
+  - name: Set fact miq_vm_disks_tmp_device_dict with tmp miq_vm_disks_tmp_device
+    set_fact:
       miq_vm_disks_tmp_device_dict:
         tmp: "{{ miq_vm_disks_tmp_device }}"
 
-  - set_fact:
+  - name: Combine miq_vm_disks_devices with miq_vm_disks_tmp_device_dict
+    set_fact:
       miq_vm_disks_devices: "{{ miq_vm_disks_devices | combine(miq_vm_disks_tmp_device_dict) }}"
 
   when: "'tmp' in miq_vm_disks"

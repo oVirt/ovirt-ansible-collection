@@ -1,11 +1,13 @@
 ---
 - block:
   ## Initialize authentication parameters:
-  - set_fact:
+  - name: Set engine_url from engine_fqdn
+    set_fact:
       engine_url: "{{ 'https://' ~engine_fqdn | default(lookup('env', 'OVIRT_HOSTNAME')) ~ '/ovirt-engine/api' }}"
     when: engine_fqdn is defined or lookup('env', 'OVIRT_HOSTNAME')
 
-  - set_fact:
+  - name: Set engine credentials
+    set_fact:
       engine_user: "{{ engine_user | default(lookup('env', 'OVIRT_USERNAME')) }}"
       engine_password: "{{ engine_password | default(lookup('env', 'OVIRT_PASSWORD')) }}"
       engine_url: "{{ engine_url | default(lookup('env', 'OVIRT_URL')) }}"
@@ -17,7 +19,7 @@
       password: "{{ engine_password }}"
       url: "{{ engine_url }}"
       ca_file: "{{ engine_cafile }}"
-      insecure: "{{ engine_cafile == '' }}"
+      insecure: "{{ engine_cafile | length > 0 }}"
     when: ovirt_auth is undefined or not ovirt_auth
     register: loggedin
     tags:
