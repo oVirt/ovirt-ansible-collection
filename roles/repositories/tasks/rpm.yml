@@ -1,0 +1,13 @@
+---
+- name: Install oVirt release package
+  package:
+    name: "{{ ovirt_repositories_ovirt_release_rpm | mandatory }}"
+    state: present
+
+- name: Enable dnf modules
+  command: "dnf module enable -y {{ ovirt_repositories_ovirt_dnf_modules | join(' ') }}"
+  args:
+    warn: False
+  when:
+    - ovirt_repositories_ovirt_version|string >= '4.4'
+    - ovirt_repositories_target_host == 'engine'

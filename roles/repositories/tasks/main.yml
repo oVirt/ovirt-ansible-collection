@@ -1,0 +1,19 @@
+---
+- name: Check if Subscription Manager is about to be used on non RHEL system
+  fail:
+    msg: "Subscription manager could be used only on Red Hat Enterprise Linux"
+  when:
+    - ovirt_repositories_use_subscription_manager | bool
+    - ansible_distribution != 'RedHat'
+
+- name: Backup current repositories
+  include_tasks: backup-repos.yml
+  when: ovirt_repositories_repos_backup
+
+- name: Setup repositories using Subscription Manager
+  include_tasks: rh-subscription.yml
+  when: ovirt_repositories_use_subscription_manager | bool
+
+- name: Setup repositories using oVirt release package
+  include_tasks: rpm.yml
+  when: not ovirt_repositories_use_subscription_manager | bool
