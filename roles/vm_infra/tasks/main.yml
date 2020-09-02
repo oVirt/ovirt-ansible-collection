@@ -22,17 +22,19 @@
 
   - name: Split list of VMs
     set_fact:
-      create_vms: "{{ create_vms | default([]) + [item]}}"
+      create_vms: "{{ create_vms | default([]) + [item] }}"
     with_items: "{{ vms }}"
-    when: (item.state is undefined and item.profile.state is defined and item.profile.state != 'absent') or (item.state is defined and item.state != 'absent') or (item.state is undefined and item.profile.state is undefined)
+    when: (item.state is undefined and item.profile.state is defined and item.profile.state != 'absent')
+      or (item.state is defined and item.state != 'absent') or (item.state is undefined and item.profile.state is undefined)
     # Uses item state first if not defined it will check profile state and use it.
 
   - name: Split list of sensitive VMs
     set_fact:
-      create_sensitive_vms: "{{ create_sensitive_vms | default([]) + [item]}}"
+      create_sensitive_vms: "{{ create_sensitive_vms | default([]) + [item] }}"
     with_items: "{{ sensitive_vms }}"
     no_log: True
-    when: (item.state is undefined and item.profile.state is defined and item.profile.state != 'absent') or (item.state is defined and item.state != 'absent') or (item.state is undefined and item.profile.state is undefined)
+    when: (item.state is undefined and item.profile.state is defined and item.profile.state != 'absent')
+      or (item.state is defined and item.state != 'absent') or (item.state is undefined and item.profile.state is undefined)
     # Uses item state first if not defined it will check profile state and use it.
 
   - name: Delete VM
@@ -40,7 +42,8 @@
     with_items: "{{ vms }}"
     loop_control:
       loop_var: current_vm
-    when: (current_vm.state is defined and current_vm.state == 'absent') or (current_vm.profile.state is defined and current_vm.state is undefined and current_vm.profile.state == 'absent')
+    when: (current_vm.state is defined and current_vm.state == 'absent')
+      or (current_vm.profile.state is defined and current_vm.state is undefined and current_vm.profile.state == 'absent')
 
   - name: Include create VM
     include_tasks: vm_state_present.yml

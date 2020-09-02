@@ -3,7 +3,8 @@
 # Legacy modification of cloud_init:
 ########################################################################
 - block:
-  - set_fact:
+  - name: Set cloud_init fact
+    set_fact:
       cloud_init: "{{ current_vm.cloud_init | default(current_vm.profile.cloud_init) | default({}) }}"
 
   - block:
@@ -34,7 +35,8 @@
 ########################################################################
 
 - block:
-  - set_fact:
+  - name: Set sysprep fact
+    set_fact:
       sysprep: "{{ current_vm.sysprep | default(current_vm.profile.sysprep) | default({}) }}"
 
   - block:
@@ -73,5 +75,6 @@
   poll: 0
   register: started_vm
 
-- set_fact:
+- name: Set started_vms list
+  set_fact:
     started_vms: "{{ started_vms | default([]) + [started_vm] }}"

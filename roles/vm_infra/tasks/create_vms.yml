@@ -19,7 +19,10 @@
     cpu_threads: "{{ current_vm.cpu_threads | default(current_vm.profile.cpu_threads) | default(omit) }}"
     cpu_mode: "{{ current_vm.cpu_mode | default(current_vm.profile.cpu_mode) | default(omit) }}"
     boot_devices: "{{ current_vm.boot_devices | default(current_vm.profile.boot_devices) | default(omit) }}"
-    placement_policy: "{{ 'user_migratable' if ((current_vm.profile.cpu_mode is defined and current_vm.profile.cpu_mode == 'host_passthrough') or (current_vm.cpu_mode is defined and current_vm.cpu_mode == 'host_passthrough')) else current_vm.placement_policy | default(current_vm.profile.placement_policy) | default(omit) }}"
+    placement_policy: "{{ 'user_migratable'
+      if ((current_vm.profile.cpu_mode is defined and current_vm.profile.cpu_mode == 'host_passthrough')
+          or (current_vm.cpu_mode is defined and current_vm.cpu_mode == 'host_passthrough'))
+      else current_vm.placement_policy | default(current_vm.profile.placement_policy) | default(omit) }}"
     custom_properties: "{{ current_vm.custom_properties | default(current_vm.profile.custom_properties) | default(omit) }}"
     description: "{{ current_vm.description | default(current_vm.profile.description) | default(omit) }}"
     operating_system: "{{ current_vm.operating_system | default(current_vm.profile.operating_system) | default(omit) }}"
@@ -40,5 +43,6 @@
   poll: 0
   register: added_vm
 
-- set_fact:
+- name: "Add created vm to all_vms"
+  set_fact:
     all_vms: "{{ all_vms | default([]) + [added_vm] }}"

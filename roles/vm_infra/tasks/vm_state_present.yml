@@ -123,14 +123,16 @@
     auth: "{{ ovirt_auth }}"
     name: "{{ item }}"
     vms: "{{ create_vms|to_json|from_json|json_query(query)|map(attribute='name') | list }}"
-  with_items: "{{ create_vms | selectattr('profile', 'defined') | map(attribute='profile') | selectattr('tag', 'defined') | map(attribute='tag') | list | unique }}"
+  with_items: "{{ create_vms | selectattr('profile', 'defined') | map(attribute='profile')
+    | selectattr('tag', 'defined') | map(attribute='tag') | list | unique }}"
   vars:
     query: "[?contains(profile.tag, '{{ item }}')]"
     defined_vms: "{{ create_vms | selectattr('profile.tag', 'defined') | list | unique }}"
 
 
 - block:
-    - set_fact:
+    - name: Filter ovirt_vms to get IP
+      set_fact:
         ip_cond: "vm_info.ovirt_vms | ovirt.ovirt.ovirtvmip{{ wait_for_ip_version }}(network_ip='{{ wait_for_ip_range }}') | length > 0"
 
     - name: Wait for VMs IP
@@ -145,7 +147,8 @@
       retries: "{{ vm_infra_wait_for_ip_retries }}"
       register: vm_info
       delay: "{{ vm_infra_wait_for_ip_delay }}"
-      when: "(item.state is undefined and item.profile.state is defined and item.profile.state != 'stopped') and (item.state is defined and item.state != 'stopped') | default('present') != 'stopped'"
+      when: "(item.state is undefined and item.profile.state is defined and item.profile.state != 'stopped')
+        and (item.state is defined and item.state != 'stopped') | default('present') != 'stopped'"
       # FIXME: Refactor the condition
 
     - name: Create inventory
