@@ -196,11 +196,6 @@ If one network interface is enough, user should use cloud_init nic_* parameters.
 | nic_name            | Set name to network interface of Virtual Machine. |
 | nic_on_boot         | If True network interface will be set to start on boot. |
 
-Dependencies
-------------
-
-None.
-
 Example Playbook
 ----------------
 
