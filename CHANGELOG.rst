@@ -4,6 +4,13 @@ ovirt.ovirt Release Notes
 
 .. contents:: Topics
 
+v1.1.3
+======
+
+Minor Changes
+-------------
+
+- Add GPL license (https://github.com/oVirt/ovirt-ansible-collection/pull/101).
 
 v1.1.2
 ======
