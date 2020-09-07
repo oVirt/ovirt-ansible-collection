@@ -5,7 +5,7 @@ authors:
     - Martin Necas <mnecas@redhat.com>
 license:
     - apache-2.0
-    - GPL-3.0
+    - GPL-3.0-or-later
 tags:
     - collection
 readme: README.md
