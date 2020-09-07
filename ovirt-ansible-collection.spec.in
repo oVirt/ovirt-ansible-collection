@@ -7,7 +7,7 @@ Summary: Ansible collection to manage all ovirt modules and inventory
 Version: @RPM_VERSION@
 Release: @RPM_RELEASE@%{?release_suffix}%{?dist}
 Source0: http://resources.ovirt.org/pub/src/@PACKAGE_NAME@/@PACKAGE_NAME@-@PACKAGE_VERSION@.tar.gz
-License: ASL 2.0
+License: ASL 2.0 and GPLv3+
 Group:          Virtualization/Management
 BuildArch:      noarch
 Url:            http://www.ovirt.org
@@ -38,7 +38,7 @@ sh build.sh install %{collectionname}
 %doc README.md
 %doc examples/
 
-%license LICENSE
+%license licenses
 
 %changelog
 * Mon Aug 17 2020 Martin Necas <mnecas@redhat.com> - 1.1.2-1
