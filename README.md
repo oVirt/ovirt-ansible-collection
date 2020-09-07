@@ -57,7 +57,9 @@ Example Playbook
   collections:
     - ovirt.ovirt
 ```
-License
+
+Licenses
 -------
 
-Apache License 2.0
+- Apache License 2.0
+- GNU General Public License 3.0
