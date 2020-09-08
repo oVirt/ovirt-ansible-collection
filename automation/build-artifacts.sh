@@ -23,6 +23,9 @@ rpmbuild \
 # install any build requirements
 yum-builddep output/*src.rpm
 
+# create tar for galaxy
+ansible-galaxy collection build
+
 # create the rpms
 rpmbuild \
     -D "_rpmdir $PWD/output" \
@@ -39,6 +42,9 @@ rpmbuild \
 
 # install any build requirements
 yum-builddep output/*src.rpm
+
+# create tar for automation hub
+ansible-galaxy collection build
 
 # create the rpms
 rpmbuild \
