@@ -1,0 +1,99 @@
+---
+- name: Parse libvirt default network configuration
+  virt_net:
+    command: get_xml
+    name: default
+  register: default_net_xml
+- debug: var=default_net_xml.stdout
+
+- name: IPv6 configuration
+  block:
+    - name: Remove IPv4 configuration
+      xml:
+        xmlstring: "{{ default_net_xml.get_xml }}"
+        xpath: /network/ip
+        state: absent
+      register: editednet_noipv4
+    - name: Configure it as an isolated network
+      xml:
+        xmlstring: "{{ editednet_noipv4.xmlstring }}"
+        xpath: /network/forward
+        state: absent
+      register: editednet_isolated
+    - name: Edit libvirt default network configuration, set IPv6 address
+      xml:
+        xmlstring: "{{ editednet_isolated.xmlstring }}"
+        xpath: /network/ip[@family='ipv6']
+        attribute: address
+        value: "{{ he_ipv6_subnet_prefix + '::1' }}"
+      register: editednet1
+    - name: Edit libvirt default network configuration, set IPv6 prefix
+      xml:
+        xmlstring: "{{ editednet1.xmlstring }}"
+        xpath: /network/ip[@family='ipv6']
+        attribute: prefix
+        value: "64"
+      register: editednet2
+    - debug: var=editednet2
+    - name: Edit libvirt default network configuration, enable DHCPv6
+      xml:
+        xmlstring: "{{ editednet2.xmlstring }}"
+        xpath: /network/ip[@family='ipv6']/dhcp/range
+        attribute: start
+        value: "{{ he_ipv6_subnet_prefix + '::10' }}"
+      register: editednet3
+    - debug: var=editednet3
+    - name: Edit libvirt default network configuration, set DHCPv6 range
+      xml:
+        xmlstring: "{{ editednet3.xmlstring }}"
+        xpath: /network/ip[@family='ipv6']/dhcp/range
+        attribute: end
+        value: "{{ he_ipv6_subnet_prefix + '::ff' }}"
+      register: finaledit6
+    - debug: var=finaledit
+  when: ipv6_deployment|bool
+
+- name: IPv4 configuration
+  block:
+    - name: Edit libvirt default network configuration, change default address
+      xml:
+        xmlstring: "{{ default_net_xml.get_xml }}"
+        xpath: /network/ip
+        attribute: address
+        value: "{{ he_ipv4_subnet_prefix + '.1' }}"
+      register: editednet1
+    - name: Edit libvirt default network configuration, change DHCP start range
+      xml:
+        xmlstring: "{{ editednet1.xmlstring }}"
+        xpath: /network/ip/dhcp/range
+        attribute: start
+        value: "{{ he_ipv4_subnet_prefix + '.2' }}"
+      register: editednet2
+    - name: Edit libvirt default network configuration, change DHCP end range
+      xml:
+        xmlstring: "{{ editednet2.xmlstring }}"
+        xpath: /network/ip/dhcp/range
+        attribute: end
+        value: "{{ he_ipv4_subnet_prefix + '.254' }}"
+      register: finaledit4
+  when: not ipv6_deployment|bool
+
+- name: Update libvirt default network configuration, destroy
+  virt_net:
+    command: destroy
+    name: default
+- name: Update libvirt default network configuration, undefine
+  virt_net:
+    command: undefine
+    name: default
+  ignore_errors: true
+- name: Update libvirt default network configuration, define
+  virt_net:
+    command: define
+    name: default
+    xml: "{{ finaledit6.xmlstring if ipv6_deployment else finaledit4.xmlstring }}"
+- name: Activate default libvirt network
+  virt_net:
+    name: default
+    state: active
+  register: virt_net_out

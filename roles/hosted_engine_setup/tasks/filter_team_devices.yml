@@ -1,0 +1,35 @@
+---
+- name: Collect interface types
+  shell: set -euo pipefail && nmcli -g GENERAL.TYPE device show {{ nic }}
+  with_items:
+    - "{{ host_net }}"
+  loop_control:
+    loop_var: nic
+  changed_when: true
+  register: interface_types
+- debug: var=interface_types
+- name: Check for Team devices
+  set_fact:
+    is_team: "{{ nic_if.stdout.find('team') > 0 }}"
+  when: nic_if.stdout.find('team') != -1
+  with_items:
+    - "{{ interface_types.results }}"
+  loop_control:
+    loop_var: nic_if
+  register: team_list
+- debug: var=team_list
+- name: Get list of Team devices
+  set_fact:
+    team_if: "{{  team_list.results | reject('skipped') | map(attribute='nic_if.nic') | list }}"
+- debug: var=team_if
+- name: Filter unsupported interface types
+  set_fact:
+    otopi_host_net: "{{ host_net | difference(team_if) }}"
+  register: otopi_host_net
+- debug: var=otopi_host_net
+- name: Failed if only teaming devices are availible
+  fail:
+    msg: >-
+      Only Team devices {{ team_if | join(', ') }} are present.
+      Teaming is not supported.
+  when: (otopi_host_net.ansible_facts.otopi_host_net | length == 0)

@@ -1,0 +1,91 @@
+---
+- name: Initial engine tasks
+  block:
+  - name: Wait for the local VM
+    wait_for_connection:
+      delay: 5
+      timeout: 3600
+  - name: Add an entry for this host on /etc/hosts on the local VM
+    lineinfile:
+      dest: /etc/hosts
+      line: >-
+        {{ hostvars[he_ansible_host_name]['he_host_ip'] }} {{ hostvars[he_ansible_host_name]['he_host_address'] }}
+  - name: Set FQDN
+    command: hostnamectl set-hostname {{ he_fqdn }}
+    environment: "{{ he_cmd_lang }}"
+    changed_when: true
+  - name: Force the local VM FQDN to temporary resolve on the natted network address
+    lineinfile:
+      path: /etc/hosts
+      line:
+        "{{ hostvars[he_ansible_host_name]['local_vm_ip']['stdout_lines'][0] }} {{ he_fqdn }} # hosted-engine-setup-{{ \
+        hostvars[he_ansible_host_name]['he_local_vm_dir'] }}"
+  - name: Reconfigure IPv6 default gateway
+    command: ip -6 route add default via "{{ he_ipv6_subnet_prefix + '::1' }}"
+    environment: "{{ he_cmd_lang }}"
+    changed_when: true
+    when: hostvars[he_ansible_host_name]['ipv6_deployment']|bool
+  - name: Restore sshd reverse DNS lookups
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^UseDNS'
+      line: "UseDNS yes"
+  - name: Add lines to answerfile
+    lineinfile:
+      path: /root/ovirt-engine-answers
+      line: "{{ item }}"
+    no_log: true
+    with_items:
+      - "OVESETUP_CONFIG/adminPassword=str:{{ he_admin_password }}"
+  - name: Add lines to answerfile
+    lineinfile:
+      path: /root/ovirt-engine-answers
+      line: "{{ item }}"
+    no_log: true
+    with_items:
+      - "OVESETUP_DB/password=str:{{ he_db_password }}"
+    when: he_db_password is defined
+  - name: Add lines to answerfile
+    lineinfile:
+      path: /root/ovirt-engine-answers
+      line: "{{ item }}"
+    no_log: true
+    with_items:
+      - "OVESETUP_DWH_DB/password=str:{{ he_dwh_db_password }}"
+    when: he_dwh_db_password is defined
+  - name: Import OpenSCAP task
+    import_tasks: apply_openscap_profile.yml
+    when: he_apply_openscap_profile|bool
+  - name: Include before engine-setup custom tasks files for the engine VM
+    include_tasks: "{{ item }}"
+    with_fileglob: "hooks/enginevm_before_engine_setup/*.yml"
+    register: include_before_engine_setup_results
+  - debug: var=include_before_engine_setup_results
+  - name: Restore a backup
+    block:
+      - include_tasks: restore_backup.yml
+    when: he_restore_from_file is defined and he_restore_from_file
+  rescue:
+    - name: Sync on engine machine
+      command: sync
+      changed_when: true
+    - name: Fetch logs from the engine VM
+      import_tasks: fetch_engine_logs.yml
+      ignore_errors: true
+      delegate_to: "{{ he_ansible_host_name }}"
+    - name: Get local VM dir path
+      set_fact:
+        he_local_vm_dir={{ hostvars[he_ansible_host_name]['he_local_vm_dir'] }}
+    - name: Clean bootstrap VM
+      import_tasks: clean_localvm_dir.yml
+      delegate_to: "{{ he_ansible_host_name }}"
+    - name: Clean local storage pools
+      import_tasks: clean_local_storage_pools.yml
+      delegate_to: "{{ he_ansible_host_name }}"
+    - name: Notify the user about a failure
+      fail:
+        msg: >
+          There was a failure deploying the engine on the local engine VM.
+          The system may not be provisioned according to the playbook
+          results: please check the logs for the issue,
+          fix accordingly or re-deploy from scratch.

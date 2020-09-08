@@ -1,0 +1,224 @@
+---
+- name: Create target Hosted Engine VM
+  block:
+  - name: Fetch the value of HOST_KEY_CHECKING
+    set_fact: host_key_checking="{{ lookup('config', 'HOST_KEY_CHECKING') }}"
+  - debug: var=host_key_checking
+  - name: Get the username running the deploy
+    become: false
+    command: whoami
+    register: username_on_host
+  - name: Register the engine FQDN as a host
+    add_host:
+      name: "{{ he_fqdn }}"
+      groups: engine
+      ansible_connection: smart
+      ansible_ssh_extra_args: >-
+        -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null {% if he_ansible_host_name != "localhost" %}
+        -o ProxyCommand="ssh -W %h:%p -q
+        {% if not host_key_checking %} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null {% endif %}
+        {{ username_on_host.stdout }}@{{ he_ansible_host_name }}" {% endif %}
+      ansible_ssh_pass: "{{ he_appliance_password }}"
+      ansible_user: root
+    no_log: true
+  - include_tasks: auth_sso.yml
+  - name: Get local VM IP
+    shell: virsh -r net-dhcp-leases default | grep -i {{ he_vm_mac_addr }} | awk '{ print $5 }' | cut -f1 -d'/'
+    environment: "{{ he_cmd_lang }}"
+    register: local_vm_ip
+    changed_when: true
+  - debug: var=local_vm_ip
+  - name: Fetch host facts
+    ovirt_host_info:
+      pattern: name={{ he_host_name }} status=up
+      auth: "{{ ovirt_auth }}"
+    register: host_result
+    until: host_result is succeeded and host_result.ovirt_hosts|length >= 1
+    retries: 50
+    delay: 10
+  - debug: var=host_result
+  - name: Fetch Cluster ID
+    set_fact: cluster_id="{{ host_result.ovirt_hosts[0].cluster.id }}"
+  - name: Fetch Cluster facts
+    ovirt_cluster_info:
+      auth: "{{ ovirt_auth }}"
+    register: cluster_facts
+  - debug: var=cluster_facts
+  - name: Fetch Datacenter facts
+    ovirt_datacenter_info:
+      auth: "{{ ovirt_auth }}"
+    register: datacenter_facts
+  - debug: var=datacenter_facts
+  - name: Fetch Cluster name
+    set_fact: cluster_name={{ cluster_facts.ovirt_clusters|json_query("[?id=='" + cluster_id + "'].name")|first }}
+  - name: Fetch Datacenter ID
+    set_fact: >-
+      datacenter_id={{ cluster_facts.ovirt_clusters|json_query("[?id=='" + cluster_id + "'].data_center.id")|first }}
+  - name: Fetch Datacenter name
+    set_fact: >-
+      datacenter_name={{ datacenter_facts.ovirt_datacenters|json_query("[?id=='" + datacenter_id + "'].name")|first }}
+  - name: Parse Cluster details
+    set_fact:
+      cluster_cpu: >-
+        {{ cluster_facts.ovirt_clusters|selectattr('id', 'match', '^'+cluster_id+'$')|map(attribute='cpu')|list|first }}
+      cluster_version: >-
+        {{ cluster_facts.ovirt_clusters|selectattr('id', 'match', '^'+cluster_id+'$')|
+        map(attribute='version')|list|first }}
+  # TODO: use a proper ansible module for this once available
+  - name: Get server CPU list via REST API
+    uri:
+      url:
+        "https://{{ he_fqdn }}/ovirt-engine/api/options/ServerCPUList?version=\
+        {{ cluster_version.major }}.{{ cluster_version.minor }}"
+      validate_certs: false
+      user: admin@internal
+      password: "{{ he_admin_password }}"
+      method: GET
+      return_content: true
+      status_code: 200
+      headers:
+        Accept: application/json
+    no_log: true
+    register: server_cpu_list
+  - debug: var=server_cpu_list
+  # TODO: use a proper ansible module for this once available
+  - name: Get cluster emulated machine list via REST API
+    uri:
+      url:
+        "https://{{ he_fqdn }}/ovirt-engine/api/options/ClusterEmulatedMachines?version=\
+        {{ cluster_version.major }}.{{ cluster_version.minor }}"
+      validate_certs: false
+      user: admin@internal
+      password: "{{ he_admin_password }}"
+      method: GET
+      return_content: true
+      status_code: 200
+      headers:
+        Accept: application/json
+    no_log: true
+    register: emulated_machine_list
+  - name: Prepare for parsing server CPU list
+    set_fact:
+      server_cpu_dict: {}
+  - name: Parse server CPU list
+    set_fact:
+      server_cpu_dict: "{{ server_cpu_dict | combine({item.split(':')[1]: item.split(':')[3]}) }}"
+    with_items: >-
+      {{ server_cpu_list.json['values']['system_option_value'][0]['value'].split('; ')|list|difference(['']) }}
+  - debug: var=server_cpu_dict
+  - name: Convert CPU model name
+    set_fact:
+      cluster_cpu_model: "{{ server_cpu_dict[cluster_cpu.type] }}"
+  - debug: var=cluster_cpu_model
+  - name: Parse emulated_machine
+    set_fact:
+      emulated_machine:
+        emulated_machine_list.json['values']['system_option_value'][0]['value'].replace(
+        '[','').replace(']','').split(', ')|first
+  - name: Get storage domain details
+    ovirt_storage_domain_info:
+      pattern: name={{ he_storage_domain_name }} and datacenter={{ datacenter_name }}
+      auth: "{{ ovirt_auth }}"
+    register: storage_domain_details
+  - debug: var=storage_domain_details
+  - name: Add HE disks
+    ovirt_disk:
+      name: "{{ item.name }}"
+      size: "{{ item.size }}"
+      format: "{{ item.format }}"
+      sparse: "{{ item.sparse }}"
+      description: "{{ item.description }}"
+      content_type: "{{ item.content }}"
+      interface: virtio
+      storage_domain: "{{ he_storage_domain_name }}"
+      wait: true
+      timeout: 600
+      auth: "{{ ovirt_auth }}"
+    with_items:
+      - {
+        name: 'he_virtio_disk',
+        description: 'Hosted-Engine disk',
+        size: "{{ he_disk_size_GB }}GiB",
+        format: 'raw',
+        sparse: "{{ false if he_domain_type == 'fc' or he_domain_type == 'iscsi' else true }}",
+        content: 'hosted_engine'
+      }
+      - {
+        name: 'he_sanlock',
+        description: 'Hosted-Engine sanlock disk',
+        size: '1GiB',
+        format: 'raw',
+        sparse: false,
+        content: 'hosted_engine_sanlock'
+      }
+      - {
+        name: 'HostedEngineConfigurationImage',
+        description: 'Hosted-Engine configuration disk',
+        size: '1GiB',
+        format: 'raw',
+        sparse: false,
+        content: 'hosted_engine_configuration'
+      }
+      - {
+        name: 'he_metadata',
+        description: 'Hosted-Engine metadata disk',
+        size: '1GiB',
+        format: 'raw',
+        sparse: false,
+        content: 'hosted_engine_metadata'
+      }
+    register: add_disks
+  - name: Register disk details
+    set_fact:
+      he_virtio_disk_details: "{{ add_disks.results[0] }}"
+      he_sanlock_disk_details: "{{ add_disks.results[1] }}"
+      he_conf_disk_details: "{{ add_disks.results[2] }}"
+      he_metadata_disk_details: "{{ add_disks.results[3] }}"
+  - debug: var=add_disks
+  - name: Set default graphics protocols
+    set_fact:
+      he_graphic_protocols: [vnc, spice]
+  - name: Check if FIPS is enabled
+    command: sysctl -n crypto.fips_enabled
+    register: he_fips_enabled
+  - debug: var=he_fips_enabled
+  - name: Select graphic protocols
+    set_fact:
+      he_graphic_protocols: [spice]
+    when: he_fips_enabled.stdout == "1"
+  - debug: var=he_graphic_protocols
+  - name: Add VM
+    ovirt_vm:
+      state: stopped
+      cluster: "{{ cluster_name }}"
+      name: "{{ he_vm_name }}"
+      description: 'Hosted Engine Virtual Machine'
+      memory: "{{ he_mem_size_MB }}Mib"
+      cpu_cores: "{{ he_vcpus }}"
+      cpu_sockets: 1
+      graphical_console:
+        headless_mode: false
+        protocol: "{{ he_graphic_protocols }}"
+      serial_console: false
+      operating_system: rhel_8x64
+      type: server
+      high_availability_priority: 1
+      high_availability: false
+      delete_protected: true
+      # timezone: "{{ he_time_zone }}" # TODO: fix with the right parameter syntax
+      disks:
+        - id: "{{ he_virtio_disk_details.disk.id }}"
+      nics:
+        - name: vnet0
+          profile_name: "{{ he_mgmt_network }}"
+          interface: virtio
+          mac_address: "{{ he_vm_mac_addr }}"
+      auth: "{{ ovirt_auth }}"
+    register: he_vm_details
+  - debug: var=he_vm_details
+  - name: Register external local VM uuid
+    shell: virsh -r domuuid {{ he_vm_name }}Local | head -1
+    environment: "{{ he_cmd_lang }}"
+    register: external_local_vm_uuid
+    changed_when: true
+  - debug: var=external_local_vm_uuid
