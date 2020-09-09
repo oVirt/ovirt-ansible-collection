@@ -1,0 +1,29 @@
+---
+- name: Define default gateway
+  block:
+  - name: Get default gateway IPv4
+    shell: ip r | grep default | awk '{print $3}'
+    changed_when: true
+    register: get_gateway_4
+    when: he_default_gateway_4 is not defined or he_default_gateway_4 is none or not he_default_gateway_4
+  - debug: var=get_gateway_4
+  - name: Get default gateway IPv6
+    shell: ip -6 r | grep default | awk '{print $3}'
+    changed_when: true
+    register: get_gateway_6
+    when: he_default_gateway_6 is not defined or he_default_gateway_6 is none or not he_default_gateway_6
+  - debug: var=get_gateway_6
+  - name: Set he_gateway
+    set_fact:
+      he_gateway: >-
+        {{ get_gateway_4.stdout_lines[0] if get_gateway_4.stdout_lines else
+        get_gateway_6.stdout_lines[0] if get_gateway_6.stdout_lines else
+        ''
+        }}
+    when: he_gateway is not defined or he_gateway is none or not he_gateway|trim
+  - debug: var=he_gateway
+
+- name: Fail if there is no gateway
+  fail:
+    msg: "No default gateway is defined"
+  when: he_gateway is none or not he_gateway|trim

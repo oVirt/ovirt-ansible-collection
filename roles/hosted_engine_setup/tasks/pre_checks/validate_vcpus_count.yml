@@ -1,0 +1,21 @@
+---
+- name: Define he_maxvcpus
+  block:
+  - name: get max cpus
+    command: grep -c ^processor /proc/cpuinfo
+    changed_when: true
+    register: max_cpus
+  - name: Set he_maxvcpus
+    set_fact:
+      he_maxvcpus: "{{ max_cpus.stdout }}"
+  - debug: var=he_maxvcpus
+
+- name: Set he_vcpus to maximum amount if not defined
+  set_fact:
+    he_vcpus: "{{ he_vcpus if he_vcpus != 'max' else he_maxvcpus }}"
+- debug: var=he_vcpus
+
+- name: Check number of chosen CPUs
+  fail:
+    msg: "Invalid number of cpu specified: {{ he_vcpus }}, while only {{ he_maxvcpus }} are available on the host"
+  when: he_maxvcpus|int < he_vcpus|int

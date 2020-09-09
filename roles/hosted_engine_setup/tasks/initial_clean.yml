@@ -1,0 +1,115 @@
+---
+- name: initial clean
+  tags: he_initial_clean
+  block:
+  - name: Stop libvirt service
+    service:
+      name: libvirtd
+      state: stopped
+      enabled: true
+  - name: Drop vdsm config statements
+    command: >-
+      sed -i
+      '/## beginning of configuration section by
+      vdsm-4.[0-9]\+.[0-9]\+/,/## end of configuration section by vdsm-4.[0-9]\+.[0-9]\+/d' {{ item }}
+    environment: "{{ he_cmd_lang }}"
+    args:
+      warn: false
+    with_items:
+      - /etc/libvirt/libvirtd.conf
+      - /etc/libvirt/qemu.conf
+      - /etc/libvirt/qemu-sanlock.conf
+      - /etc/sysconfig/libvirtd
+    tags: ['skip_ansible_lint']
+  - name: Restore initial abrt config files
+    copy:
+      remote_src: true
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: preserve
+    with_items:
+      - {
+        src: /usr/share/abrt/conf.d/abrt-action-save-package-data.conf,
+        dest: /etc/abrt/abrt-action-save-package-data.conf
+      }
+      - {
+        src: /usr/share/abrt/conf.d/abrt.conf,
+        dest: /etc/abrt/abrt.conf
+      }
+      - {
+        src: /usr/share/abrt/conf.d/plugins/CCpp.conf,
+        dest: /etc/abrt/plugins/CCpp.conf
+      }
+      - {
+        src: /usr/share/abrt/conf.d/plugins/vmcore.conf,
+        dest: /etc/abrt/plugins/vmcore.conf
+      }
+  - name: Restart abrtd service
+    service:
+      name: abrtd
+      state: restarted
+  - name: Drop libvirt sasl2 configuration by vdsm
+    command: >-
+      sed -i '/## start vdsm-4.[0-9]\+.[0-9]\+ configuration/,/## end vdsm configuration/d' /etc/sasl2/libvirt.conf
+    environment: "{{ he_cmd_lang }}"
+    args:
+      warn: false
+    tags: ['skip_ansible_lint']
+  - name: Stop and disable services
+    service:
+      name: "{{ item }}"
+      state: stopped
+      enabled: false
+    with_items:
+      - ovirt-ha-agent
+      - ovirt-ha-broker
+      - vdsmd
+      - libvirtd-tls.socket
+  - name: Restore initial libvirt default network configuration
+    copy:
+      remote_src: true
+      src: /usr/share/libvirt/networks/default.xml
+      dest: /etc/libvirt/qemu/networks/default.xml
+      mode: preserve
+  - name: Start libvirt
+    service:
+      name: libvirtd
+      state: started
+      enabled: true
+  - name: Check for leftover local Hosted Engine VM
+    shell: virsh list | grep {{ he_vm_name }}Local | cat
+    environment: "{{ he_cmd_lang }}"
+    changed_when: true
+    register: local_vm_list
+  - name: Destroy leftover local Hosted Engine VM
+    command: virsh destroy {{ he_vm_name }}Local
+    environment: "{{ he_cmd_lang }}"
+    ignore_errors: true
+    when: local_vm_list.stdout_lines|length >= 1
+  - name: Check for leftover defined local Hosted Engine VM
+    shell: virsh list --all | grep {{ he_vm_name }}Local | cat
+    environment: "{{ he_cmd_lang }}"
+    changed_when: true
+    register: local_vm_list_all
+  - name: Undefine leftover local engine VM
+    command: virsh undefine --managed-save {{ he_vm_name }}Local
+    environment: "{{ he_cmd_lang }}"
+    when: local_vm_list_all.stdout_lines|length >= 1
+    changed_when: true
+  - name: Check for leftover defined Hosted Engine VM
+    shell: virsh list --all | grep {{ he_vm_name }} | cat
+    environment: "{{ he_cmd_lang }}"
+    changed_when: true
+    register: target_vm_list_all
+  - name: Undefine leftover engine VM
+    command: virsh undefine --managed-save {{ he_vm_name }}
+    environment: "{{ he_cmd_lang }}"
+    when: target_vm_list_all.stdout_lines|length >= 1
+    changed_when: true
+  - name: Remove eventually entries for the local VM from known_hosts file
+    known_hosts:
+      name: "{{ he_fqdn }}"
+      state: absent
+    delegate_to: localhost
+    become: false
+...

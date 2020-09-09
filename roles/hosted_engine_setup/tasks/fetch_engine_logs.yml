@@ -1,0 +1,30 @@
+---
+- name: Set destination directory path
+  set_fact:
+    destdir=/var/log/ovirt-hosted-engine-setup/engine-logs-{{ ansible_date_time.iso8601 }}/
+- name: Create destination directory
+  file:
+    state: directory
+    path: "{{ destdir }}"
+    owner: root
+    group: root
+    mode: 0700
+- include_tasks: get_local_vm_disk_path.yml
+- name: Give the vm time to flush dirty buffers
+  wait_for:
+    timeout: 10
+  delegate_to: localhost
+  become: false
+- name: Copy engine logs
+  command: virt-copy-out -a {{ local_vm_disk_path }} {{ item }} {{ destdir }}
+  environment:
+    LIBGUESTFS_BACKEND: direct
+    LANG: en_US.UTF-8
+    LC_MESSAGES: en_US.UTF-8
+    LC_ALL: en_US.UTF-8
+  ignore_errors: true
+  changed_when: true
+  with_items:
+    - /var/log/ovirt-engine
+    - /var/log/messages
+  when: local_vm_disk_path is defined

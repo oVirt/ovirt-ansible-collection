@@ -1,0 +1,63 @@
+---
+- name: Define Variables
+  block:
+  - name: Define he_cloud_init_domain_name
+    block:
+      - name: Get domain name
+        command: hostname -d
+        changed_when: true
+        register: host_domain_name
+      - name: Set he_cloud_init_domain_name
+        set_fact:
+          he_cloud_init_domain_name: "{{ host_domain_name.stdout_lines[0] if host_domain_name.stdout_lines else '' }}"
+    when: he_cloud_init_domain_name is not defined
+  - debug: var=he_cloud_init_domain_name
+
+  - name: Define he_cloud_init_host_name
+    set_fact:
+      he_cloud_init_host_name: "{{ he_fqdn }}"
+  - debug: var=he_cloud_init_host_name
+
+  - name: Define he_vm_uuid
+    block:
+      - name: Get uuid
+        command: uuidgen
+        changed_when: true
+        register: uuid
+      - name: Set he_vm_uuid
+        set_fact:
+          he_vm_uuid: "{{ uuid.stdout }}"
+  - debug: var=he_vm_uuid
+
+  - name: Define he_nic_uuid
+    block:
+      - name: Get uuid
+        command: uuidgen
+        changed_when: true
+        register: uuid
+      - name: Set he_nic_uuid
+        set_fact:
+          he_nic_uuid: "{{ uuid.stdout }}"
+  - debug: var=he_nic_uuid
+
+  - name: Define he_cdrom_uuid
+    block:
+      - name: Get uuid
+        command: uuidgen
+        changed_when: true
+        register: uuid
+      - name: Set he_cdrom_uuid
+        set_fact:
+          he_cdrom_uuid: "{{ uuid.stdout }}"
+  - debug: var=he_cdrom_uuid
+
+  - name: Define Timezone
+    block:
+      - name: get timezone
+        shell: timedatectl | grep "Time zone" | awk '{print $3}'
+        changed_when: true
+        register: timezone
+      - name: Set he_time_zone
+        set_fact:
+          he_time_zone: "{{ timezone.stdout }}"
+  - debug: var=he_time_zone

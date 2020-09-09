@@ -1,0 +1,48 @@
+---
+- name: Initialize OpenSCAP variables
+  set_fact:
+    oscap_dir: "/usr/share/xml/scap/ssg/content"
+    oscap_dist: "{{ ansible_distribution | replace('RedHat', 'rhel') | lower }}"
+    oscap_ver: "{{ ansible_distribution_major_version if ansible_distribution != 'Fedora' else '' }}"
+- name: Set OpenSCAP datastream path
+  set_fact:
+    oscap_datastream: "{{ oscap_dir }}/ssg-{{ oscap_dist }}{{ oscap_ver }}-ds.xml"
+- debug: var=oscap_datastream
+- name: Verify OpenSCAP datastream
+  stat:
+    path: "{{ oscap_datastream }}"
+  register: oscap_ds_stat
+- name: Set default OpenSCAP profile
+  shell: >-
+    set -euo pipefail && oscap info --profiles {{ oscap_datastream }} |
+    grep -Ei "(standard|disa)" | sort | tail -1 | cut -d':' -f1
+  register: oscap_profile
+  changed_when: true
+  when: oscap_ds_stat.stat.exists
+- debug: var=oscap_profile
+- name: Apply OpenSCAP profile
+  command: >-
+    oscap xccdf eval --profile {{ oscap_profile.stdout }} --remediate
+    --report /root/openscap-report.html {{ oscap_datastream }}
+  failed_when: false
+  ignore_errors: true
+  changed_when: true
+- name: Reset PermitRootLogin for sshd
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp="^\s*PermitRootLogin"
+              line="PermitRootLogin yes"
+              state=present
+- name: Reboot the engine VM to ensure that FIPS is enabled
+  reboot:
+    reboot_timeout: 1200
+- block:
+    - name: Check if FIPS is enabled
+      command: sysctl -n crypto.fips_enabled
+      changed_when: true
+      register: he_fips_enabled
+    - debug: var=he_fips_enabled
+    - name: Enforce FIPS mode
+      fail:
+        msg: "FIPS mode is not enabled as required"
+      when: he_fips_enabled.stdout != "1"
+  when: ansible_distribution is search("RedHat")

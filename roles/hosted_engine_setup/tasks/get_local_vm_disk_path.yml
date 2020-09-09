@@ -1,0 +1,13 @@
+---
+- name: Find the local appliance image
+  find:
+    paths: "{{ he_local_vm_dir }}/images"
+    recurse: true
+    patterns: ^.*.(?<!meta)$
+    use_regex: true
+  register: app_img
+- debug: var=app_img
+- name: Set local_vm_disk_path
+  set_fact:
+    local_vm_disk_path={{ app_img.files[0].path }}
+  when: app_img.files|length > 0
