@@ -242,7 +242,3 @@ releases:
     release_date: '2020-08-12'
   1.1.2:
     release_date: '2020-08-17'
-  1.1.3:
-    changes:
-      bugfixes:
-      - ovirt_vm - Rename q35_sea to q35_sea_bios (https://github.com/oVirt/ovirt-ansible-collection/pull/111).
