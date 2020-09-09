@@ -47,6 +47,7 @@ Example Playbook
     - passwords.yml
   tasks:
     - block:
+        # The use of ovirt.ovirt before ovirt_auth is to check if the collection is correctly loaded
         - name: Obtain SSO token with using username/password credentials
           ovirt.ovirt.ovirt_auth:
             url: https://ovirt.example.com/ovirt-engine/api
