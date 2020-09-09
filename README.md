@@ -46,17 +46,27 @@ Example Playbook
     # Contains encrypted `engine_password` varibale using ansible-vault
     - passwords.yml
   tasks:
-    - name: Login
-      ovirt_auth:
-        url: "https://ovirt-engine.example.com/ovirt-engine/api"
-        password: "{{ engine_password | default(omit) }}"
-        username: "admin@internal"
-    - name: Create vm
-      ovirt_vm:
-        auth: "{{ ovirt_auth }}"
-        name: vm_name
-        state: present
-        cluster: Default
+    - block:
+        # The use of ovirt.ovirt before ovirt_auth is to check if the collection is correctly loaded
+        - name: Obtain SSO token with using username/password credentials
+          ovirt.ovirt.ovirt_auth:
+            url: https://ovirt.example.com/ovirt-engine/api
+            username: admin@internal
+            ca_file: ca.pem
+            password: "{{ ovirt_password }}"
+
+        # Previous task generated I(ovirt_auth) fact, which you can later use
+        # in different modules as follows:
+        - ovirt_vm:
+            auth: "{{ ovirt_auth }}"
+            state: absent
+            name: myvm
+
+      always:
+        - name: Always revoke the SSO token
+          ovirt_auth:
+            state: absent
+            ovirt_auth: "{{ ovirt_auth }}"
   collections:
     - ovirt.ovirt
 ```
