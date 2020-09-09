@@ -262,7 +262,7 @@ options:
             - "Set bios type, necessary for some operating systems and secure boot."
             - "If no value is passed, default value is set from cluster."
             - "NOTE - Supported since oVirt 4.3."
-        choices: [ i440fx_sea_bios, q35_ovmf, q35_sea, q35_secure_boot ]
+        choices: [ i440fx_sea_bios, q35_ovmf, q35_sea_bios, q35_secure_boot ]
         type: str
     usb_support:
         description:
@@ -2454,7 +2454,7 @@ def main():
         domain_mappings=dict(default=[], type='list', elements='dict'),
         reassign_bad_macs=dict(default=None, type='bool'),
         boot_menu=dict(type='bool'),
-        bios_type=dict(type='str', choices=['i440fx_sea_bios', 'q35_ovmf', 'q35_sea', 'q35_secure_boot']),
+        bios_type=dict(type='str', choices=['i440fx_sea_bios', 'q35_ovmf', 'q35_sea_bios', 'q35_secure_boot']),
         serial_console=dict(type='bool'),
         usb_support=dict(type='bool'),
         sso=dict(type='bool'),
