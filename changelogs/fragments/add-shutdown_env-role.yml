@@ -1,0 +1,3 @@
+---
+major_changes:
+  - shutdown_env - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/112).
