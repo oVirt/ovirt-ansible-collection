@@ -17,6 +17,8 @@ ovirt_engine_setup_dwh_db_name: 'ovirt_engine_history'
 ovirt_engine_setup_dwh_db_user: 'ovirt_engine_history'
 ovirt_engine_setup_dwh_vacuum_full: false
 
+ovirt_engine_grafana_enable: true
+
 ovirt_engine_setup_firewall_manager: 'firewalld'
 
 # This option is suggested from oVirt Documentation

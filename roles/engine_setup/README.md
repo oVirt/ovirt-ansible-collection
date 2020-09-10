@@ -40,6 +40,7 @@ to ``ovirt_engine_setup_answer_file_path`` variable.
 | ovirt_engine_setup_admin_password     | UNDEF                 | Password for the automatically created administrative user of the oVirt Engine.
 | ovirt_engine_setup_wait_running_tasks | False                 | If `True`, engine-setup will wait for running tasks to finish. Valid for `ovirt_engine_setup_version` >= 4.2. |
 | ovirt_engine_cinderlib_enable         | False                 | If `True`, cinderlib is enabled. Valid for `ovirt_engine_setup_version` >= 4.3. |
+| ovirt_engine_grafana_enable           | True                  | If `True`, Grafana integration will be set up. Valid for `ovirt_engine_setup_version` >= 4.4. |
 | ovirt_engine_setup_engine_configs     | []                    | List of dictionaries with keys `key`, `value` and `version`. The engine-config will be called with parametrs "-s `key`=`value`" when specified `version` it will append "--cver=`version`" to the config.  |
 
 * Engine Database:
