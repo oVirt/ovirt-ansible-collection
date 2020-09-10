@@ -6,7 +6,6 @@
   vars:
     ovirt_engine_setup_product_type: 'ovirt'
     ovirt_engine_setup_version: "4.4"
-    ovirt_engine_setup_hostname: "localhost"
     ovirt_engine_setup_organization: "example.com"
     ovirt_engine_setup_dwh_db_host: "localhost"
     ovirt_engine_setup_configure_iso_domain: true
