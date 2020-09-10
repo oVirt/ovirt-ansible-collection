@@ -38,12 +38,9 @@
     server_hostname: "{{ ovirt_repositories_rhsm_server_hostname | default(omit) }}"
   when: ovirt_repositories_pools is defined
 
-- name: Include target/version specific variables
-  include_vars: "{{ item }}"
-  with_first_found:
-    - "{{ ovirt_repositories_target_host }}_{{ ovirt_repositories_ovirt_version }}.yml"
-    - "default.yml"
-  when: ovirt_repositories_subscription_manager_repos is not defined
+- name: "Include {{ ovirt_repositories_target_host }}_{{ ovirt_repositories_ovirt_version }}.yml variables"
+  include_vars: "{{ ovirt_repositories_target_host }}_{{ ovirt_repositories_ovirt_version }}.yml"
+  when: ovirt_repositories_subscription_manager_repos | list | length == 0
 
 - name: Disable all repositories
   rhsm_repository:
@@ -55,7 +52,7 @@
   rhsm_repository:
     name: "{{ item }}"
     state: "enabled"
-  with_items: "{{ ovirt_repositories_subscription_manager_repos | default([]) }}"
+  with_items: "{{ ovirt_repositories_subscription_manager_repos }}"
 
 - name: Enable dnf modules
   command: "dnf module enable -y {{ ovirt_repositories_rh_dnf_modules | join(' ') }}"
@@ -64,3 +61,6 @@
   when:
     - ovirt_repositories_ovirt_version|string >= '4.4'
     - ovirt_repositories_target_host == 'engine'
+
+- name: set ovirt_repositories_subscription_manager_repos to empty list for the next time
+  include_vars: default.yml
