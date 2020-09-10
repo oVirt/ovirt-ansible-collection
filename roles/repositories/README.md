@@ -18,6 +18,7 @@ Role Variables
 | ovirt_repositories_rh_password             | UNDEF                 | Password to use for subscription manager. |
 | ovirt_repositories_pool_ids                | UNDEF                 | List of pools ids to subscribe to. |
 | ovirt_repositories_pools                   | UNDEF                 | Specify a list of subscription pool names. Use <i>ovirt_repositories_pool_ids</i> instead if possible, as it is much faster. |
+| ovirt_repositories_subscription_manager_repos| []                  | List of repositories to enable by subscription-manager. By default we have list of repositories for each {{ovirt_repositories_target_host}}_{{ovirt_repositories_ovirt_version}} in vars folder. |
 | ovirt_repositories_repos_backup            | True                  | When set to `False`, original repositories won't be backed up. |
 | ovirt_repositories_repos_backup_path       | /tmp/repo-backup-{{timestamp}} | Directory to backup the original repositories configuration |
 | ovirt_repositories_force_register          | False                 | Bool to register the system even if it is already registered. |
