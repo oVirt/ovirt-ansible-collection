@@ -52,6 +52,10 @@
     set_fact:
       offline: "{{ '--offline' if ovirt_engine_setup_offline|bool else '' }}"
 
+  - name: Restore engine from file
+    include_tasks: restore_engine_from_file.yml
+    when: ovirt_engine_setup_restore_file is defined
+
   - name: Run engine-setup with answerfile
     command: "engine-setup --accept-defaults --config-append={{ answer_file_path }} {{ offline }}"
     tags:

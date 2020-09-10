@@ -22,6 +22,10 @@ to ``ovirt_engine_setup_answer_file_path`` variable.
 | ovirt_engine_setup_perform_upgrade    | False                 | If `True`, this role is used to perform an upgrade. |
 | ovirt_engine_setup_product_type       | oVirt                 | One of ["oVirt", "RHV"], case insensitive. |
 | ovirt_engine_setup_offline            | False                 | If `True`, updates for all packages will be disabled. |
+| ovirt_engine_setup_restore_engine_cleanup | False             | Remove the configuration files and clean the database associated with the Engine, relevant only when `ovirt_engine_setup_restore_file` is defined |
+| ovirt_engine_setup_restore_file       | UNDEF                 | Restored the engine with a backup file which created with engine-backup. |
+| ovirt_engine_setup_restore_scopes     | UNDEF                 | List of scopes following values are available: ["all", "files", "db", "dwhdb", "cinderlibdb"]. |
+| ovirt_engine_setup_restore_options    | {}                    | Dictionary that will add engine restore options as "`--key`=`value`" when `value` is not empty, otherwise it will append "`--key`" only.  |
 
 * Common options for engine:
 
@@ -135,4 +139,26 @@ Example Playbook
     - engine_setup
   collections:
     - ovirt.ovirt
+
+
+# Example of oVirt engine restore from file with cleanup engine before:
+- name: restore oVirt engine
+  hosts: engine
+  vars_files:
+    # Contains encrypted `ovirt_engine_setup_admin_password` variable using ansible-vault
+    - passwords.yml
+  vars:
+    ovirt_engine_setup_version: '4.4'
+    ovirt_engine_setup_organization: 'of.ovirt.engine.com'
+    ovirt_engine_setup_restore_engine_cleanup: true
+    ovirt_engine_setup_restore_file: '/path/to/backup.file'
+    ovirt_engine_setup_restore_scopes:
+      - 'files'
+      - 'db'
+    ovirt_engine_setup_restore_options:
+      log: '/path/to/file.log'
+      restore-permissions: ''
+      provision-all-databases: ''
+  roles:
+    - ovirt.engine-setup
 ```

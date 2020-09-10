@@ -32,3 +32,6 @@ ovirt_engine_setup_perform_upgrade: false
 
 ovirt_engine_apache_config_ssl: true
 ovirt_engine_apache_config_root_redirection: true
+
+ovirt_engine_setup_restore_engine_cleanup: false
+ovirt_engine_setup_restore_options: {}
