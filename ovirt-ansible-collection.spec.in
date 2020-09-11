@@ -18,6 +18,17 @@ Requires:	python3-netaddr
 Requires:	python3-jmespath
 Requires:	python3-passlib
 
+Obsoletes:	ovirt-ansible-cluster-upgrade
+Obsoletes:	ovirt-ansible-engine-setup
+Obsoletes:	ovirt-ansible-hosted-engine-setup
+Obsoletes:	ovirt-ansible-image-template
+Obsoletes:	ovirt-ansible-infra
+Obsoletes:	ovirt-ansible-manageiq
+Obsoletes:	ovirt-ansible-repositories
+Obsoletes:	ovirt-ansible-roles
+Obsoletes:	ovirt-ansible-shutdown-env
+Obsoletes:	ovirt-ansible-vm-infra
+
 %description
 This Ansible collection is to manage all ovirt modules and inventory
 
