@@ -18,7 +18,6 @@ Please note that when installing this collection from Ansible Galaxy you are ins
 $ ansible-galaxy collection install ovirt.ovirt
 ```
 
-
 Requirements
 ------------
 
@@ -29,7 +28,6 @@ Requirements
 Modules documentation
 --------------
 https://docs.ansible.com/ansible/2.10/collections/ovirt/ovirt/index.html
-
 
 Example Playbook
 ----------------
