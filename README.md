@@ -30,10 +30,6 @@ Modules documentation
 --------------
 https://docs.ansible.com/ansible/2.10/collections/ovirt/ovirt/index.html
 
-Dependencies
-------------
-
-None.
 
 Example Playbook
 ----------------
