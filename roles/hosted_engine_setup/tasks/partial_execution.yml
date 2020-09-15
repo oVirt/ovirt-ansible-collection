@@ -57,7 +57,7 @@
         ovirt_engine_setup_package_list: "{{ he_additional_package_list }}"
         ovirt_engine_setup_admin_password: "{{ he_admin_password }}"
       import_role:
-        name: ovirt.engine-setup
+        name: @NAMESPACE@.@NAME@.engine_setup
       delegate_to: "{{ groups.engine[0] }}"
 
     - name: Local engine VM installation - Post tasks
