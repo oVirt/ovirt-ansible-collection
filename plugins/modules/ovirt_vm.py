@@ -1377,7 +1377,7 @@ class VmsModule(BaseModule):
             template = templates_service.list(
                 search='vm.name=%s' % self.param('name')
             )[0]
-            if self.param('template') is not None and self.param('template') != template:
+            if self.param('template') is not None and self.param('template') != template.name:
                 raise ValueError("You can not change template of the Virtual Machine.")
 
         return template
