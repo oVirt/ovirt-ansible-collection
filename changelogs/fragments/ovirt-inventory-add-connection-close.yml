@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt inventory - Add close of connection at the end (https://github.com/oVirt/ovirt-ansible-collection/pull/122).
