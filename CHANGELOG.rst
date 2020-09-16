@@ -4,6 +4,15 @@ ovirt.ovirt Release Notes
 
 .. contents:: Topics
 
+
+v1.1.4
+======
+
+Bugfixes
+--------
+
+- ovirt inventory - Add close of connection at the end (https://github.com/oVirt/ovirt-ansible-collection/pull/122).
+
 v1.1.3
 ======
 
