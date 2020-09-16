@@ -246,6 +246,13 @@ releases:
     changes:
       minor_changes:
       - Add GPL license (https://github.com/oVirt/ovirt-ansible-collection/pull/101).
-    release_date: '2020-09-07'
     fragments:
     - add-gpl-license.yml
+    release_date: '2020-09-07'
+  1.1.4:
+    changes:
+      bugfixes:
+      - ovirt inventory - Add close of connection at the end (https://github.com/oVirt/ovirt-ansible-collection/pull/122).
+    fragments:
+    - ovirt-inventory-add-connection-close.yml
+    release_date: '2020-09-16'
