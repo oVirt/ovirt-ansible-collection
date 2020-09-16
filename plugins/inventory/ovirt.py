@@ -267,3 +267,4 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             self._cache[cache_key] = source_data
 
         self._populate_from_source(source_data)
+        self.connection.close()
