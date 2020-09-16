@@ -44,6 +44,16 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Wed Sep 16 2020 Martin Necas <mnecas@redhat.com> - 1.2.0-0.1
+- Add role cluster_upgrade
+- Add role engine_setup
+- Add role vm_infra
+- Add role infra
+- Add role manageiq
+- Add role hosted_engine_setup
+- Add role image_template
+- Add role shutdown_env
+
 * Mon Aug 17 2020 Martin Necas <mnecas@redhat.com> - 1.1.2-1
 - Add ansible changelogs
 
