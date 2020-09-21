@@ -50,6 +50,7 @@
     ovirt_datacenter:
       state: present
       name: "{{ he_data_center }}"
+      compatibility_version: "{{ he_data_center_comp_version | default(omit) }}"
       wait: true
       local: false
       auth: "{{ ovirt_auth }}"
@@ -58,6 +59,7 @@
     ovirt_cluster:
       state: present
       name: "{{ he_cluster }}"
+      compatibility_version: "{{ he_cluster_comp_version | default(omit) }}"
       data_center: "{{ he_data_center }}"
       cpu_type: "{{ he_cluster_cpu_type | default(omit) }}"
       wait: true
@@ -75,6 +77,7 @@
     ovirt_cluster:
       data_center: "{{ he_data_center }}"
       name: "{{ he_cluster }}"
+      compatibility_version: "{{ he_cluster_comp_version | default(omit) }}"
       auth: "{{ ovirt_auth }}"
       virt: true
       gluster: true
