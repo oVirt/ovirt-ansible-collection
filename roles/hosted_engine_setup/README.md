@@ -30,7 +30,9 @@ Ansible role for deploying oVirt Hosted-Engine
 | he_pki_renew_on_restore | false | Renew engine PKI on restore if needed |
 | he_cluster | Default | name of the cluster with hosted-engine hosts |
 | he_cluster_cpu_type | null | cluster CPU type to be used in hosted-engine cluster (the same as HE host or lower) |
+| he_cluster_comp_version | null | Compatibility version of the hosted-engine cluster. Default value is the latest compatibility version |
 | he_data_center | Default | name of the datacenter with hosted-engine hosts |
+| he_data_center_comp_version | null | Compatibility version of the hosted-engine data center. Default value is the latest compatibility version |
 | he_host_name | $(hostname -f) | name used by the engine for the first host |
 | he_host_address | $(hostname -f) | address used by the engine for the first host |
 | he_bridge_if | null | interface used for the management bridge |
