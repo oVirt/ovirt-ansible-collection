@@ -46,6 +46,3 @@
       when: not loggedin.skipped | default(false)
       tags:
         - always
-  collections:
-    - ovirt.ovirt
-    - ansible.builtin
