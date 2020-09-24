@@ -71,6 +71,7 @@
         "https://{{ he_fqdn }}/ovirt-engine/api/options/ServerCPUList?version=\
         {{ cluster_version.major }}.{{ cluster_version.minor }}"
       validate_certs: false
+      force_basic_auth: true
       user: admin@internal
       password: "{{ he_admin_password }}"
       method: GET
@@ -88,6 +89,7 @@
         "https://{{ he_fqdn }}/ovirt-engine/api/options/ClusterEmulatedMachines?version=\
         {{ cluster_version.major }}.{{ cluster_version.minor }}"
       validate_certs: false
+      force_basic_auth: true
       user: admin@internal
       password: "{{ he_admin_password }}"
       method: GET
