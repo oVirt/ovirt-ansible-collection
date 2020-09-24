@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - 01_create_target_hosted_engine_vm - Force basic authentication (https://github.com/oVirt/ovirt-ansible-collection/pull/131).
