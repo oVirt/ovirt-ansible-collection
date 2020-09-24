@@ -63,7 +63,7 @@
         changed_when: true
         register: local_vm_dir_space_out
       - name: Check appliance size
-        shell: gzip -l "{{ he_appliance_ova_path }}" | grep -v uncompressed | awk '{print $2}'
+        shell: zcat "{{ he_appliance_ova_path }}" | wc --bytes
         environment: "{{ he_cmd_lang }}"
         changed_when: true
         register: appliance_size
