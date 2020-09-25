@@ -203,6 +203,7 @@
         protocol: "{{ he_graphic_protocols }}"
       serial_console: false
       operating_system: rhel_8x64
+      bios_type: q35_sea_bios
       type: server
       high_availability_priority: 1
       high_availability: false
