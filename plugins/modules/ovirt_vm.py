@@ -1363,7 +1363,7 @@ class VmsModule(BaseModule):
                     ]
                 if not templates:
                     raise ValueError(
-                        "Template with name '%s' and version '%s' in data center '%s' was not found'" % (
+                        "Template with name '%s' and version '%s' in data center '%s' was not found" % (
                             self.param('template'),
                             self.param('template_version'),
                             data_center.name
@@ -1383,7 +1383,7 @@ class VmsModule(BaseModule):
                     raise ValueError("You can not change template of the Virtual Machine.")
             else:
                 raise ValueError(
-                    "Template with name '%s' and version '%s' in data center '%s' was not found'" % (
+                    "Template with name '%s' and version '%s' in data center '%s' was not found" % (
                         self.param('template'),
                         self.param('template_version'),
                         data_center.name
