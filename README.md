@@ -33,8 +33,8 @@ Content of the collection
 ----------------
 
 * modules:
-  * ovirt_* - working with engine
-  * ovirt_*_info - gathering information from engine
+  * ovirt_* - Modules to manage objects in oVirt Engine
+  * ovirt_*_info - Modules to gather information about objects in oVirt Engine
 * roles:
   * cluster_upgrade
   * engine_setup
