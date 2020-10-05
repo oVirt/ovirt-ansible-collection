@@ -27,7 +27,26 @@ Requirements
 
 Modules documentation
 --------------
-https://docs.ansible.com/ansible/2.10/collections/ovirt/ovirt/index.html
+https://docs.ansible.com/ansible/latest/collections/ovirt/ovirt/index.html
+
+Content of the collection
+----------------
+
+* modules:
+  * ovirt_* - working with engine
+  * ovirt_*_info - gathering information from engine
+* roles:
+  * cluster_upgrade
+  * engine_setup
+  * hosted_engine_setup
+  * image_template
+  * infra
+  * manageiq
+  * repositories
+  * shutdown_env
+  * vm_infra
+* inventory plugin
+
 
 Example Playbook
 ----------------
