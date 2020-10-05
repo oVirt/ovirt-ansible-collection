@@ -1,4 +1,8 @@
 ---
+- rpm_key:
+    state: present
+    name: "{{ ovirt_repositories_ovirt_release_rpm_gpg }}"
+
 - name: Install oVirt release package
   package:
     name: "{{ ovirt_repositories_ovirt_release_rpm | mandatory }}"
