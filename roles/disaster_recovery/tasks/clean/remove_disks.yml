@@ -1,0 +1,10 @@
+- block:
+    - name: Remove disk
+      ovirt_disk:
+          state: absent
+          id: "{{ disk.id }}"
+          auth: "{{ ovirt_auth }}"
+  ignore_errors: "{{ dr_ignore_error_clean }}"
+  tags:
+      - fail_back
+      - clean_engine
