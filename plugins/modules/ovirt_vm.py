@@ -1363,7 +1363,7 @@ class VmsModule(BaseModule):
                     ]
                 if not templates:
                     raise ValueError(
-                        "Template with name '%s' and version '%s' in data center '%s' was not found'" % (
+                        "Template with name '%s' and version '%s' in data center '%s' was not found" % (
                             self.param('template'),
                             self.param('template_version'),
                             data_center.name
@@ -1374,11 +1374,13 @@ class VmsModule(BaseModule):
                 # If template isn't specified and VM is about to be created specify default template:
                 template = templates_service.template_service('00000000-0000-0000-0000-000000000000').get()
         else:
-            template = templates_service.list(
+            templates = templates_service.list(
                 search='vm.name=%s' % self.param('name')
-            )[0]
-            if self.param('template') is not None and self.param('template') != template.name:
-                raise ValueError("You can not change template of the Virtual Machine.")
+            )
+            if templates:
+                template = templates[0]
+                if self.param('template') is not None and self.param('template') != template.name:
+                    raise ValueError("You can not change template of the Virtual Machine.")
 
         return template
 
