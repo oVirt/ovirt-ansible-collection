@@ -12,7 +12,7 @@
 - name: Download the qcow image
   get_url:
     url: "{{ qcow_url }}"
-    dest: "{{ image_path_st.stat.isdir | ternary(image_path~'/'~qcow_url.rpartition('/')[-1], image_path) | regex_replace('//', '/') }}"
+    dest: "{{ image_path_st.stat.isdir is defined and image_path_st.stat.isdir | ternary(image_path~'/'~qcow_url.rpartition('/')[-1], image_path) | regex_replace('//', '/') }}"
     force: "{{ not image_cache_download }}"
     checksum: "{{ image_checksum | default(omit) }}"
     timeout: "{{ image_download_timeout }}"
