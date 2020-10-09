@@ -1,4 +1,7 @@
 distros:
   - el8
+archs:
+  - x86_64
+  - s390x
 release_branches:
   master: [ "ovirt-master" ]
