@@ -65,6 +65,11 @@ options:
            the virtual machine with the modifications that have already been performed but that will only come into
            effect when the virtual machine is restarted. By default the value is set by engine."
       type: bool
+    current_cd:
+      description:
+        - "If I(true) it will get from all virtual machines current attached cd."
+      type: bool
+      version_added: 1.2.0
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
@@ -112,6 +117,7 @@ def main():
     argument_spec = ovirt_info_full_argument_spec(
         pattern=dict(default='', required=False),
         all_content=dict(default=False, type='bool'),
+        current_cd=dict(default=False, type='bool'),
         next_run=dict(default=None, type='bool'),
         case_sensitive=dict(default=True, type='bool'),
         max=dict(default=None, type='int'),
@@ -142,6 +148,18 @@ def main():
                 ) for c in vms
             ],
         )
+        for i, vm in enumerate(result['ovirt_vms']):
+            if module.params['current_cd']:
+                vm_service = vms_service.vm_service(vm['id'])
+                cdroms_service = vm_service.cdroms_service()
+                cdrom_device = cdroms_service.list()[0]
+                cdrom_service = cdroms_service.cdrom_service(cdrom_device.id)
+                result['ovirt_vms'][i]['current_cd'] = get_dict_of_struct(
+                    struct=cdrom_service.get(current=True),
+                    connection=connection,
+                )
+            else:
+                result['ovirt_vms'][i]['current_cd'] = {}
         module.exit_json(changed=False, **result)
     except Exception as e:
         module.fail_json(msg=str(e), exception=traceback.format_exc())
