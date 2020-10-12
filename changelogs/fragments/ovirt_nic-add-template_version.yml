@@ -1,0 +1,4 @@
+---
+minor_changes:
+  - ovirt_nic - Add template_version (https://github.com/oVirt/ovirt-ansible-collection/pull/145).
+
