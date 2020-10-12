@@ -37,6 +37,10 @@ options:
             - Name of the template to manage.
             - You must provide either C(vm) parameter or C(template) parameter.
         type: str
+    template_version:
+        description:
+            - Version number of the template.
+        type: int
     state:
         description:
             - Should the Virtual Machine NIC be present/absent/plugged/unplugged.
@@ -216,6 +220,7 @@ def main():
         template=dict(type='str'),
         name=dict(type='str', required=True),
         interface=dict(type='str'),
+        template_version=dict(type='int', default=None),
         profile=dict(type='str'),
         network=dict(type='str'),
         mac_address=dict(type='str'),
@@ -245,7 +250,21 @@ def main():
             collection_service = connection.system_service().templates_service()
 
         # TODO: We have to modify the search_by_name function to accept raise_error=True/False,
-        entity = search_by_name(collection_service, entity_name)
+        if module.params['template_version'] is not None:
+            entity = [
+                t for t in collection_service.list()
+                if t.version.version_number == module.params['template_version']
+            ]
+            if not entity:
+                raise ValueError(
+                    "Template with name '%s' and version '%s' was not found'" % (
+                        module.params['template'],
+                        module.params['template_version']
+                    )
+                )
+            entity = entity[0]
+        else:
+            entity = search_by_name(collection_service, entity_name)
         if entity is None:
             raise Exception("Vm/Template '%s' was not found." % entity_name)
 
