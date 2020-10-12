@@ -44,6 +44,7 @@
     package:
       name: "*"
       state: latest
+      exclude: 'ansible'
     when: not ovirt_engine_setup_offline|bool
     tags:
       - "skip_ansible_lint"  # ANSIBLE0010
