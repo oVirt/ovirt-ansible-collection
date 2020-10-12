@@ -42,8 +42,14 @@ options:
     vm:
         description:
             - "Name of the VM where NIC is attached."
-        required: true
+            - You must provide either C(vm) parameter or C(template) parameter.
         type: str
+    template:
+        description:
+            - "Name of the template where NIC is attached."
+            - You must provide either C(vm) parameter or C(template) parameter.
+        type: str
+        version_added: 1.2.0
     name:
         description:
             - "Name of the NIC, can be used as glob expression."
@@ -87,22 +93,32 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
 
 def main():
     argument_spec = ovirt_info_full_argument_spec(
-        vm=dict(required=True),
+        vm=dict(default=None),
+        template=dict(default=None),
         name=dict(default=None),
     )
-    module = AnsibleModule(argument_spec)
+    module = AnsibleModule(
+        argument_spec,
+        required_one_of=[['vm', 'template']],
+    )
     check_sdk(module)
 
     try:
         auth = module.params.pop('auth')
         connection = create_connection(auth)
-        vms_service = connection.system_service().vms_service()
-        vm_name = module.params['vm']
-        vm = search_by_name(vms_service, vm_name)
-        if vm is None:
-            raise Exception("VM '%s' was not found." % vm_name)
 
-        nics_service = vms_service.service(vm.id).nics_service()
+        if module.params.get('vm'):
+            # Locate the VM, where we will manage NICs:
+            entity_name = module.params.get('vm')
+            collection_service = connection.system_service().vms_service()
+        elif module.params.get('template'):
+            entity_name = module.params.get('template')
+            collection_service = connection.system_service().templates_service()
+        entity = search_by_name(collection_service, entity_name)
+        if entity is None:
+            raise Exception("VM/Template '%s' was not found." % entity_name)
+
+        nics_service = collection_service.service(entity.id).nics_service()
         if module.params['name']:
             nics = [
                 e for e in nics_service.list()
