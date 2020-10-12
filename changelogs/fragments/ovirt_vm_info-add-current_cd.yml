@@ -1,0 +1,4 @@
+---
+minor_changes:
+  - ovirt_vm_info - Add current_cd (https://github.com/oVirt/ovirt-ansible-collection/pull/144).
+
