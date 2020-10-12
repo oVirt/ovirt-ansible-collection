@@ -65,6 +65,10 @@ options:
            the virtual machine with the modifications that have already been performed but that will only come into
            effect when the virtual machine is restarted. By default the value is set by engine."
       type: bool
+    current_cd:
+      description:
+        - "If I(true) it will get from all virtual machines current attached cd."
+      type: bool
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
