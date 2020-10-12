@@ -41,6 +41,7 @@ options:
         description:
             - Version number of the template.
         type: int
+        version_added: 1.2.0
     state:
         description:
             - Should the Virtual Machine NIC be present/absent/plugged/unplugged.
