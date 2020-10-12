@@ -44,6 +44,15 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Mon Oct 12 2020 Martin Necas <mnecas@redhat.com> - 1.2.0-0.2
+- Add ovirt_vm_info current_cd
+- Add ovirt_nic_info template
+- Add ovirt_nic template_version
+- Fix ovirt_disk move
+- Fix ovirt inventory connection close
+- Fix ovirt_vm rename q35_sea to q35_sea_bios
+- Fix ovirt_vm template search
+
 * Wed Sep 16 2020 Martin Necas <mnecas@redhat.com> - 1.2.0-0.1
 - Add role cluster_upgrade
 - Add role engine_setup
