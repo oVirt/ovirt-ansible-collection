@@ -49,6 +49,7 @@ options:
             - "Name of the template where NIC is attached."
             - You must provide either C(vm) parameter or C(template) parameter.
         type: str
+        version_added: 1.2.0
     name:
         description:
             - "Name of the NIC, can be used as glob expression."
