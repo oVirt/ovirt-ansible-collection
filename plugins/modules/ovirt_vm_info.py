@@ -69,6 +69,7 @@ options:
       description:
         - "If I(true) it will get from all virtual machines current attached cd."
       type: bool
+      version_added: 1.2.0
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
