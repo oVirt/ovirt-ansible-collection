@@ -61,17 +61,17 @@ Example Script
 --------------
 For mapping file generation (from the `./roles/disaster_recovery/files/` directory):
 ```console
-$ ./ovirt-dr generate --log-file=ovirt-dr.log --log-level=DEBUG
+$ ./roles/disaster_recovery/ovirt-dr generate --log-file=ovirt-dr.log --log-level=DEBUG
 ```
 For mapping file validation:
 ```console
-$ ./ovirt-dr validate
+$ ./roles/disaster_recovery/ovirt-dr validate
 ```
 For fail-over operation:
 ```console
-$ ./ovirt-dr failover
+$ ./roles/disaster_recovery/ovirt-dr failover
 ```
 For fail-back operation:
 ```console
-$ ./ovirt-dr failback
+$ ./roles/disaster_recovery/ovirt-dr failback
 ```
