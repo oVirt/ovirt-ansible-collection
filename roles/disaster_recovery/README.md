@@ -3,12 +3,6 @@ oVirt Disaster Recovery
 
 The `disaster_recovery` role responsible to manage the disaster recovery scenarios in oVirt.
 
-Requirements
-------------
-
- * Ansible version 2.9 or higher
- * Python SDK version 4.4 or higher
-
 Role Variables
 --------------
 
@@ -26,12 +20,6 @@ Role Variables
 | dr_clean_orphaned_disks        | True                  | Specify whether to remove lun disks from the setup as part of engine setup.       |
 | dr_running_vms		 | /tmp/ovirt_dr_running_vm_list	 | Specify the file path which is used to contain the data of the running VMs in the secondary setup before the failback process run on the primary setup after the secondary site cleanup was finished. Note that the /tmp folder is being used as default so the file will not be available after system reboot.
 
-
-
-Dependencies
-------------
-
-No.
 
 Example Playbook
 ----------------
@@ -73,23 +61,17 @@ Example Script
 --------------
 For mapping file generation:
 ```console
-$ ./ovirt-dr generate --log-file=ovirt-dr.log --log-level=DEBUG
+$ ./roles/disaster_recovery/ovirt-dr generate --log-file=ovirt-dr.log --log-level=DEBUG
 ```
 For mapping file validation:
 ```console
-$ ./ovirt-dr validate
+$ ./roles/disaster_recovery/ovirt-dr validate
 ```
 For fail-over operation:
 ```console
-$ ./ovirt-dr failover
+$ ./roles/disaster_recovery/ovirt-dr failover
 ```
 For fail-back operation:
 ```console
-$ ./ovirt-dr failback
+$ ./roles/disaster_recovery/ovirt-dr failback
 ```
-
-License
--------
-
-Apache License 2.0
-
