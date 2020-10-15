@@ -3,4 +3,6 @@
   hosts: localhost
   connection: local
   roles:
-     - oVirt.disaster-recovery
+     - disaster_recovery
+  collections:
+    - ovirt.ovirt

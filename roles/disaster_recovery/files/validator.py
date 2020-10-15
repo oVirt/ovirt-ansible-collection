@@ -25,7 +25,7 @@ PREFIX = "[Validate Mapping File] "
 
 class ValidateMappingFile:
 
-    def_var_file = "/var/lib/ovirt-ansible-disaster-recovery/mapping_vars.yml"
+    def_var_file = "~/.ansible/collections/ansible_collections/ovirt/ovirt/disaster_recovery/mapping_vars.yml"
     default_main_file = "../defaults/main.yml"
     var_file = ""
     vault = ""

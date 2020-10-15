@@ -1,7 +1,7 @@
 oVirt Disaster Recovery
 =========
 
-The `oVirt.disaster-recovery` role responsible to manage the disaster recovery scenarios in oVirt.
+The `disaster_recovery` role responsible to manage the disaster recovery scenarios in oVirt.
 
 Requirements
 ------------
@@ -45,7 +45,9 @@ Example Playbook
      - ovirt_passwords.yml
      - disaster_recovery_vars.yml
   roles:
-     - {role: oVirt.disaster-recovery}
+    - disaster_recovery
+  collections:
+    - ovirt.ovirt
 ```
 
 Generate var file mapping [demo](https://youtu.be/s1-Hq_Mk1w8)
@@ -62,7 +64,7 @@ There are four actions which the user can execute:
 - `failover`	Start a failover process to the target setup
 - `failback`	Start a failback process from the target setup to the source setup
 
-Each of those actions are using a configuration file whose default location is `oVirt.disaster-recovery/files/dr.conf`<br/>
+Each of those actions are using a configuration file whose default location is `disaster_recovery/files/dr.conf`<br/>
 The configuration file's location can be changed using `--conf-file` flag in the `ovirt-dr` script.<br/>
 Log file and log level can be configured as well through the `ovirt-dr` script using the flags `--log-file` and `--log-level`
 
