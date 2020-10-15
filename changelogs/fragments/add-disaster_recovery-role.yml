@@ -1,0 +1,3 @@
+---
+major_changes:
+  - disaster_recovery - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/134).
