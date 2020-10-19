@@ -68,7 +68,7 @@ rename() {
 
 build() {
   if [[ $BUILD_PATH ]]; then
-    BUILD_PATH=$BUILD_PATH/ansible_collections/ovirt/ovirt/
+    BUILD_PATH=$BUILD_PATH/ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME/
     mkdir -p $BUILD_PATH
     echo "The copying files to $BUILD_PATH"
     cp -r ./* $BUILD_PATH

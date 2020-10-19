@@ -13,7 +13,7 @@ mkdir -p ../ovirt-build ../rhv-build
 ./build.sh build ovirt ../ovirt-build
 ./build.sh build rhv ../rhv-build
 
-cd ../ovirt-build
+cd $ROOT_PATH/ovirt-build/ansible_collections/ovirt/ovirt/
 # create the src.rpm
 rpmbuild \
     -D "_srcrpmdir $PWD/output" \
@@ -32,7 +32,7 @@ rpmbuild \
     -D "_topmdir $PWD/rpmbuild" \
     --rebuild output/*.src.rpm
 
-cd ../rhv-build
+cd $ROOT_PATH/rhv-build/ansible_collections/redhat/rhv
 
 # create tar for automation hub
 ansible-galaxy collection build
