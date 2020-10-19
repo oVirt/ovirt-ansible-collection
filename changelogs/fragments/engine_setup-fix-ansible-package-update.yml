@@ -1,3 +1,0 @@
----
-bugfixes:
-  - engine_setup - Don't update ansible package (https://github.com/oVirt/ovirt-ansible-collection/pull/143).
