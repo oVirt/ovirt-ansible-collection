@@ -2,7 +2,7 @@ version: 1
 config:
   - type: physical
     name: eth0
-    mac_address: "{{ he_vm_mac_addr }}"
+    mac_address: "{{ he_vm_mac_addr|lower }}"
     subnets:
 {% if ipv6_deployment %}
       - type: dhcp6
