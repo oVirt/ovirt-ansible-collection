@@ -10,8 +10,8 @@ rm -f ./*tar.gz
 mkdir -p ../ovirt-build ../rhv-build
 # Create builds
 
-./build.sh build ovirt ../ovirt-build
-./build.sh build rhv ../rhv-build
+./build.sh build ovirt $ROOT_PATH/ovirt-build
+./build.sh build rhv $ROOT_PATH/rhv-build
 
 cd $ROOT_PATH/ovirt-build/ansible_collections/ovirt/ovirt/
 # create the src.rpm
