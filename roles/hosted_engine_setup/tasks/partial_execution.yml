@@ -98,6 +98,11 @@
   import_tasks: create_target_vm/03_hosted_engine_final_tasks.yml
   tags: [create_target_vm, never]
 
+- name: Sync on engine machine
+  import_tasks: sync_on_engine_machine.yml
+  changed_when: true
+  ignore_errors: true
+  tags: [create_target_vm, final_clean, never]
 
 - name: Final clean
   import_tasks: final_clean.yml
