@@ -45,6 +45,11 @@ sh build.sh install %{collectionname}
 
 %changelog
 * Mon Oct 12 2020 Martin Necas <mnecas@redhat.com> - 1.2.0-0.2
+- Add role disaster_recovery
+- Fix engine_setup yum.conf
+- Fix hosted_engine_setup - Allow uppercase characters in mac address
+
+* Mon Oct 12 2020 Martin Necas <mnecas@redhat.com> - 1.2.0-0.2
 - Add ovirt_vm_info current_cd
 - Add ovirt_nic_info template
 - Add ovirt_nic template_version
