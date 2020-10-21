@@ -40,13 +40,38 @@
     tags:
       - "skip_ansible_lint"  # ANSIBLE0006
 
+  - name: Copy yum configuration file
+    copy:
+      src: "/etc/yum.conf"
+      dest: "/tmp/yum.conf"
+      owner: root
+      group: root
+      mode: 0644
+      remote_src: yes
+
+  - name: Set 'best' to false
+    replace:
+      path: "/tmp/yum.conf"
+      regexp: '^best=True'
+      replace: 'best=False'
+      owner: root
+      group: root
+      mode: 0644
+
   - name: Update all packages
-    package:
-      name: "*"
-      state: latest
-    when: not ovirt_engine_setup_offline|bool
-    tags:
-      - "skip_ansible_lint"  # ANSIBLE0010
+      yum:
+        name: '*'
+        state: latest
+        conf_file: /tmp/yum.conf
+      when: not ovirt_engine_setup_offline|bool
+      tags:
+        - "skip_ansible_lint"  # ANSIBLE0010
+
+  - name: Remove temporary yum configuration file
+    file:
+      path: "/tmp/yum.conf"
+      state: absent
+    ignore_errors: True
 
   - name: Set offline parameter if variable is set
     set_fact:
