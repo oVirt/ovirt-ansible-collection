@@ -59,13 +59,13 @@
       mode: 0644
 
   - name: Update all packages
-      yum:
-        name: '*'
-        state: latest
-        conf_file: /tmp/yum.conf
-      when: not ovirt_engine_setup_offline|bool
-      tags:
-        - "skip_ansible_lint"  # ANSIBLE0010
+    yum:
+      name: '*'
+      state: latest
+      conf_file: /tmp/yum.conf
+    when: not ovirt_engine_setup_offline|bool
+    tags:
+      - "skip_ansible_lint"  # ANSIBLE0010
 
   - name: Remove temporary yum configuration file
     file:
