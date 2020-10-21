@@ -1,0 +1,16 @@
+- block:
+    - name: Generate log file through template
+      template:
+        src: report_log_template.j2
+        dest: /tmp/{{ dr_report_file }}
+        mode: preserve
+
+    - name: Print report file
+      command: cat /tmp/{{ dr_report_file }}
+      register: content
+
+    - name: Print report file to stdout
+      debug: msg="{{ content.stdout_lines | quote }}"
+  tags:
+      - fail_over
+      - fail_back

@@ -1,0 +1,6 @@
+- block:
+    - name: Generate mapping var file
+      command: python3 {{ role_path }}/files/generate_mapping.py -a "{{ site }}" -u "{{ username }}" -p "{{ password }}" -c "{{ ca }}" -f "{{ var_file }}"
+      run_once: true
+  tags:
+      - generate_mapping
