@@ -3,17 +3,18 @@
 ROOT_PATH=$PWD
 
 # remove any previous artifacts
-rm -rf ../ovirt-build ../rhv-build
+rm -rf ../ansible_collections
 rm -f ./*tar.gz
 
-# Create paths for builds
-mkdir -p ../ovirt-build ../rhv-build
 # Create builds
 
-./build.sh build ovirt ../ovirt-build
-./build.sh build rhv ../rhv-build
+./build.sh build ovirt $ROOT_PATH
+./build.sh build rhv $ROOT_PATH
 
-cd ../ovirt-build
+OVIRT_BUILD=$ROOT_PATH/ansible_collections/ovirt/ovirt/
+RHV_BUILD=$ROOT_PATH/ansible_collections/redhat/rhv
+
+cd $OVIRT_BUILD
 # create the src.rpm
 rpmbuild \
     -D "_srcrpmdir $PWD/output" \
@@ -32,7 +33,7 @@ rpmbuild \
     -D "_topmdir $PWD/rpmbuild" \
     --rebuild output/*.src.rpm
 
-cd ../rhv-build
+cd $RHV_BUILD
 
 # create tar for automation hub
 ansible-galaxy collection build
@@ -41,14 +42,14 @@ ansible-galaxy collection build
 # archive
 [[ -d exported-artifacts ]] || mkdir -p $ROOT_PATH/exported-artifacts $ROOT_PATH/exported-artifacts/
 
-find ../ovirt-build/output -iname \*rpm -exec mv "{}" $ROOT_PATH/exported-artifacts/ \;
-mv ../ovirt-build/*tar.gz $ROOT_PATH/exported-artifacts/
+find $OVIRT_BUILD/output -iname \*rpm -exec mv "{}" $ROOT_PATH/exported-artifacts/ \;
+mv $OVIRT_BUILD/*tar.gz $ROOT_PATH/exported-artifacts/
 
-mv ../rhv-build/*tar.gz $ROOT_PATH/exported-artifacts/
+mv $RHV_BUILD/*tar.gz $ROOT_PATH/exported-artifacts/
 
 COLLECTION_DIR="/usr/local/share/ansible/collections/ansible_collections/ovirt/ovirt"
 mkdir -p $COLLECTION_DIR
-cp -r ../ovirt-build/* $COLLECTION_DIR
+cp -r $OVIRT_BUILD/* $COLLECTION_DIR
 cd $COLLECTION_DIR
 
 pip3 install rstcheck antsibull-changelog ansible-lint
