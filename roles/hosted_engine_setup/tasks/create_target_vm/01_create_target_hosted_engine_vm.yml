@@ -124,7 +124,9 @@
     register: storage_domain_details
   - debug: var=storage_domain_details
   - name: Add HE disks
-    ovirt_disk:
+    # WA for bz1883817
+    # Once bug is fixed, rename it to ovirt_disk and remove plugins/modules/ovirt_disk_28.py
+    ovirt_disk_28:
       name: "{{ item.name }}"
       size: "{{ item.size }}"
       format: "{{ item.format }}"
