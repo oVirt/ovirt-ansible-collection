@@ -102,7 +102,5 @@ Example Playbook
        mac_pool: production_mac_pools
 
   roles:
-    - infra/roles/clusters
-  collections:
-    - ovirt.ovirt
+    - ovirt.ovirt.infra.roles.clusters
 ```

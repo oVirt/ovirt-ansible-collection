@@ -37,7 +37,5 @@ Example Playbook
         password: 123456
 
   roles:
-    - infra/roles/hosts
-  collections:
-    - ovirt.ovirt
+    - ovirt.ovirt.infra.roles.hosts
 ```

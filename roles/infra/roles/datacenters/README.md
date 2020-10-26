@@ -34,9 +34,7 @@ Example Playbooks
    compatibility_version: 4.4
 
   roles:
-    - infra/roles/datacenters
-  collections:
-    - ovirt.ovirt
+    - ovirt.ovirt.infra.roles.datacenters
 ```
 
 ```yaml
@@ -54,7 +52,5 @@ Example Playbooks
    format_storages: true
 
   roles:
-    - infra/roles/datacenters
-  collections:
-    - ovirt.ovirt
+    - ovirt.ovirt.infra.roles.datacenters
 ```
