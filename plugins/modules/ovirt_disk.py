@@ -603,6 +603,8 @@ class DisksModule(BaseModule):
         if disk.storage_type != otypes.DiskStorageType.IMAGE:
             return changed
 
+        if disk.content_type in map(lambda x: otypes.DiskContentType(x), ['hosted_engine', 'hosted_engine_sanlock', 'hosted_engine_metadata', 'hosted_engine_configuration']):
+            return changed
         # Initiate move:
         if self._module.params['storage_domain']:
             new_disk_storage_id = get_id_by_name(sds_service, self._module.params['storage_domain'])
