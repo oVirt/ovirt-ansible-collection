@@ -1,26 +1,7 @@
 ---
 - name: Create target Hosted Engine VM
   block:
-  - name: Fetch the value of HOST_KEY_CHECKING
-    set_fact: host_key_checking="{{ lookup('config', 'HOST_KEY_CHECKING') }}"
-  - debug: var=host_key_checking
-  - name: Get the username running the deploy
-    become: false
-    command: whoami
-    register: username_on_host
-  - name: Register the engine FQDN as a host
-    add_host:
-      name: "{{ he_fqdn }}"
-      groups: engine
-      ansible_connection: smart
-      ansible_ssh_extra_args: >-
-        -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null {% if he_ansible_host_name != "localhost" %}
-        -o ProxyCommand="ssh -W %h:%p -q
-        {% if not host_key_checking %} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null {% endif %}
-        {{ username_on_host.stdout }}@{{ he_ansible_host_name }}" {% endif %}
-      ansible_ssh_pass: "{{ he_appliance_password }}"
-      ansible_user: root
-    no_log: true
+  - import_tasks: add_engine_as_ansible_host.yml
   - include_tasks: auth_sso.yml
   - name: Get local VM IP
     shell: virsh -r net-dhcp-leases default | grep -i {{ he_vm_mac_addr }} | awk '{ print $5 }' | cut -f1 -d'/'
