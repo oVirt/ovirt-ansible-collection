@@ -46,7 +46,7 @@ class ValidateMappingFile:
         while not os.path.isfile(self.var_file):
             self.var_file = input(
                 "%s%sVar file '%s' does not exists. "
-                "Please provide the location of the var file:%s " %
+                "Please provide the location of the var file: %s" %
                 (FAIL, PREFIX, self.var_file, END))
 
         python_vars = self._read_var_file()
@@ -121,13 +121,11 @@ class ValidateMappingFile:
                                                    _SECTION,
                                                    site=self.def_var_file))
 
-        # If no default location exists, get the location from the user.
         while not var_file:
-            var_file = input("%s%sVar file is not initialized. Please provide "
-                             "the location of the var file (%s):%s " %
-                             (WARN, PREFIX, self.def_var_file, END)
+            var_file = input("%s%sVar file '%s' does not exist. Please "
+                             "provide the location of the var file (%s): %s"
+                             % (WARN, PREFIX, var_file, self.def_var_file, END)
                              ) or self.def_var_file
-
         self.var_file = var_file
 
     def _print_duplicate_keys(self, duplicates, keys):
@@ -190,7 +188,7 @@ class ValidateMappingFile:
                     ans = input(
                         "%s%sFile with running vms info already exists from "
                         "previous failback operation. Do you want to "
-                        "delete it(yes,no)?: %s" %
+                        "delete it (yes,no)?: %s" %
                         (WARN, PREFIX, END))
                     ans = ans.lower()
                     if ans in valid and valid[ans]:

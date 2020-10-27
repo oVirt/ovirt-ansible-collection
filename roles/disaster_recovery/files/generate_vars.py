@@ -166,7 +166,7 @@ class GenerateMappingFile:
             valid = {"yes": True, "y": True, "ye": True,
                      "no": False, "n": False}
             ans = input("%s%sThe output file '%s' already exists. "
-                        "Would you like to override it (y,n)?%s "
+                        "Would you like to override it (y,n)? %s"
                         % (WARN, PREFIX, output_file, END))
             while True:
                 ans = ans.lower()
@@ -242,35 +242,41 @@ class GenerateMappingFile:
                                                             ansible_play=None))
         if not site:
             site = input("%s%sSite address is not initialized. "
-                         "Please provide the site URL (%s):%s "
-                         % (INPUT, PREFIX, SITE_DEF, END)) or SITE_DEF
+                         "Please provide the site URL (%s): %s"
+                         % (INPUT, PREFIX, SITE_DEF, END)
+                         ) or SITE_DEF
         if not username:
             username = input("%s%sUsername is not initialized. "
-                             "Please provide the username (%s):%s "
+                             "Please provide the username (%s): %s"
                              % (INPUT, PREFIX, USERNAME_DEF, END)
                              ) or USERNAME_DEF
         while not password:
             password = input("%s%sPassword is not initialized. "
-                             "Please provide the password for username %s:%s "
+                             "Please provide the password for username %s: %s"
                              % (INPUT, PREFIX, username, END))
 
         while not ca_file:
-            ca_file = input("%s%sCA file is not initialized. "
+            ca_file = input("%s%sCA file '%s' does not exist. "
                             "Please provide the CA file location (%s):%s "
-                            % (INPUT, PREFIX, CA_DEF, END)) or CA_DEF
+                            % (INPUT, PREFIX, ca_file, CA_DEF, END)
+                            ) or CA_DEF
 
         while not output_file:
-            output_file = input("%s%sOutput file is not initialized. "
+            output_file = input("%s%sOutput file location is not initialized. "
                                 "Please provide the output file location "
-                                "for the mapping var file (%s):%s "
+                                "for the mapping var file (%s): %s"
                                 % (INPUT, PREFIX, _OUTPUT_FILE, END)
                                 ) or _OUTPUT_FILE
         self._validate_output_file_exists(output_file, log)
         while not ansible_play_file or not os.path.isfile(ansible_play_file):
-            ansible_play_file = input("%s%sAnsible play '%s' is not initialized. "
-                                      "Please provide the ansible play to generate "
-                                      "the mapping var file (%s):%s "
-                                      % (INPUT, PREFIX, ansible_play_file, PLAY_DEF, END)
+            ansible_play_file = input("%s%sAnsible play file '%s' does not "
+                                      "exist. Please provide the ansible play "
+                                      "file to generate the mapping var file "
+                                      "(%s): %s" % (INPUT,
+                                                    PREFIX,
+                                                    ansible_play_file,
+                                                    PLAY_DEF,
+                                                    END)
                                       ) or PLAY_DEF
         return site, username, password, ca_file, output_file, ansible_play_file
 

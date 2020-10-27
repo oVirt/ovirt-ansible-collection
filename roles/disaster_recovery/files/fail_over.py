@@ -61,9 +61,9 @@ class FailOver:
         ]
 
         # Setting vault password.
-        vault_pass_msg = ("Please enter vault password "
-                          "(in case of plain text please press ENTER): ")
-        vault_pass = input(INPUT + PREFIX + vault_pass_msg + END)
+        vault_pass = input("%s%sPlease enter vault password "
+                           "(in case of plain text please press ENTER): %s"
+                           % (INPUT, PREFIX, END))
         os.system("export vault_password=\"" + vault_pass + "\"")
 
         log.info("Executing failover command: %s", ' '.join(map(str, command)))
@@ -157,15 +157,15 @@ class FailOver:
                                                             _SECTION,
                                                             ansible_play=None))
         while target_host not in setups:
-            target_host = input(
-                INPUT + PREFIX + "The target host was not defined. "
-                "Please provide the target host (to failover to) "
-                "(primary or secondary): " + END)
+            target_host = input("%s%sThe target host '%s' was not defined. "
+                                "Please provide the target host "
+                                "to failover to (primary or secondary): %s"
+                                % (INPUT, PREFIX, target_host, END))
         while source_map not in setups:
-            source_map = input(
-                INPUT + PREFIX + "The source mapping was not defined. "
-                "Please provide the source mapping "
-                "(primary or secondary): " + END)
+            source_map = input("%s%sThe source mapping '%s' was not defined. "
+                               "Please provide the source mapping "
+                               "(primary or secondary): %s"
+                               % (INPUT, PREFIX, source_map, END))
         while not os.path.isfile(var_file):
             var_file = input("%s%svar file mapping '%s' does not exist. "
                              "Please provide a valid mapping var file: %s"
@@ -175,13 +175,14 @@ class FailOver:
                                "Please provide a valid password file: %s"
                                % (INPUT, PREFIX, vault_file, END))
         while (not ansible_play_file) or (not os.path.isfile(ansible_play_file)):
-            ansible_play_file = input("%s%sansible play '%s' "
-                                      "is not initialized. "
-                                      "Please provide the ansible play file "
-                                      "to generate the mapping var file "
-                                      "with ('%s'):%s "
-                                      % (INPUT, PREFIX, str(ansible_play_file),
-                                         PLAY_DEF, END) or PLAY_DEF)
+            ansible_play_file = input("%s%sAnsible play file '%s' does not "
+                                      "exist. Please provide the ansible play "
+                                      "file to run the failover flow (%s): %s"
+                                      % (INPUT,
+                                         PREFIX,
+                                         ansible_play_file,
+                                         PLAY_DEF,
+                                         END) or PLAY_DEF)
         return target_host, source_map, var_file, vault_file, ansible_play_file
 
     def _set_log(self, log_file, log_level):
