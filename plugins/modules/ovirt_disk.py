@@ -602,9 +602,8 @@ class DisksModule(BaseModule):
         # We don't support move&copy for non file based storages:
         if disk.storage_type != otypes.DiskStorageType.IMAGE:
             return changed
-
-        if disk.content_type in [otypes.DiskContentType(x) for x in ['hosted_engine',
-            'hosted_engine_sanlock', 'hosted_engine_metadata', 'hosted_engine_configuration']]:
+        if disk.content_type in [
+                otypes.DiskContentType(x) for x in ['hosted_engine', 'hosted_engine_sanlock', 'hosted_engine_metadata', 'hosted_engine_configuration']]:
             return changed
         # Initiate move:
         if self._module.params['storage_domain']:
