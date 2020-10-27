@@ -43,20 +43,8 @@ class ValidateMappingFile:
               % (INFO, PREFIX, END))
         self._set_dr_conf_variables(conf_file)
         print("%s%sVar File: '%s'%s" % (INFO, PREFIX, self.var_file, END))
-        while not os.path.isfile(self.var_file):
-            self.var_file = input(
-                "%s%sVar file '%s' does not exists. "
-                "Please provide the location of the var file: %s" %
-                (FAIL, PREFIX, self.var_file, END))
 
         python_vars = self._read_var_file()
-        self.primary_pwd = input(
-            "%s%sPlease provide password for the primary setup: %s" %
-            (INPUT, PREFIX, END))
-        self.second_pwd = input(
-            "%s%sPlease provide password for the secondary setup: %s" %
-            (INPUT, PREFIX, END))
-
         if (not self._validate_lists_in_mapping_file(python_vars)
                 or not self._validate_duplicate_keys(python_vars)
                 or not self._entity_validator(python_vars)
@@ -121,12 +109,19 @@ class ValidateMappingFile:
                                                    _SECTION,
                                                    site=self.def_var_file))
 
-        while not var_file:
+        while not os.path.isfile(var_file):
             var_file = input("%s%sVar file '%s' does not exist. Please "
                              "provide the location of the var file (%s): %s"
                              % (WARN, PREFIX, var_file, self.def_var_file, END)
                              ) or self.def_var_file
         self.var_file = var_file
+
+        self.primary_pwd = input(
+            "%s%sPlease provide password for the primary setup: %s"
+            % (INPUT, PREFIX, END))
+        self.second_pwd = input(
+            "%s%sPlease provide password for the secondary setup: %s"
+            % (INPUT, PREFIX, END))
 
     def _print_duplicate_keys(self, duplicates, keys):
         ret_val = False
