@@ -602,7 +602,9 @@ class DisksModule(BaseModule):
         # We don't support move&copy for non file based storages:
         if disk.storage_type != otypes.DiskStorageType.IMAGE:
             return changed
-
+        if disk.content_type in [
+                otypes.DiskContentType(x) for x in ['hosted_engine', 'hosted_engine_sanlock', 'hosted_engine_metadata', 'hosted_engine_configuration']]:
+            return changed
         # Initiate move:
         if self._module.params['storage_domain']:
             new_disk_storage_id = get_id_by_name(sds_service, self._module.params['storage_domain'])
@@ -794,6 +796,7 @@ def main():
             ret = disks_module.create(
                 entity=disk if not force_create else None,
                 result_state=otypes.DiskStatus.OK if lun is None else None,
+                search_params=searchable_attributes(module),
                 fail_condition=lambda d: d.status == otypes.DiskStatus.ILLEGAL if lun is None else False,
                 force_create=force_create,
                 _wait=True if module.params['upload_image_path'] else module.params['wait'],
