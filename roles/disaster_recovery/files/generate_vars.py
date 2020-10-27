@@ -220,26 +220,35 @@ class GenerateMappingFile:
                             vars=DefaultOption(settings,
                                                _SECTION,
                                                site=None))
+
         username = settings.get(_SECTION, _USERNAME,
                                 vars=DefaultOption(settings,
                                                    _SECTION,
                                                    username=None))
+
         password = settings.get(_SECTION, _PASSWORD,
                                 vars=DefaultOption(settings,
                                                    _SECTION,
                                                    password=None))
+
         ca_file = settings.get(_SECTION, _CA_FILE,
                                vars=DefaultOption(settings,
                                                   _SECTION,
                                                   ca_file=None))
+        ca_file = os.path.expanduser(ca_file)
+
         output_file = settings.get(_SECTION, _OUTPUT_FILE,
                                    vars=DefaultOption(settings,
                                                       _SECTION,
                                                       output_file=None))
+        output_file = os.path.expanduser(output_file)
+
         ansible_play_file = settings.get(_SECTION, _ANSIBLE_PLAY,
                                          vars=DefaultOption(settings,
                                                             _SECTION,
                                                             ansible_play=None))
+        ansible_play_file = os.path.expanduser(ansible_play_file)
+
         if not site:
             site = input("%s%sSite address is not initialized. "
                          "Please provide the site URL (%s): %s"
@@ -255,11 +264,12 @@ class GenerateMappingFile:
                              "Please provide the password for username %s: %s"
                              % (INPUT, PREFIX, username, END))
 
-        while not ca_file:
+        while not os.path.isfile(ca_file):
             ca_file = input("%s%sCA file '%s' does not exist. "
                             "Please provide the CA file location (%s):%s "
                             % (INPUT, PREFIX, ca_file, CA_DEF, END)
                             ) or CA_DEF
+            ca_file = os.path.expanduser(ca_file)
 
         while not output_file:
             output_file = input("%s%sOutput file location is not initialized. "
@@ -267,8 +277,10 @@ class GenerateMappingFile:
                                 "for the mapping var file (%s): %s"
                                 % (INPUT, PREFIX, _OUTPUT_FILE, END)
                                 ) or _OUTPUT_FILE
+            output_file = os.path.expanduser(output_file)
         self._validate_output_file_exists(output_file, log)
-        while not ansible_play_file or not os.path.isfile(ansible_play_file):
+
+        while not os.path.isfile(ansible_play_file):
             ansible_play_file = input("%s%sAnsible play file '%s' does not "
                                       "exist. Please provide the ansible play "
                                       "file to generate the mapping var file "
@@ -278,6 +290,8 @@ class GenerateMappingFile:
                                                     PLAY_DEF,
                                                     END)
                                       ) or PLAY_DEF
+            ansible_play_file = os.path.expanduser(ansible_play_file)
+
         return site, username, password, ca_file, output_file, ansible_play_file
 
 

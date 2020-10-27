@@ -108,12 +108,14 @@ class ValidateMappingFile:
                                 vars=DefaultOption(settings,
                                                    _SECTION,
                                                    site=self.def_var_file))
+        var_file = os.path.expanduser(var_file)
 
         while not os.path.isfile(var_file):
             var_file = input("%s%sVar file '%s' does not exist. Please "
                              "provide the location of the var file (%s): %s"
                              % (WARN, PREFIX, var_file, self.def_var_file, END)
                              ) or self.def_var_file
+            var_file = os.path.expanduser(var_file)
         self.var_file = var_file
 
         self.primary_pwd = input(

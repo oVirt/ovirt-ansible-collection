@@ -136,26 +136,35 @@ class FailOver:
             settings.set(_SECTION, _VAR_FILE, '')
         if not settings.has_option(_SECTION, _ANSIBLE_PLAY):
             settings.set(_SECTION, _ANSIBLE_PLAY, '')
+
         target_host = settings.get(_SECTION, _TARGET,
                                    vars=DefaultOption(settings,
                                                       _SECTION,
                                                       target_host=None))
+
         source_map = settings.get(_SECTION, _SOURCE,
                                   vars=DefaultOption(settings,
                                                      _SECTION,
                                                      source_map=None))
+
         vault_file = settings.get(_SECTION, _VAULT,
                                   vars=DefaultOption(settings,
                                                      _SECTION,
                                                      vault=None))
+        vault_file = os.path.expanduser(vault_file)
+
         var_file = settings.get(_SECTION, _VAR_FILE,
                                 vars=DefaultOption(settings,
                                                    _SECTION,
                                                    var_file=None))
+        var_file = os.path.expanduser(var_file)
+
         ansible_play_file = settings.get(_SECTION, _ANSIBLE_PLAY,
                                          vars=DefaultOption(settings,
                                                             _SECTION,
                                                             ansible_play=None))
+        ansible_play_file = os.path.expanduser(ansible_play_file)
+
         while target_host not in setups:
             target_host = input("%s%sThe target host '%s' was not defined. "
                                 "Please provide the target host "
@@ -166,15 +175,20 @@ class FailOver:
                                "Please provide the source mapping "
                                "(primary or secondary): %s"
                                % (INPUT, PREFIX, source_map, END))
+
         while not os.path.isfile(var_file):
             var_file = input("%s%svar file mapping '%s' does not exist. "
                              "Please provide a valid mapping var file: %s"
                              % (INPUT, PREFIX, var_file, END))
+            var_file = os.path.expanduser(var_file)
+
         while not os.path.isfile(vault_file):
             vault_file = input("%s%sPassword file '%s' does not exist. "
                                "Please provide a valid password file: %s"
                                % (INPUT, PREFIX, vault_file, END))
-        while (not ansible_play_file) or (not os.path.isfile(ansible_play_file)):
+            vault_file = os.path.expanduser(vault_file)
+
+        while not os.path.isfile(ansible_play_file):
             ansible_play_file = input("%s%sAnsible play file '%s' does not "
                                       "exist. Please provide the ansible play "
                                       "file to run the failover flow (%s): %s"
@@ -184,6 +198,8 @@ class FailOver:
                                          PLAY_DEF,
                                          END)
                                       ) or PLAY_DEF
+            ansible_play_file = os.path.expanduser(ansible_play_file)
+
         return target_host, source_map, var_file, vault_file, ansible_play_file
 
     def _set_log(self, log_file, log_level):
