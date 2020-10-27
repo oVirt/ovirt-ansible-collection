@@ -69,7 +69,5 @@ Example Playbook
        state: absent
 
   roles:
-    - infra/roles/external_providers
-  collections:
-    - ovirt.ovirt
+    - ovirt.ovirt.infra.roles.external_providers
 ```

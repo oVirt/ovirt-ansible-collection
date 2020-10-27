@@ -35,7 +35,5 @@ Example Playbook
           - 00:1a:4a:16:01:51,00:1a:4a:16:01:61
 
   roles:
-    - infra/roles/mac_pools
-  collections:
-    - ovirt.ovirt
+    - ovirt.ovirt.infra.roles.mac_pools
 ```

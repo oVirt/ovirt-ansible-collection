@@ -56,7 +56,5 @@ Example Playbook
         - user1
 
   roles:
-    - infra/roles/aaa_jdbc
-  collections:
-    - ovirt.ovirt
+    - ovirt.ovirt.infra.roles.aaa_jdbc
 ```
