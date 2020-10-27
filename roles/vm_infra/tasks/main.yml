@@ -6,7 +6,7 @@
 
 - name: Check if VMs are correct
   set_fact:
-    vms: "{{ vms | ovirt.ovirt.removesensitivevmdata }}"
+    vms: "{{ vms | @NAMESPACE@.@NAME@.removesensitivevmdata }}"
 
 - block:
   - name: Login to oVirt

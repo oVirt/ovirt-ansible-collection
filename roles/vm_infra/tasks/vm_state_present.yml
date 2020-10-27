@@ -133,7 +133,7 @@
 - block:
     - name: Filter ovirt_vms to get IP
       set_fact:
-        ip_cond: "vm_info.ovirt_vms | ovirt.ovirt.ovirtvmip{{ wait_for_ip_version }}(network_ip='{{ wait_for_ip_range }}') | length > 0"
+        ip_cond: "vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmip{{ wait_for_ip_version }}(network_ip='{{ wait_for_ip_range }}') | length > 0"
 
     - name: Wait for VMs IP
       ovirt_vm_info:

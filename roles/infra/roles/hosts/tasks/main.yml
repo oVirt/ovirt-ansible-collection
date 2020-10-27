@@ -50,7 +50,7 @@
   async_status: "jid={{ item.ansible_job_id }}"
   register: job_result
   with_items:
-    - "{{ add_hosts.results | ovirt.ovirt.removesensitivevmdata }}"
+    - "{{ add_hosts.results | @NAMESPACE@.@NAME@.removesensitivevmdata }}"
   loop_control:
     label: "{{ item.item.name }}"
   tags:

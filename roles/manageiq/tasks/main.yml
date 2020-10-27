@@ -71,7 +71,7 @@
         cloud_init: "{{ miq_vm_cloud_init | default(omit) }}"
 
     - set_fact:
-        ip_cond: "vm_info.ovirt_vms | ovirt.ovirt.ovirtvmip{{ miq_wait_for_ip_version }} | length > 0"
+        ip_cond: "vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmip{{ miq_wait_for_ip_version }} | length > 0"
 
     - name: Wait for VM IP
       ovirt_vm_info:
@@ -86,12 +86,12 @@
 
     - name: ManageIQ host IPv4 address
       set_fact:
-        miq_ip_addr: "{{ vm_info.ovirt_vms | ovirt.ovirt.ovirtvmipv4 }}"
+        miq_ip_addr: "{{ vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4 }}"
       when: miq_wait_for_ip_version == 'v4'
 
     - name: ManageIQ host IPv6 address
       set_fact:
-        miq_ip_addr: "{{ vm_info.ovirt_vms | ovirt.ovirt.ovirtvmipv6 }}"
+        miq_ip_addr: "{{ vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv6 }}"
       when: miq_wait_for_ip_version == 'v6'
 
     - block:
