@@ -18,6 +18,7 @@ Requires:	python3-jmespath
 Requires:	python3-passlib
 
 Obsoletes:	ovirt-ansible-cluster-upgrade
+Obsoletes:	ovirt-ansible-disaster-recovery
 Obsoletes:	ovirt-ansible-engine-setup
 Obsoletes:	ovirt-ansible-hosted-engine-setup
 Obsoletes:	ovirt-ansible-image-template
