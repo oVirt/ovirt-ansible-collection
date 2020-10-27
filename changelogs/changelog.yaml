@@ -242,3 +242,61 @@ releases:
     release_date: '2020-08-12'
   1.1.2:
     release_date: '2020-08-17'
+  1.2.0:
+    changes:
+      bugfixes:
+      - 01_create_target_hosted_engine_vm - Force basic authentication (https://github.com/oVirt/ovirt-ansible-collection/pull/131).
+      - hosted_engine_setup - Allow uppercase characters in mac address (https://github.com/oVirt/ovirt-ansible-collection/pull/150).
+      - hosted_engine_setup - set custom bios type of hosted-engine VM to Q35+SeaBIOS
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/129).
+      - hosted_engine_setup - use zcat instead of gzip (https://github.com/oVirt/ovirt-ansible-collection/pull/130).
+      - ovirt inventory - Add close of connection at the end (https://github.com/oVirt/ovirt-ansible-collection/pull/122).
+      - ovirt_disk - dont move disk when already in storage_domain (https://github.com/oVirt/ovirt-ansible-collection/pull/135)
+      - ovirt_disk - fix upload when direct upload fails (https://github.com/oVirt/ovirt-ansible-collection/pull/120).
+      - ovirt_vm - Fix template search (https://github.com/oVirt/ovirt-ansible-collection/pull/132).
+      - ovirt_vm - Rename q35_sea to q35_sea_bios (https://github.com/oVirt/ovirt-ansible-collection/pull/111).
+      major_changes:
+      - cluster_upgrade - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/94).
+      - disaster_recovery - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/134).
+      - engine_setup - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/69).
+      - hosted_engine_setup - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/106).
+      - image_template - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/95).
+      - infra - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/92).
+      - manageiq - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/97).
+      - repositories - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/96).
+      - shutdown_env - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/112).
+      - vm_infra - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/93).
+      minor_changes:
+      - Add GPL license (https://github.com/oVirt/ovirt-ansible-collection/pull/101).
+      - hosted_engine_setup - Add compatibility_version (https://github.com/oVirt/ovirt-ansible-collection/pull/125).
+      - ovirt_disk - ignore move of HE disks (https://github.com/oVirt/ovirt-ansible-collection/pull/162).
+      - ovirt_nic - Add template_version (https://github.com/oVirt/ovirt-ansible-collection/pull/145).
+      - ovirt_nic_info - Add template (https://github.com/oVirt/ovirt-ansible-collection/pull/146).
+      - ovirt_vm_info - Add current_cd (https://github.com/oVirt/ovirt-ansible-collection/pull/144).
+    fragments:
+    - add-cluster_upgrade-role.yml
+    - add-disaster_recovery-role.yml
+    - add-engine_setup-role.yml
+    - add-gpl-license.yml
+    - add-hosted_engine_setup-role.yml
+    - add-image_template-role.yml
+    - add-infra-role.yml
+    - add-manageiq-role.yml
+    - add-repositories-role.yml
+    - add-shutdown_env-role.yml
+    - add-vm_infra-role.yml
+    - basic_auth-fix_create_target_hosted_engine_vm.yml
+    - hosted_engine_setup-add-compatibility_version.yml
+    - hosted_engine_setup-allow-uppercase-in-mac-address.yml
+    - hosted_engine_setup-set-custom-bios-type.yml
+    - hosted_engine_setup-use-zcat-instead-of-gzip.yml
+    - ovirt-inventory-add-connection-close.yml
+    - ovirt_disk-fix-move.yml
+    - ovirt_disk-fix-upload-when-direct-upload-fails.yml
+    - ovirt_disk-ignore-he-disk-move.yml
+    - ovirt_nic-add-template_version.yml
+    - ovirt_nic_info-add-template.yml
+    - ovirt_vm-fix-template-search.yml
+    - ovirt_vm-rename-q35_sea.yml
+    - ovirt_vm_info-add-current_cd.yml
+    release_date: '2020-10-27'

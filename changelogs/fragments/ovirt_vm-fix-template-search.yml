@@ -1,3 +1,0 @@
----
-bugfixes:
-  - ovirt_vm - Fix template search (https://github.com/oVirt/ovirt-ansible-collection/pull/132).

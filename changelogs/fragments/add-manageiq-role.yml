@@ -1,3 +1,0 @@
----
-major_changes:
-  - manageiq - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/97).
