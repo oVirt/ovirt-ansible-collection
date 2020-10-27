@@ -24,6 +24,9 @@ rpmbuild \
 # install any build requirements
 yum-builddep $ROOT_PATH/output/*src.rpm
 
+# Remove the tarball so it will not be included in galaxy build
+rm -rf *.gz
+
 # create tar for galaxy
 ansible-galaxy collection build
 
@@ -34,6 +37,9 @@ rpmbuild \
     --rebuild  $ROOT_PATH/output/*.src.rpm
 
 cd $RHV_BUILD
+
+# Remove the tarball so it will not be included in automation hub build
+rm -rf *.gz
 
 # create tar for automation hub
 ansible-galaxy collection build
