@@ -30,29 +30,29 @@ class FailBack:
     def run(self, conf_file, log_file, log_level):
         log = self._set_log(log_file, log_level)
         log.info("Start failback operation...")
-        target_host, source_map, var_file, vault, ansible_play = \
+        target_host, source_map, var_file, vault_file, ansible_play_file = \
             self._init_vars(conf_file)
         report = report_name.format(int(round(time.time() * 1000)))
         log.info("\ntarget_host: %s \n"
                  "source_map: %s \n"
                  "var_file: %s \n"
-                 "vault: %s \n"
-                 "ansible_play: %s \n"
+                 "vault_file: %s \n"
+                 "ansible_play_file: %s \n"
                  "report log file: /tmp/%s\n",
                  target_host,
                  source_map,
                  var_file,
-                 vault,
-                 ansible_play,
+                 vault_file,
+                 ansible_play_file,
                  report)
 
         dr_clean_tag = "clean_engine"
         extra_vars_cleanup = " dr_source_map=" + target_host
         command_cleanup = [
-            "ansible-playbook", ansible_play,
+            "ansible-playbook", ansible_play_file,
             "-t", dr_clean_tag,
             "-e", "@" + var_file,
-            "-e", "@" + vault,
+            "-e", "@" + vault_file,
             "-e", extra_vars_cleanup,
             "--vault-password-file", "vault_secret.sh",
             "-vvv"
@@ -63,10 +63,10 @@ class FailBack:
                                + " dr_source_map=" + source_map
                                + " dr_report_file=" + report)
         command_failback = [
-            "ansible-playbook", ansible_play,
+            "ansible-playbook", ansible_play_file,
             "-t", dr_failback_tag,
             "-e", "@" + var_file,
-            "-e", "@" + vault,
+            "-e", "@" + vault_file,
             "-e", extra_vars_failback,
             "--vault-password-file", "vault_secret.sh",
             "-vvv"
@@ -189,18 +189,18 @@ class FailBack:
                                   vars=DefaultOption(settings,
                                                      _SECTION,
                                                      target_host=None))
-        vault = settings.get(_SECTION, _VAULT,
-                             vars=DefaultOption(settings,
-                                                _SECTION,
-                                                vault=None))
+        vault_file = settings.get(_SECTION, _VAULT,
+                                  vars=DefaultOption(settings,
+                                                     _SECTION,
+                                                     vault=None))
         var_file = settings.get(_SECTION, _VAR_FILE,
                                 vars=DefaultOption(settings,
                                                    _SECTION,
                                                    var_file=None))
-        ansible_play = settings.get(_SECTION, _ANSIBLE_PLAY,
-                                    vars=DefaultOption(settings,
-                                                       _SECTION,
-                                                       ansible_play=None))
+        ansible_play_file = settings.get(_SECTION, _ANSIBLE_PLAY,
+                                         vars=DefaultOption(settings,
+                                                            _SECTION,
+                                                            ansible_play=None))
         while target_host not in setups:
             target_host = input(
                 INPUT + PREFIX + "The target host was not defined. "
@@ -215,19 +215,19 @@ class FailBack:
             var_file = input("%s%svar file mapping '%s' does not exist. "
                              "Please provide a valid mapping var file: %s"
                              % (INPUT, PREFIX, var_file, END))
-        while not os.path.isfile(vault):
-            vault = input("%s%sPassword file '%s' does not exist. "
-                          "Please provide a valid password file: %s"
-                          % (INPUT, PREFIX, vault, END))
-        while (not ansible_play) or (not os.path.isfile(ansible_play)):
-            ansible_play = input("%s%sansible play '%s' "
-                                 "is not initialized. "
-                                 "Please provide the ansible play file "
-                                 "to generate the mapping var file "
-                                 "with ('%s'):%s "
-                                 % (INPUT, PREFIX, str(ansible_play),
-                                    PLAY_DEF, END) or PLAY_DEF)
-        return target_host, source_map, var_file, vault, ansible_play
+        while not os.path.isfile(vault_file):
+            vault_file = input("%s%sPassword file '%s' does not exist. "
+                               "Please provide a valid password file: %s"
+                               % (INPUT, PREFIX, vault_file, END))
+        while (not ansible_play_file) or (not os.path.isfile(ansible_play_file)):
+            ansible_play_file = input("%s%sansible play '%s' "
+                                      "is not initialized. "
+                                      "Please provide the ansible play file "
+                                      "to generate the mapping var file "
+                                      "with ('%s'):%s "
+                                      % (INPUT, PREFIX, str(ansible_play_file),
+                                         PLAY_DEF, END) or PLAY_DEF)
+        return target_host, source_map, var_file, vault_file, ansible_play_file
 
     def _set_log(self, log_file, log_level):
         logger = logging.getLogger(PREFIX)

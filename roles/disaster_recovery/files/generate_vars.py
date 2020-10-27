@@ -35,7 +35,7 @@ class GenerateMappingFile:
         log.info("Start generate variable mapping file "
                  "for oVirt ansible disaster recovery")
         dr_tag = "generate_mapping"
-        site, username, password, ca_file, var_file_path, ansible_play = \
+        site, username, password, ca_file, var_file, ansible_play_file = \
             self._init_vars(conf_file, log)
         log.info("Site address: %s \n"
                  "username: %s \n"
@@ -43,7 +43,7 @@ class GenerateMappingFile:
                  "ca file location: %s \n"
                  "output file location: %s \n"
                  "ansible play location: %s ",
-                 site, username, ca_file, var_file_path, ansible_play)
+                 site, username, ca_file, var_file, ansible_play_file)
         if not self._validate_connection(log,
                                          site,
                                          username,
@@ -52,9 +52,9 @@ class GenerateMappingFile:
             self._print_error(log)
             sys.exit()
         extra_vars = "site={0} username={1} password={2} ca={3} var_file={4}".\
-            format(site, username, password, ca_file, var_file_path)
+            format(site, username, password, ca_file, var_file)
         command = [
-            "ansible-playbook", ansible_play,
+            "ansible-playbook", ansible_play_file,
             "-t", dr_tag,
             "-e", extra_vars,
             "-vvvvv"
@@ -65,11 +65,11 @@ class GenerateMappingFile:
         else:
             self._log_to_console(command, log)
 
-        if not os.path.isfile(var_file_path):
-            log.error("Can not find output file in '%s'.", var_file_path)
+        if not os.path.isfile(var_file):
+            log.error("Can not find output file in '%s'.", var_file)
             self._print_error(log)
             sys.exit()
-        log.info("Var file location: '%s'", var_file_path)
+        log.info("Var file location: '%s'", var_file)
         self._print_success(log)
 
     def _log_to_file(self, log_file, command):
@@ -236,10 +236,10 @@ class GenerateMappingFile:
                                    vars=DefaultOption(settings,
                                                       _SECTION,
                                                       output_file=None))
-        ansible_play = settings.get(_SECTION, _ANSIBLE_PLAY,
-                                    vars=DefaultOption(settings,
-                                                       _SECTION,
-                                                       ansible_play=None))
+        ansible_play_file = settings.get(_SECTION, _ANSIBLE_PLAY,
+                                         vars=DefaultOption(settings,
+                                                            _SECTION,
+                                                            ansible_play=None))
         if not site:
             site = input("%s%sSite address is not initialized. "
                          "Please provide the site URL (%s):%s "
@@ -266,13 +266,13 @@ class GenerateMappingFile:
                                 % (INPUT, PREFIX, _OUTPUT_FILE, END)
                                 ) or _OUTPUT_FILE
         self._validate_output_file_exists(output_file, log)
-        while not ansible_play or not os.path.isfile(ansible_play):
-            ansible_play = input("%s%sAnsible play '%s' is not initialized. "
-                                 "Please provide the ansible play to generate "
-                                 "the mapping var file (%s):%s "
-                                 % (INPUT, PREFIX, ansible_play, PLAY_DEF, END)
-                                 ) or PLAY_DEF
-        return site, username, password, ca_file, output_file, ansible_play
+        while not ansible_play_file or not os.path.isfile(ansible_play_file):
+            ansible_play_file = input("%s%sAnsible play '%s' is not initialized. "
+                                      "Please provide the ansible play to generate "
+                                      "the mapping var file (%s):%s "
+                                      % (INPUT, PREFIX, ansible_play_file, PLAY_DEF, END)
+                                      ) or PLAY_DEF
+        return site, username, password, ca_file, output_file, ansible_play_file
 
 
 class DefaultOption(dict):
