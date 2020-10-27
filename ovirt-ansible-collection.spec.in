@@ -55,6 +55,10 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Tue Oct 27 2020 Martin Necas <mnecas@redhat.com> - 1.2.0-1
+- Fix ovirt_disk ignore moving of hosted engine disks
+- Obsolete old roles
+
 * Mon Oct 12 2020 Martin Necas <mnecas@redhat.com> - 1.2.0-0.2
 - Add role disaster_recovery
 - Fix engine_setup yum.conf
