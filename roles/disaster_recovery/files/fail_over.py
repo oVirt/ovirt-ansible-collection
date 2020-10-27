@@ -182,7 +182,8 @@ class FailOver:
                                          PREFIX,
                                          ansible_play_file,
                                          PLAY_DEF,
-                                         END) or PLAY_DEF)
+                                         END)
+                                      ) or PLAY_DEF
         return target_host, source_map, var_file, vault_file, ansible_play_file
 
     def _set_log(self, log_file, log_level):
