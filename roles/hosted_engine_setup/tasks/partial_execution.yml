@@ -46,19 +46,37 @@
           delegate_to: "{{ groups.engine[0] }}"
 
     - name: Engine Setup on local VM
-      vars:
-        ovirt_engine_setup_hostname: "{{ he_fqdn.split('.')[0] }}"
-        ovirt_engine_setup_organization: "{{ he_cloud_init_domain_name }}"
-        ovirt_engine_setup_dwh_db_host: "{{ he_fqdn.split('.')[0] }}"
-        ovirt_engine_setup_firewall_manager: null
-        ovirt_engine_setup_answer_file_path: /root/ovirt-engine-answers
-        ovirt_engine_setup_use_remote_answer_file: true
-        ovirt_engine_setup_offline: "{{ he_offline_deployment }}"
-        ovirt_engine_setup_package_list: "{{ he_additional_package_list }}"
-        ovirt_engine_setup_admin_password: "{{ he_admin_password }}"
-      import_role:
-        name: @NAMESPACE@.@NAME@.engine_setup
-      delegate_to: "{{ groups.engine[0] }}"
+      block:
+        - name: Run engine-setup
+          vars:
+            ovirt_engine_setup_hostname: "{{ he_fqdn.split('.')[0] }}"
+            ovirt_engine_setup_organization: "{{ he_cloud_init_domain_name }}"
+            ovirt_engine_setup_dwh_db_host: "{{ he_fqdn.split('.')[0] }}"
+            ovirt_engine_setup_firewall_manager: null
+            ovirt_engine_setup_answer_file_path: /root/ovirt-engine-answers
+            ovirt_engine_setup_use_remote_answer_file: true
+            ovirt_engine_setup_offline: "{{ he_offline_deployment }}"
+            ovirt_engine_setup_package_list: "{{ he_additional_package_list }}"
+            ovirt_engine_setup_admin_password: "{{ he_admin_password }}"
+          import_role:
+            name: @NAMESPACE@.@NAME@.engine_setup
+          delegate_to: "{{ groups.engine[0] }}"
+      rescue:
+        - name: Sync on engine machine
+          command: sync
+          changed_when: true
+          delegate_to: "{{ groups.engine[0] }}"
+        - name: Fetch logs from the engine VM
+          import_tasks: fetch_engine_logs.yml
+          ignore_errors: true
+          delegate_to: "{{ he_ansible_host_name }}"
+        - name: Notify the user about a failure
+          fail:
+            msg: >
+              There was a failure deploying the engine on the local engine VM.
+              The system may not be provisioned according to the playbook
+              results: please check the logs for the issue,
+              fix accordingly or re-deploy from scratch.
 
     - name: Local engine VM installation - Post tasks
       block:
