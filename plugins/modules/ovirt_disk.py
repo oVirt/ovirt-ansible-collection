@@ -796,6 +796,7 @@ def main():
             ret = disks_module.create(
                 entity=disk if not force_create else None,
                 result_state=otypes.DiskStatus.OK if lun is None else None,
+                search_params=searchable_attributes(module),
                 fail_condition=lambda d: d.status == otypes.DiskStatus.ILLEGAL if lun is None else False,
                 force_create=force_create,
                 _wait=True if module.params['upload_image_path'] else module.params['wait'],
