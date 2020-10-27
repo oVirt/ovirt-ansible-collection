@@ -2,21 +2,32 @@
 %global collectionname @NAME@
 %global ansible_collections_dir ansible/collections/ansible_collections
 
-Name: @PACKAGE_NAME@
-Summary: Ansible collection to manage all ovirt modules and inventory
-Version: @RPM_VERSION@
-Release: @RPM_RELEASE@%{?release_suffix}%{?dist}
-Source0: http://resources.ovirt.org/pub/src/@PACKAGE_NAME@/@PACKAGE_NAME@-@PACKAGE_VERSION@.tar.gz
-License: ASL 2.0 and GPLv3+
-Group:          Virtualization/Management
-BuildArch:      noarch
-Url:            http://www.ovirt.org
+Name:		@PACKAGE_NAME@
+Summary:	Ansible collection to manage all ovirt modules and inventory
+Version:	@RPM_VERSION@
+Release:	@RPM_RELEASE@%{?release_suffix}%{?dist}
+Source0:	http://resources.ovirt.org/pub/src/@PACKAGE_NAME@/@PACKAGE_NAME@-@PACKAGE_VERSION@.tar.gz
+License:	ASL 2.0 and GPLv3+
+BuildArch:	noarch
+Url:		http://www.ovirt.org
 
-Requires: ansible >= 2.9.11
-Requires: python3-ovirt-engine-sdk4 >= 4.4.0
-Requires: python3-netaddr
-Requires: python3-jmespath
-Requires: python3-passlib
+Requires:	ansible >= 2.9.11
+Requires:	python3-ovirt-engine-sdk4 >= 4.4.0
+Requires:	python3-netaddr
+Requires:	python3-jmespath
+Requires:	python3-passlib
+
+Obsoletes:	ovirt-ansible-cluster-upgrade
+Obsoletes:	ovirt-ansible-disaster-recovery
+Obsoletes:	ovirt-ansible-engine-setup
+Obsoletes:	ovirt-ansible-hosted-engine-setup
+Obsoletes:	ovirt-ansible-image-template
+Obsoletes:	ovirt-ansible-infra
+Obsoletes:	ovirt-ansible-manageiq
+Obsoletes:	ovirt-ansible-repositories
+Obsoletes:	ovirt-ansible-roles
+Obsoletes:	ovirt-ansible-shutdown-env
+Obsoletes:	ovirt-ansible-vm-infra
 
 %description
 This Ansible collection is to manage all ovirt modules and inventory
