@@ -73,7 +73,5 @@ Example Playbook
            boot_protocol: dhcp
 
   roles:
-    - infra/roles/networks
-  collections:
-    - ovirt.ovirt
+    - ovirt.ovirt.infra.roles.networks
 ```

@@ -45,7 +45,5 @@ Example Playbook
         object_name: production
 
   roles:
-    - infra/roles/permissions
-  collections:
-    - ovirt.ovirt
+    - ovirt.ovirt.infra.roles.permissions
 ```

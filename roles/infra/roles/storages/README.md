@@ -61,7 +61,5 @@ Example Playbook
           path: /iso
 
   roles:
-    - infra/roles/storages
-  collections:
-    - ovirt.ovirt
+    - ovirt.ovirt.infra.roles.storages
 ```
