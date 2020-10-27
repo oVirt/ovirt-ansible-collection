@@ -1,4 +1,4 @@
 ---
 - name: Run datacenters sub-role
   import_role:
-    name: ovirt.ovirt.infra.roles.datacenters
+    name: @NAMESPACE@.@NAME@.infra.roles.datacenters

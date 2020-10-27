@@ -22,7 +22,7 @@
 
 - name: Recursively remove data center
   import_role:
-    name: ovirt.ovirt.infra.roles.datacenter_cleanup
+    name: @NAMESPACE@.@NAME@.infra.roles.datacenter_cleanup
   when: data_center_state=='absent' and recursive_cleanup
   tags:
     - datacenters

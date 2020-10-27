@@ -1,37 +1,37 @@
 ---
 - name: Run mac-pools sub-role
   import_role:
-    name: ovirt.ovirt.infra.roles.mac_pools
+    name: @NAMESPACE@.@NAME@.infra.roles.mac_pools
 
 - name: Run datacenters sub-role
   import_role:
-    name: ovirt.ovirt.infra.roles.datacenters
+    name: @NAMESPACE@.@NAME@.infra.roles.datacenters
 
 - name: Run clusters sub-role
   import_role:
-    name: ovirt.ovirt.infra.roles.clusters
+    name: @NAMESPACE@.@NAME@.infra.roles.clusters
 
 - name: Run hosts sub-role
   import_role:
-    name: ovirt.ovirt.infra.roles.hosts
+    name: @NAMESPACE@.@NAME@.infra.roles.hosts
 
 - name: Run networks sub-role
   import_role:
-    name: ovirt.ovirt.infra.roles.networks
+    name: @NAMESPACE@.@NAME@.infra.roles.networks
 
 - name: Run storages sub-role
   import_role:
-    name: ovirt.ovirt.infra.roles.storages
+    name: @NAMESPACE@.@NAME@.infra.roles.storages
 
 - name: Run aaa-jdbc sub-role
   import_role:
-    name: ovirt.ovirt.infra.roles.aaa_jdbc
+    name: @NAMESPACE@.@NAME@.infra.roles.aaa_jdbc
   when: users is defined or user_groups is defined
 
 - name: Run external-providers sub-role
   import_role:
-    name: ovirt.ovirt.infra.roles.external_providers
+    name: @NAMESPACE@.@NAME@.infra.roles.external_providers
 
 - name: Run permissions sub-role
   import_role:
-    name: ovirt.ovirt.infra.roles.permissions
+    name: @NAMESPACE@.@NAME@.infra.roles.permissions
