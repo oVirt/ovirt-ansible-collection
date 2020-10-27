@@ -39,7 +39,7 @@ dist() {
    -e "s|@PACKAGE_VERSION@|$PACKAGE_VERSION|g" \
    < ovirt-ansible-collection.spec.in > ovirt-ansible-collection.spec
 
-  git ls-files | tar --files-from /proc/self/fd/0 -czf "$TARBALL" ovirt-ansible-collection.spec
+  find ./* -not -name '*.spec' -type f | tar --files-from /proc/self/fd/0 -czf "$TARBALL" ovirt-ansible-collection.spec
   echo "tar archive '$TARBALL' created."
 }
 
@@ -71,7 +71,7 @@ build() {
     BUILD_PATH=$BUILD_PATH/ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME/
     mkdir -p $BUILD_PATH
     echo "The copying files to $BUILD_PATH"
-    cp -a . $BUILD_PATH
+    cp --parents $(git ls-files) $BUILD_PATH
     cd $BUILD_PATH
     rename
     dist

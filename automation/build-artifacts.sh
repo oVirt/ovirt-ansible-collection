@@ -17,8 +17,8 @@ RHV_BUILD=$ROOT_PATH/ansible_collections/redhat/rhv
 cd $OVIRT_BUILD
 # create the src.rpm
 rpmbuild \
-    -D "_srcrpmdir $PWD/output" \
-    -D "_topmdir $PWD/rpmbuild" \
+    -D "_srcrpmdir $ROOT_PATH/output" \
+    -D "_topmdir $ROOT_PATH/rpmbuild" \
     -ts ./*.gz
 
 # install any build requirements
@@ -29,8 +29,8 @@ ansible-galaxy collection build
 
 # create the rpms
 rpmbuild \
-    -D "_rpmdir $PWD/output" \
-    -D "_topmdir $PWD/rpmbuild" \
+    -D "_rpmdir $ROOT_PATH/output" \
+    -D "_topmdir $ROOT_PATH/rpmbuild" \
     --rebuild output/*.src.rpm
 
 cd $RHV_BUILD
@@ -42,9 +42,11 @@ ansible-galaxy collection build
 # archive
 [[ -d exported-artifacts ]] || mkdir -p $ROOT_PATH/exported-artifacts $ROOT_PATH/exported-artifacts/
 
-find $OVIRT_BUILD/output -iname \*rpm -exec mv "{}" $ROOT_PATH/exported-artifacts/ \;
-mv $OVIRT_BUILD/*tar.gz $ROOT_PATH/exported-artifacts/
+find $ROOT_PATH/output -iname \*rpm -exec mv "{}" $ROOT_PATH/exported-artifacts/ \;
 
+# Export build for Ansible Galaxy
+mv $OVIRT_BUILD/*tar.gz $ROOT_PATH/exported-artifacts/
+# Export build for Automation Hub
 mv $RHV_BUILD/*tar.gz $ROOT_PATH/exported-artifacts/
 
 COLLECTION_DIR="/usr/local/share/ansible/collections/ansible_collections/ovirt/ovirt"
