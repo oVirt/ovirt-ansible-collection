@@ -1,3 +1,0 @@
----
-bugfixes:
-  - ovirt_disk - fix upload when direct upload fails (https://github.com/oVirt/ovirt-ansible-collection/pull/120).

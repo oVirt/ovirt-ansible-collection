@@ -1,3 +1,0 @@
----
-bugfixes:
-  - ovirt_vm - Rename q35_sea to q35_sea_bios (https://github.com/oVirt/ovirt-ansible-collection/pull/111).

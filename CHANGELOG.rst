@@ -5,6 +5,46 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.2.0
+======
+
+Major Changes
+-------------
+
+- cluster_upgrade - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/94).
+- disaster_recovery - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/134).
+- engine_setup - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/69).
+- hosted_engine_setup - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/106).
+- image_template - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/95).
+- infra - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/92).
+- manageiq - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/97).
+- repositories - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/96).
+- shutdown_env - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/112).
+- vm_infra - Migrate role (https://github.com/oVirt/ovirt-ansible-collection/pull/93).
+
+Minor Changes
+-------------
+
+- Add GPL license (https://github.com/oVirt/ovirt-ansible-collection/pull/101).
+- hosted_engine_setup - Add compatibility_version (https://github.com/oVirt/ovirt-ansible-collection/pull/125).
+- ovirt_disk - ignore move of HE disks (https://github.com/oVirt/ovirt-ansible-collection/pull/162).
+- ovirt_nic - Add template_version (https://github.com/oVirt/ovirt-ansible-collection/pull/145).
+- ovirt_nic_info - Add template (https://github.com/oVirt/ovirt-ansible-collection/pull/146).
+- ovirt_vm_info - Add current_cd (https://github.com/oVirt/ovirt-ansible-collection/pull/144).
+
+Bugfixes
+--------
+
+- 01_create_target_hosted_engine_vm - Force basic authentication (https://github.com/oVirt/ovirt-ansible-collection/pull/131).
+- hosted_engine_setup - Allow uppercase characters in mac address (https://github.com/oVirt/ovirt-ansible-collection/pull/150).
+- hosted_engine_setup - set custom bios type of hosted-engine VM to Q35+SeaBIOS (https://github.com/oVirt/ovirt-ansible-collection/pull/129).
+- hosted_engine_setup - use zcat instead of gzip (https://github.com/oVirt/ovirt-ansible-collection/pull/130).
+- ovirt inventory - Add close of connection at the end (https://github.com/oVirt/ovirt-ansible-collection/pull/122).
+- ovirt_disk - dont move disk when already in storage_domain (https://github.com/oVirt/ovirt-ansible-collection/pull/135)
+- ovirt_disk - fix upload when direct upload fails (https://github.com/oVirt/ovirt-ansible-collection/pull/120).
+- ovirt_vm - Fix template search (https://github.com/oVirt/ovirt-ansible-collection/pull/132).
+- ovirt_vm - Rename q35_sea to q35_sea_bios (https://github.com/oVirt/ovirt-ansible-collection/pull/111).
+
 v1.1.2
 ======
 
