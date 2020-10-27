@@ -6,6 +6,9 @@ ROOT_PATH=$PWD
 rm -rf ../ansible_collections
 rm -f ./*tar.gz
 
+# Create exported-artifacts
+[[ -d exported-artifacts ]] || mkdir -p $ROOT_PATH/exported-artifacts
+
 # Create builds
 
 ./build.sh build ovirt $ROOT_PATH
@@ -46,8 +49,6 @@ ansible-galaxy collection build
 
 # Store any relevant artifacts in exported-artifacts for the ci system to
 # archive
-[[ -d exported-artifacts ]] || mkdir -p $ROOT_PATH/exported-artifacts $ROOT_PATH/exported-artifacts/
-
 find $ROOT_PATH/output -iname \*rpm -exec mv "{}" $ROOT_PATH/exported-artifacts/ \;
 
 # Export build for Ansible Galaxy
