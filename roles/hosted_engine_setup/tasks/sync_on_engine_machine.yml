@@ -1,0 +1,9 @@
+---
+- name: Register the engine VM as an ansible host
+  import_tasks: add_engine_as_ansible_host.yml
+- name: Sync on engine machine
+  command: sync
+  changed_when: true
+  ignore_errors: true
+  ignore_unreachable: yes
+  delegate_to: "{{ groups.engine[0] }}"
