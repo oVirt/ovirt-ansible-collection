@@ -22,7 +22,7 @@ rpmbuild \
     -ts ./*.gz
 
 # install any build requirements
-yum-builddep output/*src.rpm
+yum-builddep $ROOT_PATH/output/*src.rpm
 
 # create tar for galaxy
 ansible-galaxy collection build
@@ -31,7 +31,7 @@ ansible-galaxy collection build
 rpmbuild \
     -D "_rpmdir $ROOT_PATH/output" \
     -D "_topmdir $ROOT_PATH/rpmbuild" \
-    --rebuild output/*.src.rpm
+    --rebuild  $ROOT_PATH/output/*.src.rpm
 
 cd $RHV_BUILD
 
