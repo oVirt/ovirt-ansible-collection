@@ -25,7 +25,7 @@ rpmbuild \
 yum-builddep $ROOT_PATH/output/*src.rpm
 
 # Remove the tarball so it will not be included in galaxy build
-rm -rf *.gz
+mv ./*.gz $ROOT_PATH/exported-artifacts/
 
 # create tar for galaxy
 ansible-galaxy collection build
