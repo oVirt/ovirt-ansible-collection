@@ -161,13 +161,13 @@
             fetch_nested: true
             nested_attributes: ips
           register: vm_info
-          until: "vm_info.ovirt_vms | ovirt.ovirt.ovirtvmipv4 | length > 0"
+          until: "vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4 | length > 0"
           retries: 10
           delay: 5
 
         - name: Set Ip of the VM
           set_fact:
-            vm_ip: "{{ vm_info.ovirt_vms | ovirt.ovirt.ovirtvmipv4 }}"
+            vm_ip: "{{ vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4 }}"
 
         - name: Include prerequisites tasks for VM
           import_tasks: "{{ template_prerequisites_tasks if template_prerequisites_tasks is defined else 'empty.yml' }}"
