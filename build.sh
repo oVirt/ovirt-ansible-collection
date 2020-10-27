@@ -75,7 +75,6 @@ build() {
     cd $BUILD_PATH
     rename
     dist
-    rm -rf .git
   fi
 }
 
