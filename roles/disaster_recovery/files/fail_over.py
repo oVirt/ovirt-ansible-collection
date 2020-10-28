@@ -21,6 +21,7 @@ WARN = bcolors.WARNING
 FAIL = bcolors.FAIL
 END = bcolors.ENDC
 PREFIX = "[Failover] "
+VAR_FILE_DEF = "../examples/disaster_recovery_vars.yml"
 PLAY_DEF = "../examples/dr_play.yml"
 report_name = "report-{}.log"
 
@@ -177,9 +178,10 @@ class FailOver:
                                % (INPUT, PREFIX, source_map, END))
 
         while not os.path.isfile(var_file):
-            var_file = input("%s%svar file mapping '%s' does not exist. "
-                             "Please provide a valid mapping var file: %s"
-                             % (INPUT, PREFIX, var_file, END))
+            var_file = input("%s%sVar file '%s' does not exist. Please "
+                             "provide the location of the var file (%s): %s"
+                             % (INPUT, PREFIX, var_file, VAR_FILE_DEF, END)
+                             ) or VAR_FILE_DEF
             var_file = os.path.expanduser(var_file)
 
         while not os.path.isfile(vault_file):
