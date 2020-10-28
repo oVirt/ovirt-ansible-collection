@@ -34,7 +34,7 @@
     - users
 
 - name: Update users according to attributes
-  command: "{{ aaa_jdbc_prefix }}/ovirt-aaa-jdbc-tool user edit {{ item.name }} {% for attr, value in item['attributes'].iteritems() %} --attribute={{ attr }}='{{ value }}' {% endfor %}"
+  command: "{{ aaa_jdbc_prefix }}/ovirt-aaa-jdbc-tool user edit {{ item.name }} {% for attr, value in item['attributes'].items() %} --attribute={{ attr }}='{{ value }}' {% endfor %}"
   with_items:
     - "{{ users | default([]) }}"
   register: out_users
