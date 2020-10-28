@@ -28,7 +28,6 @@ class ValidateMappingFile:
     def_var_file = "../examples/disaster_recovery_vars.yml"
     default_main_file = "../defaults/main.yml"
     var_file = ""
-    vault = ""
     running_vms = "dr_running_vms"
     cluster_map = 'dr_cluster_mappings'
     domain_map = 'dr_import_storages'
