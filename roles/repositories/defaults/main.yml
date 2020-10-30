@@ -10,4 +10,4 @@ ovirt_repositories_subscription_manager_repos: []
 ovirt_repositories_ovirt_dnf_modules: ["pki-deps", "postgresql:12", "javapackages-tools"]
 ovirt_repositories_rh_dnf_modules: ["pki-deps", "postgresql:12"]
 ovirt_repositories_ovirt_release_rpm_gpg: https://plain.resources.ovirt.org/pub/keys/RPM-GPG-ovirt-v2
-ovirt_repositories_disable_gpg_check: False
+ovirt_repositories_disable_gpg_check: "{{ True if 'master.rpm' in ovirt_repositories_ovirt_release_rpm else False }}"
