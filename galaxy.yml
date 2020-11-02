@@ -1,6 +1,6 @@
 namespace: "@NAMESPACE@"
 name: "@NAME@"
-version: 1.2.1
+version: 1.2.2
 authors:
     - Martin Necas <mnecas@redhat.com>
 license:
