@@ -300,3 +300,11 @@ releases:
     - ovirt_vm-rename-q35_sea.yml
     - ovirt_vm_info-add-current_cd.yml
     release_date: '2020-10-27'
+  1.2.1:
+    changes:
+      bugfixes:
+      - disaster_recovery - Fix multiple configuration issues like paths, "~" support,
+        user input messages, etc. (https://github.com/oVirt/ovirt-ansible-collection/pull/160).
+    fragments:
+    - disaster_recovery-fix-configuration-issues.yml
+    release_date: '2020-11-02'
