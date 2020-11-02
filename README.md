@@ -11,11 +11,11 @@ Requirements
  * Python SDK version 4.4 or higher
  * Python netaddr library on the ansible controller node
 
-Upstream documentation
+Upstream oVirt documentation
 --------------
 https://docs.ansible.com/ansible/latest/collections/ovirt/ovirt/index.html
 
-Downstream documentation
+Downstream RHV documentation
 --------------
 https://cloud.redhat.com/ansible/automation-hub/redhat/rhv
 
