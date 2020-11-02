@@ -4,7 +4,7 @@
 @NAME@ ansible collection
 ====================================
 
-The `@NAMESPACE@.@NAME@` manages all ansible modules of oVirt.
+The `@NAMESPACE@.@NAME@` manages all ansible modules of @NAME@.
 
 The pypi installation is no longer supported if you want
 to install all dependencies do it manually or install the
@@ -29,8 +29,8 @@ Content of the collection
 ----------------
 
 * modules:
-  * ovirt_* - Modules to manage objects in oVirt Engine
-  * ovirt_*_info - Modules to gather information about objects in oVirt Engine
+  * ovirt_* - Modules to manage objects in @NAME@ Engine
+  * ovirt_*_info - Modules to gather information about objects in @NAME@ Engine
 * roles:
   * cluster_upgrade
   * engine_setup
@@ -49,7 +49,7 @@ Example Playbook
 
 ```yaml
 ---
-- name: oVirt ansible collection
+- name: @NAME@ ansible collection
   hosts: localhost
   connection: local
   vars_files:
