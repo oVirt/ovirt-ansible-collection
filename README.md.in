@@ -1,10 +1,10 @@
 [![Build Status](https://jenkins.ovirt.org/job/oVirt_ovirt-ansible-collection_standard-check-pr/badge/icon)](https://jenkins.ovirt.org/job/oVirt_ovirt-ansible-collection_standard-check-pr/)
 [![Build Status](https://img.shields.io/badge/docs-latest-blue.svg)](https://docs.ansible.com/ansible/2.10/collections/ovirt/ovirt/index.html)
 
-@NAME@ ansible collection
+oVirt Ansible Collection
 ====================================
 
-The `@NAMESPACE@.@NAME@` manages all ansible modules of @NAME@.
+The `@NAMESPACE@.@NAME@` manages all oVirt Ansible modules.
 
 The pypi installation is no longer supported if you want
 to install all dependencies do it manually or install the
@@ -41,6 +41,7 @@ Content of the collection
   * repositories
   * shutdown_env
   * vm_infra
+  * disaster_recovery
 * inventory plugin
 
 
