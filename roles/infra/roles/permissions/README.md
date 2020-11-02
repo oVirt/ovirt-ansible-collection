@@ -45,5 +45,5 @@ Example Playbook
         object_name: production
 
   roles:
-    - ovirt.ovirt.infra.roles.permissions
+    - @NAMESPACE@.@NAME@.infra.roles.permissions
 ```

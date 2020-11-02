@@ -26,5 +26,5 @@ Example Playbook
    format_storages: true
 
   roles:
-    - ovirt.ovirt.infra.roles.datacenter_cleanup
+    - @NAMESPACE@.@NAME@.infra.roles.datacenter_cleanup
 ```

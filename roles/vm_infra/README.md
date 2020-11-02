@@ -268,7 +268,7 @@ Example Playbook
   roles:
     - vm_infra
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 ```
 
 The example below shows how to use inventory created by `vm_infra` role in follow-up play.
@@ -309,7 +309,7 @@ The example below shows how to use inventory created by `vm_infra` role in follo
   roles:
     - vm_infra
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 
 - name: Deploy apache on VM
   hosts: ovirt_tag_apache

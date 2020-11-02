@@ -12,4 +12,4 @@
   roles:
     - infra
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@

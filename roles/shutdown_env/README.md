@@ -39,7 +39,7 @@ Example Playbook
   roles:
     - role: shutdown_env
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 ```
 
 Demo

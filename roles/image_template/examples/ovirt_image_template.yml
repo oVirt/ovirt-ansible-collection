@@ -24,4 +24,4 @@
   roles:
     - image_template
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@

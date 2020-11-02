@@ -40,4 +40,4 @@
       tags:
         - always
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@

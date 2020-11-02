@@ -102,5 +102,5 @@ Example Playbook
        mac_pool: production_mac_pools
 
   roles:
-    - ovirt.ovirt.infra.roles.clusters
+    - @NAMESPACE@.@NAME@.infra.roles.clusters
 ```

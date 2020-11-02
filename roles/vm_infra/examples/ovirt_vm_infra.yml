@@ -45,4 +45,4 @@
   roles:
     - vm_infra
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
