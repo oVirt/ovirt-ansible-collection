@@ -21,6 +21,7 @@ WARN = bcolors.WARNING
 FAIL = bcolors.FAIL
 END = bcolors.ENDC
 PREFIX = "[Failback] "
+VAR_FILE_DEF = "../examples/disaster_recovery_vars.yml"
 PLAY_DEF = "../examples/dr_play.yml"
 report_name = "report-{}.log"
 
@@ -30,29 +31,29 @@ class FailBack:
     def run(self, conf_file, log_file, log_level):
         log = self._set_log(log_file, log_level)
         log.info("Start failback operation...")
-        target_host, source_map, var_file, vault, ansible_play = \
+        target_host, source_map, var_file, vault_file, ansible_play_file = \
             self._init_vars(conf_file)
         report = report_name.format(int(round(time.time() * 1000)))
         log.info("\ntarget_host: %s \n"
                  "source_map: %s \n"
                  "var_file: %s \n"
-                 "vault: %s \n"
-                 "ansible_play: %s \n"
+                 "vault_file: %s \n"
+                 "ansible_play_file: %s \n"
                  "report log file: /tmp/%s\n",
                  target_host,
                  source_map,
                  var_file,
-                 vault,
-                 ansible_play,
+                 vault_file,
+                 ansible_play_file,
                  report)
 
         dr_clean_tag = "clean_engine"
         extra_vars_cleanup = " dr_source_map=" + target_host
         command_cleanup = [
-            "ansible-playbook", ansible_play,
+            "ansible-playbook", ansible_play_file,
             "-t", dr_clean_tag,
             "-e", "@" + var_file,
-            "-e", "@" + vault,
+            "-e", "@" + vault_file,
             "-e", extra_vars_cleanup,
             "--vault-password-file", "vault_secret.sh",
             "-vvv"
@@ -63,19 +64,19 @@ class FailBack:
                                + " dr_source_map=" + source_map
                                + " dr_report_file=" + report)
         command_failback = [
-            "ansible-playbook", ansible_play,
+            "ansible-playbook", ansible_play_file,
             "-t", dr_failback_tag,
             "-e", "@" + var_file,
-            "-e", "@" + vault,
+            "-e", "@" + vault_file,
             "-e", extra_vars_failback,
             "--vault-password-file", "vault_secret.sh",
             "-vvv"
         ]
 
         # Setting vault password.
-        vault_pass_msg = ("Please enter vault password "
-                          "(in case of plain text please press ENTER): ")
-        vault_pass = input(INPUT + PREFIX + vault_pass_msg + END)
+        vault_pass = input("%s%sPlease enter vault password "
+                           "(in case of plain text please press ENTER): %s"
+                           % (INPUT, PREFIX, END))
         os.system("export vault_password=\"" + vault_pass + "\"")
 
         info_msg = ("Starting cleanup process of setup '{0}' for "
@@ -177,57 +178,76 @@ class FailBack:
             settings.set(_SECTION, _VAR_FILE, '')
         if not settings.has_option(_SECTION, _ANSIBLE_PLAY):
             settings.set(_SECTION, _ANSIBLE_PLAY, '')
+
         # We fetch the source map as target host,
         # since in failback we do the reverse operation.
         target_host = settings.get(_SECTION, _SOURCE,
                                    vars=DefaultOption(settings,
                                                       _SECTION,
                                                       source_map=None))
+
         # We fetch the target host as target the source mapping for failback,
         # since we do the reverse operation.
         source_map = settings.get(_SECTION, _TARGET,
                                   vars=DefaultOption(settings,
                                                      _SECTION,
                                                      target_host=None))
-        vault = settings.get(_SECTION, _VAULT,
-                             vars=DefaultOption(settings,
-                                                _SECTION,
-                                                vault=None))
+
+        vault_file = settings.get(_SECTION, _VAULT,
+                                  vars=DefaultOption(settings,
+                                                     _SECTION,
+                                                     vault=None))
+        vault_file = os.path.expanduser(vault_file)
+
         var_file = settings.get(_SECTION, _VAR_FILE,
                                 vars=DefaultOption(settings,
                                                    _SECTION,
                                                    var_file=None))
-        ansible_play = settings.get(_SECTION, _ANSIBLE_PLAY,
-                                    vars=DefaultOption(settings,
-                                                       _SECTION,
-                                                       ansible_play=None))
+        var_file = os.path.expanduser(var_file)
+
+        ansible_play_file = settings.get(_SECTION, _ANSIBLE_PLAY,
+                                         vars=DefaultOption(settings,
+                                                            _SECTION,
+                                                            ansible_play=None))
+        ansible_play_file = os.path.expanduser(ansible_play_file)
+
         while target_host not in setups:
-            target_host = input(
-                INPUT + PREFIX + "The target host was not defined. "
-                "Please provide the target host (to failback to) "
-                "(primary or secondary): " + END)
+            target_host = input("%s%sThe target host '%s' was not defined. "
+                                "Please provide the target host "
+                                "to failback to (primary or secondary): %s"
+                                % (INPUT, PREFIX, target_host, END))
         while source_map not in setups:
-            source_map = input(
-                INPUT + PREFIX + "The source mapping was not defined. "
-                "Please provide the source mapping "
-                "(primary or secondary): " + END)
+            source_map = input("%s%sThe source mapping '%s' was not defined. "
+                               "Please provide the source mapping "
+                               "(primary or secondary): %s"
+                               % (INPUT, PREFIX, source_map, END))
+
         while not os.path.isfile(var_file):
-            var_file = input("%s%svar file mapping '%s' does not exist. "
-                             "Please provide a valid mapping var file: %s"
-                             % (INPUT, PREFIX, var_file, END))
-        while not os.path.isfile(vault):
-            vault = input("%s%sPassword file '%s' does not exist. "
-                          "Please provide a valid password file: %s"
-                          % (INPUT, PREFIX, vault, END))
-        while (not ansible_play) or (not os.path.isfile(ansible_play)):
-            ansible_play = input("%s%sansible play '%s' "
-                                 "is not initialized. "
-                                 "Please provide the ansible play file "
-                                 "to generate the mapping var file "
-                                 "with ('%s'):%s "
-                                 % (INPUT, PREFIX, str(ansible_play),
-                                    PLAY_DEF, END) or PLAY_DEF)
-        return target_host, source_map, var_file, vault, ansible_play
+            var_file = input("%s%sVar file '%s' does not exist. Please "
+                             "provide the location of the var file (%s): %s"
+                             % (INPUT, PREFIX, var_file, VAR_FILE_DEF, END)
+                             ) or VAR_FILE_DEF
+            var_file = os.path.expanduser(var_file)
+
+        while not os.path.isfile(vault_file):
+            vault_file = input("%s%sPassword file '%s' does not exist. "
+                               "Please provide a valid password file: %s"
+                               % (INPUT, PREFIX, vault_file, END))
+            vault_file = os.path.expanduser(vault_file)
+
+        while not os.path.isfile(ansible_play_file):
+            ansible_play_file = input("%s%sAnsible play file '%s' does not "
+                                      "exist. Please provide the ansible play "
+                                      "file to run the failback flow (%s): %s"
+                                      % (INPUT,
+                                         PREFIX,
+                                         ansible_play_file,
+                                         PLAY_DEF,
+                                         END)
+                                      ) or PLAY_DEF
+            ansible_play_file = os.path.expanduser(ansible_play_file)
+
+        return target_host, source_map, var_file, vault_file, ansible_play_file
 
     def _set_log(self, log_file, log_level):
         logger = logging.getLogger(PREFIX)

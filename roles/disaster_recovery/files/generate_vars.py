@@ -35,7 +35,7 @@ class GenerateMappingFile:
         log.info("Start generate variable mapping file "
                  "for oVirt ansible disaster recovery")
         dr_tag = "generate_mapping"
-        site, username, password, ca_file, var_file_path, ansible_play = \
+        site, username, password, ca_file, var_file, ansible_play_file = \
             self._init_vars(conf_file, log)
         log.info("Site address: %s \n"
                  "username: %s \n"
@@ -43,7 +43,7 @@ class GenerateMappingFile:
                  "ca file location: %s \n"
                  "output file location: %s \n"
                  "ansible play location: %s ",
-                 site, username, ca_file, var_file_path, ansible_play)
+                 site, username, ca_file, var_file, ansible_play_file)
         if not self._validate_connection(log,
                                          site,
                                          username,
@@ -52,9 +52,9 @@ class GenerateMappingFile:
             self._print_error(log)
             sys.exit()
         extra_vars = "site={0} username={1} password={2} ca={3} var_file={4}".\
-            format(site, username, password, ca_file, var_file_path)
+            format(site, username, password, ca_file, var_file)
         command = [
-            "ansible-playbook", ansible_play,
+            "ansible-playbook", ansible_play_file,
             "-t", dr_tag,
             "-e", extra_vars,
             "-vvvvv"
@@ -65,11 +65,11 @@ class GenerateMappingFile:
         else:
             self._log_to_console(command, log)
 
-        if not os.path.isfile(var_file_path):
-            log.error("Can not find output file in '%s'.", var_file_path)
+        if not os.path.isfile(var_file):
+            log.error("Can not find output file in '%s'.", var_file)
             self._print_error(log)
             sys.exit()
-        log.info("Var file location: '%s'", var_file_path)
+        log.info("Var file location: '%s'", var_file)
         self._print_success(log)
 
     def _log_to_file(self, log_file, command):
@@ -166,7 +166,7 @@ class GenerateMappingFile:
             valid = {"yes": True, "y": True, "ye": True,
                      "no": False, "n": False}
             ans = input("%s%sThe output file '%s' already exists. "
-                        "Would you like to override it (y,n)?%s "
+                        "Would you like to override it (y,n)? %s"
                         % (WARN, PREFIX, output_file, END))
             while True:
                 ans = ans.lower()
@@ -220,59 +220,79 @@ class GenerateMappingFile:
                             vars=DefaultOption(settings,
                                                _SECTION,
                                                site=None))
+
         username = settings.get(_SECTION, _USERNAME,
                                 vars=DefaultOption(settings,
                                                    _SECTION,
                                                    username=None))
+
         password = settings.get(_SECTION, _PASSWORD,
                                 vars=DefaultOption(settings,
                                                    _SECTION,
                                                    password=None))
+
         ca_file = settings.get(_SECTION, _CA_FILE,
                                vars=DefaultOption(settings,
                                                   _SECTION,
                                                   ca_file=None))
+        ca_file = os.path.expanduser(ca_file)
+
         output_file = settings.get(_SECTION, _OUTPUT_FILE,
                                    vars=DefaultOption(settings,
                                                       _SECTION,
                                                       output_file=None))
-        ansible_play = settings.get(_SECTION, _ANSIBLE_PLAY,
-                                    vars=DefaultOption(settings,
-                                                       _SECTION,
-                                                       ansible_play=None))
+        output_file = os.path.expanduser(output_file)
+
+        ansible_play_file = settings.get(_SECTION, _ANSIBLE_PLAY,
+                                         vars=DefaultOption(settings,
+                                                            _SECTION,
+                                                            ansible_play=None))
+        ansible_play_file = os.path.expanduser(ansible_play_file)
+
         if not site:
             site = input("%s%sSite address is not initialized. "
-                         "Please provide the site URL (%s):%s "
-                         % (INPUT, PREFIX, SITE_DEF, END)) or SITE_DEF
+                         "Please provide the site URL (%s): %s"
+                         % (INPUT, PREFIX, SITE_DEF, END)
+                         ) or SITE_DEF
         if not username:
             username = input("%s%sUsername is not initialized. "
-                             "Please provide the username (%s):%s "
+                             "Please provide the username (%s): %s"
                              % (INPUT, PREFIX, USERNAME_DEF, END)
                              ) or USERNAME_DEF
         while not password:
             password = input("%s%sPassword is not initialized. "
-                             "Please provide the password for username %s:%s "
+                             "Please provide the password for username %s: %s"
                              % (INPUT, PREFIX, username, END))
 
-        while not ca_file:
-            ca_file = input("%s%sCA file is not initialized. "
+        while not os.path.isfile(ca_file):
+            ca_file = input("%s%sCA file '%s' does not exist. "
                             "Please provide the CA file location (%s):%s "
-                            % (INPUT, PREFIX, CA_DEF, END)) or CA_DEF
+                            % (INPUT, PREFIX, ca_file, CA_DEF, END)
+                            ) or CA_DEF
+            ca_file = os.path.expanduser(ca_file)
 
         while not output_file:
-            output_file = input("%s%sOutput file is not initialized. "
+            output_file = input("%s%sOutput file location is not initialized. "
                                 "Please provide the output file location "
-                                "for the mapping var file (%s):%s "
+                                "for the mapping var file (%s): %s"
                                 % (INPUT, PREFIX, _OUTPUT_FILE, END)
                                 ) or _OUTPUT_FILE
+            output_file = os.path.expanduser(output_file)
         self._validate_output_file_exists(output_file, log)
-        while not ansible_play or not os.path.isfile(ansible_play):
-            ansible_play = input("%s%sAnsible play '%s' is not initialized. "
-                                 "Please provide the ansible play to generate "
-                                 "the mapping var file (%s):%s "
-                                 % (INPUT, PREFIX, ansible_play, PLAY_DEF, END)
-                                 ) or PLAY_DEF
-        return site, username, password, ca_file, output_file, ansible_play
+
+        while not os.path.isfile(ansible_play_file):
+            ansible_play_file = input("%s%sAnsible play file '%s' does not "
+                                      "exist. Please provide the ansible play "
+                                      "file to generate the mapping var file "
+                                      "(%s): %s" % (INPUT,
+                                                    PREFIX,
+                                                    ansible_play_file,
+                                                    PLAY_DEF,
+                                                    END)
+                                      ) or PLAY_DEF
+            ansible_play_file = os.path.expanduser(ansible_play_file)
+
+        return site, username, password, ca_file, output_file, ansible_play_file
 
 
 class DefaultOption(dict):
