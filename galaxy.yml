@@ -10,5 +10,5 @@ tags:
     - collection
 readme: README.md
 repository: https://github.com/ovirt/ovirt-ansible-collection
-description: The oVirt ansible collection.
+description: The @NAME@ ansible collection.
 homepage: https://www.ovirt.org/
