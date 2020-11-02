@@ -204,7 +204,7 @@ Here is an example how to deploy CFME:
       roles:
         - manageiq
       collections:
-        - ovirt.ovirt
+        - @NAMESPACE@.@NAME@
 ```
 
 Here is an example how to deploy ManageIQ:
@@ -236,7 +236,7 @@ Here is an example how to deploy ManageIQ:
 
 
   roles:
-    - ovirt.manageiq
+    - manageiq
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 ```

@@ -69,5 +69,5 @@ Example Playbook
        state: absent
 
   roles:
-    - ovirt.ovirt.infra.roles.external_providers
+    - @NAMESPACE@.@NAME@.infra.roles.external_providers
 ```

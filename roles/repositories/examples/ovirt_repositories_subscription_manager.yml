@@ -19,4 +19,4 @@
   roles:
     - repositories
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@

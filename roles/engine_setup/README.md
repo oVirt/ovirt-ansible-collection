@@ -103,7 +103,7 @@ Example Playbook
   roles:
     - engine_setup
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 
 
 # Example of RHV setup:
@@ -119,7 +119,7 @@ Example Playbook
   roles:
     - engine_setup
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 
 
 # Example of oVirt setup with engine_configs:
@@ -139,7 +139,7 @@ Example Playbook
   roles:
     - engine_setup
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 
 
 # Example of oVirt engine restore from file with cleanup engine before:
@@ -161,5 +161,7 @@ Example Playbook
       restore-permissions: ''
       provision-all-databases: ''
   roles:
-    - ovirt.engine-setup
+    - engine_setup
+  collections:
+    - @NAMESPACE@.@NAME@
 ```

@@ -47,4 +47,4 @@
   roles:
     - manageiq
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@

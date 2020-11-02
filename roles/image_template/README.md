@@ -88,7 +88,7 @@ Example Playbook
   roles:
     - image_template
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 
 
 - name: Create a template from a disk stored in glance
@@ -114,7 +114,7 @@ Example Playbook
   roles:
     - image_template
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 
 - name: Create a template from qcow2.xz
   hosts: localhost
@@ -149,7 +149,7 @@ Example Playbook
   roles:
     - image_template
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 ```
 
 [![asciicast](https://asciinema.org/a/111478.png)](https://asciinema.org/a/111478)

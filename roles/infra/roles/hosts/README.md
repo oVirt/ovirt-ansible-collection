@@ -37,5 +37,5 @@ Example Playbook
         password: 123456
 
   roles:
-    - ovirt.ovirt.infra.roles.hosts
+    - @NAMESPACE@.@NAME@.infra.roles.hosts
 ```

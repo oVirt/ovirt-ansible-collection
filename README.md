@@ -4,20 +4,6 @@
 oVirt ansible collection
 ====================================
 
-The `ovirt.ovirt` manages all ansible modules of oVirt.
-
-The pypi installation is no longer supported if you want
-to install all dependencies do it manually or install the
-collection from RPM and it will be done automatically.
-
-Note
-----
-Please note that when installing this collection from Ansible Galaxy you are instructed to run following command:
-
-```bash
-$ ansible-galaxy collection install ovirt.ovirt
-```
-
 Requirements
 ------------
 
@@ -25,65 +11,14 @@ Requirements
  * Python SDK version 4.4 or higher
  * Python netaddr library on the ansible controller node
 
-Modules documentation
+Upstream documentation
 --------------
 https://docs.ansible.com/ansible/latest/collections/ovirt/ovirt/index.html
 
-Content of the collection
-----------------
+Downstream documentation
+--------------
+https://cloud.redhat.com/ansible/automation-hub/redhat/rhv
 
-* modules:
-  * ovirt_* - Modules to manage objects in oVirt Engine
-  * ovirt_*_info - Modules to gather information about objects in oVirt Engine
-* roles:
-  * cluster_upgrade
-  * engine_setup
-  * hosted_engine_setup
-  * image_template
-  * infra
-  * manageiq
-  * repositories
-  * shutdown_env
-  * vm_infra
-* inventory plugin
-
-
-Example Playbook
-----------------
-
-```yaml
----
-- name: oVirt ansible collection
-  hosts: localhost
-  connection: local
-  vars_files:
-    # Contains encrypted `engine_password` varibale using ansible-vault
-    - passwords.yml
-  tasks:
-    - block:
-        # The use of ovirt.ovirt before ovirt_auth is to check if the collection is correctly loaded
-        - name: Obtain SSO token with using username/password credentials
-          ovirt.ovirt.ovirt_auth:
-            url: https://ovirt.example.com/ovirt-engine/api
-            username: admin@internal
-            ca_file: ca.pem
-            password: "{{ ovirt_password }}"
-
-        # Previous task generated I(ovirt_auth) fact, which you can later use
-        # in different modules as follows:
-        - ovirt_vm:
-            auth: "{{ ovirt_auth }}"
-            state: absent
-            name: myvm
-
-      always:
-        - name: Always revoke the SSO token
-          ovirt_auth:
-            state: absent
-            ovirt_auth: "{{ ovirt_auth }}"
-  collections:
-    - ovirt.ovirt
-```
 
 Licenses
 -------

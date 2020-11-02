@@ -34,7 +34,7 @@ Example Playbooks
    compatibility_version: 4.4
 
   roles:
-    - ovirt.ovirt.infra.roles.datacenters
+    - @NAMESPACE@.@NAME@.infra.roles.datacenters
 ```
 
 ```yaml
@@ -52,5 +52,5 @@ Example Playbooks
    format_storages: true
 
   roles:
-    - ovirt.ovirt.infra.roles.datacenters
+    - @NAMESPACE@.@NAME@.infra.roles.datacenters
 ```

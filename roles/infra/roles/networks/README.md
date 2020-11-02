@@ -73,5 +73,5 @@ Example Playbook
            boot_protocol: dhcp
 
   roles:
-    - ovirt.ovirt.infra.roles.networks
+    - @NAMESPACE@.@NAME@.infra.roles.networks
 ```

@@ -35,7 +35,7 @@ Example Playbook
   roles:
     - disaster_recovery
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 ```
 
 Generate var file mapping [demo](https://youtu.be/s1-Hq_Mk1w8)

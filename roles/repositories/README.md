@@ -41,7 +41,7 @@ Example Playbook
   roles:
     - repositories
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 
 - vars_files:
     # Contains encrypted `username` and `password` variables using ansible-vault
@@ -63,7 +63,7 @@ Example Playbook
   roles:
     - repositories
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 
 
 - name: Setup repositories using Subscription Manager pool name
@@ -80,5 +80,5 @@ Example Playbook
   roles:
     - repositories
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 ```

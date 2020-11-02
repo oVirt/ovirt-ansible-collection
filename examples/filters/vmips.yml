@@ -16,31 +16,31 @@
       register: vms
     - name: Print VM IP
       debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmip }}"
+        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmip }}"
 
     - name: Print VM all IPs
       debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmips }}"
+        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmips }}"
 
     - name: Print VM IPv4
       debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipv4 }}"
+        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4 }}"
 
     - name: Print VM all IPv4
       debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipsv4 }}"
+        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipsv4 }}"
 
     - name: Print VM all IPv4 from specific network
       debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipsv4(network_ip='192.168.2.0/24') }}"
+        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipsv4(network_ip='192.168.2.0/24') }}"
 
     - name: Print VM IPv6
       debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipv6 }}"
+        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv6 }}"
 
     - name: Print VM all IPv6
       debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipsv6 }}"
+        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipsv6 }}"
 
     # *********************************************************
     # *********************************************************
@@ -52,26 +52,26 @@
     # *********************************************************
     - name: Print VM IP
       debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmip(attr='name') }}"
+        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmip(attr='name') }}"
 
     - name: Print VM all IPs
       debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmips(attr='name') }}"
+        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmips(attr='name') }}"
 
     - name: Print VM IPv4
       debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipv4(attr='name') }}"
+        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4(attr='name') }}"
 
     - name: Print VM all IPv4
       debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipsv4(attr='name') }}"
+        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipsv4(attr='name') }}"
 
     - name: Print VM IPv6
       debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipv6(attr='name') }}"
+        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv6(attr='name') }}"
 
     - name: Print VM all IPv6
       debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipsv6(attr='name') }}"
+        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipsv6(attr='name') }}"
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@

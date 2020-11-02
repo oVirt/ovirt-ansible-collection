@@ -48,7 +48,7 @@
   roles:
     - vm_infra
   collections:
-    - ovirt.ovirt
+    - @NAMESPACE@.@NAME@
 
 
 # This role also creates inventory of created virtual machines it defines if wait_for_ip is set to true
