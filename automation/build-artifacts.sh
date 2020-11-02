@@ -44,6 +44,11 @@ cd $RHV_BUILD
 # Remove the tarball so it will not be included in automation hub build
 rm -rf *.gz
 
+for file in $(find -name "README.md" -type f)
+do
+sed -i -e "s/ovirt\.ovirt/redhat\.rhv/g" -e "s/ovirt\.ovirt/redhat\.rhv/g" $file
+done
+
 # create tar for automation hub
 ansible-galaxy collection build
 
