@@ -25,14 +25,6 @@ Requirements
  * Python SDK version 4.4 or higher
  * Python netaddr library on the ansible controller node
 
-Upstream documentation
---------------
-https://docs.ansible.com/ansible/latest/collections/ovirt/ovirt/index.html
-
-Downstream documentation
---------------
-https://cloud.redhat.com/ansible/automation-hub/redhat/rhv
-
 Content of the collection
 ----------------
 
