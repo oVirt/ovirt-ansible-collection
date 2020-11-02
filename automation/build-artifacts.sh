@@ -30,6 +30,9 @@ yum-builddep $ROOT_PATH/output/*src.rpm
 # Remove the tarball so it will not be included in galaxy build
 mv ./*.gz $ROOT_PATH/exported-artifacts/
 
+# Overwrite github README with dynamic
+mv ./README.md.in ./README.md
+
 # create tar for galaxy
 ansible-galaxy collection build
 
@@ -43,6 +46,9 @@ cd $RHV_BUILD
 
 # Remove the tarball so it will not be included in automation hub build
 rm -rf *.gz
+
+# Overwrite github README with dynamic
+mv ./README.md.in ./README.md
 
 # create tar for automation hub
 ansible-galaxy collection build
