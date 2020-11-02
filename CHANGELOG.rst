@@ -5,6 +5,14 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.2.1
+======
+
+Bugfixes
+--------
+
+- disaster_recovery - Fix multiple configuration issues like paths, "~" support, user input messages, etc. (https://github.com/oVirt/ovirt-ansible-collection/pull/160).
+
 v1.2.0
 ======
 

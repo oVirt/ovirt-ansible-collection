@@ -55,6 +55,10 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Mon Nov 2 2020 Martin Necas <mnecas@redhat.com> - 1.2.1-1
+- Split README for build and GitHub
+- Add ovirt_repositories_disable_gpg_check to repositories
+
 * Tue Oct 27 2020 Martin Necas <mnecas@redhat.com> - 1.2.0-1
 - Fix ovirt_disk ignore moving of hosted engine disks
 - Obsolete old roles
