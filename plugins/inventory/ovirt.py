@@ -126,7 +126,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             'os_type': vm.os.type,
             'template': self.connection.follow_link(vm.template).name,
             'creation_time': str(vm.creation_time),
-            'creation_time_timestamp': vm.creation_time.strftime("%s.%f"),
+            'creation_time_timestamp': float(vm.creation_time.strftime("%s.%f")),
             'tags': [tag.name for tag in tags],
             'affinity_labels': [label.name for label in labels],
             'affinity_groups': [
