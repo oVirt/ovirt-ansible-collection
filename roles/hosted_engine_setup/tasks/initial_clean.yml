@@ -21,6 +21,14 @@
       - /etc/libvirt/qemu-sanlock.conf
       - /etc/sysconfig/libvirtd
     tags: ['skip_ansible_lint']
+  - name: Drop VNC encryption config statements
+    command: >-
+      sed -i
+      '/## beginning of configuration section for VNC encryption/,/##
+      end of configuration section for VNC encryption\+/d' /etc/libvirt/qemu.conf
+    args:
+      warn: false
+    environment: "{{ he_cmd_lang }}"
   - name: Restore initial abrt config files
     copy:
       remote_src: true
