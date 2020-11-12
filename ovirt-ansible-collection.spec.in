@@ -67,6 +67,12 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Thu Nov 12 2020 Martin Perina <mperina@redhat.com> - 1.2.1-1
+- inventory plugin - Fix Python 2 timestamp issue
+- hosted_engine_setup - Clean VNC encryption config
+- RPM packaging - Add Provides to previous oVirt Ansible roles RPMs to
+  minimize upgrade issues
+
 * Mon Nov 2 2020 Martin Necas <mnecas@redhat.com> - 1.2.1-1
 - Split README for build and GitHub
 - Add ovirt_repositories_disable_gpg_check to repositories
