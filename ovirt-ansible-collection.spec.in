@@ -29,6 +29,18 @@ Obsoletes:	ovirt-ansible-roles
 Obsoletes:	ovirt-ansible-shutdown-env
 Obsoletes:	ovirt-ansible-vm-infra
 
+Provides:	ovirt-ansible-cluster-upgrade
+Provides:	ovirt-ansible-disaster-recovery
+Provides:	ovirt-ansible-engine-setup
+Provides:	ovirt-ansible-hosted-engine-setup
+Provides:	ovirt-ansible-image-template
+Provides:	ovirt-ansible-infra
+Provides:	ovirt-ansible-manageiq
+Provides:	ovirt-ansible-repositories
+Provides:	ovirt-ansible-roles
+Provides:	ovirt-ansible-shutdown-env
+Provides:	ovirt-ansible-vm-infra
+
 %description
 This Ansible collection is to manage all ovirt modules and inventory
 
