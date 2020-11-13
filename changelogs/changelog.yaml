@@ -308,3 +308,14 @@ releases:
     fragments:
     - disaster_recovery-fix-configuration-issues.yml
     release_date: '2020-11-02'
+  1.2.2:
+    changes:
+      bugfixes:
+      - hosted_engine_setup - Clean VNC encryption config
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/175/).
+      - inventory plugin - Fix timestamp for Python 2
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/173).
+    fragments:
+    - hosted_engine_setup-clean-vnc-encryption-config.yml
+    - inventory-plugin-fix-python2-timestamp-issue.yml
+    release_date: '2020-11-12'
