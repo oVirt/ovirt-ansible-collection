@@ -67,7 +67,7 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
-* Thu Nov 12 2020 Martin Perina <mperina@redhat.com> - 1.2.1-1
+* Thu Nov 12 2020 Martin Perina <mperina@redhat.com> - 1.2.2-1
 - inventory plugin - Fix Python 2 timestamp issue
 - hosted_engine_setup - Clean VNC encryption config
 - RPM packaging - Add Provides to previous oVirt Ansible roles RPMs to
