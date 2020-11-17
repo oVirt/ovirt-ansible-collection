@@ -343,8 +343,13 @@ during the deployment process. There are 2 ways to do that:
 
 Write ansible playbooks that will run on the engine VM before or after the engine VM installation.
 
-Add the playbooks that will run __before__ the engine setup to
-```hooks/enginevm_before_engine_setup``` and the playbooks that will run __after__ the engine setup to ```hooks/enginevm_after_engine_setup```.
+You can add the playbooks to the following locations:
+
+- ```hooks/enginevm_before_engine_setup```: These will be ran before running engine-setup on the engine machine.
+
+- ```hooks/enginevm_after_engine_setup```: These will be ran after running engine-setup on the engine machine.
+
+- ```hooks/after_add_host```: These will be ran after adding the host to the engine, but before checking if it is up. You can place here playbooks to customize the host, such as configuring required networks, and then activate it, so that deployment will find it as "Up" and continue successfully.
 
 These playbooks will be consumed automatically by the role when you execute it.
 
