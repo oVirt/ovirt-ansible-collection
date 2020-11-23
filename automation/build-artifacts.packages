@@ -1,4 +1,4 @@
-yum-utils
+dnf-utils
 git
 ansible
 python3-voluptuous
