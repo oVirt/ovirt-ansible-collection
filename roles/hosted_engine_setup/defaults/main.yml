@@ -17,6 +17,7 @@ he_local_vm_dir_prefix: localvm
 he_appliance_ova: ''
 he_root_ssh_pubkey: ''
 he_root_ssh_access: 'yes'
+he_apply_repositories_role: false
 he_apply_openscap_profile: false
 he_openscap_profile_name: stig
 he_enable_fips: false
