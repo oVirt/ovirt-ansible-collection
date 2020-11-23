@@ -175,7 +175,7 @@
         set_fact:
           error_description: >-
             {% for event in error_events.ovirt_events | groupby('code') %}
-            {% if event[1][0].host.id == host_id %}
+            {% if 'host' in event[1][0] and 'id' in event[1][0].host and event[1][0].host.id == host_id %}
             code {{ event[0] }}: {{ event[1][0].description }},
             {% endif %}
             {% endfor %}
