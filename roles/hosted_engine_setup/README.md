@@ -41,6 +41,7 @@ Ansible role for deploying oVirt Hosted-Engine
 | he_tcp_t_address | null | hostname to connect if he_network_test is *tcp*  |
 | he_tcp_t_port | null | port to connect if he_network_test is *tcp* |
 | he_pause_host | false | Pause the execution to let the user interactively fix host configuration |
+| he_pause_after_failed_add_host | true | Pause the execution if Add Host failed with status non_operational, to let the user interactively fix host configuration |
 | he_offline_deployment | false | If `True`, updates for all packages will be disabled |
 | he_additional_package_list | [] | List of additional packages to be installed on engine VM apart from ovirt-engine package |
 | he_debug_mode | false | If `True`, HE deployment will execute additional tasks for debug |
@@ -360,6 +361,10 @@ To make manual adjustments you can set the variable ```he_pause_host``` to true.
 In order to proceed with the deployment, before deleting the lock-file, make sure that the host is on 'up' state at the engine's URL.
 
 Both of the lock-file path and the engine's URL will be presented during the role execution.
+
+**On Failure**
+
+If "Add Host" failed and left the host in status "non_operational", by default the deployment will be paused, similarly to "Manual" above, so that the user can try to fix the host to get it to "up" state, before removing the lock file and continuing. If you want the process to fail instead of pausing, set `he_pause_after_failed_add_host` to false.
 
 Demo
 ----

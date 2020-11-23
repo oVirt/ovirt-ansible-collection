@@ -161,6 +161,69 @@
       msg: >-
         Host is not up, please check logs, perhaps also on the engine machine
     when: host_result_up_check is failed
+
+  - name: Emit error messages about the failure
+    block:
+      - set_fact: host_id={{ host_result_up_check.ovirt_hosts[0].id }}
+      - name: Collect error events from the Engine
+        ovirt_event_info:
+          auth: "{{ ovirt_auth }}"
+          search: "severity>=warning"
+        register: error_events
+
+      - name: Generate the error message from the engine events
+        set_fact:
+          error_description: >-
+            {% for event in error_events.ovirt_events | groupby('code') %}
+            {% if event[1][0].host.id == host_id %}
+            code {{ event[0] }}: {{ event[1][0].description }},
+            {% endif %}
+            {% endfor %}
+        ignore_errors: true
+
+      - name: Notify with error description
+        debug:
+          msg: >-
+            The host has been set in non_operational status,
+            deployment errors: {{ error_description }}
+        when: error_description is defined
+
+      - name: Notify with generic error
+        debug:
+          msg: >-
+            The host has been set in non_operational status,
+            please check engine logs,
+            more info can be found in the engine logs.
+        when: error_description is not defined
+    when: >-
+      host_result_up_check is succeeded and
+      host_result_up_check.ovirt_hosts|length >= 1 and
+      host_result_up_check.ovirt_hosts[0].status == 'non_operational'
+
+  - name: Pause the execution to let the user interactively reconfigure the host
+    block:
+      - name: Let the user connect to the bootstrap engine to manually fix host configuration
+        debug:
+          msg: >-
+            You can now connect to {{ bootstrap_engine_url }} and check the status of this host and
+            eventually remediate it, please continue only when the host is listed as 'up'
+      - include_tasks: pause_execution.yml
+    when: >-
+      he_pause_after_failed_add_host|bool and
+      host_result_up_check is succeeded and
+      host_result_up_check.ovirt_hosts|length >= 1 and
+      host_result_up_check.ovirt_hosts[0].status == 'non_operational'
+
+  # refresh the auth token after a long operation to avoid having it expired
+  - include_tasks: auth_revoke.yml
+  - include_tasks: auth_sso.yml
+  - name: Check if the host is up
+    ovirt_host_info:
+      pattern: name={{ he_host_name }}
+      auth: "{{ ovirt_auth }}"
+    register: host_result_up_check
+    ignore_errors: true
+
   - name: Handle deployment failure
     block:
       - set_fact: host_id={{ host_result_up_check.ovirt_hosts[0].id }}
