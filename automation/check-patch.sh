@@ -1,1 +1,1 @@
-./automation/build-artifacts.sh
+build-artifacts.sh
