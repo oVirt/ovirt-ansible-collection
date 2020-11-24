@@ -350,7 +350,7 @@ You can add the playbooks to the following locations:
 
 - ```hooks/enginevm_after_engine_setup```: These will be ran after running engine-setup on the engine machine.
 
-- ```hooks/after_add_host```: These will be ran after adding the host to the engine, but before checking if it is up. You can place here playbooks to customize the host, such as configuring required networks, and then activate it, so that deployment will find it as "Up" and continue successfully.
+- ```hooks/after_add_host```: These will be ran after adding the host to the engine, but before checking if it is up. You can place here playbooks to customize the host, such as configuring required networks, and then activate it, so that deployment will find it as "Up" and continue successfully. See examples/required_networks_fix.yml for an example.
 
 These playbooks will be consumed automatically by the role when you execute it.
 
