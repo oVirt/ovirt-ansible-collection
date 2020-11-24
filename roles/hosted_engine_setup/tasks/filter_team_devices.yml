@@ -27,7 +27,7 @@
     otopi_host_net: "{{ host_net | difference(team_if) }}"
   register: otopi_host_net
 - debug: var=otopi_host_net
-- name: Failed if only teaming devices are availible
+- name: Failed if only teaming devices are available
   fail:
     msg: >-
       Only Team devices {{ team_if | join(', ') }} are present.
