@@ -49,6 +49,7 @@ he_force_ip4: false
 he_force_ip6: false
 
 he_pause_host: false
+he_pause_after_failed_add_host: true
 he_debug_mode: false
 
 ## Mandatory variables:

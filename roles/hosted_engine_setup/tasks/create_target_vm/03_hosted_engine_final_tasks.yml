@@ -366,7 +366,7 @@
         fail:
           msg: The engine failed to start inside the engine VM; please check engine.log.
   - name: Get target engine VM address
-    shell: getent {{ ip_key }} {{ he_fqdn }} | cut -d' ' -f1 | uniq
+    shell: getent {{ ip_key }} {{ he_fqdn }} | cut -d ' ' -f1 | uniq
     environment: "{{ he_cmd_lang }}"
     register: engine_vm_ip
     when: engine_vm_ip is not defined

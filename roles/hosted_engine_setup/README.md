@@ -41,6 +41,7 @@ Ansible role for deploying oVirt Hosted-Engine
 | he_tcp_t_address | null | hostname to connect if he_network_test is *tcp*  |
 | he_tcp_t_port | null | port to connect if he_network_test is *tcp* |
 | he_pause_host | false | Pause the execution to let the user interactively fix host configuration |
+| he_pause_after_failed_add_host | true | Pause the execution if Add Host failed with status non_operational, to let the user interactively fix host configuration |
 | he_offline_deployment | false | If `True`, updates for all packages will be disabled |
 | he_additional_package_list | [] | List of additional packages to be installed on engine VM apart from ovirt-engine package |
 | he_debug_mode | false | If `True`, HE deployment will execute additional tasks for debug |
@@ -343,8 +344,13 @@ during the deployment process. There are 2 ways to do that:
 
 Write ansible playbooks that will run on the engine VM before or after the engine VM installation.
 
-Add the playbooks that will run __before__ the engine setup to
-```hooks/enginevm_before_engine_setup``` and the playbooks that will run __after__ the engine setup to ```hooks/enginevm_after_engine_setup```.
+You can add the playbooks to the following locations:
+
+- ```hooks/enginevm_before_engine_setup```: These will be ran before running engine-setup on the engine machine.
+
+- ```hooks/enginevm_after_engine_setup```: These will be ran after running engine-setup on the engine machine.
+
+- ```hooks/after_add_host```: These will be ran after adding the host to the engine, but before checking if it is up. You can place here playbooks to customize the host, such as configuring required networks, and then activate it, so that deployment will find it as "Up" and continue successfully. See examples/required_networks_fix.yml for an example.
 
 These playbooks will be consumed automatically by the role when you execute it.
 
@@ -355,6 +361,10 @@ To make manual adjustments you can set the variable ```he_pause_host``` to true.
 In order to proceed with the deployment, before deleting the lock-file, make sure that the host is on 'up' state at the engine's URL.
 
 Both of the lock-file path and the engine's URL will be presented during the role execution.
+
+**On Failure**
+
+If "Add Host" failed and left the host in status "non_operational", by default the deployment will be paused, similarly to "Manual" above, so that the user can try to fix the host to get it to "up" state, before removing the lock file and continuing. If you want the process to fail instead of pausing, set `he_pause_after_failed_add_host` to false.
 
 Demo
 ----
