@@ -17,3 +17,4 @@
 
 - name: Run restore engine from backup file
   command: "{{ restore_cmd }}"
+  changed_when: true
