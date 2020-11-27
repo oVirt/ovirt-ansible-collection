@@ -55,7 +55,7 @@
     when: he_dwh_db_password is defined
   - name: Setup Repositories on Local VM
     import_role:
-      name: ovirt.ovirt.repositories
+      name: @NAMESPACE@.@NAME@.repositories
     when: he_apply_repositories_role|bool
   - name: Enable security policy
     block:
