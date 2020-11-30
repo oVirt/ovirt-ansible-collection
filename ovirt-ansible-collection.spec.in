@@ -67,6 +67,10 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Mon Nov 30 2020 Martin Necas <mnecas@redhat.com> - 1.2.3-1
+- Add hosted_engine_setup after_add_host hook
+- Add engine_setup restore files
+
 * Thu Nov 12 2020 Martin Perina <mperina@redhat.com> - 1.2.2-1
 - inventory plugin - Fix Python 2 timestamp issue
 - hosted_engine_setup - Clean VNC encryption config

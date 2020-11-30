@@ -4,14 +4,24 @@ ovirt.ovirt Release Notes
 
 .. contents:: Topics
 
+
+v1.2.3
+======
+
+Minor Changes
+-------------
+
+- engine_setup - Add missing restore task file and vars file (https://github.com/oVirt/ovirt-ansible-collection/pull/180).
+- hosted_engine_setup - Add after_add_host hook (https://github.com/oVirt/ovirt-ansible-collection/pull/181).
+
 v1.2.2
 ======
 
 Bugfixes
 --------
-- inventory plugin - Fix Python 2 timestamp issue (https://github.com/oVirt/ovirt-ansible-collection/pull/173).
-- hosted_engine_setup - Clean VNC encryption config (https://github.com/oVirt/ovirt-ansible-collection/pull/175).
-- RPM packaging - Add Provides to previous oVirt Ansible roles RPMs to minimize upgrade issues (https://github.com/oVirt/ovirt-ansible-collection/pull/177).
+
+- hosted_engine_setup - Clean VNC encryption config (https://github.com/oVirt/ovirt-ansible-collection/pull/175/).
+- inventory plugin - Fix timestamp for Python 2 (https://github.com/oVirt/ovirt-ansible-collection/pull/173).
 
 v1.2.1
 ======
