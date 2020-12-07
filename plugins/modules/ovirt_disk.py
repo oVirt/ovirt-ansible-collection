@@ -360,10 +360,10 @@ disk_attachment:
 
 import json
 import os
-import time
-import traceback
 import ssl
 import subprocess
+import time
+import traceback
 
 from ansible.module_utils.six.moves.http_client import HTTPSConnection, IncompleteRead
 from ansible.module_utils.six.moves.urllib.parse import urlparse
