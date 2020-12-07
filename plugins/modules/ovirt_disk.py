@@ -358,11 +358,11 @@ disk_attachment:
     type: dict
 '''
 
+import json
 import os
 import time
 import traceback
 import ssl
-import json
 import subprocess
 
 from ansible.module_utils.six.moves.http_client import HTTPSConnection, IncompleteRead
@@ -597,7 +597,6 @@ class DisksModule(BaseModule):
             out = subprocess.check_output([
                 'qemu-img',
                 'measure',
-                '-f', 'qcow2' if self._module.params.get('format') == 'cow' else 'raw',
                 '-O', 'qcow2' if self._module.params.get('format') == 'cow' else 'raw',
                 '--output', 'json',
                 self._module.params['upload_image_path']
