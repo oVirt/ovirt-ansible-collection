@@ -35,7 +35,7 @@
     environment: "{{ he_cmd_lang }}"
     changed_when: true
     register: ovf_store_status
-    retries: 60
+    retries: 120
     delay: 10
     until: >-
       ovf_store_status.rc == 0 and ovf_store_status.stdout|from_json|@NAMESPACE@.@NAME@.json_query('status') == 'OK' and
