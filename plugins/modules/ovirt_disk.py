@@ -358,10 +358,12 @@ disk_attachment:
     type: dict
 '''
 
+import json
 import os
+import ssl
+import subprocess
 import time
 import traceback
-import ssl
 
 from ansible.module_utils.six.moves.http_client import HTTPSConnection, IncompleteRead
 from ansible.module_utils.six.moves.urllib.parse import urlparse
@@ -538,7 +540,10 @@ class DisksModule(BaseModule):
         logical_unit = self._module.params.get('logical_unit')
         size = convert_to_bytes(self._module.params.get('size'))
         if not size and self._module.params.get('upload_image_path'):
-            size = os.path.getsize(self._module.params.get('upload_image_path'))
+            out = subprocess.check_output(
+                ["qemu-img", "info", "--output", "json", self._module.params.get('upload_image_path')])
+            image_info = json.loads(out)
+            size = image_info["virtual-size"]
         disk = otypes.Disk(
             id=self._module.params.get('id'),
             name=self._module.params.get('name'),
@@ -589,7 +594,15 @@ class DisksModule(BaseModule):
             ) if logical_unit else None,
         )
         if hasattr(disk, 'initial_size') and self._module.params['upload_image_path']:
-            disk.initial_size = size
+            out = subprocess.check_output([
+                'qemu-img',
+                'measure',
+                '-O', 'qcow2' if self._module.params.get('format') == 'cow' else 'raw',
+                '--output', 'json',
+                self._module.params['upload_image_path']
+            ])
+            measure = json.loads(out)
+            disk.initial_size = measure["required"]
 
         return disk
 
