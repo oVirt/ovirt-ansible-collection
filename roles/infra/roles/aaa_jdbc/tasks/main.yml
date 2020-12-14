@@ -56,6 +56,7 @@
   with_items:
     - "{{ users | default([]) }}"
   register: out_users
+  when: "item.password is defined"
   changed_when: "out_users.rc != 1"
   failed_when: "out_users.rc != 1 and out_users.rc != 0"
   tags:
