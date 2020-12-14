@@ -5,6 +5,16 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.2.4
+======
+
+Minor Changes
+-------------
+
+- infra - don't require passowrd for user (https://github.com/oVirt/ovirt-ansible-collection/pull/195).
+- inventory - correct os_type name (https://github.com/oVirt/ovirt-ansible-collection/pull/194).
+- ovirt_disk - automatically detect virtual size of qcow image (https://github.com/oVirt/ovirt-ansible-collection/pull/183).
+
 v1.2.3
 ======
 

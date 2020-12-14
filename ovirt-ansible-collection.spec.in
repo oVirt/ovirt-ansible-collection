@@ -68,6 +68,11 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Mon Dec 14 2020 Martin Necas <mnecas@redhat.com> - 1.2.4-1
+- infra - Allow remove of user without password
+- inventory plugin - Correct os_type name
+- ovirt_disk - automatically detect virtual size of qcow image
+
 * Mon Nov 30 2020 Martin Necas <mnecas@redhat.com> - 1.2.3-1
 - Add hosted_engine_setup after_add_host hook
 - Add engine_setup restore files
