@@ -123,7 +123,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             'status': str(vm.status),
             'description': vm.description,
             'fqdn': vm.fqdn,
-            'os_type': vm.os.type,
+            'os': vm.os.type,
             'template': self.connection.follow_link(vm.template).name,
             'creation_time': str(vm.creation_time),
             'creation_time_timestamp': float(vm.creation_time.strftime("%s.%f")),
