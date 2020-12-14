@@ -326,3 +326,14 @@ releases:
     - engine_setup-add-missing-restore-file.yml
     - he_add-after_add_host-hook.yml
     release_date: '2020-11-30'
+  1.2.4:
+    changes:
+      minor_changes:
+      - infra - don't require passowrd for user (https://github.com/oVirt/ovirt-ansible-collection/pull/195).
+      - inventory - correct os_type name (https://github.com/oVirt/ovirt-ansible-collection/pull/194).
+      - ovirt_disk - automatically detect virtual size of qcow image (https://github.com/oVirt/ovirt-ansible-collection/pull/183).
+    fragments:
+    - 183-ovirt_disk-fix-upload-detection.yml
+    - 194-inventory-correct-name-of-os_type.yml
+    - 195-infra-dont-require-password-for-user.yml
+    release_date: '2020-12-14'
