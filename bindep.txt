@@ -1,3 +1,4 @@
+libcurl-devel [platform:rpm compile]
 libxml2-devel [platform:rpm compile]
 python3-pycurl [platform:rpm]
 python3-netaddr [platform:rpm]
