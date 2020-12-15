@@ -1,3 +1,4 @@
+gcc [platform:rpm compile]
 libcurl-devel [platform:rpm compile]
 libxml2-devel [platform:rpm compile]
 python3-pycurl [platform:rpm]
