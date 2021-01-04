@@ -244,10 +244,11 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
 def get_bond_options(mode, usr_opts):
     MIIMON_100 = dict(miimon='100')
     DEFAULT_MODE_OPTS = {
+        '0': MIIMON_100,
         '1': MIIMON_100,
         '2': MIIMON_100,
         '3': MIIMON_100,
-        '4': dict(xmit_hash_policy='2', **MIIMON_100)
+        '4': dict(xmit_hash_policy='2')
     }
 
     options = []
@@ -264,6 +265,8 @@ def get_bond_options(mode, usr_opts):
             'Load balance (balance-xor)',
             None,
             'Dynamic link aggregation (802.3ad)',
+            'Adaptive transmit load balancing (balance-tlb)',
+            None,
         ]
         if (not 0 < mode_number <= len(modes)):
             return None
