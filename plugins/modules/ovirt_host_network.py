@@ -242,15 +242,6 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
 
 
 def get_bond_options(mode, usr_opts):
-    MIIMON_100 = dict(miimon='100')
-    DEFAULT_MODE_OPTS = {
-        '0': MIIMON_100,
-        '1': MIIMON_100,
-        '2': MIIMON_100,
-        '3': MIIMON_100,
-        '4': dict(xmit_hash_policy='2')
-    }
-
     options = []
     if mode is None:
         return options
@@ -284,8 +275,12 @@ def get_bond_options(mode, usr_opts):
             value=str(mode_number)
         )
     )
+    opts_dict = {}
+    if mode == 4:
+        opts_dict = dict(xmit_hash_policy='2')
+    elif mode < 4:
+        opts_dict = dict(miimon='100')
 
-    opts_dict = DEFAULT_MODE_OPTS.get(str(mode), {})
     if usr_opts is not None:
         opts_dict.update(**usr_opts)
 
