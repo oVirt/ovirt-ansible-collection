@@ -25,6 +25,5 @@
   ignore_errors: true
   changed_when: true
   with_items:
-    - /var/log/ovirt-engine
-    - /var/log/messages
+    - /var/log
   when: local_vm_disk_path is defined
