@@ -1,0 +1,117 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+# Copyright (c) 2016 Red Hat, Inc.
+#
+# This file is part of Ansible
+#
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
+
+DOCUMENTATION = '''
+---
+module: ovirt_system_options_info
+short_description: Retrieve information about one oVirt/RHV system option.
+version_added: "1.3.0"
+author: "Martin Necas (@mnecas)"
+description:
+    - "Retrieve information about one or more oVirt/RHV system options."
+notes:
+    - "This module returns a variable C(ovirt_system_options_info), which
+       contains a list of system options. You need to register the result with
+       the I(register) keyword to use it."
+options:
+    name:
+        description:
+            - "Name of system option profile."
+        type: str
+    version:
+        description:
+            - "The version of the option."
+        type: str
+extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
+'''
+
+EXAMPLES = '''
+# Examples don't contain auth parameter for simplicity,
+# look at ovirt_auth module to see how to reuse authentication:
+
+- @NAMESPACE@.@NAME@.ovirt_system_options_info:
+    name: "ServerCPUList"
+    version: "4.4"
+  register: result
+- ansible.builtin.debug:
+    msg: "{{ result.ovirt_system_options }}"
+'''
+
+RETURN = '''
+ovirt_system_options:
+    description: "Dictionary describing the system option. Option attributes are mapped to dictionary keys,
+                  all option attributes can be found at following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/system_option."
+    returned: On success.
+    type: list
+'''
+
+import traceback
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+    check_sdk,
+    create_connection,
+    get_dict_of_struct,
+    ovirt_info_full_argument_spec,
+)
+
+
+def main():
+    argument_spec = ovirt_info_full_argument_spec(
+        name=dict(default=None),
+        version=dict(default=None),
+    )
+    module = AnsibleModule(argument_spec)
+    check_sdk(module)
+
+    try:
+        auth = module.params.pop('auth')
+        connection = create_connection(auth)
+        options_service = connection.system_service().options_service()
+        option_service = options_service.option_service(module.params.get('name'))
+
+        try:
+            option = option_service.get(version=module.params.get('version'))
+        except Exception as e:
+            if str(e) == "HTTP response code is 404.":
+                raise ValueError("Could not find the option with name '{}'".format(module.params.get('name')))
+            raise Exception("Unexpected error: '{}'".format(e))
+
+        result = dict(
+            ovirt_system_options = get_dict_of_struct(
+                struct=option,
+                connection=connection,
+                fetch_nested=module.params.get('fetch_nested'),
+                attributes=module.params.get('nested_attributes'),
+            ),
+        )
+        module.exit_json(changed=False, **result)
+    except Exception as e:
+        module.fail_json(msg=str(e), exception=traceback.format_exc())
+    finally:
+        connection.close(logout=auth.get('token') is None)
+
+
+if __name__ == '__main__':
+    main()
