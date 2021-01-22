@@ -89,17 +89,18 @@ def main():
         auth = module.params.pop('auth')
         connection = create_connection(auth)
         options_service = connection.system_service().options_service()
+        raise Exception(options_service.list())
         option_service = options_service.option_service(module.params.get('name'))
 
         try:
             option = option_service.get(version=module.params.get('version'))
         except Exception as e:
             if str(e) == "HTTP response code is 404.":
-                raise ValueError("Could not find the option with name '{}'".format(module.params.get('name')))
-            raise Exception("Unexpected error: '{}'".format(e))
+                raise ValueError("Could not find the option with name '{0}'".format(module.params.get('name')))
+            raise Exception("Unexpected error: '{0}'".format(e))
 
         result = dict(
-            ovirt_system_option = get_dict_of_struct(
+            ovirt_system_option=get_dict_of_struct(
                 struct=option,
                 connection=connection,
                 fetch_nested=module.params.get('fetch_nested'),
