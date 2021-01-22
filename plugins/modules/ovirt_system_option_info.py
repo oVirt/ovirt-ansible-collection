@@ -89,7 +89,6 @@ def main():
         auth = module.params.pop('auth')
         connection = create_connection(auth)
         options_service = connection.system_service().options_service()
-        raise Exception(options_service.list())
         option_service = options_service.option_service(module.params.get('name'))
 
         try:
