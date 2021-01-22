@@ -24,15 +24,15 @@ __metaclass__ = type
 
 DOCUMENTATION = '''
 ---
-module: ovirt_system_options_info
-short_description: Retrieve information about one oVirt/RHV system option.
+module: ovirt_system_option_info
+short_description: Retrieve information about one oVirt/RHV system options.
 version_added: "1.3.0"
 author: "Martin Necas (@mnecas)"
 description:
     - "Retrieve information about one or more oVirt/RHV system options."
 notes:
-    - "This module returns a variable C(ovirt_system_options_info), which
-       contains a list of system options. You need to register the result with
+    - "This module returns a variable C(ovirt_system_option_info), which
+       contains a list of system option. You need to register the result with
        the I(register) keyword to use it."
 options:
     name:
@@ -50,16 +50,16 @@ EXAMPLES = '''
 # Examples don't contain auth parameter for simplicity,
 # look at ovirt_auth module to see how to reuse authentication:
 
-- @NAMESPACE@.@NAME@.ovirt_system_options_info:
+- @NAMESPACE@.@NAME@.ovirt_system_option_info:
     name: "ServerCPUList"
     version: "4.4"
   register: result
 - ansible.builtin.debug:
-    msg: "{{ result.ovirt_system_options }}"
+    msg: "{{ result.ovirt_system_option }}"
 '''
 
 RETURN = '''
-ovirt_system_options:
+ovirt_system_option:
     description: "Dictionary describing the system option. Option attributes are mapped to dictionary keys,
                   all option attributes can be found at following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/system_option."
     returned: On success.
@@ -99,7 +99,7 @@ def main():
             raise Exception("Unexpected error: '{}'".format(e))
 
         result = dict(
-            ovirt_system_options = get_dict_of_struct(
+            ovirt_system_option = get_dict_of_struct(
                 struct=option,
                 connection=connection,
                 fetch_nested=module.params.get('fetch_nested'),
