@@ -53,13 +53,12 @@
         {{ cluster_version.major }}.{{ cluster_version.minor }}"
       validate_certs: false
       force_basic_auth: true
-      user: admin@internal
-      password: "{{ he_admin_password }}"
       method: GET
       return_content: true
       status_code: 200
       headers:
         Accept: application/json
+        Authorization: "Basic {{ ('admin@internal' + ':' +  he_admin_password ) | b64encode }}"
     no_log: true
     register: server_cpu_list
   - debug: var=server_cpu_list
