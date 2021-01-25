@@ -29,15 +29,15 @@ short_description: Retrieve information about one oVirt/RHV system options.
 version_added: "1.3.0"
 author: "Martin Necas (@mnecas)"
 description:
-    - "Retrieve information about one or more oVirt/RHV system options."
+    - "Retrieve information about one oVirt/RHV system options."
 notes:
     - "This module returns a variable C(ovirt_system_option_info), which
-       contains a list of system option. You need to register the result with
+       contains a dict of system option. You need to register the result with
        the I(register) keyword to use it."
 options:
     name:
         description:
-            - "Name of system option profile."
+            - "Name of system option."
         type: str
     version:
         description:
@@ -63,7 +63,7 @@ ovirt_system_option:
     description: "Dictionary describing the system option. Option attributes are mapped to dictionary keys,
                   all option attributes can be found at following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/system_option."
     returned: On success.
-    type: list
+    type: dict
 '''
 
 import traceback
