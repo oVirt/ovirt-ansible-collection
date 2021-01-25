@@ -17,6 +17,7 @@ author:
 - "Martin Necas (@mnecas)"
 description:
     - "Module to manage Virtual Machine and floating disks in oVirt/RHV."
+    - "WARNING: If you are installing the collection from ansible galaxy you need to install 'qemu-img' package."
 options:
     id:
         description:
