@@ -45,40 +45,18 @@
       cluster_version: >-
         {{ cluster_facts.ovirt_clusters|selectattr('id', 'match', '^'+cluster_id+'$')|
         map(attribute='version')|list|first }}
-  # TODO: use a proper ansible module for this once available
-  - name: Get server CPU list via REST API
-    uri:
-      url:
-        "https://{{ he_fqdn }}/ovirt-engine/api/options/ServerCPUList?version=\
-        {{ cluster_version.major }}.{{ cluster_version.minor }}"
-      validate_certs: false
-      force_basic_auth: true
-      user: admin@internal
-      password: "{{ he_admin_password }}"
-      method: GET
-      return_content: true
-      status_code: 200
-      headers:
-        Accept: application/json
-    no_log: true
+  - name: Get server CPU list
+    ovirt_system_option_info:
+      auth: "{{ ovirt_auth }}"
+      name: ServerCPUList
+      version: "{{ cluster_version.major }}.{{ cluster_version.minor }}"
     register: server_cpu_list
   - debug: var=server_cpu_list
-  # TODO: use a proper ansible module for this once available
-  - name: Get cluster emulated machine list via REST API
-    uri:
-      url:
-        "https://{{ he_fqdn }}/ovirt-engine/api/options/ClusterEmulatedMachines?version=\
-        {{ cluster_version.major }}.{{ cluster_version.minor }}"
-      validate_certs: false
-      force_basic_auth: true
-      user: admin@internal
-      password: "{{ he_admin_password }}"
-      method: GET
-      return_content: true
-      status_code: 200
-      headers:
-        Accept: application/json
-    no_log: true
+  - name: Get cluster emulated machine list
+    ovirt_system_option_info:
+      name: ClusterEmulatedMachines
+      auth: "{{ ovirt_auth }}"
+      version: "{{ cluster_version.major }}.{{ cluster_version.minor }}"
     register: emulated_machine_list
   - name: Prepare for parsing server CPU list
     set_fact:
@@ -87,7 +65,7 @@
     set_fact:
       server_cpu_dict: "{{ server_cpu_dict | combine({item.split(':')[1]: item.split(':')[3]}) }}"
     with_items: >-
-      {{ server_cpu_list.json['values']['system_option_value'][0]['value'].split('; ')|list|difference(['']) }}
+      {{ server_cpu_list['ovirt_system_option']['values'][0]['value'].split('; ')|list|difference(['']) }}
   - debug: var=server_cpu_dict
   - name: Convert CPU model name
     set_fact:
@@ -95,9 +73,9 @@
   - debug: var=cluster_cpu_model
   - name: Parse emulated_machine
     set_fact:
-      emulated_machine:
-        emulated_machine_list.json['values']['system_option_value'][0]['value'].replace(
-        '[','').replace(']','').split(', ')|first
+      emulated_machine: >-
+        {{ emulated_machine_list['ovirt_system_option']['values'][0]['value'].replace(
+        '[','').replace(']','').split(', ')|first }}
   - name: Get storage domain details
     ovirt_storage_domain_info:
       pattern: name={{ he_storage_domain_name }} and datacenter={{ datacenter_name }}
