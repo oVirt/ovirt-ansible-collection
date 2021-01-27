@@ -374,7 +374,7 @@ def wait(
 def __get_auth_dict():
     return dict(
         type='dict',
-        required=True,
+        apply_defaults=True,
         options=dict(
             url=dict(
                 type='str',
@@ -383,7 +383,7 @@ def __get_auth_dict():
             hostname=dict(
                 type='str',
                 fallback=(env_fallback, ['OVIRT_HOSTNAME']),
-            )
+            ),
             username=dict(
                 type='str',
                 fallback=(env_fallback, ['OVIRT_USERNAME']),
