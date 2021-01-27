@@ -30,6 +30,7 @@ from datetime import datetime
 from distutils.version import LooseVersion
 
 from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.cloud import CloudRetry
+from ansible.module_utils.basic import env_fallback
 from ansible.module_utils.common._collections_compat import Mapping
 
 try:
@@ -371,32 +372,44 @@ def wait(
 
 
 def __get_auth_dict():
-    OVIRT_URL = os.environ.get('OVIRT_URL')
-    OVIRT_HOSTNAME = os.environ.get('OVIRT_HOSTNAME')
-    OVIRT_USERNAME = os.environ.get('OVIRT_USERNAME')
-    OVIRT_PASSWORD = os.environ.get('OVIRT_PASSWORD')
-    OVIRT_TOKEN = os.environ.get('OVIRT_TOKEN')
-    OVIRT_CAFILE = os.environ.get('OVIRT_CAFILE')
-    OVIRT_INSECURE = OVIRT_CAFILE is None
-
-    env_vars = None
-    if OVIRT_URL is None and OVIRT_HOSTNAME is not None:
-        OVIRT_URL = 'https://{0}/ovirt-engine/api'.format(OVIRT_HOSTNAME)
-    if OVIRT_URL and ((OVIRT_USERNAME and OVIRT_PASSWORD) or OVIRT_TOKEN):
-        env_vars = {
-            'url': OVIRT_URL,
-            'username': OVIRT_USERNAME,
-            'password': OVIRT_PASSWORD,
-            'insecure': OVIRT_INSECURE,
-            'token': OVIRT_TOKEN,
-            'ca_file': OVIRT_CAFILE,
-        }
-    if env_vars is not None:
-        auth = dict(default=env_vars, type='dict')
-    else:
-        auth = dict(required=True, type='dict')
-
-    return auth
+    return dict(
+        type='dict',
+        required=True,
+        options=dict(
+            url=dict(
+                type='str',
+                fallback=(env_fallback, ['OVIRT_URL']),
+            ),
+            hostname=dict(
+                type='str',
+                fallback=(env_fallback, ['OVIRT_HOSTNAME']),
+            )
+            username=dict(
+                type='str',
+                fallback=(env_fallback, ['OVIRT_USERNAME']),
+            ),
+            password=dict(
+                type='str',
+                fallback=(env_fallback, ['OVIRT_PASSWORD']),
+                no_log=True,
+            ),
+            insecure=dict(
+                type='bool',
+                default=False,
+            ),
+            token=dict(
+                type='str',
+                fallback=(env_fallback, ['OVIRT_TOKEN']),
+                no_log=True,
+            ),
+            ca_file=dict(
+                type='str',
+                fallback=(env_fallback, ['OVIRT_CAFILE']),
+            ),
+            kerberos=dict(type='bool'),
+            headers=dict(type='dict')
+        )
+    )
 
 
 def ovirt_info_full_argument_spec(**kwargs):

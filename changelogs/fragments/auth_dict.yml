@@ -1,0 +1,3 @@
+bugfixes:
+- Set ``auth`` options into argument spec definition so Ansible will validate the user options
+- Set ``no_log`` on ``password`` and ``token`` in the ``auth`` dict so the values are exposed in the invocation log
