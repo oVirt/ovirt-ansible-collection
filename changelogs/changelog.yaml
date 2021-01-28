@@ -337,3 +337,21 @@ releases:
     - 194-inventory-correct-name-of-os_type.yml
     - 195-infra-dont-require-password-for-user.yml
     release_date: '2020-12-14'
+  1.3.0:
+    changes:
+      major_changes:
+      - ovirt_system_option_info - Add new module (https://github.com/oVirt/ovirt-ansible-collection/pull/206).
+      minor_changes:
+      - ansible-builder - Update bindep (https://github.com/oVirt/ovirt-ansible-collection/pull/197).
+      - hosted_engine_setup - Collect all engine /var/log (https://github.com/oVirt/ovirt-ansible-collection/pull/202).
+      - hosted_engine_setup - Use ovirt_system_option_info instead of REST API (https://github.com/oVirt/ovirt-ansible-collection/pull/209).
+      - ovirt_disk - Add install warning (https://github.com/oVirt/ovirt-ansible-collection/pull/208).
+      - ovirt_info - Fragment add auth suboptions to documentation (https://github.com/oVirt/ovirt-ansible-collection/pull/205).
+    fragments:
+    - 197-update-bindep.yml
+    - 202-hosted_engine_setup-collect-all-engine-log.yml
+    - 205-ovirt_info-fragment-add-auth-suboptions-docs.yml
+    - 206-add-ovirt_system_option_info.yml
+    - 208-ovirt_disk-add-install-warning.yml
+    - 209-hosted_engine_setup-use-ovirt_system_option_info.yml
+    release_date: '2021-01-28'
