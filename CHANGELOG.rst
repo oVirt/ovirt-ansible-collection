@@ -5,6 +5,23 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.3.0
+======
+
+Major Changes
+-------------
+
+- ovirt_system_option_info - Add new module (https://github.com/oVirt/ovirt-ansible-collection/pull/206).
+
+Minor Changes
+-------------
+
+- ansible-builder - Update bindep (https://github.com/oVirt/ovirt-ansible-collection/pull/197).
+- hosted_engine_setup - Collect all engine /var/log (https://github.com/oVirt/ovirt-ansible-collection/pull/202).
+- hosted_engine_setup - Use ovirt_system_option_info instead of REST API (https://github.com/oVirt/ovirt-ansible-collection/pull/209).
+- ovirt_disk - Add install warning (https://github.com/oVirt/ovirt-ansible-collection/pull/208).
+- ovirt_info - Fragment add auth suboptions to documentation (https://github.com/oVirt/ovirt-ansible-collection/pull/205).
+
 v1.2.4
 ======
 
