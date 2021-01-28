@@ -68,7 +68,7 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
-* Thu Jan 28 2020 Martin Necas <mnecas@redhat.com> - 1.3.0-1
+* Thu Jan 28 2021 Martin Necas <mnecas@redhat.com> - 1.3.0-1
 - ovirt_system_option_info - Add new module
 - ansible-builder - Update bindep
 - hosted_engine_setup - Collect all engine /var/log
