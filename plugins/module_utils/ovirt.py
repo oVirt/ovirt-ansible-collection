@@ -375,6 +375,7 @@ def __get_auth_dict():
     return dict(
         type='dict',
         apply_defaults=True,
+        required_one_of=[['hostname', 'url']],
         options=dict(
             url=dict(
                 type='str',
