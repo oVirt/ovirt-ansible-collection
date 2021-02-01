@@ -112,12 +112,6 @@ def _login(host_service, iscsi):
     )
 
 
-def _get_storage_type(params):
-    for sd_type in ['iscsi', 'fcp']:
-        if params.get(sd_type) is not None:
-            return sd_type
-
-
 def main():
     argument_spec = ovirt_info_full_argument_spec(
         host=dict(required=True),
@@ -134,25 +128,22 @@ def main():
         # Get Host
         hosts_service = connection.system_service().hosts_service()
         host_id = get_id_by_name(hosts_service, module.params['host'])
-        storage_type = _get_storage_type(module.params)
         host_service = hosts_service.host_service(host_id)
 
-        if storage_type == 'iscsi':
+        if module.params.get('iscsi'):
             # Login
-            iscsi = module.params.get('iscsi')
-            if iscsi:
-                _login(host_service, iscsi)
+            _login(host_service, module.params.get('iscsi'))
 
         # Get LUNs exposed from the specified target
         host_storages = host_service.storage_service().list()
         filterred_host_storages = [host_storage for host_storage in host_storages]
-        if storage_type == 'iscsi':
+        if module.params.get('iscsi') is not None:
             filterred_host_storages = [host_storage for host_storage in host_storages
                                        if host_storage.type == otypes.StorageType.ISCSI]
-            if 'target' in iscsi:
+            if 'target' in module.params.get('iscsi'):
                 filterred_host_storages = [host_storage for host_storage in filterred_host_storages
                                            if iscsi.get('target') == host_storage.logical_units[0].target]
-        elif storage_type == 'fcp':
+        elif module.params.get('fcp') is not None:
             filterred_host_storages = [host_storage for host_storage in host_storages
                                        if host_storage.type == otypes.StorageType.FCP]
 
