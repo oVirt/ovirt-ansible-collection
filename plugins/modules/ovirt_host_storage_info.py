@@ -142,7 +142,7 @@ def main():
                                        if host_storage.type == otypes.StorageType.ISCSI]
             if 'target' in module.params.get('iscsi'):
                 filterred_host_storages = [host_storage for host_storage in filterred_host_storages
-                                           if iscsi.get('target') == host_storage.logical_units[0].target]
+                                           if module.params.get('iscsi').get('target') == host_storage.logical_units[0].target]
         elif module.params.get('fcp') is not None:
             filterred_host_storages = [host_storage for host_storage in host_storages
                                        if host_storage.type == otypes.StorageType.FCP]
