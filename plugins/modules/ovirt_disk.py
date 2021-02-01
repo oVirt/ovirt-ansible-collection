@@ -370,6 +370,7 @@ from ansible.module_utils.six.moves.http_client import HTTPSConnection, Incomple
 from ansible.module_utils.six.moves.urllib.parse import urlparse
 try:
     import ovirtsdk4.types as otypes
+    import ovirtsdk4
 except ImportError:
     pass
 from ansible.module_utils.basic import AnsibleModule
@@ -464,7 +465,7 @@ def transfer(connection, module, direction, transfer_func):
             time.sleep(module.params['poll_interval'])
             try:
                 transfer = transfer_service.get()
-            except Exception:
+            except ovirtsdk4.NotFoundError:
                 break
         if transfer.phase in [
             otypes.ImageTransferPhase.UNKNOWN,
