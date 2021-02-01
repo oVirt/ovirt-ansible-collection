@@ -457,14 +457,6 @@ def transfer(connection, module, direction, transfer_func):
     finally:
         transfer_service.finalize()
 
-        disks_service = connection.system_service().disks_service()
-        wait(
-            service=disks_service.service(module.params['id']),
-            condition=lambda d: d.status == otypes.DiskStatus.OK,
-            wait=module.params['wait'],
-            timeout=module.params['timeout'],
-        )
-
         while transfer.phase in [
             otypes.ImageTransferPhase.TRANSFERRING,
             otypes.ImageTransferPhase.FINALIZING_SUCCESS,
