@@ -459,9 +459,14 @@ def transfer(connection, module, direction, transfer_func):
         while transfer.phase in [
             otypes.ImageTransferPhase.TRANSFERRING,
             otypes.ImageTransferPhase.FINALIZING_SUCCESS,
+            otypes.ImageTransferPhase.FINISHED_SUCCESS
         ]:
             time.sleep(module.params['poll_interval'])
-            transfer = transfer_service.get()
+
+            try:
+                transfer = transfer_service.get()
+            except Exception:
+                break
         if transfer.phase in [
             otypes.ImageTransferPhase.UNKNOWN,
             otypes.ImageTransferPhase.FINISHED_FAILURE,
