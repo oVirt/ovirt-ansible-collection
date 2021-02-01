@@ -462,7 +462,6 @@ def transfer(connection, module, direction, transfer_func):
             otypes.ImageTransferPhase.FINISHED_SUCCESS
         ]:
             time.sleep(module.params['poll_interval'])
-
             try:
                 transfer = transfer_service.get()
             except Exception:
