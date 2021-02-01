@@ -136,16 +136,12 @@ def main():
 
         # Get LUNs exposed from the specified target
         host_storages = host_service.storage_service().list()
-        filterred_host_storages = [host_storage for host_storage in host_storages]
         if module.params.get('iscsi') is not None:
-            filterred_host_storages = [host_storage for host_storage in host_storages
-                                       if host_storage.type == otypes.StorageType.ISCSI]
+            host_storages = list(filter(lambda x: x.type == otypes.StorageType.ISCSI, host_storages))
             if 'target' in module.params.get('iscsi'):
-                filterred_host_storages = [host_storage for host_storage in filterred_host_storages
-                                           if module.params.get('iscsi').get('target') == host_storage.logical_units[0].target]
+                host_storages = list(filter(lambda x: module.params.get('iscsi').get('target') == x.logical_units[0].target, host_storages))
         elif module.params.get('fcp') is not None:
-            filterred_host_storages = [host_storage for host_storage in host_storages
-                                       if host_storage.type == otypes.StorageType.FCP]
+            host_storages = list(filter(lambda x: x.type == otypes.StorageType.FCP, host_storages))
 
         result = dict(
             ovirt_host_storages=[
@@ -154,7 +150,7 @@ def main():
                     connection=connection,
                     fetch_nested=module.params.get('fetch_nested'),
                     attributes=module.params.get('nested_attributes'),
-                ) for c in filterred_host_storages
+                ) for c in host_storages
             ],
         )
         module.exit_json(changed=False, **result)
