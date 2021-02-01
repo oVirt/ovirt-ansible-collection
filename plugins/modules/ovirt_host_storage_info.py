@@ -146,13 +146,13 @@ def main():
         # Get LUNs exposed from the specified target
         host_storages = host_service.storage_service().list()
         filterred_host_storages = [host_storage for host_storage in host_storages]
-        if module.params.get('iscsi') and storage_type == 'iscsi':
+        if storage_type == 'iscsi':
             filterred_host_storages = [host_storage for host_storage in host_storages
                                        if host_storage.type == otypes.StorageType.ISCSI]
             if 'target' in iscsi:
                 filterred_host_storages = [host_storage for host_storage in filterred_host_storages
                                            if iscsi.get('target') == host_storage.logical_units[0].target]
-        elif module.params.get('fcp') and storage_type == 'fcp':
+        elif storage_type == 'fcp':
             filterred_host_storages = [host_storage for host_storage in host_storages
                                        if host_storage.type == otypes.StorageType.FCP]
 
