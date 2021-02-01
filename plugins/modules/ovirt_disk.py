@@ -456,7 +456,6 @@ def transfer(connection, module, direction, transfer_func):
         return True
     finally:
         transfer_service.finalize()
-
         while transfer.phase in [
             otypes.ImageTransferPhase.TRANSFERRING,
             otypes.ImageTransferPhase.FINALIZING_SUCCESS,
