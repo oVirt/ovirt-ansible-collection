@@ -73,6 +73,20 @@ EXAMPLES = '''
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_host_storages }}"
+
+- name: Gather information about all storages
+  @NAMESPACE@.@NAME@.ovirt_host_storage_info:
+    host: myhost
+
+- name: Gather information about all iscsi storages
+  @NAMESPACE@.@NAME@.ovirt_host_storage_info:
+    host: myhost
+    iscsi: {}
+
+- name: Gather information about all fcp storages
+  @NAMESPACE@.@NAME@.ovirt_host_storage_info:
+    host: myhost
+    fcp: {}
 '''
 
 RETURN = '''
