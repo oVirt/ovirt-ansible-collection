@@ -539,7 +539,7 @@ def main():
                     module.params.get('hosted_engine') == 'deploy'
                 ) if module.params.get('hosted_engine') is not None else None,
                 activate=module.params['activate'],
-                reboot=self.param('reboot_after_installation'),
+                reboot=module.params.get('reboot_after_installation'),
                 result_state=(hoststate.MAINTENANCE if module.params['activate'] is False else hoststate.UP) if host is None else None,
                 fail_condition=hosts_module.failed_state_after_reinstall if host is None else lambda h: False,
             )
