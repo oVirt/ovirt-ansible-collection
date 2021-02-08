@@ -173,7 +173,7 @@ options:
     reboot_after_installation:
         description:
             - "If I(true) reboot host after successful installation."
-        default: True
+            - "Default value on engine is I(true)."
         type: bool
     vgpu_placement:
         description:
