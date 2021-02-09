@@ -170,6 +170,11 @@ options:
             - "If I(true) and C(state) is I(upgraded) reboot host after successful upgrade."
         default: True
         type: bool
+    reboot_after_installation:
+        description:
+            - "If I(true) reboot host after successful installation."
+            - "Default value on engine is I(true)."
+        type: bool
     vgpu_placement:
         description:
             - If I(consolidated), each vGPU is placed on the first physical card with
@@ -491,6 +496,7 @@ def main():
         spm_priority=dict(default=None, type='int'),
         override_iptables=dict(default=None, type='bool'),
         force=dict(default=False, type='bool'),
+        reboot_after_installation=dict(default=None, type='bool'),
         timeout=dict(default=600, type='int'),
         override_display=dict(default=None),
         kernel_params=dict(default=None, type='list', elements='dict'),
@@ -533,6 +539,7 @@ def main():
                     module.params.get('hosted_engine') == 'deploy'
                 ) if module.params.get('hosted_engine') is not None else None,
                 activate=module.params['activate'],
+                reboot=module.params.get('reboot_after_installation'),
                 result_state=(hoststate.MAINTENANCE if module.params['activate'] is False else hoststate.UP) if host is None else None,
                 fail_condition=hosts_module.failed_state_after_reinstall if host is None else lambda h: False,
             )
