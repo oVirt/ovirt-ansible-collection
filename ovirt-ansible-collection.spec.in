@@ -68,6 +68,10 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Wed Feb 10 2021 Martin Necas <mnecas@redhat.com> - 1.3.1-1
+- ovirt_host - Add reboot_after_installation option
+- hosted_engine_setup - Disable reboot_after_installation
+
 * Thu Jan 28 2021 Martin Necas <mnecas@redhat.com> - 1.3.0-1
 - ovirt_system_option_info - Add new module
 - ansible-builder - Update bindep
@@ -136,7 +140,6 @@ sh build.sh install %{collectionname}
 - Add ovirt_host add ssh_port
 - Add ovirt_network support of removing vlan_tag
 - Fix ovirt_disk upload
-
 
 * Thu Apr 9 2020 Martin Necas <mnecas@redhat.com> - 1.0.0-1
 - Initial release
