@@ -121,6 +121,7 @@
       public_key: true
       address: "{{ he_host_address }}"
       auth: "{{ ovirt_auth }}"
+      reboot_after_installation: false
     async: 1
     poll: 0
   - name: Include after_add_host tasks files
