@@ -5,6 +5,15 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.3.1
+======
+
+Minor Changes
+-------------
+
+- hosted_engine_setup - Disable reboot_after_installation (https://github.com/oVirt/ovirt-ansible-collection/pull/218).
+- ovirt_host - Add reboot_after_installation option (https://github.com/oVirt/ovirt-ansible-collection/pull/217).
+
 v1.3.0
 ======
 

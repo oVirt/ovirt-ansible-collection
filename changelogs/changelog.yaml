@@ -355,3 +355,12 @@ releases:
     - 208-ovirt_disk-add-install-warning.yml
     - 209-hosted_engine_setup-use-ovirt_system_option_info.yml
     release_date: '2021-01-28'
+  1.3.1:
+    changes:
+      minor_changes:
+      - hosted_engine_setup - Disable reboot_after_installation (https://github.com/oVirt/ovirt-ansible-collection/pull/218).
+      - ovirt_host - Add reboot_after_installation option (https://github.com/oVirt/ovirt-ansible-collection/pull/217).
+    fragments:
+    - hosted_engine_setup-disable-reboot-after-install.yml
+    - ovirt_host-add-reboot_after_installation.yml
+    release_date: '2021-02-10'
