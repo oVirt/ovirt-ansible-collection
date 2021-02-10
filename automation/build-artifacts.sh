@@ -68,13 +68,10 @@ mkdir -p $COLLECTION_DIR
 cp -r $OVIRT_BUILD/* $COLLECTION_DIR
 cd $COLLECTION_DIR
 
-pip3 install rstcheck antsibull-changelog ansible-lint
+pip3 install rstcheck antsibull-changelog "ansible-lint<5.0.0"
 
 ansible-test sanity
 /usr/local/bin/antsibull-changelog lint
-if ! /usr/local/bin/ansible-lint roles/* -x 204; then
-    echo "ERROR: ansible-lint failed. Ignoring for now, see also:"
-    echo "https://github.com/oVirt/ovirt-ansible-collection/issues/219"
-fi
+/usr/local/bin/ansible-lint roles/* -x 204
 
 cd $ROOT_PATH
