@@ -407,6 +407,14 @@ def __get_auth_dict():
                 type='str',
                 fallback=(env_fallback, ['OVIRT_CAFILE']),
             ),
+            compress=dict(
+                type='bool',
+                default=True
+            ),
+            timeout=dict(
+                type='int',
+                default=0
+            ),
             kerberos=dict(type='bool'),
             headers=dict(type='dict')
         )
