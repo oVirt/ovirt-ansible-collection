@@ -415,10 +415,6 @@ def __get_auth_dict():
                 type='int',
                 default=0
             ),
-            ovirt_auth=dict(
-                required=False,
-                type='dict'
-            ),
             kerberos=dict(type='bool'),
             headers=dict(type='dict')
         )

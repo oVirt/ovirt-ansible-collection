@@ -77,6 +77,16 @@ options:
                 description:
                     - Dictionary of HTTP headers to be added to each API call.
                 type: dict
+            timeout:
+                description: Number of seconds to wait for response.
+                returned: success
+                type: int
+                sample: 0
+            compress:
+                description: Flag indicating if compression is used for connection.
+                returned: success
+                type: bool
+                sample: True
         type: dict
         required: true
 requirements:
