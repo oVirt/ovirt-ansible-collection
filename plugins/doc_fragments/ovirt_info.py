@@ -83,6 +83,7 @@ options:
             compress:
                 description: Flag indicating if compression is used for connection.
                 type: bool
+                default: true
         type: dict
         required: true
 requirements:
