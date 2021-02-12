@@ -20,6 +20,7 @@ Role Variables
 | healing_in_progress_checks            | 6                     | Maximum number of attempts to check if gluster healing is still in progress. |
 | healing_in_progress_check_delay              | 300                   | The delay in seconds between each attempt to check if gluster healing is still in progress.    |
 | wait_to_finish_healing  | 5                     | Delay in minutes to wait to finish gluster healing process after successful host upgrade.             |
+| engine_correlation_id  | UNDEF                  | The correlation id with which be the role run.             |
 
 Example Playbook
 ----------------

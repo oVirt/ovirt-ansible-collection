@@ -17,6 +17,8 @@
         ca_file: "{{ engine_cafile | default(lookup('env','OVIRT_CAFILE')) | default(omit) }}"
         token: "{{ engine_token | default(lookup('env','OVIRT_TOKEN')) | default(omit) }}"
         insecure: "{{ engine_insecure | default(true) }}"
+        headers:
+          correlation-id: "{{ engine_correlation_id | default(omit) }}"
       when: ovirt_auth is undefined or not ovirt_auth
       register: login_result
       tags:
