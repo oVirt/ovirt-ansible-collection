@@ -78,7 +78,7 @@ options:
         description:
             - "Driver of the storage interface."
             - "It's required parameter when creating the new disk."
-        choices: ['virtio', 'ide', 'virtio_scsi']
+        choices: ['virtio', 'ide', 'sata', 'virtio_scsi']
         type: str
     format:
         description:
@@ -731,7 +731,7 @@ def main():
         vm_name=dict(default=None),
         vm_id=dict(default=None),
         size=dict(default=None),
-        interface=dict(default=None, choices=['virtio', 'ide', 'virtio_scsi']),
+        interface=dict(default=None, choices=['virtio', 'ide', 'sata', 'virtio_scsi']),
         storage_domain=dict(default=None),
         storage_domains=dict(default=None, type='list', elements='str'),
         profile=dict(default=None),
