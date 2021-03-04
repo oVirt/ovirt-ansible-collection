@@ -1,0 +1,3 @@
+{% if ovirt_engine_setup_skip_renew_pki_confirm is define %}
+QUESTION/1/OVESETUP_SKIP_RENEW_PKI_CONFIRM=str:{{ ovirt_engine_setup_skip_renew_pki_confirm | ternary('yes','no') }}
+{% endif %}
