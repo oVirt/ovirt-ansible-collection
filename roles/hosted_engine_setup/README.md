@@ -47,6 +47,7 @@ Ansible role for deploying oVirt Hosted-Engine
 | he_debug_mode | false | If `True`, HE deployment will execute additional tasks for debug |
 | he_db_password | UNDEF | Engine database password |
 | he_dwh_db_password | UNDEF | DWH database password |
+| ovirt_engine_grafana_enable | False | If `True`, Grafana integration will be set up. Valid for oVirt >= 4.4. |
 
 ## NFS / Gluster Variables
 
