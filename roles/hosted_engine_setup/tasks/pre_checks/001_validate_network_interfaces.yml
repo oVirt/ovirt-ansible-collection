@@ -11,9 +11,11 @@
     loop_control:
       loop_var: bridge_name
   - debug: var=bridge_interface
-  - name: Get all active network interfaces
-    vars:
+  - name: Set variable for supported bond modes
+    set_fact:
       acceptable_bond_modes: ['active-backup', 'balance-xor', 'broadcast', '802.3ad']
+  - debug: var=acceptable_bond_modes
+  - name: Get all active network interfaces
     set_fact:
       otopi_net_host="{{ hostvars[inventory_hostname]['ansible_' + iface_item]['device'] }}"
       type="{{ hostvars[inventory_hostname]['ansible_' + iface_item]['type'] }}"
@@ -69,7 +71,7 @@
         {{ [bridge_interface] if bridge_interface is defined else bb_filtered_list.results |
         reject('skipped') | map(attribute='bond_item.ansible_facts.otopi_net_host') | list }}
   - debug: var=host_net
-  - import_tasks: filter_team_devices.yml
+  - import_tasks: filter_unsupported_devices.yml
   - name: Validate selected bridge interface if management bridge does not exist
     fail:
       msg: The selected network interface is not valid

@@ -22,14 +22,16 @@
   set_fact:
     team_if: "{{  team_list.results | reject('skipped') | map(attribute='nic_if.nic') | list }}"
 - debug: var=team_if
+- import_tasks: filter_unsupported_vlan_devices.yml
 - name: Filter unsupported interface types
   set_fact:
-    otopi_host_net: "{{ host_net | difference(team_if) }}"
+    otopi_host_net: "{{ host_net | difference(invalid_net_if) }}"
   register: otopi_host_net
 - debug: var=otopi_host_net
-- name: Failed if only teaming devices are available
+- name: Failed if only unsupported devices are available
   fail:
     msg: >-
-      Only Team devices {{ team_if | join(', ') }} are present.
-      Teaming is not supported.
+      Only unsupported devices {{ invalid_net_if | join(', ') }} are present.
+      Teaming and bond modes: Round Robin, TLB, ALB are unsupported.
+      The following bond modes are supported: {{ acceptable_bond_modes }}
   when: (otopi_host_net.ansible_facts.otopi_host_net | length == 0)
