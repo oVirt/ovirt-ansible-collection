@@ -105,7 +105,7 @@ he_just_collect_network_interfaces: false
 he_libvirt_authfile: '/etc/ovirt-hosted-engine/virsh_auth.conf'
 he_offline_deployment: false
 he_additional_package_list: []
-ovirt_engine_grafana_enable: false
+enable_grafana: false
 
 # *** Do Not Use On Production Environment ***
 # ********** Used for testing ONLY ***********
