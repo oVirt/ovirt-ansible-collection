@@ -37,6 +37,8 @@
     timeout: "{{ item.timeout | default(ovirt_hosts_add_timeout) }}"
     poll_interval: "{{ item.poll_interval | default(20) }}"
     hosted_engine: "{{ item.hosted_engine | default(omit) }}"
+    reboot_after_installation: "{{ reboot_added_hosts_after_installation | default(omit) }}"
+    reboot_after_upgrade: "{{ reboot_added_hosts_after_upgrade | default(omit) }}"
   with_items: "{{ ovirt_infra_hosts }}"
   loop_control:
     label: "{{ item.name }}"
