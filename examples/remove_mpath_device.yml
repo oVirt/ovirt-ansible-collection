@@ -1,0 +1,17 @@
+---
+- name: Cleanly remove unzoned storage devices (LUNs)
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Get underlying disks (paths) for a multipath device and turn them into a list.
+      shell: dmsetup deps -o devname "{{ lun }}" | cut -f 2 |cut -c 3- |tr -d "()" | tr " " "\n"
+      register: disks
+
+    - name: Remove from multipath device.
+      shell: multipath -f "{{ lun }}"
+
+    - name: Remove each path from the SCSI subsystem.
+      shell: "echo 1 > /sys/block/{{ item }}/device/delete"
+      with_items:
+        - "{{ disks.stdout_lines }}"
