@@ -19,6 +19,8 @@ The `hosts` list can contain the following parameters:
 | timeout       | 1200             | Maximum wait time for the host to be in an UP state.  |
 | poll_interval | 20               | Polling interval to check the host status. |
 | hosted_engine | UNDEF            | Specifies whether to 'deploy' or 'undeploy' hosted-engine to node. |
+| reboot_after_installation | UNDEF | If true reboot host after successful installation. |
+| reboot_after_upgrade | UNDEF | If true reboot host after successful upgrade. |
 
 Example Playbook
 ----------------
