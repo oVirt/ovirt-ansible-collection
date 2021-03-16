@@ -68,6 +68,16 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Tue Mar 16 2021 Martin Necas <mnecas@redhat.com> - 1.4.0-1
+- cluster_upgrade - Add correlation-id header
+- engine_setup - Add skip renew pki confirm
+- examples - Add recipe for removing DM device
+- hosted_engine_setup - Filter devices with unsupported bond mode
+- infra - Add reboot host parameters
+- ovirt_disk - Add SATA support
+- ovirt_user - Add ssh_public_key
+- Set auth options into argument spec definition
+
 * Wed Feb 10 2021 Martin Necas <mnecas@redhat.com> - 1.3.1-1
 - ovirt_host - Add reboot_after_installation option
 - hosted_engine_setup - Disable reboot_after_installation
