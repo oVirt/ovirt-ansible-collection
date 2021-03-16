@@ -5,6 +5,26 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.4.0
+======
+
+Minor Changes
+-------------
+
+- cluster_upgrade - Add correlation-id header (https://github.com/oVirt/ovirt-ansible-collection/pull/222).
+- engine_setup - Add skip renew pki confirm (https://github.com/oVirt/ovirt-ansible-collection/pull/228).
+- examples - Add recipe for removing DM device (https://github.com/oVirt/ovirt-ansible-collection/pull/233).
+- hosted_engine_setup - Filter devices with unsupported bond mode (https://github.com/oVirt/ovirt-ansible-collection/pull/226).
+- infra - Add reboot host parameters (https://github.com/oVirt/ovirt-ansible-collection/pull/231).
+- ovirt_disk - Add SATA support (https://github.com/oVirt/ovirt-ansible-collection/pull/225).
+- ovirt_user - Add ssh_public_key (https://github.com/oVirt/ovirt-ansible-collection/pull/232)
+
+Bugfixes
+--------
+
+- Set ``auth`` options into argument spec definition so Ansible will validate the user options
+- Set ``no_log`` on ``password`` and ``token`` in the ``auth`` dict so the values are exposed in the invocation log
+
 v1.3.1
 ======
 
