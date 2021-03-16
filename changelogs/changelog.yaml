@@ -364,3 +364,28 @@ releases:
     - hosted_engine_setup-disable-reboot-after-install.yml
     - ovirt_host-add-reboot_after_installation.yml
     release_date: '2021-02-10'
+  1.4.0:
+    changes:
+      bugfixes:
+      - Set ``auth`` options into argument spec definition so Ansible will validate
+        the user options
+      - Set ``no_log`` on ``password`` and ``token`` in the ``auth`` dict so the values
+        are exposed in the invocation log
+      minor_changes:
+      - cluster_upgrade - Add correlation-id header (https://github.com/oVirt/ovirt-ansible-collection/pull/222).
+      - engine_setup - Add skip renew pki confirm (https://github.com/oVirt/ovirt-ansible-collection/pull/228).
+      - examples - Add recipe for removing DM device (https://github.com/oVirt/ovirt-ansible-collection/pull/233).
+      - hosted_engine_setup - Filter devices with unsupported bond mode (https://github.com/oVirt/ovirt-ansible-collection/pull/226).
+      - infra - Add reboot host parameters (https://github.com/oVirt/ovirt-ansible-collection/pull/231).
+      - ovirt_disk - Add SATA support (https://github.com/oVirt/ovirt-ansible-collection/pull/225).
+      - ovirt_user - Add ssh_public_key (https://github.com/oVirt/ovirt-ansible-collection/pull/232)
+    fragments:
+    - 222-cluster_upgrade-add-correlation-id.yml
+    - 225-ovirt_disk-add-sata.yml
+    - 226-hosted_engine_setup-filter-devices.yml
+    - 228-add-skip-renew-pki.yml
+    - 231-infra-add-reboot-params.yml
+    - 232-ovirt_user-add-ssh_public_key.yml
+    - 233-examples-add-recipe-for-removing-DM-device.yml
+    - auth_dict.yml
+    release_date: '2021-03-16'

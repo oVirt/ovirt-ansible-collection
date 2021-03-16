@@ -57,6 +57,7 @@ options:
         description:
             - "The user public key."
         type: str
+        version_added: 1.4.0
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
