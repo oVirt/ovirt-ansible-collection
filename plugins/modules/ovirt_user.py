@@ -179,7 +179,7 @@ def main():
                         ssh_public_keys_service.service(ssh_public_keys[0].id).remove()
                         ret['changed'] = True
                     elif module.params['ssh_public_key'] != ssh_public_keys[0].content:
-                        ssh_public_keys_service.service(ssh_public_keys[0].id)  .update(otypes.SshPublicKey(content=module.params['ssh_public_key']))
+                        ssh_public_keys_service.service(ssh_public_keys[0].id).update(otypes.SshPublicKey(content=module.params['ssh_public_key']))
                         ret['changed'] = True
                 elif module.params['ssh_public_key']:
                     ssh_public_keys_service.add(otypes.SshPublicKey(content=module.params['ssh_public_key']))
