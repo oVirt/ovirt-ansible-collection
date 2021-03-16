@@ -53,6 +53,10 @@ options:
             - "Namespace where the user resides. When using the authorization provider that stores users in the LDAP server,
                this attribute equals the naming context of the LDAP server."
         type: str
+    ssh_public_key:
+        description:
+            - "The user public key."
+        type: str
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
@@ -76,6 +80,12 @@ EXAMPLES = '''
     state: absent
     name: user1
     authz_name: example.com-authz
+
+# Remove ssh_public_key
+- @NAMESPACE@.@NAME@.ovirt_user:
+    name: user1
+    authz_name: example.com-authz
+    ssh_public_key: ""
 '''
 
 RETURN = '''
@@ -134,6 +144,7 @@ def main():
         name=dict(required=True),
         authz_name=dict(required=True, aliases=['domain']),
         namespace=dict(default=None),
+        ssh_public_key=dict(default=None),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
@@ -160,6 +171,20 @@ def main():
                     'usrname': username(module),
                 }
             )
+            if module.params['ssh_public_key'] is not None:
+                ssh_public_keys_service = users_service.user_service(ret['id']).ssh_public_keys_service()
+                ssh_public_keys = ssh_public_keys_service.list()
+                if ssh_public_keys:
+                    if not module.params['ssh_public_key']:
+                        ssh_public_keys_service.service(ssh_public_keys[0].id).remove()
+                        ret['changed'] = True
+                    elif module.params['ssh_public_key'] != ssh_public_keys[0].content:
+                        ssh_public_keys_service.service(ssh_public_keys[0].id).update(otypes.SshPublicKey(content=module.params['ssh_public_key']))
+                        ret['changed'] = True
+                elif module.params['ssh_public_key']:
+                    ssh_public_keys_service.add(otypes.SshPublicKey(content=module.params['ssh_public_key']))
+                    ret['changed'] = True
+
         elif state == 'absent':
             ret = users_module.remove(
                 search_params={
