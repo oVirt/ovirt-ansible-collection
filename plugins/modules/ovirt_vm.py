@@ -1090,6 +1090,13 @@ EXAMPLES = '''
     name: myvm
     host: host1
 
+- name: Migrate/Run VM to/on host named 'host1' on cluster 'cluster1'
+  @NAMESPACE@.@NAME@.ovirt_vm:
+    state: running
+    name: myvm
+    host: host1
+    host: cluster1
+
 - name: Migrate VM to any available host
   @NAMESPACE@.@NAME@.ovirt_vm:
     state: running
