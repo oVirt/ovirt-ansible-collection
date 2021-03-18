@@ -1821,10 +1821,11 @@ class VmsModule(BaseModule):
         if entity.status == otypes.VmStatus.UP:
             if vm_host is not None:
                 hosts_service = self._connection.system_service().hosts_service()
+                clusters_service = self._connection.system_service().clusters_service()
                 current_vm_host = hosts_service.host_service(entity.host.id).get().name
                 if vm_host != current_vm_host:
                     if not self._module.check_mode:
-                        vm_service.migrate(host=otypes.Host(name=vm_host), force=self.param('force_migrate'))
+                        vm_service.migrate(cluster=search_by_name(clusters_service, self.param('cluster')), host=otypes.Host(name=vm_host), force=self.param('force_migrate'))
                         self._wait_for_UP(vm_service)
                     self.changed = True
             elif self.param('migrate'):
@@ -2554,12 +2555,15 @@ def main():
         )
         vm = vms_module.search_entity(list_params={'all_content': True})
 
-        # Boolean variable to mark if vm existed before module was executed
-        vm_existed = True if vm else False
         control_state(vm, vms_service, module)
         if state in ('present', 'running', 'next_run'):
             if module.params['xen'] or module.params['kvm'] or module.params['vmware']:
                 vms_module.changed = import_vm(module, connection)
+
+            # Allow migrate vm when state present.
+            # Migrate before update
+            if vm:
+                vms_module._migrate_vm(vm)
 
             # In case of wait=false and state=running, waits for VM to be created
             # In case VM don't exist, wait for VM DOWN state,
@@ -2639,9 +2643,6 @@ def main():
                         action_condition=lambda vm: vm.status == otypes.VmStatus.UP,
                         wait_condition=lambda vm: vm.status == otypes.VmStatus.UP,
                     )
-            # Allow migrate vm when state present.
-            if vm_existed:
-                vms_module._migrate_vm(vm)
             ret['changed'] = vms_module.changed
         elif state == 'stopped':
             if module.params['xen'] or module.params['kvm'] or module.params['vmware']:
