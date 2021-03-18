@@ -1095,7 +1095,7 @@ EXAMPLES = '''
     state: running
     name: myvm
     host: host1
-    host: cluster1
+    cluster: cluster1
 
 - name: Migrate VM to any available host
   @NAMESPACE@.@NAME@.ovirt_vm:
@@ -1832,7 +1832,11 @@ class VmsModule(BaseModule):
                 current_vm_host = hosts_service.host_service(entity.host.id).get().name
                 if vm_host != current_vm_host:
                     if not self._module.check_mode:
-                        vm_service.migrate(cluster=search_by_name(clusters_service, self.param('cluster')), host=otypes.Host(name=vm_host), force=self.param('force_migrate'))
+                        vm_service.migrate(
+                            cluster=search_by_name(clusters_service, self.param('cluster')),
+                            host=otypes.Host(name=vm_host),
+                            force=self.param('force_migrate')
+                        )
                         self._wait_for_UP(vm_service)
                     self.changed = True
             elif self.param('migrate'):
