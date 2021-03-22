@@ -12,7 +12,7 @@ BuildArch:	noarch
 Url:		http://www.ovirt.org
 
 Requires:	ansible >= 2.9.11
-Requires:	python3-ovirt-engine-sdk4 >= 4.4.0
+Requires:	python3-ovirt-engine-sdk4 >= 4.4.10
 Requires:	python3-netaddr
 Requires:	python3-jmespath
 Requires:	python3-passlib
@@ -68,6 +68,9 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Mon Mar 22 2021 Martin Necas <mnecas@redhat.com> - 1.4.1-1
+- hosted_engine_setup - Fix auth revoke
+
 * Tue Mar 16 2021 Martin Necas <mnecas@redhat.com> - 1.4.0-1
 - cluster_upgrade - Add correlation-id header
 - engine_setup - Add skip renew pki confirm

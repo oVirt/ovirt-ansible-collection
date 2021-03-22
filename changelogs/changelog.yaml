@@ -389,3 +389,10 @@ releases:
     - 233-examples-add-recipe-for-removing-DM-device.yml
     - auth_dict.yml
     release_date: '2021-03-16'
+  1.4.1:
+    changes:
+      bugfixes:
+      - hosted_engine_setup - Fix auth revoke (https://github.com/oVirt/ovirt-ansible-collection/pull/237).
+    fragments:
+    - 237-hosted_engine_setup-fix-auth_revoke.yml
+    release_date: '2021-03-22'
