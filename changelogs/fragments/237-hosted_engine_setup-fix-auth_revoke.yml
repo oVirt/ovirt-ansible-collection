@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - hosted_engine_setup - Fix auth revoke (https://github.com/oVirt/ovirt-ansible-collection/pull/237).
