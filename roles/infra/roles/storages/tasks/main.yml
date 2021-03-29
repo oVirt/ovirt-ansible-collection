@@ -91,7 +91,7 @@
     username: "{{ storages[item.0.name][item.0.storage.type].username | default(omit) }}"
     password: "{{ storages[item.0.name][item.0.storage.type].password | default(omit) }}"
     port: "{{ storages[item.0.name][item.0.storage.type].port | default(omit) }}"
-    target: "{{ storages[item.0.name][item.0.storage.type].target | default(omit) }}"
+    target: "{% if storages[item.0.name][item.0.storage.type].target not in item.0.storage.volume_group.logical_units | map(attribute='target') | list %}{{ storages[item.0.name][item.0.storage.type].target | default(omit) }}{% else %}{{ omit }}{% endif %}"
     force: true
   with_subelements:
     - "{{ sd_info.ovirt_storage_domains | default([]) }}"
