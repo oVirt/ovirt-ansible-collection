@@ -15,7 +15,7 @@ Role Variables
 | ovirt_repositories_disable_gpg_check       | False                 | Disable the GPG check for <i>ovirt_repositories_ovirt_release_rpm</i>. by default is False unless 'master.rpm' in <i>ovirt_repositories_ovirt_release_rpm</i>. |
 | ovirt_repositories_use_subscription_manager| False                 | If true it will use repos from subscription manager and the value of <i>ovirt_repositories_ovirt_release_rpm</i> will be ignored. |
 | ovirt_repositories_ovirt_version           | 4.4                   | oVirt release version (Supported versions [4.1, 4.2, 4.3, 4.4]). Will be used to enable the required repositories and enable modules. |
-| ovirt_repositories_target_host             | engine                | Type of the target machine, which should be one of [engine, host, rhvh, host_ppc]. This parameter takes effect only in case <i>ovirt_repositories_use_subscription_manager</i> is set to True. If incorrect version or target is specified no repositories are enabled. |
+| ovirt_repositories_target_host             | engine                | Type of the target machine, which should be one of [engine, host, rhvh, host_ppc]. This parameter takes effect only in case <i>ovirt_repositories_use_subscription_manager</i> is set to True. If incorrect version or target is specified no repositories are enabled. The host_ppc is available only on 4.4. |
 | ovirt_repositories_rh_username             | UNDEF                 | Username to use for subscription manager. |
 | ovirt_repositories_rh_password             | UNDEF                 | Password to use for subscription manager. |
 | ovirt_repositories_pool_ids                | UNDEF                 | List of pools ids to subscribe to. |
