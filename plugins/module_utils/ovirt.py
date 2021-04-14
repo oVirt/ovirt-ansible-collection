@@ -59,6 +59,29 @@ def check_sdk(module):
         )
 
 
+def remove_underscore(val):
+    if val.startswith('_'):
+        val = val[1:]
+        remove_underscore(val)
+    return val
+
+
+def get_dict_of_struct_follow(struct):
+    if isinstance(struct, sdk.Struct):
+        res = {}
+        for key, value in struct.__dict__.items():
+            if value is None:
+                continue
+            key = remove_underscore(key)
+            res[key] = get_dict_of_struct_follow(value)
+        return res
+    elif isinstance(struct, Enum) or isinstance(struct, datetime):
+        return str(struct)
+    elif isinstance(struct, list) or isinstance(struct, sdk.List):
+        return [get_dict_of_struct_follow(i) for i in struct]
+    return struct
+
+
 def get_dict_of_struct(struct, connection=None, fetch_nested=False, attributes=None, filter_keys=None):
     """
     Convert SDK Struct type into dictionary.
@@ -78,12 +101,6 @@ def get_dict_of_struct(struct, connection=None, fetch_nested=False, attributes=N
         nested_obj['id'] = getattr(value, 'id', None)
         nested_obj['href'] = getattr(value, 'href', None)
         return nested_obj
-
-    def remove_underscore(val):
-        if val.startswith('_'):
-            val = val[1:]
-            remove_underscore(val)
-        return val
 
     def convert_value(value):
         nested = False

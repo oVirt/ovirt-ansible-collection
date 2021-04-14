@@ -92,6 +92,14 @@ EXAMPLES = '''
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_vms[0] }}"
+
+# Gather info about VMs original template with follow parameter
+- @NAMESPACE@.@NAME@.ovirt_vm_info:
+    pattern: name=myvm
+    follows: ['original_template.permissions','original_template.diskattachments']
+  register: result
+- ansible.builtin.debug:
+    msg: "{{ result.ovirt_vms[0] }}"
 '''
 
 RETURN = '''
@@ -108,7 +116,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
-    get_dict_of_struct,
+    get_dict_of_struct_follow,
     ovirt_info_full_argument_spec,
 )
 
@@ -116,6 +124,7 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
 def main():
     argument_spec = ovirt_info_full_argument_spec(
         pattern=dict(default='', required=False),
+        follows=dict(default=None, type='list'),
         all_content=dict(default=False, type='bool'),
         current_cd=dict(default=False, type='bool'),
         next_run=dict(default=None, type='bool'),
@@ -134,17 +143,15 @@ def main():
             all_content=module.params['all_content'],
             case_sensitive=module.params['case_sensitive'],
             max=module.params['max'],
+            follow=",".join(module.params['follows']),
         )
         if module.params['next_run']:
             vms = [vms_service.vm_service(vm.id).get(next_run=True) for vm in vms]
 
         result = dict(
             ovirt_vms=[
-                get_dict_of_struct(
+                get_dict_of_struct_follow(
                     struct=c,
-                    connection=connection,
-                    fetch_nested=module.params.get('fetch_nested'),
-                    attributes=module.params.get('nested_attributes'),
                 ) for c in vms
             ],
         )
