@@ -66,26 +66,31 @@ def remove_underscore(val):
     return val
 
 
-def get_dict_of_struct_follow(struct):
+def get_dict_of_struct_follow(struct, filter_keys):
     if isinstance(struct, sdk.Struct):
         res = {}
         for key, value in struct.__dict__.items():
             if value is None:
                 continue
             key = remove_underscore(key)
-            res[key] = get_dict_of_struct_follow(value)
+
+            if filter_keys is None or key in filter_keys:
+                res[key] = get_dict_of_struct_follow(value, filter_keys)
         return res
     elif isinstance(struct, Enum) or isinstance(struct, datetime):
         return str(struct)
     elif isinstance(struct, list) or isinstance(struct, sdk.List):
-        return [get_dict_of_struct_follow(i) for i in struct]
+        return [get_dict_of_struct_follow(i, filter_keys) for i in struct]
     return struct
 
 
-def get_dict_of_struct(struct, connection=None, fetch_nested=False, attributes=None, filter_keys=None):
+def get_dict_of_struct(struct, connection=None, fetch_nested=False, attributes=None, filter_keys=None, follow=None):
     """
     Convert SDK Struct type into dictionary.
     """
+    if follow:
+        return get_dict_of_struct_follow(struct, filter_keys)
+
     res = {}
 
     def resolve_href(value):

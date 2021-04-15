@@ -96,7 +96,7 @@ EXAMPLES = '''
 # Gather info about VMs original template with follow parameter
 - @NAMESPACE@.@NAME@.ovirt_vm_info:
     pattern: name=myvm
-    follows: ['original_template.permissions','original_template.diskattachments']
+    follows: ['original_template.permissions', 'original_template.nics.vnic_profile']
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_vms[0] }}"
@@ -116,7 +116,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
-    get_dict_of_struct_follow,
+    get_dict_of_struct,
     ovirt_info_full_argument_spec,
 )
 
@@ -124,7 +124,7 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
 def main():
     argument_spec = ovirt_info_full_argument_spec(
         pattern=dict(default='', required=False),
-        follows=dict(default=None, type='list'),
+        follows=dict(default=[], type='list'),
         all_content=dict(default=False, type='bool'),
         current_cd=dict(default=False, type='bool'),
         next_run=dict(default=None, type='bool'),
@@ -150,8 +150,12 @@ def main():
 
         result = dict(
             ovirt_vms=[
-                get_dict_of_struct_follow(
+                get_dict_of_struct(
                     struct=c,
+                    connection=connection,
+                    fetch_nested=module.params.get('fetch_nested'),
+                    attributes=module.params.get('nested_attributes'),
+                    follow=module.params['follows'],
                 ) for c in vms
             ],
         )
