@@ -70,6 +70,14 @@ options:
         - "If I(true) it will get from all virtual machines current attached cd."
       type: bool
       version_added: 1.2.0
+    follows:
+      description:
+        - List of follow link names which will be gathered.
+        - This parameter replaces use of C(fetch_nested) and C(nested_attributes).
+        - If C(follows) is specified it uses over C(fetch_nested).
+      type: list
+      version_added: 1.4.0
+      elements: str
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
@@ -155,7 +163,7 @@ def main():
                     connection=connection,
                     fetch_nested=module.params.get('fetch_nested'),
                     attributes=module.params.get('nested_attributes'),
-                    follow=module.params['follows'],
+                    follows=module.params.get('follows'),
                 ) for c in vms
             ],
         )

@@ -25,14 +25,6 @@ options:
             - This parameter apply only when C(fetch_nested) is I(true).
         type: list
         elements: str
-    follows:
-      description:
-        - List of follow link names which will be gathered.
-        - This parameter replaces use of C(fetch_nested) and C(nested_attributes).
-        - If C(follows) is specified it uses over C(fetch_nested).
-      type: list
-      version_added: 1.4.0
-      elements: str
     auth:
         description:
             - "Dictionary with values needed to create HTTP/HTTPS connection to oVirt:"

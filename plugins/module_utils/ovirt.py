@@ -73,7 +73,6 @@ def get_dict_of_struct_follow(struct, filter_keys):
             if value is None:
                 continue
             key = remove_underscore(key)
-
             if filter_keys is None or key in filter_keys:
                 res[key] = get_dict_of_struct_follow(value, filter_keys)
         return res
@@ -84,11 +83,11 @@ def get_dict_of_struct_follow(struct, filter_keys):
     return struct
 
 
-def get_dict_of_struct(struct, connection=None, fetch_nested=False, attributes=None, filter_keys=None, follow=None):
+def get_dict_of_struct(struct, connection=None, fetch_nested=False, attributes=None, filter_keys=None, follows=None):
     """
     Convert SDK Struct type into dictionary.
     """
-    if follow:
+    if follows:
         return get_dict_of_struct_follow(struct, filter_keys)
 
     res = {}
