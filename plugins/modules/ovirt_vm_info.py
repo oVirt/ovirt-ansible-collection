@@ -70,14 +70,6 @@ options:
         - "If I(true) it will get from all virtual machines current attached cd."
       type: bool
       version_added: 1.2.0
-    follows:
-      description:
-        - List of follow link names which will be gathered.
-        - This parameter replaces use of C(fetch_nested) and C(nested_attributes).
-        - If C(follows) is specified it uses over C(fetch_nested).
-      type: list
-      version_added: 1.4.0
-      elements: str
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
@@ -132,7 +124,6 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
 def main():
     argument_spec = ovirt_info_full_argument_spec(
         pattern=dict(default='', required=False),
-        follows=dict(default=[], type='list'),
         all_content=dict(default=False, type='bool'),
         current_cd=dict(default=False, type='bool'),
         next_run=dict(default=None, type='bool'),
@@ -141,6 +132,8 @@ def main():
     )
     module = AnsibleModule(argument_spec)
     check_sdk(module)
+    if module.params['fetch_nested'] or module.params['nested_attributes']:
+        module.deprecate("The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter", version='2.13')
 
     try:
         auth = module.params.pop('auth')

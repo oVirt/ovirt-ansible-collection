@@ -454,6 +454,7 @@ def ovirt_info_full_argument_spec(**kwargs):
         auth=__get_auth_dict(),
         fetch_nested=dict(default=False, type='bool'),
         nested_attributes=dict(type='list', default=list(), elements='str'),
+        follows=dict(default=list(), type='list'),
     )
     spec.update(kwargs)
     return spec
