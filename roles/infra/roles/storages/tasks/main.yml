@@ -77,7 +77,7 @@
     - storages
     - storage_connections
 
-- name: Validate connections of storages
+- name: Update storage pamareters
   ovirt_storage_connection:
     auth: "{{ ovirt_auth }}"
     id: "{{ ansible_version.full is version('2.6.0', '>=') | ternary(item.1.id, item.1.id[0]) }}"
@@ -91,7 +91,6 @@
     username: "{{ storages[item.0.name][item.0.storage.type].username | default(omit) }}"
     password: "{{ storages[item.0.name][item.0.storage.type].password | default(omit) }}"
     port: "{{ storages[item.0.name][item.0.storage.type].port | default(omit) }}"
-    target: "{{ storages[item.0.name][item.0.storage.type].target | default(omit) }}"
     force: true
   with_subelements:
     - "{{ sd_info.ovirt_storage_domains | default([]) }}"
