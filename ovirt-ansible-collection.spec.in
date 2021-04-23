@@ -68,6 +68,14 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Fri Apr 23 2021 Martin Necas <mnecas@redhat.com> - 1.4.2-1
+- repositories - Add ppc host
+- repositories - Remove ansible channels from RHV 4.4
+- infra - Remove storage connection target usage
+- hosted_engine_setup - Fix the appliance distribution
+- hosted_engine_setup - Add an error message for FIPS on CentOS
+- ovirt_vm - Allow cluster migration
+
 * Mon Mar 22 2021 Martin Necas <mnecas@redhat.com> - 1.4.1-1
 - hosted_engine_setup - Fix auth revoke
 

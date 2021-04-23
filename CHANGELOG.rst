@@ -5,6 +5,20 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.4.2
+======
+
+Minor Changes
+-------------
+
+- hosted_engine_setup - Add an error message for FIPS on CentOS (https://github.com/oVirt/ovirt-ansible-collection/pull/250).
+- hosted_engine_setup - Fix the appliance distribution (https://github.com/oVirt/ovirt-ansible-collection/pull/249).
+- infra - remove target from ovirt_storage_connection (https://github.com/oVirt/ovirt-ansible-collection/pull/252).
+- ovirt_vm - Allow migration between clusters (https://github.com/oVirt/ovirt-ansible-collection/pull/236).
+- repositories - Add host ppc (https://github.com/oVirt/ovirt-ansible-collection/pull/248).
+- repositories - Remove ansible channels from RHV 4.4 (https://github.com/oVirt/ovirt-ansible-collection/pull/242).
+- repositories - fix ppc repos (https://github.com/oVirt/ovirt-ansible-collection/pull/254).
+
 v1.4.1
 ======
 
