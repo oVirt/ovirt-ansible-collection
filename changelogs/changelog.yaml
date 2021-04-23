@@ -396,3 +396,22 @@ releases:
     fragments:
     - 237-hosted_engine_setup-fix-auth_revoke.yml
     release_date: '2021-03-22'
+  1.4.2:
+    changes:
+      minor_changes:
+      - hosted_engine_setup - Add an error message for FIPS on CentOS (https://github.com/oVirt/ovirt-ansible-collection/pull/250).
+      - hosted_engine_setup - Fix the appliance distribution (https://github.com/oVirt/ovirt-ansible-collection/pull/249).
+      - infra - remove target from ovirt_storage_connection (https://github.com/oVirt/ovirt-ansible-collection/pull/252).
+      - ovirt_vm - Allow migration between clusters (https://github.com/oVirt/ovirt-ansible-collection/pull/236).
+      - repositories - Add host ppc (https://github.com/oVirt/ovirt-ansible-collection/pull/248).
+      - repositories - Remove ansible channels from RHV 4.4 (https://github.com/oVirt/ovirt-ansible-collection/pull/242).
+      - repositories - fix ppc repos (https://github.com/oVirt/ovirt-ansible-collection/pull/254).
+    fragments:
+    - 236-ovirt_vm-allow-cluster-migration.yml
+    - 242-repositories-remove-ansible-channels-from-RHV-4.4.yml
+    - 248-repositories-add-host-ppc.yml
+    - 249-hosted_engine_setup-fix-the-appliance-distribution.yml
+    - 250-hosted_engine_setup-add-an-error-message-for-FIPS-on-centos.yml
+    - 252-infra-remove-target-from-ovirt_storage_connection.yml
+    - 254-repositories-fix-ppc-repos.yml
+    release_date: '2021-04-23'
