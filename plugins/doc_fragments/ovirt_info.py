@@ -29,7 +29,7 @@ options:
         elements: str
     follows:
       description:
-        - List of follow link names which will be gathered.
+        - List of linked entities, which should be fetched along with the main entity.
         - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
       type: list
       version_added: 1.5.0
