@@ -68,9 +68,9 @@ mkdir -p $COLLECTION_DIR
 cp -r $OVIRT_BUILD/* $COLLECTION_DIR
 cd $COLLECTION_DIR
 
-pip3 install rstcheck antsibull-changelog "ansible-lint<5.0.0"
+pip3 install rstcheck ansible-test antsibull-changelog "ansible-lint<5.0.0"
 
-ansible-test sanity
+/usr/local/bin/ansible-test sanity
 /usr/local/bin/antsibull-changelog lint
 /usr/local/bin/ansible-lint roles/* -x 204
 
