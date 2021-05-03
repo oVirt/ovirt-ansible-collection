@@ -84,6 +84,8 @@ def main():
     )
     module = AnsibleModule(argument_spec)
     check_sdk(module)
+    if module.params['fetch_nested'] or module.params['nested_attributes']:
+        module.deprecate("The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter", version='2.0')
 
     try:
         auth = module.params.pop('auth')

@@ -18,13 +18,22 @@ options:
             - It will fetch only IDs of nested entity. It doesn't fetch multiple levels of nested attributes.
               Only the attributes of the current entity. User can configure to fetch other
               attributes of the nested entities by specifying C(nested_attributes).
+            - This parameter is deprecated and replaced by C(follows).
         type: bool
     nested_attributes:
         description:
             - Specifies list of the attributes which should be fetched from the API.
             - This parameter apply only when C(fetch_nested) is I(true).
+            - This parameter is deprecated and replaced by C(follows).
         type: list
         elements: str
+    follows:
+      description:
+        - List of linked entities, which should be fetched along with the main entity.
+        - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
+      type: list
+      version_added: 1.5.0
+      elements: str
     auth:
         description:
             - "Dictionary with values needed to create HTTP/HTTPS connection to oVirt:"
