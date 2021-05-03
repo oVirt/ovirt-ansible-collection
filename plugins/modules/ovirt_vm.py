@@ -1731,6 +1731,18 @@ class VmsModule(BaseModule):
         self.changed = self.__attach_graphical_console(entity)
         self.changed = self.__attach_host_devices(entity)
 
+        # Wait for lease
+        if self.param('lease'):
+            jobs_service = self._connection.system_service().jobs_service()
+            jobs = sorted(jobs_service.list(), reverse=True, key=lambda job: job.start_time)
+            if jobs:
+                wait(
+                    service=jobs_service.job_service(jobs[0].id),
+                    condition=lambda job: job.status == otypes.JobStatus.FINISHED,
+                    wait=self.param('wait'),
+                    timeout=self.param('timeout'),
+                )
+
     def pre_remove(self, entity):
         # Forcibly stop the VM, if it's not in DOWN state:
         if entity.status != otypes.VmStatus.DOWN:
