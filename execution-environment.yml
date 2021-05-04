@@ -1,0 +1,12 @@
+---
+version: 1
+dependencies:
+  system: bindep.txt
+
+additional_build_steps:
+  prepend: |
+    RUN pip3 install --upgrade pip setuptools
+    RUN dnf install https://resources.ovirt.org/pub/yum-repo/ovirt-release-master.rpm -y
+    RUN dnf install ovirt-ansible-collection -y
+  append:
+    - RUN ls -la /usr/share/ansible/collections/ansible_collections/
