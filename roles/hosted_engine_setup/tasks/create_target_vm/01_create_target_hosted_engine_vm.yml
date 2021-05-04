@@ -8,7 +8,6 @@
     environment: "{{ he_cmd_lang }}"
     register: local_vm_ip
     changed_when: true
-  - debug: var=local_vm_ip
   - name: Fetch host facts
     ovirt_host_info:
       pattern: name={{ he_host_name }} status=up
@@ -17,19 +16,16 @@
     until: host_result is succeeded and host_result.ovirt_hosts|length >= 1
     retries: 50
     delay: 10
-  - debug: var=host_result
   - name: Fetch Cluster ID
     set_fact: cluster_id="{{ host_result.ovirt_hosts[0].cluster.id }}"
   - name: Fetch Cluster facts
     ovirt_cluster_info:
       auth: "{{ ovirt_auth }}"
     register: cluster_facts
-  - debug: var=cluster_facts
   - name: Fetch Datacenter facts
     ovirt_datacenter_info:
       auth: "{{ ovirt_auth }}"
     register: datacenter_facts
-  - debug: var=datacenter_facts
   - name: Fetch Cluster name
     set_fact: cluster_name={{ cluster_facts.ovirt_clusters|json_query("[?id=='" + cluster_id + "'].name")|first }}
   - name: Fetch Datacenter ID
@@ -51,7 +47,6 @@
       name: ServerCPUList
       version: "{{ cluster_version.major }}.{{ cluster_version.minor }}"
     register: server_cpu_list
-  - debug: var=server_cpu_list
   - name: Get cluster emulated machine list
     ovirt_system_option_info:
       name: ClusterEmulatedMachines
@@ -66,11 +61,9 @@
       server_cpu_dict: "{{ server_cpu_dict | combine({item.split(':')[1]: item.split(':')[3]}) }}"
     with_items: >-
       {{ server_cpu_list['ovirt_system_option']['values'][0]['value'].split('; ')|list|difference(['']) }}
-  - debug: var=server_cpu_dict
   - name: Convert CPU model name
     set_fact:
       cluster_cpu_model: "{{ server_cpu_dict[cluster_cpu.type] }}"
-  - debug: var=cluster_cpu_model
   - name: Parse emulated_machine
     set_fact:
       emulated_machine: >-
@@ -81,7 +74,6 @@
       pattern: name={{ he_storage_domain_name }} and datacenter={{ datacenter_name }}
       auth: "{{ ovirt_auth }}"
     register: storage_domain_details
-  - debug: var=storage_domain_details
   - name: Add HE disks
     ovirt_disk:
       name: "{{ item.name }}"
@@ -135,19 +127,16 @@
       he_sanlock_disk_details: "{{ add_disks.results[1] }}"
       he_conf_disk_details: "{{ add_disks.results[2] }}"
       he_metadata_disk_details: "{{ add_disks.results[3] }}"
-  - debug: var=add_disks
   - name: Set default graphics protocols
     set_fact:
       he_graphic_protocols: [vnc, spice]
   - name: Check if FIPS is enabled
     command: sysctl -n crypto.fips_enabled
     register: he_fips_enabled
-  - debug: var=he_fips_enabled
   - name: Select graphic protocols
     set_fact:
       he_graphic_protocols: [spice]
     when: he_fips_enabled.stdout == "1"
-  - debug: var=he_graphic_protocols
   - name: Add VM
     ovirt_vm:
       state: stopped
@@ -177,10 +166,8 @@
           mac_address: "{{ he_vm_mac_addr }}"
       auth: "{{ ovirt_auth }}"
     register: he_vm_details
-  - debug: var=he_vm_details
   - name: Register external local VM uuid
     shell: virsh -r domuuid {{ he_vm_name }}Local | head -1
     environment: "{{ he_cmd_lang }}"
     register: external_local_vm_uuid
     changed_when: true
-  - debug: var=external_local_vm_uuid

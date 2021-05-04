@@ -60,7 +60,6 @@
     include_tasks: "{{ item }}"
     with_fileglob: "hooks/enginevm_before_engine_setup/*.yml"
     register: include_before_engine_setup_results
-  - debug: var=include_before_engine_setup_results
   - name: Restore a backup
     block:
       - include_tasks: restore_backup.yml

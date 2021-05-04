@@ -10,11 +10,9 @@
       - 'rhevm'
     loop_control:
       loop_var: bridge_name
-  - debug: var=bridge_interface
   - name: Set variable for supported bond modes
     set_fact:
       acceptable_bond_modes: ['active-backup', 'balance-xor', 'broadcast', '802.3ad']
-  - debug: var=acceptable_bond_modes
   - name: Get all active network interfaces
     set_fact:
       otopi_net_host="{{ hostvars[inventory_hostname]['ansible_' + iface_item]['device'] }}"
@@ -52,7 +50,6 @@
     loop_control:
       loop_var: iface_item
     register: valid_network_interfaces
-  - debug: var=valid_network_interfaces
   - name: Filter bonds with bad naming
     set_fact:
       net_iface="{{ bond_item }}"
@@ -64,13 +61,11 @@
     loop_control:
       loop_var: bond_item
     register: bb_filtered_list
-  - debug: var=bb_filtered_list
   - name: Generate output list
     set_fact:
       host_net: >-
         {{ [bridge_interface] if bridge_interface is defined else bb_filtered_list.results |
         reject('skipped') | map(attribute='bond_item.ansible_facts.otopi_net_host') | list }}
-  - debug: var=host_net
   - import_tasks: filter_unsupported_devices.yml
   - name: Validate selected bridge interface if management bridge does not exist
     fail:

@@ -1,7 +1,6 @@
 ---
 - name: Validate network connectivity check configuration
   block:
-  - debug: var=he_network_test
   - name: Fail if he_network_test is not valid
     fail:
       msg: "Invalid he_network_test defined"

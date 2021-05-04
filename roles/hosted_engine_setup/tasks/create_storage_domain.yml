@@ -30,19 +30,16 @@
       'up' in host_result.ovirt_hosts[0].status
     retries: 50
     delay: 10
-  - debug: var=host_result
   - name: Fetch cluster ID
     set_fact: cluster_id="{{ host_result.ovirt_hosts[0].cluster.id }}"
   - name: Fetch cluster facts
     ovirt_cluster_info:
       auth: "{{ ovirt_auth }}"
     register: cluster_facts
-  - debug: var=cluster_facts
   - name: Fetch Datacenter facts
     ovirt_datacenter_info:
       auth: "{{ ovirt_auth }}"
     register: datacenter_facts
-  - debug: var=datacenter_facts
   - name: Fetch Datacenter ID
     set_fact: >-
       datacenter_id={{ cluster_facts.ovirt_clusters|json_query("[?id=='" + cluster_id + "'].data_center.id")|first }}
@@ -119,7 +116,6 @@
       pattern: name={{ he_storage_domain_name }}
       auth: "{{ ovirt_auth }}"
     register: storage_domain_details
-  - debug: var=storage_domain_details
   - name: Find the appliance OVF
     find:
       paths: "{{ he_local_vm_dir }}/master"
@@ -127,7 +123,6 @@
       patterns: ^.*.(?<!meta).ovf$
       use_regex: true
     register: app_ovf
-  - debug: var=app_ovf
   - name: Parse OVF
     xml:
       path: "{{ app_ovf.files[0].path }}"
@@ -146,7 +141,6 @@
         storage_domain_details.ovirt_storage_domains[0].critical_space_action_blocker|int *
         1024 * 1024 * 1024 + 5 * 1024 * 1024 * 1024 }}
     # +5G: 2xOVF_STORE, lockspace, metadata, configuration
-  - debug: var=required_size
   - name: Remove unsuitable storage domain
     ovirt_storage_domain:
       host: "{{ he_host_name }}"
@@ -158,7 +152,6 @@
       auth: "{{ ovirt_auth }}"
     when: storage_domain_details.ovirt_storage_domains[0].available|int < required_size|int
     register: remove_storage_domain_details
-  - debug: var=remove_storage_domain_details
   - name: Check storage domain free space
     fail:
       msg: >-
@@ -178,5 +171,4 @@
       auth: "{{ ovirt_auth }}"
     when: storage_domain_details.ovirt_storage_domains[0].available|int >= required_size|int
     register: otopi_storage_domain_details
-  - debug: var=otopi_storage_domain_details
 ...

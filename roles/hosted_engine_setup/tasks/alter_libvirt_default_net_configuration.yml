@@ -4,8 +4,6 @@
     command: get_xml
     name: default
   register: default_net_xml
-- debug: var=default_net_xml.stdout
-
 - name: IPv6 configuration
   block:
     - name: Remove IPv4 configuration
@@ -34,7 +32,6 @@
         attribute: prefix
         value: "64"
       register: editednet2
-    - debug: var=editednet2
     - name: Edit libvirt default network configuration, enable DHCPv6
       xml:
         xmlstring: "{{ editednet2.xmlstring }}"
@@ -42,7 +39,6 @@
         attribute: start
         value: "{{ he_ipv6_subnet_prefix + '::10' }}"
       register: editednet3
-    - debug: var=editednet3
     - name: Edit libvirt default network configuration, set DHCPv6 range
       xml:
         xmlstring: "{{ editednet3.xmlstring }}"
@@ -50,7 +46,6 @@
         attribute: end
         value: "{{ he_ipv6_subnet_prefix + '::ff' }}"
       register: finaledit6
-    - debug: var=finaledit
   when: ipv6_deployment|bool
 
 - name: IPv4 configuration
