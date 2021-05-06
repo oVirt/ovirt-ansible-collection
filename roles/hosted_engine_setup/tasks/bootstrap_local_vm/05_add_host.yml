@@ -43,7 +43,7 @@
       state: present
       key: https://{{ he_fqdn }}/ovirt-engine/services/pki-resource?resource=engine-certificate&format=OPENSSH-PUBKEY
       validate_certs: false
-  - include_tasks: auth_sso.yml
+  - include_tasks: ../auth_sso.yml
   - name: Ensure that the target datacenter is present
     ovirt_datacenter:
       state: present
