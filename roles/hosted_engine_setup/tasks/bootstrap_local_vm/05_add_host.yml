@@ -133,11 +133,11 @@
           msg: >-
             You can now connect to {{ bootstrap_engine_url }} and check the status of this host and
             eventually remediate it, please continue only when the host is listed as 'up'
-      - include_tasks: pause_execution.yml
+      - include_tasks: tasks/pause_execution.yml
     when: he_pause_host|bool
   # refresh the auth token after a long operation to avoid having it expired
-  - include_tasks: auth_revoke.yml
-  - include_tasks: auth_sso.yml
+  - include_tasks: tasks/auth_revoke.yml
+  - include_tasks: tasks/auth_sso.yml
   - name: Wait for the host to be up
     ovirt_host_info:
       pattern: name={{ he_host_name }}
@@ -204,7 +204,7 @@
           msg: >-
             You can now connect to {{ bootstrap_engine_url }} and check the status of this host and
             eventually remediate it, please continue only when the host is listed as 'up'
-      - include_tasks: pause_execution.yml
+      - include_tasks: tasks/pause_execution.yml
     when: >-
       he_pause_after_failed_add_host|bool and
       host_result_up_check is succeeded and
@@ -212,8 +212,8 @@
       host_result_up_check.ovirt_hosts[0].status == 'non_operational'
 
   # refresh the auth token after a long operation to avoid having it expired
-  - include_tasks: auth_revoke.yml
-  - include_tasks: auth_sso.yml
+  - include_tasks: tasks/auth_revoke.yml
+  - include_tasks: tasks/auth_sso.yml
   - name: Check if the host is up
     ovirt_host_info:
       pattern: name={{ he_host_name }}
@@ -268,8 +268,8 @@
     - name: Fetch logs from the engine VM
       include_tasks: fetch_engine_logs.yml
       ignore_errors: true
-    - include_tasks: clean_localvm_dir.yml
-    - include_tasks: clean_local_storage_pools.yml
+    - include_tasks: tasks/clean_localvm_dir.yml
+    - include_tasks: tasks/clean_local_storage_pools.yml
     - name: Notify the user about a failure
       fail:
         msg: >

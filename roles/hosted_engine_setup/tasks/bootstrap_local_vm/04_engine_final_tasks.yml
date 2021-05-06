@@ -60,10 +60,10 @@
       set_fact:
         he_local_vm_dir={{ hostvars[he_ansible_host_name]['he_local_vm_dir'] }}
     - name: Clean bootstrap VM
-      import_tasks: clean_localvm_dir.yml
+      import_tasks: tasks/clean_localvm_dir.yml
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Clean local storage pools
-      import_tasks: clean_local_storage_pools.yml
+      import_tasks: tasks/clean_local_storage_pools.yml
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Notify the user about a failure
       fail:

@@ -66,7 +66,7 @@
       host_net: >-
         {{ [bridge_interface] if bridge_interface is defined else bb_filtered_list.results |
         reject('skipped') | map(attribute='bond_item.ansible_facts.otopi_net_host') | list }}
-  - import_tasks: filter_unsupported_devices.yml
+  - import_tasks: tasks/filter_unsupported_devices.yml
   - name: Validate selected bridge interface if management bridge does not exist
     fail:
       msg: The selected network interface is not valid
