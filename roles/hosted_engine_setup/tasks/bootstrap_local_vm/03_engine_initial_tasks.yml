@@ -54,7 +54,7 @@
       - "OVESETUP_DWH_DB/password=str:{{ he_dwh_db_password }}"
     when: he_dwh_db_password is defined
   - name: Import OpenSCAP task
-    import_tasks: tasks/apply_openscap_profile.yml
+    import_tasks: ../apply_openscap_profile.yml
     when: he_apply_openscap_profile|bool
   - name: Include before engine-setup custom tasks files for the engine VM
     include_tasks: "{{ item }}"
@@ -62,7 +62,7 @@
     register: include_before_engine_setup_results
   - name: Restore a backup
     block:
-      - include_tasks: tasks/restore_backup.yml
+      - include_tasks: ../restore_backup.yml
     when: he_restore_from_file is defined and he_restore_from_file
   rescue:
     - name: Sync on engine machine
@@ -76,10 +76,10 @@
       set_fact:
         he_local_vm_dir={{ hostvars[he_ansible_host_name]['he_local_vm_dir'] }}
     - name: Clean bootstrap VM
-      import_tasks: tasks/clean_localvm_dir.yml
+      import_tasks: ../clean_localvm_dir.yml
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Clean local storage pools
-      import_tasks: tasks/clean_local_storage_pools.yml
+      import_tasks: ../clean_local_storage_pools.yml
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Notify the user about a failure
       fail:

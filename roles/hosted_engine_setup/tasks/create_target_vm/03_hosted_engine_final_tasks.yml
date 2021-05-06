@@ -2,7 +2,7 @@
 - name: Hosted-Engine final tasks
   block:
   - name: Choose IPv4, IPv6 or auto
-    import_tasks: tasks/ipv_switch.yml
+    import_tasks: ../ipv_switch.yml
   - name: Trigger hosted engine OVF update and enable the serial console
     ovirt_vm:
       id: "{{ he_vm_details.vm.id }}"
@@ -167,7 +167,7 @@
     become_user: vdsm
     become_method: sudo
     changed_when: true
-  - include_tasks: tasks/get_local_vm_disk_path.yml
+  - include_tasks: ../get_local_vm_disk_path.yml
   - name: Generate DHCP network configuration for the engine VM
     template:
       src: templates/ifcfg-eth0-dhcp.j2
@@ -370,7 +370,7 @@
   # Workaround for https://bugzilla.redhat.com/1540107
   # the engine fails deleting a VM if its status in the engine DB
   # is not up to date.
-  - include_tasks: tasks/auth_sso.yml
+  - include_tasks: ../auth_sso.yml
   - name: Check for the local bootstrap VM
     ovirt_vm_info:
       pattern: id="{{ external_local_vm_uuid.stdout_lines|first }}"

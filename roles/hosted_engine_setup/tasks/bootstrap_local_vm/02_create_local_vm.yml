@@ -1,7 +1,7 @@
 ---
 - name: Create hosted engine local vm
   block:
-  - import_tasks: tasks/add_engine_as_ansible_host.yml
+  - import_tasks: ../add_engine_as_ansible_host.yml
   - name: Initial tasks
     block:
       - name: Get host unique id
@@ -31,7 +31,7 @@
           owner: vdsm
           group: kvm
           mode: 0775
-      - include_tasks: tasks/install_appliance.yml
+      - include_tasks: ../install_appliance.yml
         when: he_appliance_ova is none or he_appliance_ova|length == 0
       - name: Register appliance PATH
         set_fact:
@@ -63,7 +63,7 @@
           src: "{{ he_appliance_ova_path }}"
           dest: "{{ he_local_vm_dir }}"
           extra_opts: ['--sparse']
-      - include_tasks: tasks/get_local_vm_disk_path.yml
+      - include_tasks: ../get_local_vm_disk_path.yml
       - name: Get appliance disk size
         command: qemu-img info --output=json {{ local_vm_disk_path }}
         environment: "{{ he_cmd_lang }}"
@@ -134,8 +134,8 @@
           delay=30
           timeout=300
     rescue:
-      - include_tasks: tasks/clean_localvm_dir.yml
-      - include_tasks: tasks/clean_local_storage_pools.yml
+      - include_tasks: ../clean_localvm_dir.yml
+      - include_tasks: ../clean_local_storage_pools.yml
       - name: Notify the user about a failure
         fail:
           msg: >

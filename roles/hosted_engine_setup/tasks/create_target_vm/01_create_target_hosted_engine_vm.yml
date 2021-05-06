@@ -1,8 +1,8 @@
 ---
 - name: Create target Hosted Engine VM
   block:
-  - import_tasks: tasks/add_engine_as_ansible_host.yml
-  - include_tasks: tasks/auth_sso.yml
+  - import_tasks: ../add_engine_as_ansible_host.yml
+  - include_tasks: ../auth_sso.yml
   - name: Get local VM IP
     shell: virsh -r net-dhcp-leases default | grep -i {{ he_vm_mac_addr }} | awk '{ print $5 }' | cut -f1 -d'/'
     environment: "{{ he_cmd_lang }}"
