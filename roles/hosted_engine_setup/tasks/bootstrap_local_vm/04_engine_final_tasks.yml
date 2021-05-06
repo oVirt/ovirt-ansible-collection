@@ -5,7 +5,6 @@
     include_tasks: "{{ item }}"
     with_fileglob: "hooks/enginevm_after_engine_setup/*.yml"
     register: include_after_engine_setup_results
-  - debug: var=include_after_engine_setup_results
   # After a restart the engine has a 5 minute grace time,
   # other actions like electing a new SPM host or reconstructing
   # the master storage domain could require more time
@@ -18,7 +17,6 @@
     register: libgfapi_support_out
     changed_when: true
     when: he_enable_libgfapi|bool
-  - debug: var=libgfapi_support_out
   - name: Save original OvfUpdateIntervalInMinutes
     shell: "engine-config -g OvfUpdateIntervalInMinutes | cut -d' ' -f2 > /root/OvfUpdateIntervalInMinutes.txt"
     environment: "{{ he_cmd_lang }}"
@@ -43,7 +41,6 @@
       state: restarted
       name: ovirt-engine
     register: restart_out
-  - debug: var=restart_out
   - name: Mask cloud-init services to speed up future boot
     systemd:
       masked: true
@@ -63,10 +60,10 @@
       set_fact:
         he_local_vm_dir={{ hostvars[he_ansible_host_name]['he_local_vm_dir'] }}
     - name: Clean bootstrap VM
-      import_tasks: clean_localvm_dir.yml
+      import_tasks: ../clean_localvm_dir.yml
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Clean local storage pools
-      import_tasks: clean_local_storage_pools.yml
+      import_tasks: ../clean_local_storage_pools.yml
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Notify the user about a failure
       fail:

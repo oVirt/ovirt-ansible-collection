@@ -8,11 +8,9 @@
     - name: Set 3rd chunk
       set_fact:
         chunk: "{{ chunk|int + 1 }}"
-    - debug: var=chunk
     - name: Get ip route
       shell: ip route get 192.168.{{ chunk }}.1 | grep "via" | cat
       register: result
-    - debug: var=result
     - name: Fail if can't find an available subnet
       fail:
         msg: >-
@@ -28,7 +26,6 @@
       include_tasks: search_available_network_subnet.yaml
       when: result.stdout.find("via") == -1
   when: not ipv6_deployment|bool
-
 - name: Search for an available IPv6 subnet
   block:
     - name: Define 3rd chunk
@@ -38,11 +35,9 @@
     - name: Set 3rd chunk
       set_fact:
         chunk: "{{ chunk|int + 45 }}"  # 200 tries
-    - debug: var=chunk
     - name: Get ip route
       shell: ip -6 route get fd00:1234:{{ chunk }}:900::1 | grep "via" | cat
       register: result
-    - debug: var=result
     - name: Fail if can't find an available subnet
       fail:
         msg: >-

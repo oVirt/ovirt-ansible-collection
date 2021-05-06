@@ -17,7 +17,6 @@
   until: host_result is succeeded and host_result.ovirt_hosts|length >= 1
   retries: 50
   delay: 10
-- debug: var=host_result
 - name: iSCSI discover with REST API
   uri:
     url: https://{{ he_fqdn }}/ovirt-engine/api/hosts/{{ host_result.ovirt_hosts[0].id }}/iscsidiscover
@@ -32,7 +31,6 @@
       Accept: application/json
       Authorization: "Basic {{ ('admin@internal' + ':' +  he_admin_password ) | b64encode }}"
   register: otopi_iscsi_targets
-- debug: var=otopi_iscsi_targets
 # TODO: perform an iSCSI logout when viable, see:
 # https://bugzilla.redhat.com/show_bug.cgi?id=1535951
 # https://github.com/ansible/ansible/issues/35039

@@ -3,7 +3,6 @@
   block:
   - name: Fetch the value of HOST_KEY_CHECKING
     set_fact: host_key_checking="{{ lookup('config', 'HOST_KEY_CHECKING') }}"
-  - debug: var=host_key_checking
   - name: Get the username running the deploy
     become: false
     command: whoami

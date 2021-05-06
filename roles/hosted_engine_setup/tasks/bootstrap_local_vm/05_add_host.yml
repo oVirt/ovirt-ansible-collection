@@ -9,7 +9,6 @@
     until: "'DB Up!Welcome to Health Status!' in engine_status.content"
     retries: 30
     delay: 20
-  - debug: var=engine_status
   - name: Open a port on firewalld
     firewalld:
       port: "{{ he_webui_forward_port }}/tcp"
@@ -27,10 +26,10 @@
     async: 86400
     poll: 0
     register: sshpf
-  - debug: var=sshpf
   - name: Evaluate temporary bootstrap engine URL
     set_fact: bootstrap_engine_url="https://{{ he_host_address }}:{{ he_webui_forward_port }}/ovirt-engine/"
-  - debug:
+  - name: Display the temporary bootstrap engine URL
+    debug:
       msg: >-
         The bootstrap engine is temporary accessible over {{ bootstrap_engine_url }}
   - name: Detect VLAN ID
@@ -38,14 +37,13 @@
     environment: "{{ he_cmd_lang }}"
     register: vlan_id_out
     changed_when: true
-  - debug: var=vlan_id_out
   - name: Set Engine public key as authorized key without validating the TLS/SSL certificates
     authorized_key:
       user: root
       state: present
       key: https://{{ he_fqdn }}/ovirt-engine/services/pki-resource?resource=engine-certificate&format=OPENSSH-PUBKEY
       validate_certs: false
-  - include_tasks: auth_sso.yml
+  - include_tasks: ../auth_sso.yml
   - name: Ensure that the target datacenter is present
     ovirt_datacenter:
       state: present
@@ -128,7 +126,6 @@
     include_tasks: "{{ item }}"
     with_fileglob: "hooks/after_add_host/*.yml"
     register: include_after_add_host_results
-  - debug: var=include_after_add_host_results
   - name: Pause the execution to let the user interactively reconfigure the host
     block:
       - name: Let the user connect to the bootstrap engine to manually fix host configuration
@@ -136,11 +133,11 @@
           msg: >-
             You can now connect to {{ bootstrap_engine_url }} and check the status of this host and
             eventually remediate it, please continue only when the host is listed as 'up'
-      - include_tasks: pause_execution.yml
+      - include_tasks: ../pause_execution.yml
     when: he_pause_host|bool
   # refresh the auth token after a long operation to avoid having it expired
-  - include_tasks: auth_revoke.yml
-  - include_tasks: auth_sso.yml
+  - include_tasks: ../auth_revoke.yml
+  - include_tasks: ../auth_sso.yml
   - name: Wait for the host to be up
     ovirt_host_info:
       pattern: name={{ he_host_name }}
@@ -156,7 +153,6 @@
     retries: 120
     delay: 10
     ignore_errors: true
-  - debug: var=host_result_up_check
   - name: Notify the user about a failure
     fail:
       msg: >-
@@ -208,7 +204,7 @@
           msg: >-
             You can now connect to {{ bootstrap_engine_url }} and check the status of this host and
             eventually remediate it, please continue only when the host is listed as 'up'
-      - include_tasks: pause_execution.yml
+      - include_tasks: ../pause_execution.yml
     when: >-
       he_pause_after_failed_add_host|bool and
       host_result_up_check is succeeded and
@@ -216,8 +212,8 @@
       host_result_up_check.ovirt_hosts[0].status == 'non_operational'
 
   # refresh the auth token after a long operation to avoid having it expired
-  - include_tasks: auth_revoke.yml
-  - include_tasks: auth_sso.yml
+  - include_tasks: ../auth_revoke.yml
+  - include_tasks: ../auth_sso.yml
   - name: Check if the host is up
     ovirt_host_info:
       pattern: name={{ he_host_name }}
@@ -272,8 +268,8 @@
     - name: Fetch logs from the engine VM
       include_tasks: fetch_engine_logs.yml
       ignore_errors: true
-    - include_tasks: clean_localvm_dir.yml
-    - include_tasks: clean_local_storage_pools.yml
+    - include_tasks: ../clean_localvm_dir.yml
+    - include_tasks: ../clean_local_storage_pools.yml
     - name: Notify the user about a failure
       fail:
         msg: >

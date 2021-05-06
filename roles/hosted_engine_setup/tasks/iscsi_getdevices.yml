@@ -30,5 +30,4 @@
       target: "{{ he_iscsi_target }}"
     auth: "{{ ovirt_auth }}"
   register: otopi_iscsi_devices
-- debug: var=otopi_iscsi_devices
 ...

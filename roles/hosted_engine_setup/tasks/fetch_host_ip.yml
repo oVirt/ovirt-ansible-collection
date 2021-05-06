@@ -7,13 +7,10 @@
   set_fact:
     he_host_name: "{{ host_full_name.stdout_lines[0] }}"
   when: he_host_name is none
-- debug: var=he_host_name
 - name: Define host address variable if not defined
   set_fact:
     he_host_address: "{{ host_full_name.stdout_lines[0] }}"
   when: he_host_address is none
-- debug: var=he_host_address
-
 - name: Get host IP address
   block:
     - name: Choose IPv4, IPv6 or auto
@@ -23,7 +20,6 @@
       register: hostname_resolution_output
       changed_when: true
       ignore_errors: true
-    - debug: var=hostname_resolution_output
     - name: Check address resolution
       fail:
         msg: >
@@ -39,8 +35,6 @@
             )
         )[0]
         }}"
-    - debug: var=he_host_ip
-
 - name: Fail if host's ip is empty
   fail:
     msg: Host has no IP address

@@ -4,7 +4,6 @@
     path: "{{ he_local_vm_dir }}"
     state: absent
   register: rm_localvm_dir
-- debug: var=rm_localvm_dir
 - name: Remove temporary entry in /etc/hosts for the local VM
   lineinfile:
     dest: /etc/hosts

@@ -89,7 +89,6 @@
       register: fqdn_resolution_output
       changed_when: true
       ignore_errors: true
-    - debug: var=fqdn_resolution_output
     - name: Check engine he_fqdn resolution
       fail:
         msg: >
@@ -98,7 +97,6 @@
     - name: Parse engine he_fqdn resolution
       set_fact:
         r_fqdn_address: "{{ fqdn_resolution_output.stdout.split()[0] }}"
-    - debug: var=r_fqdn_address
     - name: Ensure engine he_fqdn doesn't resolve locally
       fail:
         msg: >
