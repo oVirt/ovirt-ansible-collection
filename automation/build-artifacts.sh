@@ -14,17 +14,6 @@ rm -f ./*tar.gz
 ./build.sh build ovirt $ROOT_PATH
 ./build.sh build rhv $ROOT_PATH
 
-git remote -v
-git fetch origin master
-echo $(git branch -a)
-echo $(git diff FETCH_HEAD)
-
-# If PR changed something in ./plugins or ./roles it is required to have changelog
-if [[ $(git diff --quiet FETCH_HEAD ./plugins ./roles)$? -eq 1 && $(git diff --quiet FETCH_HEAD ./changelogs)$? -eq 0 ]]; then
-        echo "Please add changelog.";
-        exit 1;
-fi
-
 OVIRT_BUILD=$ROOT_PATH/ansible_collections/ovirt/ovirt/
 RHV_BUILD=$ROOT_PATH/ansible_collections/redhat/rhv
 
@@ -86,3 +75,9 @@ ansible-test sanity
 /usr/local/bin/ansible-lint roles/* -x 204
 
 cd $ROOT_PATH
+
+# If PR changed something in ./plugins or ./roles it is required to have changelog
+if [[ $(git diff --quiet FETCH_HEAD ./plugins ./roles)$? -eq 1 && $(git diff --quiet FETCH_HEAD ./changelogs)$? -eq 0 ]]; then
+        echo "Please add changelog.";
+        exit 1;
+fi
