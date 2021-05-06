@@ -15,7 +15,7 @@ rm -f ./*tar.gz
 ./build.sh build rhv $ROOT_PATH
 
 git remote -v
-
+echo $(git branch -a)
 # If PR changed something in ./plugins or ./roles it is required to have changelog
 if [[ $(git diff --quiet origin ./plugins ./roles)$? -eq 1 && $(git diff --quiet origin ./changelogs)$? -eq 0 ]]; then
         echo "Please add changelog.";
