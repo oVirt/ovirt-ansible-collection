@@ -17,10 +17,10 @@ rm -f ./*tar.gz
 git remote -v
 git fetch origin master
 echo $(git branch -a)
-echo $(git diff myhead)
+echo $(git diff FETCH_HEAD)
 
 # If PR changed something in ./plugins or ./roles it is required to have changelog
-if [[ $(git diff --quiet myhead ./plugins ./roles)$? -eq 1 && $(git diff --quiet myhead ./changelogs)$? -eq 0 ]]; then
+if [[ $(git diff --quiet FETCH_HEAD ./plugins ./roles)$? -eq 1 && $(git diff --quiet FETCH_HEAD ./changelogs)$? -eq 0 ]]; then
         echo "Please add changelog.";
         exit 1;
 fi
