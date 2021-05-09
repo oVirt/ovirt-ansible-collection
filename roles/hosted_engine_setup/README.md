@@ -44,6 +44,7 @@ Ansible role for deploying oVirt Hosted-Engine
 | he_tcp_t_port | null | port to connect if he_network_test is *tcp* |
 | he_pause_host | false | Pause the execution to let the user interactively fix host configuration |
 | he_pause_after_failed_add_host | true | Pause the execution if Add Host failed with status non_operational, to let the user interactively fix host configuration |
+| he_pause_before_engine_setup | false | Pause the execution and allow the user to make configuration changes to the bootstrap engine VM before running `engine-setup` |
 | he_offline_deployment | false | If `True`, updates for all packages will be disabled |
 | he_additional_package_list | [] | List of additional packages to be installed on engine VM apart from ovirt-engine package |
 | he_debug_mode | false | If `True`, HE deployment will execute additional tasks for debug |
@@ -358,7 +359,11 @@ These playbooks will be consumed automatically by the role when you execute it.
 
 **Manual:**
 
-To make manual adjustments you can set the variable ```he_pause_host``` to true. This will pause the deployment after the engine has been setup and create a lock-file at /tmp that ends with ```_he_setup_lock``` on the machine the role was executed on. The deployment will continue after deleting the lock-file, or after 24 hours ( if the lock-file hasn't been removed ).
+To make manual adjustments set the following variables to `true`:
+- `he_pause_before_engine_setup` - This will pause the deployment **before** running the engine setup.
+- `he_pause_host` - This will pause the deployment **after** the engine has been setup.
+
+Set these variables to `true` will create a lock-file at /tmp that ends with `_he_setup_lock` on the machine the role was executed on. The deployment will continue after deleting the lock-file, or after 24 hours ( if the lock-file hasn't been removed ).
 
 In order to proceed with the deployment, before deleting the lock-file, make sure that the host is on 'up' state at the engine's URL.
 
