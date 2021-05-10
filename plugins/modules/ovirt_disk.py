@@ -859,7 +859,6 @@ def main():
                     wait_condition=lambda d: d.status == otypes.DiskStatus.OK,
                     storage_domain=otypes.StorageDomain(name=module.params['image_provider']),
                 )
-
         elif state == 'imported':
             glance_service = connection.system_service().openstack_image_providers_service()
             image_provider = search_by_name(glance_service, module.params['image_provider'])
