@@ -65,8 +65,8 @@
       - name: Allow the user to connect to the bootstrap engine and change configuration
         debug:
           msg: >-
-            You can now connect to the bootstrap engine using the temporary IP address -
-            {{ hostvars[he_ansible_host_name]['local_vm_ip']['stdout_lines'][0] }}
+            You can now connect from this host to the bootstrap engine VM using ssh as root
+            and the temporary IP address - {{ hostvars[he_ansible_host_name]['local_vm_ip']['stdout_lines'][0] }}
       - include_tasks: ../pause_execution.yml
     when: he_pause_before_engine_setup|bool
   - name: Restore a backup
