@@ -7,5 +7,4 @@
       lun_id: -1  # currently it is unused and I use it to turn on FC filtering
     auth: "{{ ovirt_auth }}"
   register: otopi_fc_devices
-- debug: var=otopi_fc_devices
 ...

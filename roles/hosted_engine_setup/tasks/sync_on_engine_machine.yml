@@ -5,5 +5,5 @@
   command: sync
   changed_when: true
   ignore_errors: true
-  ignore_unreachable: yes
+  ignore_unreachable: true
   delegate_to: "{{ groups.engine[0] }}"

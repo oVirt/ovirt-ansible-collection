@@ -7,7 +7,6 @@
     loop_var: nic
   changed_when: true
   register: interface_types
-- debug: var=interface_types
 - name: Check for Team devices
   set_fact:
     is_team: "{{ nic_if.stdout.find('team') > 0 }}"
@@ -17,17 +16,14 @@
   loop_control:
     loop_var: nic_if
   register: team_list
-- debug: var=team_list
 - name: Get list of Team devices
   set_fact:
     team_if: "{{  team_list.results | reject('skipped') | map(attribute='nic_if.nic') | list }}"
-- debug: var=team_if
 - import_tasks: filter_unsupported_vlan_devices.yml
 - name: Filter unsupported interface types
   set_fact:
     otopi_host_net: "{{ host_net | difference(invalid_net_if) }}"
   register: otopi_host_net
-- debug: var=otopi_host_net
 - name: Failed if only unsupported devices are available
   fail:
     msg: >-

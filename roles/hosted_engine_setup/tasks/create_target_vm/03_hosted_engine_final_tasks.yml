@@ -2,7 +2,7 @@
 - name: Hosted-Engine final tasks
   block:
   - name: Choose IPv4, IPv6 or auto
-    import_tasks: ipv_switch.yml
+    import_tasks: ../ipv_switch.yml
   - name: Trigger hosted engine OVF update and enable the serial console
     ovirt_vm:
       id: "{{ he_vm_details.vm.id }}"
@@ -22,13 +22,11 @@
     delay: 10
     register: storage_domain_details
     until: "storage_domain_details.ovirt_storage_domains[0].disks | selectattr('name', 'match', '^OVF_STORE$') | list"
-  - debug: var=storage_domain_details
   - name: Parse OVF_STORE disk list
     set_fact:
       ovf_store_disks: >-
         {{ storage_domain_details.ovirt_storage_domains[0].disks |
         selectattr('name', 'match', '^OVF_STORE$') | list }}
-  - debug: var=ovf_store_disks
   - name: Check OVF_STORE volume status
     command: >-
       vdsm-client Volume getInfo storagepoolID={{ datacenter_id }}
@@ -43,7 +41,6 @@
       ovf_store_status.rc == 0 and ovf_store_status.stdout|from_json|json_query('status') == 'OK' and
       ovf_store_status.stdout|from_json|json_query('description')|from_json|json_query('Updated')
     with_items: "{{ ovf_store_disks }}"
-  - debug: var=ovf_store_status
   - name: Wait for OVF_STORE disk content
     shell: >-
       vdsm-client Image prepare storagepoolID={{ datacenter_id }}
@@ -72,7 +69,6 @@
       - "{{ he_sanlock_disk_details }}"
     register: prepareimage_results
     changed_when: true
-  - debug: var=prepareimage_results
   - name: Fetch Hosted Engine configuration disk path
     set_fact:
       he_conf_disk_path: >-
@@ -88,9 +84,6 @@
       he_metadata_disk_path: >-
         {{ (prepareimage_results.results|json_query("[?item.id=='" +
         he_metadata_disk_details.id + "'].stdout")|first|from_json).path }}
-  - debug: var=he_conf_disk_path
-  - debug: var=he_virtio_disk_path
-  - debug: var=he_metadata_disk_path
   - name: Shutdown local VM
     command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} shutdown {{ he_vm_name }}Local"
     environment: "{{ he_cmd_lang }}"
@@ -102,7 +95,6 @@
     until: dominfo_out.rc == 0 and 'shut off' in dominfo_out.stdout
     retries: 120
     delay: 5
-  - debug: var=dominfo_out
   - name: Undefine local VM
     command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} undefine {{ he_vm_name }}Local"
     environment: "{{ he_cmd_lang }}"
@@ -122,7 +114,6 @@
     changed_when: true
   - name: Set ha_version
     set_fact: ha_version="{{ ha_version_out.stdout_lines|first }}"
-  - debug: var=ha_version
   - name: Create configuration templates
     template:
       src: "{{ item.src }}"
@@ -176,7 +167,7 @@
     become_user: vdsm
     become_method: sudo
     changed_when: true
-  - include_tasks: get_local_vm_disk_path.yml
+  - include_tasks: ../get_local_vm_disk_path.yml
   - name: Generate DHCP network configuration for the engine VM
     template:
       src: templates/ifcfg-eth0-dhcp.j2
@@ -283,7 +274,6 @@
     retries: 5
     delay: 10
     changed_when: true
-  - debug: var=result
   - block:
       - name: Workaround for ovirt-ha-broker start failures
         # Ugly workaround for https://bugzilla.redhat.com/1768511
@@ -315,7 +305,6 @@
     retries: 3
     delay: 10
     changed_when: true
-  - debug: var=mresult
   - name: Wait for the engine to come up on the target VM
     block:
       - name: Check engine VM health
@@ -381,7 +370,7 @@
   # Workaround for https://bugzilla.redhat.com/1540107
   # the engine fails deleting a VM if its status in the engine DB
   # is not up to date.
-  - include_tasks: auth_sso.yml
+  - include_tasks: ../auth_sso.yml
   - name: Check for the local bootstrap VM
     ovirt_vm_info:
       pattern: id="{{ external_local_vm_uuid.stdout_lines|first }}"
@@ -428,4 +417,3 @@
     include_tasks: "{{ item }}"
     with_fileglob: "hooks/after_setup/*.yml"
     register: after_setup_results
-  - debug: var=after_setup_results
