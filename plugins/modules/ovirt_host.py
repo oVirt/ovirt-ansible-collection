@@ -320,6 +320,7 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     get_id_by_name,
     ovirt_full_argument_spec,
     wait,
+    get_dict_of_struct,
 )
 
 
@@ -612,7 +613,7 @@ def main():
         elif state == 'iscsidiscover':
             host_id = get_id_by_name(hosts_service, module.params['name'])
             iscsi_param = module.params['iscsi']
-            iscsi_targets = hosts_service.service(host_id).iscsi_discover(
+            iscsi_targets = hosts_service.service(host_id).discover_iscsi(
                 iscsi=otypes.IscsiDetails(
                     port=int(iscsi_param.get('port', 3260)),
                     username=iscsi_param.get('username'),
@@ -624,7 +625,13 @@ def main():
             ret = {
                 'changed': False,
                 'id': host_id,
-                'iscsi_targets': iscsi_targets,
+                'iscsi_targets':[iscsi.target for iscsi in iscsi_targets],
+                'iscsi_targets_struct': [get_dict_of_struct(
+                    struct=iscsi,
+                    connection=connection,
+                    fetch_nested=module.params.get('fetch_nested'),
+                    attributes=module.params.get('nested_attributes'),
+                ) for iscsi in iscsi_targets],
             }
         elif state == 'iscsilogin':
             host_id = get_id_by_name(hosts_service, module.params['name'])
