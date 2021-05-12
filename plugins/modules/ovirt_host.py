@@ -625,7 +625,7 @@ def main():
             ret = {
                 'changed': False,
                 'id': host_id,
-                'iscsi_targets':[iscsi.target for iscsi in iscsi_targets],
+                'iscsi_targets': [iscsi.target for iscsi in iscsi_targets],
                 'iscsi_targets_struct': [get_dict_of_struct(
                     struct=iscsi,
                     connection=connection,
