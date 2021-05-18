@@ -17,19 +17,16 @@
   until: host_result is succeeded and host_result.ovirt_hosts|length >= 1
   retries: 50
   delay: 10
-- name: iSCSI discover with REST API
-  uri:
-    url: https://{{ he_fqdn }}/ovirt-engine/api/hosts/{{ host_result.ovirt_hosts[0].id }}/iscsidiscover
-    validate_certs: false
-    method: POST
-    body: "{{ iscsid | to_json }}"
-    return_content: true
-    body_format: json
-    status_code: 200
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-      Authorization: "Basic {{ ('admin@internal' + ':' +  he_admin_password ) | b64encode }}"
+- name: iSCSI discover
+  ovirt_host:
+    auth: "{{ ovirt_auth }}"
+    state: iscsidiscover
+    name: "{{ he_host_name }}"
+    iscsi:
+      address: "{{ he_iscsi_portal_addr }}"
+      port: "{{ he_iscsi_portal_port }}"
+      username: "{{ he_iscsi_discover_username }}"
+      password: "{{ he_iscsi_discover_password }}"
   register: otopi_iscsi_targets
 # TODO: perform an iSCSI logout when viable, see:
 # https://bugzilla.redhat.com/show_bug.cgi?id=1535951
