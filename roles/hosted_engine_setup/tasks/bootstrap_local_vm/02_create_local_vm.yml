@@ -1,7 +1,6 @@
 ---
 - name: Create hosted engine local vm
   block:
-  - import_tasks: ../add_engine_as_ansible_host.yml
   - name: Initial tasks
     block:
       - name: Get host unique id
@@ -133,6 +132,7 @@
           port=22
           delay=30
           timeout=300
+      - import_tasks: ../add_engine_as_ansible_host.yml
     rescue:
       - include_tasks: ../clean_localvm_dir.yml
       - include_tasks: ../clean_local_storage_pools.yml
