@@ -78,6 +78,6 @@ cd $ROOT_PATH
 
 # If PR changed something in ./plugins or ./roles it is required to have changelog
 if [[ $(git diff --quiet HEAD^ ./plugins ./roles)$? -eq 1 && $(git diff --quiet HEAD^ ./changelogs)$? -eq 0 ]]; then
-        echo "Please add changelog.";
+        echo "ERROR: Please add changelog.";
         exit 1;
 fi
