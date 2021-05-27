@@ -6,6 +6,9 @@ ROOT_PATH=$PWD
 rm -rf ../ansible_collections
 rm -f ./*tar.gz
 
+# Install ansible-core from pypi
+pip3 install ansible-core
+
 # Create exported-artifacts
 [[ -d exported-artifacts ]] || mkdir -p $ROOT_PATH/exported-artifacts
 
