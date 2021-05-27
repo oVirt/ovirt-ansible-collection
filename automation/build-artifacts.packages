@@ -1,5 +1,7 @@
 dnf-utils
 git
+ansible
+ansible-test
 python3-voluptuous
 python3-pycodestyle
 python3-pylint
