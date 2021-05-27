@@ -7,6 +7,7 @@ rm -rf ../ansible_collections
 rm -f ./*tar.gz
 
 # Install ansible-core from pypi
+pip3 install -U pip
 pip3 install ansible-core
 
 # Create exported-artifacts
