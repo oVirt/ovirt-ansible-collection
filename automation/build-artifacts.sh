@@ -38,7 +38,7 @@ mv ./*.gz $ROOT_PATH/exported-artifacts/
 mv ./README.md.in ./README.md
 
 # create tar for galaxy
-ansible-galaxy collection build
+/usr/local/bin/ansible-galaxy collection build
 
 # create the rpms
 rpmbuild \
@@ -55,7 +55,7 @@ rm -rf *.gz
 mv ./README.md.in ./README.md
 
 # create tar for automation hub
-ansible-galaxy collection build
+/usr/local/bin/ansible-galaxy collection build
 
 # Store any relevant artifacts in exported-artifacts for the ci system to
 # archive
@@ -74,7 +74,7 @@ cd $COLLECTION_DIR
 
 pip3 install rstcheck antsibull-changelog "ansible-lint<5.0.0"
 
-ansible-test sanity
+/usr/local/bin/ansible-test sanity
 /usr/local/bin/antsibull-changelog lint
 /usr/local/bin/ansible-lint roles/* -x 204
 
