@@ -1,0 +1,4 @@
+automation/build-artifacts.sh shebang!skip
+automation/build-artifacts-manual.sh shebang!skip
+automation/check-patch.sh shebang!skip
+build.sh shebang!skip

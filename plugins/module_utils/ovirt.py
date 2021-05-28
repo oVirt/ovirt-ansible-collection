@@ -396,6 +396,7 @@ def __get_auth_dict():
     return dict(
         type='dict',
         apply_defaults=True,
+        required=True,
         required_one_of=[['hostname', 'url']],
         options=dict(
             url=dict(
@@ -409,11 +410,13 @@ def __get_auth_dict():
             username=dict(
                 type='str',
                 fallback=(env_fallback, ['OVIRT_USERNAME']),
+                required=True,
             ),
             password=dict(
                 type='str',
                 fallback=(env_fallback, ['OVIRT_PASSWORD']),
                 no_log=True,
+                required=True,
             ),
             insecure=dict(
                 type='bool',
