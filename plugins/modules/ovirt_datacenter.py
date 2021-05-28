@@ -68,7 +68,6 @@ options:
               If I(True) data center will be forcibly removed, even though it
               contains some clusters. Default value is I(False), which means
               that only empty data center can be removed."
-        default: False
         type: bool
     iscsi_bonds:
         description:

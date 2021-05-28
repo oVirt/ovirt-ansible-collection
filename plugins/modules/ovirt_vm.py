@@ -554,6 +554,7 @@ options:
             - "If I(true) C(kernel_params), C(initrd_path) and C(kernel_path) will persist in virtual machine configuration,
                if I(False) it will be used for run once."
         type: bool
+        default: false
     kernel_path:
         description:
             - Path to a kernel image used to boot the virtual machine.

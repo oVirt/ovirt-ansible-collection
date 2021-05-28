@@ -79,7 +79,6 @@ options:
                 description:
                     -  A boolean flag indicating if Kerberos authentication should be used instead of the default basic authentication.
                 type: bool
-                default: false
             headers:
                 description:
                     - Dictionary of HTTP headers to be added to each API call.

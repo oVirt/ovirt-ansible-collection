@@ -50,6 +50,7 @@ options:
         - "If I(true) all the attributes of the virtual machines should be
            included in the response."
       type: bool
+      default: false
     case_sensitive:
       description:
         - "If I(true) performed search will take case into account."
@@ -69,6 +70,7 @@ options:
       description:
         - "If I(true) it will get from all virtual machines current attached cd."
       type: bool
+      default: false
       version_added: 1.2.0
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''

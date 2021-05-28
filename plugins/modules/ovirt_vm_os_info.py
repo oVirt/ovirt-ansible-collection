@@ -88,7 +88,7 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
 
 def main():
     argument_spec = ovirt_info_full_argument_spec(
-        filter_keys=dict(default=None, type='list', elements='str'),
+        filter_keys=dict(default=None, type='list', elements='str', no_log=True),
         name=dict(default=None, type='str'),
     )
     module = AnsibleModule(argument_spec)

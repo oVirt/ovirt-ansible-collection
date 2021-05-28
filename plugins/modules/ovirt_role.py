@@ -38,6 +38,7 @@ options:
         description:
             - "Defines the role as administrative-only or not."
         type: bool
+        default: false
     permits:
         description:
             - "List of permits which role will have"

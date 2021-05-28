@@ -161,7 +161,6 @@ options:
                This includes SSH keys, UDEV rules, MAC addresses, system ID, hostname, etc.
                If I(true) subsequent virtual machines made from this template will avoid configuration inheritance."
             - "This parameter is used only when C(state) I(present)."
-        default: False
         type: bool
     operating_system:
         description:
