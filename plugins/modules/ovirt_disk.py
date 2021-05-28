@@ -121,6 +121,7 @@ options:
             - "Please take a look at C(image_path) documentation to see the correct
                usage of this parameter."
         type: bool
+        default: false
     profile:
         description:
             - "Disk profile name to be attached to disk. By default profile is chosen by oVirt/RHV engine."
@@ -133,7 +134,6 @@ options:
         description:
             - "I(True) if the disk should be bootable. By default when disk is created it isn't bootable."
         type: bool
-        default: 'no'
     shareable:
         description:
             - "I(True) if the disk should be shareable. By default when disk is created it isn't shareable."
