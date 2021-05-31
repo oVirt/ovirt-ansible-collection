@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - infra - Storage fix parameters typo (https://github.com/oVirt/ovirt-ansible-collection/pull/282).

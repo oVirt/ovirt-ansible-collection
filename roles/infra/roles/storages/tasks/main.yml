@@ -77,7 +77,7 @@
     - storages
     - storage_connections
 
-- name: Update storage pamareters
+- name: Update storage parameters
   ovirt_storage_connection:
     auth: "{{ ovirt_auth }}"
     id: "{{ ansible_version.full is version('2.6.0', '>=') | ternary(item.1.id, item.1.id[0]) }}"
