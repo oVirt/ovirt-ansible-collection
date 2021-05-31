@@ -1,14 +1,5 @@
 ---
 - include_tasks: auth_sso.yml
-- name: Prepare iSCSI parameters
-  set_fact:
-    iscsid:
-      iscsi:
-        address: "{{ he_iscsi_portal_addr }}"
-        port: "{{ he_iscsi_portal_port }}"
-        username: "{{ he_iscsi_discover_username }}"
-        password: "{{ he_iscsi_discover_password }}"
-  no_log: true
 - name: Fetch host facts
   ovirt_host_info:
     pattern: name={{ he_host_name }}
@@ -25,8 +16,8 @@
     iscsi:
       address: "{{ he_iscsi_portal_addr }}"
       port: "{{ he_iscsi_portal_port }}"
-      username: "{{ he_iscsi_discover_username }}"
-      password: "{{ he_iscsi_discover_password }}"
+      username: "{{ he_iscsi_discover_username | default(omit) }}"
+      password: "{{ he_iscsi_discover_password | default(omit) }}"
   register: otopi_iscsi_targets
 # TODO: perform an iSCSI logout when viable, see:
 # https://bugzilla.redhat.com/show_bug.cgi?id=1535951
