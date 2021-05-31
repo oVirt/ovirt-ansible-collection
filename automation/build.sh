@@ -6,10 +6,6 @@ ROOT_PATH=$PWD
 rm -rf ../ansible_collections
 rm -f ./*tar.gz
 
-# Install ansible-core from pypi
-pip3 install -U pip
-pip3 install ansible-core
-
 # Create exported-artifacts
 [[ -d exported-artifacts ]] || mkdir -p $ROOT_PATH/exported-artifacts
 
@@ -38,7 +34,7 @@ mv ./*.gz $ROOT_PATH/exported-artifacts/
 mv ./README.md.in ./README.md
 
 # create tar for galaxy
-/usr/local/bin/ansible-galaxy collection build
+$ANSIBLE_EXEC_PREFIX/ansible-galaxy collection build
 
 # create the rpms
 rpmbuild \
@@ -55,7 +51,7 @@ rm -rf *.gz
 mv ./README.md.in ./README.md
 
 # create tar for automation hub
-/usr/local/bin/ansible-galaxy collection build
+$ANSIBLE_EXEC_PREFIX/ansible-galaxy collection build
 
 # Store any relevant artifacts in exported-artifacts for the ci system to
 # archive
@@ -74,7 +70,7 @@ cd $COLLECTION_DIR
 
 pip3 install rstcheck antsibull-changelog "ansible-lint<5.0.0"
 
-/usr/local/bin/ansible-test sanity
+$ANSIBLE_EXEC_PREFIX/ansible-test sanity
 /usr/local/bin/antsibull-changelog lint
 /usr/local/bin/ansible-lint roles/* -x 204
 

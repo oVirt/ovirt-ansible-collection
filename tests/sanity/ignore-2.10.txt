@@ -1,4 +1,8 @@
-automation/build-artifacts.sh shebang!skip
-automation/build-artifacts-manual.sh shebang!skip
-automation/check-patch.sh shebang!skip
+automation/build-artifacts.ansible-core.sh shebang!skip
+automation/build-artifacts.ansible.sh shebang!skip
+automation/build-artifacts-manual.ansible-core.sh shebang!skip
+automation/build-artifacts-manual.ansible.sh shebang!skip
+automation/check-patch.ansible-core.sh shebang!skip
+automation/check-patch.ansible.sh shebang!skip
+automation/build.sh shebang!skip
 build.sh shebang!skip

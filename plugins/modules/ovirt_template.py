@@ -154,7 +154,6 @@ options:
             will be copied to the created template."
             - "This parameter is used only when C(state) I(present)."
         type: bool
-        default: False
     seal:
         description:
             - "'Sealing' is an operation that erases all machine-specific configurations from a filesystem:

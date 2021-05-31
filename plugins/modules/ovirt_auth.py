@@ -92,6 +92,7 @@ options:
         default: true
     kerberos:
         required: False
+        default: False
         description:
             - "A boolean flag indicating if Kerberos authentication
                should be used instead of the default basic authentication."
