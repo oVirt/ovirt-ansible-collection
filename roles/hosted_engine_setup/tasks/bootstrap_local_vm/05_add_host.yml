@@ -1,4 +1,9 @@
 ---
+- name: Remove port 6900/tcp to enable HE deployment
+  ansible.posix.firewalld:
+    port: 6900/tcp
+    permanent: yes
+    state: disabled
 - name: Add host
   block:
   - name: Wait for ovirt-engine service to start
