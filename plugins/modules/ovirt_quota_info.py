@@ -93,7 +93,7 @@ def main():
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0',
+            version='2.0.0',
             collection_name='ovirt.ovirt'
         )
 
