@@ -415,3 +415,23 @@ releases:
     - 252-infra-remove-target-from-ovirt_storage_connection.yml
     - 254-repositories-fix-ppc-repos.yml
     release_date: '2021-04-23'
+  1.5.0:
+    changes:
+      bugfixes:
+      - hosted_engine_setup - Use ovirt_host module to discover iscsi (https://github.com/oVirt/ovirt-ansible-collection/pull/275).
+      - hosted_engine_setup - align with ansible-lint 5.0.0 (https://github.com/oVirt/ovirt-ansible-collection/pull/271).
+      minor_changes:
+      - disaster_recovery - Change conf paths (https://github.com/oVirt/ovirt-ansible-collection/pull/286).
+      - hosted_engine_setup - Add-pause-option-before-engine-setup (https://github.com/oVirt/ovirt-ansible-collection/pull/273).
+      - hosted_engine_setup - Remove leftover code and omit parameters (https://github.com/oVirt/ovirt-ansible-collection/pull/281).
+      - infra - Storage fix parameters typo (https://github.com/oVirt/ovirt-ansible-collection/pull/282).
+      - ovirt_host - Update iscsi target struct (https://github.com/oVirt/ovirt-ansible-collection/pull/274).
+    fragments:
+    - 274-ovirt_host-update-iscsi-target-struct.yml
+    - 282-infra-storage-fix-parameters-typo.yml
+    - 286-dr-change-conf-paths.yml
+    - hosted_engine_setup-add-pause-option-before-engine-setup.yml
+    - hosted_engine_setup-ansible-lint-5.0.0-alignment.yml
+    - hosted_engine_setup-remove-leftovers-code.yml
+    - hosted_engine_setup-use-ovirt_host-module-to-discover-iscsi.yml
+    release_date: '2021-06-04'

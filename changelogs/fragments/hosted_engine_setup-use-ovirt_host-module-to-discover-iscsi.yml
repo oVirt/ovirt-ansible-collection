@@ -1,3 +1,0 @@
----
-bugfixes:
-  - hosted_engine_setup - Use ovirt_host module to discover iscsi (https://github.com/oVirt/ovirt-ansible-collection/pull/275).
