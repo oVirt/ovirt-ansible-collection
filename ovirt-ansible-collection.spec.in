@@ -68,6 +68,15 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Fri Jun 4 2021 Martin Necas <mnecas@redhat.com> - 1.5.0-1
+- ovirt_host - Update iscsi target struct
+- infra - Storage fix parameters typo
+- disaster_recovery - Change conf paths to relative paths
+- hosted_engine_setup - Add pause option before engine-setup
+- hosted_engine_setup - Align with ansible-lint 5.0.0
+- hosted_engine_setup - Remove leftover code and omit parameters
+- hosted_engine_setup - Use ovirt_host module to discover iscsi
+
 * Fri Apr 23 2021 Martin Necas <mnecas@redhat.com> - 1.4.2-1
 - repositories - Add ppc host
 - repositories - Remove ansible channels from RHV 4.4

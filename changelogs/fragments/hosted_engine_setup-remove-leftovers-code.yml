@@ -1,3 +1,0 @@
----
-minor_changes:
-  - hosted_engine_setup - Remove leftover code and omit parameters (https://github.com/oVirt/ovirt-ansible-collection/pull/281).

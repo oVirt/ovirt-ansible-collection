@@ -1,3 +1,0 @@
----
-minor_changes:
-  - ovirt_host - Update iscsi target struct (https://github.com/oVirt/ovirt-ansible-collection/pull/274).
