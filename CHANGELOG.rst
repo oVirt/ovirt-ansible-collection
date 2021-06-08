@@ -5,6 +5,14 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.4.3
+======
+
+Minor Changes
+-------------
+
+- Update bindep.txt for rhel-8 platform (https://github.com/oVirt/ovirt-ansible-collection/pull/272).
+
 v1.4.2
 ======
 
