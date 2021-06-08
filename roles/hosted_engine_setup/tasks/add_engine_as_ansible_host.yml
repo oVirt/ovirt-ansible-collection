@@ -20,5 +20,4 @@
       ansible_ssh_pass: "{{ he_appliance_password }}"
       ansible_host: "{{ local_vm_ip.stdout_lines[0] }}"
       ansible_user: root
-    no_log: true
     ignore_errors: true
