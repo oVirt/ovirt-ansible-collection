@@ -1735,13 +1735,14 @@ class VmsModule(BaseModule):
         if self.param('lease'):
             jobs_service = self._connection.system_service().jobs_service()
             jobs = sorted(jobs_service.list(), reverse=True, key=lambda job: job.start_time)
-            if jobs:
-                wait(
-                    service=jobs_service.job_service(jobs[0].id),
-                    condition=lambda job: job.status == otypes.JobStatus.FINISHED,
-                    wait=self.param('wait'),
-                    timeout=self.param('timeout'),
-                )
+            for job in jobs:
+                if job.description == "Editing VM {} properties".format(self.param('name')) and job.status == otypes.JobStatus.STARTED:
+                    wait(
+                        service=jobs_service.job_service(job.id),
+                        condition=lambda job_wait: job_wait.status != otypes.JobStatus.STARTED,
+                        wait=self.param('wait'),
+                        timeout=self.param('timeout'),
+                    )
 
     def pre_remove(self, entity):
         # Forcibly stop the VM, if it's not in DOWN state:
