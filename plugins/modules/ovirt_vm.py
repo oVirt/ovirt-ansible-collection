@@ -700,6 +700,22 @@ options:
             user_migratable:
                 description:
                     - "Allow manual migration only."
+    placement_policy_dict:
+        description:
+            - "The configuration of the virtual machine's placement policy."
+            - "If no value is passed, default value is set by oVirt/RHV engine."
+            - "Placement policy can be one of the following values:"
+        type: dict
+        suboptions:
+            affinity:
+                description:
+                    - "affinity. Options: I(migratable), I(pinned) or I(user_migratable)."
+                type: str
+            hosts:
+                description:
+                    - "List of host names."
+                type: list
+                elements: str
     ticket:
         description:
             - "If I(true), in addition return I(remote_vv_file) inside I(vm) dictionary, which contains compatible
@@ -1579,8 +1595,14 @@ class VmsModule(BaseModule):
                 affinity=otypes.VmAffinity(self.param('placement_policy')),
                 hosts=[
                     otypes.Host(name=self.param('host')),
-                ] if self.param('host') else None,
+                ] if self.param('host') and not self.param('placement_policy_dict') else None,
             ) if self.param('placement_policy') else None,
+            placement_policy=otypes.VmPlacementPolicy(
+                affinity=otypes.VmAffinity(self.param('placement_policy_dict').get('affinity')),
+                hosts=[
+                    otypes.Host(name=host) for host in self.param('placement_policy_dict').get('hosts'),
+                ] if self.param('placement_policy_dict').get('hosts') else None,
+            ) if self.param('placement_policy_dict') else None,
             soundcard_enabled=self.param('soundcard_enabled'),
             display=otypes.Display(
                 smartcard_enabled=self.param('smartcard_enabled'),
@@ -2509,6 +2531,13 @@ def main():
         kvm=dict(type='dict'),
         cpu_mode=dict(type='str'),
         placement_policy=dict(type='str'),
+        placement_policy_dict=dict(
+            type='dict',
+            options=dict(
+                hosts=dict(type='list', elements='str'),
+                affinity=dict(type='str'),
+            )
+        ),
         custom_compatibility_version=dict(type='str'),
         ticket=dict(type='bool', default=None),
         cpu_pinning=dict(type='list', elements='dict'),
