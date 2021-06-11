@@ -1672,7 +1672,9 @@ class VmsModule(BaseModule):
 
         def check_placement_policy():
             if self.param('placement_policy'):
-                hosts = sorted(map(lambda host: self._connection.follow_link(host).name, entity.placement_policy.hosts if entity.placement_policy.hosts else []))
+                hosts = sorted(map(lambda host: self._connection.follow_link(host).name,
+                    entity.placement_policy.hosts if entity.placement_policy.hosts else [])
+                )
                 if self.param('placement_policy_hosts'):
                     return (
                         equal(self.param('placement_policy'), str(entity.placement_policy.affinity) if entity.placement_policy else None) and
