@@ -23,7 +23,7 @@ DOCUMENTATION = '''
       plugin:
         description: the name of this plugin, it should always be set to 'ovirt' for this plugin to recognise it as it's own.
         required: True
-        choices: ['ovirt']
+        choices: ['ovirt', 'ovirt.ovirt.ovirt', 'redhat.rhv.ovirt']
       ovirt_url:
         description: URL to ovirt-engine API.
         required: True
