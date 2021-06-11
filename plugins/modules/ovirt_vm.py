@@ -1458,9 +1458,9 @@ class VmsModule(BaseModule):
         hosts = None
         if self.param('placement_policy_hosts'):
             hosts = [otypes.Host(name=host) for host in self.param('placement_policy_hosts')]
-        elif if self.param('host'):
+        elif self.param('host'):
             hosts = [otypes.Host(name=self.param('host'))]
-        if self.param('placement_policy')
+        if self.param('placement_policy'):
             return otypes.VmPlacementPolicy(
                 affinity=otypes.VmAffinity(self.param('placement_policy')),
                 hosts=hosts
@@ -1672,7 +1672,7 @@ class VmsModule(BaseModule):
 
         def check_placement_policy():
             if self.param('placement_policy'):
-                hosts = sorted(map(lambda host: self._connection.follow_link(host).name, entity.placement_policy.hosts))
+                hosts = sorted(map(lambda host: self._connection.follow_link(host).name, entity.placement_policy.hosts if entity.placement_policy.hosts else []))
                 if self.param('placement_policy_hosts'):
                     return (
                         equal(self.param('placement_policy'), str(entity.placement_policy.affinity) if entity.placement_policy else None) and
@@ -1680,7 +1680,7 @@ class VmsModule(BaseModule):
                     )
                 return (
                     equal(self.param('placement_policy'), str(entity.placement_policy.affinity) if entity.placement_policy else None) and
-                    equal([self.param('host')], hosts) and
+                    equal([self.param('host')], hosts)
                 )
 
         def check_host():
