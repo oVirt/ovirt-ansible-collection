@@ -1467,7 +1467,6 @@ class VmsModule(BaseModule):
         return snap
 
     def __get_placement_policy(self):
-
         if self.param('placement_policy_dict'):
             return otypes.VmPlacementPolicy(
                 affinity=otypes.VmAffinity(self.param('placement_policy_dict').get('affinity')),
@@ -1475,7 +1474,6 @@ class VmsModule(BaseModule):
                     otypes.Host(name=host) for host in self.param('placement_policy_dict').get('hosts',[])
                 ] if self.param('placement_policy_dict').get('hosts') else None
             )
-
         if self.param('placement_policy'):
             return otypes.VmPlacementPolicy(
                 affinity=otypes.VmAffinity(self.param('placement_policy')),
@@ -1483,7 +1481,6 @@ class VmsModule(BaseModule):
                     otypes.Host(name=self.param('host'))
                 ] if self.param('host') else None
             )
-
         return None
 
     def __get_cluster(self):
@@ -1691,7 +1688,6 @@ class VmsModule(BaseModule):
 
         def check_placement_policy():
             hosts = sorted(map(lambda host: self._connection.follow_link(host).name, entity.placement_policy.hosts))
-
             if self.param('placement_policy_dict'):
                 return (
                     equal(self.param('placement_policy_dict').get('affinity'), str(entity.placement_policy.affinity) if entity.placement_policy else None) and
@@ -1713,7 +1709,7 @@ class VmsModule(BaseModule):
                 return (self._get_minor(self.param('custom_compatibility_version')) == self._get_minor(entity.custom_compatibility_version) and
                         self._get_major(self.param('custom_compatibility_version')) == self._get_major(entity.custom_compatibility_version))
             return True
-        check_placement_policy()
+
         cpu_mode = getattr(entity.cpu, 'mode')
         vm_display = entity.display
         provided_vm_display = self.param('graphical_console') or dict()
