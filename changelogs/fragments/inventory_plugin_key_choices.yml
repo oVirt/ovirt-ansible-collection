@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt inventory plugin - allow several valid values for the `plugin` key (https://github.com/oVirt/ovirt-ansible-collection/pull/293).
