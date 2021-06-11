@@ -700,22 +700,11 @@ options:
             user_migratable:
                 description:
                     - "Allow manual migration only."
-    placement_policy_dict:
+    placement_policy_hosts:
         description:
-            - "The configuration of the virtual machine's placement policy."
-            - "If no value is passed, default value is set by oVirt/RHV engine."
-            - "This parameter replaces C(placement_policy), it allows to specify more hosts."
-        type: dict
-        suboptions:
-            affinity:
-                description:
-                    - "Affinity name. Options: I(migratable), I(pinned) or I(user_migratable)."
-                type: str
-            hosts:
-                description:
-                    - "List of host names."
-                type: list
-                elements: str
+            - "List of host names."
+        type: list
+        elements: str
     ticket:
         description:
             - "If I(true), in addition return I(remote_vv_file) inside I(vm) dictionary, which contains compatible
@@ -1272,11 +1261,10 @@ EXAMPLES = '''
 - name: Add placement policy with multiple hosts
   @NAMESPACE@.@NAME@.ovirt_vm:
     name: myvm
-    placement_policy_dict:
-      affinity: migratable
-      hosts:
-        - host1
-        - host2
+    placement_policy: migratable
+    placement_policy_hosts:
+      - host1
+      - host2
 
 - name: Export the VM as OVA
   @NAMESPACE@.@NAME@.ovirt_vm:
@@ -1467,19 +1455,15 @@ class VmsModule(BaseModule):
         return snap
 
     def __get_placement_policy(self):
-        if self.param('placement_policy_dict'):
-            return otypes.VmPlacementPolicy(
-                affinity=otypes.VmAffinity(self.param('placement_policy_dict').get('affinity')),
-                hosts=[
-                    otypes.Host(name=host) for host in self.param('placement_policy_dict').get('hosts',[])
-                ] if self.param('placement_policy_dict').get('hosts') else None
-            )
-        if self.param('placement_policy'):
+        hosts = None
+        if self.param('placement_policy_hosts'):
+            hosts = [otypes.Host(name=host) for host in self.param('placement_policy_hosts')]
+        elif if self.param('host'):
+            hosts = [otypes.Host(name=self.param('host'))]
+        if self.param('placement_policy')
             return otypes.VmPlacementPolicy(
                 affinity=otypes.VmAffinity(self.param('placement_policy')),
-                hosts=[
-                    otypes.Host(name=self.param('host'))
-                ] if self.param('host') else None
+                hosts=hosts
             )
         return None
 
@@ -1687,16 +1671,16 @@ class VmsModule(BaseModule):
             return True
 
         def check_placement_policy():
-            hosts = sorted(map(lambda host: self._connection.follow_link(host).name, entity.placement_policy.hosts))
-            if self.param('placement_policy_dict'):
-                return (
-                    equal(self.param('placement_policy_dict').get('affinity'), str(entity.placement_policy.affinity) if entity.placement_policy else None) and
-                    equal(sorted(self.param('placement_policy_dict').get('hosts')), hosts)
-                )
             if self.param('placement_policy'):
+                hosts = sorted(map(lambda host: self._connection.follow_link(host).name, entity.placement_policy.hosts))
+                if self.param('placement_policy_hosts'):
+                    return (
+                        equal(self.param('placement_policy'), str(entity.placement_policy.affinity) if entity.placement_policy else None) and
+                        equal(sorted(self.param('placement_policy_hosts')), hosts)
+                    )
                 return (
                     equal(self.param('placement_policy'), str(entity.placement_policy.affinity) if entity.placement_policy else None) and
-                    equal([self.param('host')], hosts)
+                    equal([self.param('host')], hosts) and
                 )
 
         def check_host():
@@ -2560,13 +2544,7 @@ def main():
         kvm=dict(type='dict'),
         cpu_mode=dict(type='str'),
         placement_policy=dict(type='str'),
-        placement_policy_dict=dict(
-            type='dict',
-            options=dict(
-                hosts=dict(type='list', elements='str'),
-                affinity=dict(type='str'),
-            )
-        ),
+        placement_policy_hosts=dict(type='list', elements='str'),
         custom_compatibility_version=dict(type='str'),
         ticket=dict(type='bool', default=None),
         cpu_pinning=dict(type='list', elements='dict'),
