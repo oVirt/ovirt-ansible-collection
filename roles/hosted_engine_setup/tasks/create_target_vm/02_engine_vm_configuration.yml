@@ -86,3 +86,6 @@
       regexp: "^\\s*PermitRootLogin"
       line: "PermitRootLogin {{ he_root_ssh_access }}"
       state: present
+  - name: Clean cloud-init configuration
+    include_tasks: ../clean_cloud_init_config.yml
+    ignore_errors: true
