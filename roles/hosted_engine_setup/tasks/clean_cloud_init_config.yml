@@ -1,0 +1,19 @@
+---
+- name: Remove cloud-user user
+  user:
+    name: cloud-user
+    state: absent
+    remove: true
+- name: Remove cloud-init file from /etc/sudoers.d
+  file:
+    path: /etc/sudoers.d/90-cloud-init-users
+    state: absent
+- name: Remove cloud-user from /etc/sudoers file
+  lineinfile:
+    path: /etc/sudoers
+    state: absent
+    regexp: '^cloud-user'
+- name: Remove cloud-init package
+  package:
+    name: cloud-init
+    state: absent
