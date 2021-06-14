@@ -11,6 +11,8 @@ tags:
     - infrastructure
     - linux
     - cloud
+    - virtualization
+    - ovirt
 readme: README.md
 repository: https://github.com/ovirt/ovirt-ansible-collection
 description: The oVirt Ansible Collection.
