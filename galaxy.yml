@@ -8,6 +8,10 @@ license:
     - GPL-3.0-or-later
 tags:
     - collection
+    - infrastructure
+    - linux
+    - cloud
+    - virtualization
 readme: README.md
 repository: https://github.com/ovirt/ovirt-ansible-collection
 description: The oVirt Ansible Collection.
