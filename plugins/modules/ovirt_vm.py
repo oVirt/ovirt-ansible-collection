@@ -700,6 +700,11 @@ options:
             user_migratable:
                 description:
                     - "Allow manual migration only."
+    placement_policy_hosts:
+        description:
+            - "List of host names."
+        type: list
+        elements: str
     ticket:
         description:
             - "If I(true), in addition return I(remote_vv_file) inside I(vm) dictionary, which contains compatible
@@ -1253,6 +1258,14 @@ EXAMPLES = '''
       - name: pci_0000_00_08_0
         state: present
 
+- name: Add placement policy with multiple hosts
+  @NAMESPACE@.@NAME@.ovirt_vm:
+    name: myvm
+    placement_policy: migratable
+    placement_policy_hosts:
+      - host1
+      - host2
+
 - name: Export the VM as OVA
   @NAMESPACE@.@NAME@.ovirt_vm:
     name: myvm
@@ -1441,6 +1454,19 @@ class VmsModule(BaseModule):
         )
         return snap
 
+    def __get_placement_policy(self):
+        hosts = None
+        if self.param('placement_policy_hosts'):
+            hosts = [otypes.Host(name=host) for host in self.param('placement_policy_hosts')]
+        elif self.param('host'):
+            hosts = [otypes.Host(name=self.param('host'))]
+        if self.param('placement_policy'):
+            return otypes.VmPlacementPolicy(
+                affinity=otypes.VmAffinity(self.param('placement_policy')),
+                hosts=hosts
+            )
+        return None
+
     def __get_cluster(self):
         if self.param('cluster') is not None:
             return self.param('cluster')
@@ -1453,6 +1479,7 @@ class VmsModule(BaseModule):
         template = self.__get_template_with_version()
         cluster = self.__get_cluster()
         snapshot = self.__get_snapshot()
+        placement_policy = self.__get_placement_policy()
         display = self.param('graphical_console') or dict()
 
         disk_attachments = self.__get_storage_domain_and_all_template_disks(template)
@@ -1575,12 +1602,7 @@ class VmsModule(BaseModule):
                 self.param('serial_policy') is not None or
                 self.param('serial_policy_value') is not None
             ) else None,
-            placement_policy=otypes.VmPlacementPolicy(
-                affinity=otypes.VmAffinity(self.param('placement_policy')),
-                hosts=[
-                    otypes.Host(name=self.param('host')),
-                ] if self.param('host') else None,
-            ) if self.param('placement_policy') else None,
+            placement_policy=placement_policy,
             soundcard_enabled=self.param('soundcard_enabled'),
             display=otypes.Display(
                 smartcard_enabled=self.param('smartcard_enabled'),
@@ -1648,6 +1670,22 @@ class VmsModule(BaseModule):
                 return sorted(current) == sorted(passed)
             return True
 
+        def check_placement_policy():
+            if self.param('placement_policy'):
+                hosts = sorted(
+                    map(lambda host: self._connection.follow_link(host).name,
+                        entity.placement_policy.hosts if entity.placement_policy.hosts else [])
+                )
+                if self.param('placement_policy_hosts'):
+                    return (
+                        equal(self.param('placement_policy'), str(entity.placement_policy.affinity) if entity.placement_policy else None) and
+                        equal(sorted(self.param('placement_policy_hosts')), hosts)
+                    )
+                return (
+                    equal(self.param('placement_policy'), str(entity.placement_policy.affinity) if entity.placement_policy else None) and
+                    equal([self.param('host')], hosts)
+                )
+
         def check_host():
             if self.param('host') is not None:
                 return self.param('host') in [self._connection.follow_link(host).name for host in getattr(entity.placement_policy, 'hosts', None) or []]
@@ -1666,6 +1704,7 @@ class VmsModule(BaseModule):
             check_cpu_pinning() and
             check_custom_properties() and
             check_host() and
+            check_placement_policy() and
             check_custom_compatibility_version() and
             not self.param('cloud_init_persist') and
             not self.param('kernel_params_persist') and
@@ -1704,7 +1743,6 @@ class VmsModule(BaseModule):
             equal(self.param('timezone'), getattr(entity.time_zone, 'name', None)) and
             equal(self.param('serial_policy'), str(getattr(entity.serial_number, 'policy', None))) and
             equal(self.param('serial_policy_value'), getattr(entity.serial_number, 'value', None)) and
-            equal(self.param('placement_policy'), str(entity.placement_policy.affinity) if entity.placement_policy else None) and
             equal(self.param('numa_tune_mode'), str(entity.numa_tune_mode)) and
             equal(self.param('rng_device'), str(entity.rng_device.source) if entity.rng_device else None) and
             equal(provided_vm_display.get('monitors'), getattr(vm_display, 'monitors', None)) and
@@ -2509,6 +2547,7 @@ def main():
         kvm=dict(type='dict'),
         cpu_mode=dict(type='str'),
         placement_policy=dict(type='str'),
+        placement_policy_hosts=dict(type='list', elements='str'),
         custom_compatibility_version=dict(type='str'),
         ticket=dict(type='bool', default=None),
         cpu_pinning=dict(type='list', elements='dict'),
