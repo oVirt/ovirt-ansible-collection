@@ -68,6 +68,14 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Thu Jun 17 2021 Martin Necas <mnecas@redhat.com> - 1.5.1-1
+- hosted_engine_setup - Filter VLAN devices with bad names
+- ovirt_vm - Add placement_policy_hosts
+- infra - Add external_provider parameter on networks role of infra role
+- hosted_engine_setup - use-ansible-host
+- hosted_engine_setup - Remove cloud-init configuration
+- ovirt inventory plugin - allow several valid values for the `plugin` key
+
 * Fri Jun 4 2021 Martin Necas <mnecas@redhat.com> - 1.5.0-1
 - ovirt_host - Update iscsi target struct
 - infra - Storage fix parameters typo
