@@ -173,6 +173,7 @@ The `logical_networks` list can contain following parameters:
 | mtu           | UNDEF          | Maximum transmission unit (MTU) of the network.    |
 | description   | UNDEF          | Description of the network.  |
 | clusters      | UNDEF          | List of dictionaries describing how the network is managed in specific cluster. |
+| external_provider      | UNDEF          | Name of external network provider. At first it tries to import the network when not found it will create network in external provider. |
 | label         | UNDEF          | Name of the label to assign to the network. |
 
 More information about the parameters can be found in the [ovirt_network](http://docs.ansible.com/ansible/ovirt_network_module.html) module documentation.
