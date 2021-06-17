@@ -1,3 +1,0 @@
----
-minor_changes:
-  - infrai role - Add external_provider parameter on networks role of infra role (https://github.com/oVirt/ovirt-ansible-collection/pull/297)

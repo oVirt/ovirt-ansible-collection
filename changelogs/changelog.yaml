@@ -435,3 +435,22 @@ releases:
     - hosted_engine_setup-remove-leftovers-code.yml
     - hosted_engine_setup-use-ovirt_host-module-to-discover-iscsi.yml
     release_date: '2021-06-04'
+  1.5.1:
+    changes:
+      bugfixes:
+      - hosted_engine_setup - Filter VLAN devices with bad names (https://github.com/oVirt/ovirt-ansible-collection/pull/238)
+      - hosted_engine_setup - Remove cloud-init configuration (https://github.com/oVirt/ovirt-ansible-collection/pull/295).
+      - ovirt inventory plugin - allow several valid values for the `plugin` key (https://github.com/oVirt/ovirt-ansible-collection/pull/293).
+      minor_changes:
+      - hosted_engine_setup - use-ansible-host (https://github.com/oVirt/ovirt-ansible-collection/pull/277).
+      - infra role - Add external_provider parameter on networks role of infra role
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/297)
+      - ovirt_vm - Add placement_policy_hosts (https://github.com/oVirt/ovirt-ansible-collection/pull/294).
+    fragments:
+    - 238-filter-vlan-devices-with-bad-names.yml
+    - 294-ovirt_vm-add-placement_policy_hosts.yml
+    - 297-ovirt_infra_networks-add-external-provider.yml
+    - hosted_engine_setup-add-host-use_IP.yml
+    - hosted_engine_setup-remove-cloud-init-config.yml
+    - inventory_plugin_key_choices.yml
+    release_date: '2021-06-17'
