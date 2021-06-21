@@ -1685,6 +1685,7 @@ class VmsModule(BaseModule):
                     equal(self.param('placement_policy'), str(entity.placement_policy.affinity) if entity.placement_policy else None) and
                     equal([self.param('host')], hosts)
                 )
+            return True
 
         def check_host():
             if self.param('host') is not None:

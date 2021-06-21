@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - ovirt_vm - Add default return value to check_placement_policy (https://github.com/oVirt/ovirt-ansible-collection/pull/301).
