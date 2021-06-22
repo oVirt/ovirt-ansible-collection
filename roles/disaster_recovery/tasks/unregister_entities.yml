@@ -29,7 +29,7 @@
 
     - name: Map all running vms in fact
       set_fact:
-          res_ovirt_vms: "{{ res_ovirt_vms }} + {{ [
+          res_ovirt_vms: "{{ res_ovirt_vms + [
               {
                   'id': item.id,
                   'name': item.name,

@@ -76,7 +76,7 @@
 
     - name: Set Cluster Map
       set_fact:
-          dr_cluster_map: "{{ dr_cluster_map }} + {{ [
+          dr_cluster_map: "{{ dr_cluster_map + [
           {
               'source_name': item[dr_source_map + '_name'] | default('EMPTY_ELEMENT', true),
               'dest_name': item[dr_target_host + '_name'] | default('EMPTY_ELEMENT', true)
@@ -87,7 +87,7 @@
 
     - name: Set Affinity Group Map
       set_fact:
-          dr_affinity_group_map: "{{ dr_affinity_group_map }} + {{ [
+          dr_affinity_group_map: "{{ dr_affinity_group_map + [
           {
               'source_name': item[dr_source_map + '_name'] | default('EMPTY_ELEMENT', true),
               'dest_name': item[dr_target_host + '_name'] | default('EMPTY_ELEMENT', true)
@@ -98,7 +98,7 @@
 
     - name: Set Network Map
       set_fact:
-          dr_network_map: "{{ dr_network_map }} + {{ [
+          dr_network_map: "{{ dr_network_map + [
           {
               'source_network_name': item[dr_source_map + '_network_name'] | default('EMPTY_ELEMENT', true),
               'source_profile_name': item[dr_source_map + '_profile_name'] | default('EMPTY_ELEMENT', true),
@@ -111,7 +111,7 @@
 
     - name: Set Affinity Label Map
       set_fact:
-          dr_affinity_label_map: "{{ dr_affinity_label_map }} + {{ [
+          dr_affinity_label_map: "{{ dr_affinity_label_map + [
           {
               'source_name': item[dr_source_map + '_name'] | default('EMPTY_ELEMENT', true),
               'dest_name': item[dr_target_host + '_name'] | default('EMPTY_ELEMENT', true)
@@ -122,7 +122,7 @@
 
     - name: Set aaa extensions Map
       set_fact:
-          dr_domain_map: "{{ dr_domain_map }} + {{ [
+          dr_domain_map: "{{ dr_domain_map + [
           {
               'source_name': item[dr_source_map + '_name'] | default('EMPTY_ELEMENT', true),
               'dest_name': item[dr_target_host + '_name'] | default('EMPTY_ELEMENT', true)
@@ -133,7 +133,7 @@
 
     - name: Set Role Map
       set_fact:
-          dr_role_map: "{{ dr_role_map }} + {{ [
+          dr_role_map: "{{ dr_role_map + [
           {
               'source_name': item[dr_source_map + '_name'] | default('EMPTY_ELEMENT', true),
               'dest_name': item[dr_target_host + '_name'] | default('EMPTY_ELEMENT', true)
@@ -144,7 +144,7 @@
 
     - name: Set Lun Map
       set_fact:
-          dr_lun_map: "{{ dr_lun_map }} + {{ [
+          dr_lun_map: "{{ dr_lun_map + [
           {
               'source_logical_unit_id': item[dr_source_map + '_logical_unit_id'] | default('EMPTY_ELEMENT', true),
               'source_storage_type': item[dr_source_map + '_storage_type'] | default('EMPTY_ELEMENT', true),
