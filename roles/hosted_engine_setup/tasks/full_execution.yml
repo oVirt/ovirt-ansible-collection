@@ -68,6 +68,7 @@
     - name: Sync on engine machine
       command: sync
       changed_when: true
+      ignore_unreachable: true
       delegate_to: "{{ groups.engine[0] }}"
     - name: Final clean
       import_tasks: final_clean.yml
