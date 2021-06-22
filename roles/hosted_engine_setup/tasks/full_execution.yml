@@ -65,9 +65,5 @@
   block:
     - name: Hosted engine final tasks
       import_tasks: create_target_vm/03_hosted_engine_final_tasks.yml
-    - name: Sync on engine machine
-      command: sync
-      changed_when: true
-      delegate_to: "{{ groups.engine[0] }}"
     - name: Final clean
       import_tasks: final_clean.yml
