@@ -215,6 +215,22 @@ options:
         description:
             - "If I(true), use smart card authentication."
         type: bool
+    kvm:
+        description:
+            - Dictionary of values to be used to connect to kvm and import
+              a template to oVirt.
+        type: dict
+        suboptions:
+            url:
+                description:
+                    - The URL to be passed to the I(virt-v2v) tool for conversion.
+                    - For example I(qemu:///system). This is required parameter.
+            storage_domain:
+                description:
+                    - Specifies the target storage domain for converted disks. This is required parameter.
+            host:
+                description:
+                    - The host name from which the template will be imported.
     cloud_init:
         description:
             - Dictionary with values for Unix-like Virtual Machine initialization using cloud init.
@@ -526,6 +542,17 @@ EXAMPLES = '''
       host_name: windowsad.example.com
       user_name: Administrator
       root_password: SuperPassword123
+
+- name: Import external ova VM
+  @NAMESPACE@.@NAME@.ovirt_template:
+    cluster: mycluster
+    name: mytemplate
+    timeout: 1800
+    poll_interval: 30
+    kvm:
+      host: myhost
+      url: ova:///tmp/test.ova
+      storage_domain: mystorage
 '''
 
 RETURN = '''
@@ -562,6 +589,7 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     ovirt_full_argument_spec,
     search_by_attributes,
     search_by_name,
+    wait,
 )
 
 
@@ -845,6 +873,49 @@ def _get_vnic_profile_mappings(module):
     return vnicProfileMappings
 
 
+def import_template(module, connection):
+    templates_service = connection.system_service().templates_service()
+    if search_by_name(templates_service, module.params['name']) is not None:
+        return False
+
+    events_service = connection.system_service().events_service()
+    last_event = events_service.list(max=1)[0]
+
+    external_template = module.params['kvm']
+    imports_service = connection.system_service().external_template_imports_service()
+    imported_template = imports_service.add(
+        otypes.ExternalTemplateImport(
+            template=otypes.Template(
+                name=module.params['name']
+            ),
+            url=external_template.get('url'),
+            cluster=otypes.Cluster(
+                name=module.params['cluster'],
+            ) if module.params['cluster'] else None,
+            storage_domain=otypes.StorageDomain(
+                name=external_template.get('storage_domain'),
+            ) if external_template.get('storage_domain') else None,
+            host=otypes.Host(
+                name=external_template.get('host'),
+            ) if external_template.get('host') else None,
+        )
+    )
+
+    # Wait until event with code 1158 for our template:
+    templates_service = connection.system_service().templates_service()
+    wait(
+        service=templates_service.template_service(imported_template.template.id),
+        condition=lambda tmp: len(events_service.list(
+            from_=int(last_event.id),
+            search='type=1158 and message=*%s*' % tmp.name,
+        )
+        ) > 0 if tmp is not None else False,
+        fail_condition=lambda tmp: tmp is None,
+        timeout=module.params['timeout'],
+        poll_interval=module.params['poll_interval'],
+    )
+    return True
+
 def find_subversion_template(module, templates_service):
     version = module.params.get('version')
     templates = templates_service.list()
@@ -894,6 +965,7 @@ def main():
         export_domain=dict(default=None),
         storage_domain=dict(default=None),
         exclusive=dict(type='bool'),
+        kvm=dict(type='dict'),
         clone_name=dict(default=None),
         image_provider=dict(default=None),
         soundcard_enabled=dict(type='bool', default=None),
@@ -943,6 +1015,9 @@ def main():
             force_create = False
             if entity is None and module.params['version'] is not None:
                 force_create = True
+
+            if module.params['kvm']:
+                templates_module.changed = import_template(module, connection)
 
             ret = templates_module.create(
                 entity=entity,
