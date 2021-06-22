@@ -916,6 +916,7 @@ def import_template(module, connection):
     )
     return True
 
+
 def find_subversion_template(module, templates_service):
     version = module.params.get('version')
     templates = templates_service.list()
