@@ -422,3 +422,10 @@ releases:
     fragments:
     - 272-Update-bindep-for-rhel-8-platform.yml
     release_date: '2021-06-08'
+  1.4.4:
+    changes:
+      bugfixes:
+      - ovirt inventory plugin - allow several valid values for the `plugin` key (https://github.com/oVirt/ovirt-ansible-collection/pull/293).
+    fragments:
+    - inventory_plugin_key_choices.yml
+    release_date: '2021-06-22'
