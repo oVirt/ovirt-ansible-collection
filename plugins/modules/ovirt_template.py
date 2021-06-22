@@ -543,7 +543,7 @@ EXAMPLES = '''
       user_name: Administrator
       root_password: SuperPassword123
 
-- name: Import external ova VM
+- name: Import external ova template
   @NAMESPACE@.@NAME@.ovirt_template:
     cluster: mycluster
     name: mytemplate
