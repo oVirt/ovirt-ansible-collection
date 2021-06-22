@@ -5,6 +5,14 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.4.4
+======
+
+Bugfixes
+--------
+
+- ovirt inventory plugin - allow several valid values for the `plugin` key (https://github.com/oVirt/ovirt-ansible-collection/pull/293).
+
 v1.4.3
 ======
 
