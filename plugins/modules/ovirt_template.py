@@ -547,7 +547,7 @@ EXAMPLES = '''
   @NAMESPACE@.@NAME@.ovirt_template:
     cluster: mycluster
     name: mytemplate
-    state: imported
+    state: present
     timeout: 1800
     poll_interval: 30
     kvm:
@@ -1018,6 +1018,9 @@ def main():
             if entity is None and module.params['version'] is not None:
                 force_create = True
 
+            if module.params['kvm']:
+                templates_module.changed = import_template(module, connection)
+
             ret = templates_module.create(
                 entity=entity,
                 # When user want to create new template subversion, we must make sure
@@ -1054,8 +1057,6 @@ def main():
                 ret = templates_module.create(
                     result_state=otypes.TemplateStatus.OK,
                 )
-            elif module.params['kvm']:
-                templates_module.changed = import_template(module, connection)
             else:
                 kwargs = {}
                 if module.params['image_provider']:
