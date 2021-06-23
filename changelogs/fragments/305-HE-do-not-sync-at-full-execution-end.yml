@@ -1,3 +1,0 @@
----
-minor_changes:
-  - hosted_engine_setup - Do not try to sync at end of full_execution (https://github.com/oVirt/ovirt-ansible-collection/pull/305)

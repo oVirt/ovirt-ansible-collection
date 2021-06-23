@@ -68,6 +68,10 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Wed Jun 23 2021 Martin Necas <mnecas@redhat.com> - 1.5.2-1
+- ovirt_vm - Add default return value to check_placement_policy.
+- hosted_engine_setup - Do not try to sync at end of full_execution.
+
 * Thu Jun 17 2021 Martin Necas <mnecas@redhat.com> - 1.5.1-1
 - hosted_engine_setup - Filter VLAN devices with bad names
 - ovirt_vm - Add placement_policy_hosts
