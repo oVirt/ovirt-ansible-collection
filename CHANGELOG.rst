@@ -5,6 +5,15 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.5.2
+======
+
+Minor Changes
+-------------
+
+- hosted_engine_setup - Do not try to sync at end of full_execution (https://github.com/oVirt/ovirt-ansible-collection/pull/305)
+- ovirt_vm - Add default return value to check_placement_policy (https://github.com/oVirt/ovirt-ansible-collection/pull/301).
+
 v1.5.1
 ======
 
