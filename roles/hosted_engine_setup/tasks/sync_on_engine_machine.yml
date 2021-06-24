@@ -1,4 +1,7 @@
 ---
+- name: Set the name for add_host
+  set_fact:
+    he_fqdn_ansible_host: "{{ local_vm_ip.stdout_lines[0] }}"
 - name: Register the engine VM as an ansible host
   import_tasks: add_engine_as_ansible_host.yml
 - name: Sync on engine machine

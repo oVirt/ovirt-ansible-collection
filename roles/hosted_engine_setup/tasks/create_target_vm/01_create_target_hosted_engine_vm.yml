@@ -7,6 +7,9 @@
     environment: "{{ he_cmd_lang }}"
     register: local_vm_ip
     changed_when: true
+  - name: Set the name for add_host
+    set_fact:
+      he_fqdn_ansible_host: "{{ local_vm_ip.stdout_lines[0] }}"
   - import_tasks: ../add_engine_as_ansible_host.yml
   - name: Fetch host facts
     ovirt_host_info:
