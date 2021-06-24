@@ -1,3 +1,3 @@
 ---
 minor_changes:
-        - hosted_engine_setup: Fix engine vm add_host for the target machine (https://github.com/oVirt/ovirt-ansible-collection/pull/311)
+  - hosted_engine_setup - Fix engine vm add_host for the target machine (https://github.com/oVirt/ovirt-ansible-collection/pull/311)
