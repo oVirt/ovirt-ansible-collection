@@ -360,7 +360,7 @@ These playbooks will be consumed automatically by the role when you execute it.
 **Manual:**
 
 To make manual adjustments set the following variables to `true`:
-- `he_pause_before_engine_setup` - This will pause the deployment **before** running the engine setup.
+- `he_pause_before_engine_setup` - This will pause the deployment **before** running engine-setup, and before restoring, when using `he_restore_from_file`.
 - `he_pause_host` - This will pause the deployment **after** the engine has been setup.
 
 Set these variables to `true` will create a lock-file at /tmp that ends with `_he_setup_lock` on the machine the role was executed on. The deployment will continue after deleting the lock-file, or after 24 hours ( if the lock-file hasn't been removed ).
