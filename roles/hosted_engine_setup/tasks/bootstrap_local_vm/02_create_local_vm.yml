@@ -132,6 +132,9 @@
           port=22
           delay=30
           timeout=300
+      - name: Set the name for add_host
+        set_fact:
+          he_fqdn_ansible_host: "{{ local_vm_ip.stdout_lines[0] }}"
       - import_tasks: ../add_engine_as_ansible_host.yml
     rescue:
       - include_tasks: ../clean_localvm_dir.yml

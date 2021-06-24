@@ -18,7 +18,7 @@
         {% if not host_key_checking %} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null {% endif %}
         {{ username_on_host.stdout }}@{{ he_ansible_host_name }}" {% endif %}
       ansible_ssh_pass: "{{ he_appliance_password }}"
-      ansible_host: "{{ local_vm_ip.stdout_lines[0] }}"
+      ansible_host: "{{ he_fqdn_ansible_host }}"
       ansible_user: root
     no_log: true
     ignore_errors: true
