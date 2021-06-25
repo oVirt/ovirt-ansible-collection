@@ -463,3 +463,14 @@ releases:
     - 301-ovirt_vm-add-default-to-check_placement_policy.yml
     - 305-HE-do-not-sync-at-full-execution-end.yml
     release_date: '2021-06-23'
+  1.5.3:
+    changes:
+      minor_changes:
+      - Don't rely on safe_eval being able to do math/concat (https://github.com/oVirt/ovirt-ansible-collection/pull/307)
+      - hosted_engine_setup - Fix engine vm add_host for the target machine (https://github.com/oVirt/ovirt-ansible-collection/pull/311)
+      - hosted_engine_setup - Minor doc update (https://github.com/oVirt/ovirt-ansible-collection/pull/310)
+    fragments:
+    - 307-safe-eval-no-concat.yml
+    - 310-HE-minor-doc-update.yml
+    - 311-fix-add-host-target-vm.yml
+    release_date: '2021-06-25'
