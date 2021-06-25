@@ -68,6 +68,11 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Fri Jun 25 2021 Martin Necas <mnecas@redhat.com> - 1.5.3-1
+- disaster_recovery - Don't rely on safe_eval being able to do math/concat
+- hosted_engine_setup - Minor doc update
+- hosted_engine_setup - Fix engine vm add_host for the target machine
+
 * Wed Jun 23 2021 Martin Necas <mnecas@redhat.com> - 1.5.2-1
 - ovirt_vm - Add default return value to check_placement_policy.
 - hosted_engine_setup - Do not try to sync at end of full_execution.
