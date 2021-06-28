@@ -18,6 +18,7 @@ he_appliance_ova: ''
 he_root_ssh_pubkey: ''
 he_root_ssh_access: 'yes'
 he_apply_openscap_profile: false
+he_enable_fips: false
 he_cdrom: ''
 he_console_type: vnc
 he_video_device: vga

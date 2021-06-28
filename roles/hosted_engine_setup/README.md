@@ -39,6 +39,7 @@ Ansible role for deploying oVirt Hosted-Engine
 | he_force_ip4 | false | Force resolving engine FQDN to ipv4 only using DNS server |
 | he_force_ip6 | false | Force resolving engine FQDN to ipv6 only using DNS server |
 | he_apply_openscap_profile | false | apply a default OpenSCAP security profile on HE VM |
+| he_enable_fips | false | Enable FIPS on HE VM |
 | he_network_test | dns | the way of the network connectivity check performed by ovirt-hosted-engine-ha and ovirt-hosted-engine-setup, available options: *dns*, *ping*, *tcp* or *none*.  |
 | he_tcp_t_address | null | hostname to connect if he_network_test is *tcp*  |
 | he_tcp_t_port | null | port to connect if he_network_test is *tcp* |

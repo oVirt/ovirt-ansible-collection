@@ -56,6 +56,14 @@
   - name: Import OpenSCAP task
     import_tasks: ../apply_openscap_profile.yml
     when: he_apply_openscap_profile|bool
+  - name: Enable FIPS on the engine VM
+    block:
+      - name: Enable FIPS
+        command: >-
+          fips-mode-setup --enable
+        changed_when: true
+      - import_tasks: ../reboot_to_enable_fips.yml
+    when: not he_apply_openscap_profile|bool and he_enable_fips|bool
   - name: Include before engine-setup custom tasks files for the engine VM
     include_tasks: "{{ item }}"
     with_fileglob: "hooks/enginevm_before_engine_setup/*.yml"

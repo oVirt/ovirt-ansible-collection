@@ -1,0 +1,17 @@
+---
+- import_tasks: get_appliance_dist.yml
+- name: Reboot the engine VM to ensure that FIPS is enabled
+  reboot:
+    reboot_timeout: 1200
+- name: Check if FIPS mode is enabled
+  command: sysctl -n crypto.fips_enabled
+  changed_when: true
+  register: he_fips_enabled
+- name: Enforce FIPS mode on CentOS
+  fail:
+    msg: "FIPS mode is unsupported on CentOS"
+  when: appliance_dist == "CentOS" and he_fips_enabled.stdout != "1"
+- name: Enforce FIPS mode on Rhel
+  fail:
+    msg: "FIPS mode is not enabled as required"
+  when: appliance_dist == "RedHat" and he_fips_enabled.stdout != "1"
