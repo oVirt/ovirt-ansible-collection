@@ -1,5 +1,4 @@
 ---
-- import_tasks: ../get_appliance_dist.yml
 - name: Initialize OpenSCAP variables
   set_fact:
     oscap_dir: "/usr/share/xml/scap/ssg/content"
@@ -31,4 +30,3 @@
               regexp="^\s*PermitRootLogin"
               line="PermitRootLogin yes"
               state=present
-- import_tasks: ../reboot_to_enable_fips.yml

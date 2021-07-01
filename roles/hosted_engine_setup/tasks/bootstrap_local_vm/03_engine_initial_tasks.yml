@@ -53,17 +53,19 @@
     with_items:
       - "OVESETUP_DWH_DB/password=str:{{ he_dwh_db_password }}"
     when: he_dwh_db_password is defined
-  - name: Import OpenSCAP task
-    import_tasks: ../apply_openscap_profile.yml
-    when: he_apply_openscap_profile|bool
-  - name: Enable FIPS on the engine VM
+  - name: Enable security policy
     block:
-      - name: Enable FIPS
+      - import_tasks: ../get_appliance_dist.yml
+      - name: Enable FIPS on the engine VM
         command: >-
           fips-mode-setup --enable
         changed_when: true
+        when: not he_apply_openscap_profile|bool and he_enable_fips|bool
+      - name: Import OpenSCAP task
+        import_tasks: ../apply_openscap_profile.yml
+        when: he_apply_openscap_profile|bool
       - import_tasks: ../reboot_to_enable_fips.yml
-    when: not he_apply_openscap_profile|bool and he_enable_fips|bool
+    when: he_apply_openscap_profile|bool or he_enable_fips|bool
   - name: Include before engine-setup custom tasks files for the engine VM
     include_tasks: "{{ item }}"
     with_fileglob: "hooks/enginevm_before_engine_setup/*.yml"
