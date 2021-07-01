@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - hosted_engine_setup - Use forward network during an IPv6 deployment (https://github.com/oVirt/ovirt-ansible-collection/pull/315)
