@@ -15,6 +15,7 @@
     set -euo pipefail && oscap info --profiles {{ oscap_datastream }} |
     grep -Ei "(standard|disa)" | sort | tail -1 | cut -d':' -f1
   register: oscap_profile
+  ignore_errors: true
   changed_when: true
   when: oscap_ds_stat.stat.exists
 - name: Apply OpenSCAP profile
