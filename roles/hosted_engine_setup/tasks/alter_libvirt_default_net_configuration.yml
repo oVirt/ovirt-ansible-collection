@@ -14,7 +14,7 @@
         xpath: /network/ip
         state: absent
       register: editednet_noipv4
-    - name: Configure libvirt default network as an forward network
+    - name: Configure libvirt default network as a forward network
       xml:
         xmlstring: "{{ editednet_noipv4.xmlstring }}"
         xpath: /network/forward
