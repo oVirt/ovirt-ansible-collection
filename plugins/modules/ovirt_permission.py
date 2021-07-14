@@ -226,7 +226,7 @@ class PermissionsModule(BaseModule):
 
     def _group(self):
         groups = self._connection.system_service().groups_service().list(
-            search="name={name}".format(
+            search='name="{name}"'.format(
                 name=self._module.params['group_name'],
             )
         )
