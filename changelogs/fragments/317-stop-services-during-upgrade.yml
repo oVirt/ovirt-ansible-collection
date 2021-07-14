@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - cluster_upgrade - Stop the services before upgrade trigger (https://github.com/oVirt/ovirt-ansible-collection/pull/317)
