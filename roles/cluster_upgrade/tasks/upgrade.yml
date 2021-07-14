@@ -75,6 +75,22 @@
     - cluster_info.ovirt_clusters[0].gluster_service | bool
     - api_info.ovirt_api.product_info.version.major >= 4 and api_info.ovirt_api.product_info.version.minor >= 4
 
+- name: populate service facts
+  service_facts:
+  delegate_to: "{{ host_info.ovirt_hosts[0].address }}"
+  connection: ssh
+
+- name: Stop services
+  service:
+    name: "{{ item }}"
+    state: stopped
+  delegate_to: "{{ host_info.ovirt_hosts[0].address }}"
+  connection: ssh
+  loop:
+  - ovirt-ha-agent.service
+  - ovirt-ha-broker.service
+  when: "item in ansible_facts.services"
+
 - name: Upgrade host
   ovirt_host:
     auth: "{{ ovirt_auth }}"
@@ -83,6 +99,15 @@
     check_upgrade: "{{ check_upgrade }}"
     reboot_after_upgrade: "{{ reboot_after_upgrade }}"
     timeout: "{{ upgrade_timeout }}"
+
+- name: Start ovirt-ha-agent service
+  service:
+    name: ovirt-ha-agent
+    enabled: yes
+    state: restarted
+  delegate_to: "{{ host_info.ovirt_hosts[0].address }}"
+  connection: ssh
+  when: ansible_facts.services["ovirt-ha-agent.service"] is defined
 
 - name: Delay in minutes to wait to finish gluster healing process after successful host upgrade
   pause:
