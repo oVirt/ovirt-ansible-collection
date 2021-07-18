@@ -10,6 +10,8 @@
   fail:
     msg: "OpenSCAP profile is unsupported on CentOS"
   when:
+    # Checking if FIPS is enabled together with he_apply_openscap_profile=true
+    # since there is no better way to check if OpenSCAP applied correctly
     - he_apply_openscap_profile|bool
     - appliance_dist == "CentOS"
     - he_fips_enabled.stdout != "1"
