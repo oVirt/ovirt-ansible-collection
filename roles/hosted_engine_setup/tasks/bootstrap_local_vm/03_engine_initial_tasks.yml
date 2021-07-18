@@ -60,6 +60,10 @@
         command: >-
           fips-mode-setup --enable
         changed_when: true
+        # 'not he_apply_openscap_profile|bool' is not mere optimization,
+        # but an important part of the logic - FIPS is enabled only when 'he_apply_openscap_profile' is false,
+        # this indicates if the OpenSCAP profile was applied and didn't fail.
+        # See https://bugzilla.redhat.com/1983476
         when: not he_apply_openscap_profile|bool and he_enable_fips|bool
       - name: Import OpenSCAP task
         import_tasks: ../apply_openscap_profile.yml
