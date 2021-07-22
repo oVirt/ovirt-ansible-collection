@@ -68,6 +68,12 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Thu Jul 22 2021 Martin Necas <mnecas@redhat.com> - 1.5.4-1
+- hosted_engine_setup - Allow FIPS on HE VM
+- hosted_engine_setup - remove duplicate tasks
+- hosted_engine_setup - Use forward network during an IPv6 deployment
+- ovirt_permission - fix group search that has space in it's name
+
 * Fri Jun 25 2021 Martin Necas <mnecas@redhat.com> - 1.5.3-1
 - disaster_recovery - Don't rely on safe_eval being able to do math/concat
 - hosted_engine_setup - Minor doc update
