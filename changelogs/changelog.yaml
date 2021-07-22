@@ -474,3 +474,17 @@ releases:
     - 310-HE-minor-doc-update.yml
     - 311-fix-add-host-target-vm.yml
     release_date: '2021-06-25'
+  1.5.4:
+    changes:
+      bugfixes:
+      - hosted_engine_setup - Use forward network during an IPv6 deployment (https://github.com/oVirt/ovirt-ansible-collection/pull/315)
+      - hosted_engine_setup - remove duplicate tasks (https://github.com/oVirt/ovirt-ansible-collection/pull/314)
+      - ovirt_permission - fix group search that has space in it's name (https://github.com/oVirt/ovirt-ansible-collection/pull/318)
+      minor_changes:
+      - hosted_engine_setup - Allow FIPS on HE VM (https://github.com/oVirt/ovirt-ansible-collection/pull/313)
+    fragments:
+    - 313-allow-fips-on-HE-vm.yml
+    - 314-remove-duplicate-tasks.yml
+    - 315-use-forward-netrok-during-ipv6-deployment.yml
+    - 318-ovirt_permission-fix-group-search-that-has-space.yml
+    release_date: '2021-07-22'

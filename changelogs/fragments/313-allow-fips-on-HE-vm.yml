@@ -1,3 +1,0 @@
----
-minor_changes:
-  - hosted_engine_setup - Allow FIPS on HE VM (https://github.com/oVirt/ovirt-ansible-collection/pull/313)

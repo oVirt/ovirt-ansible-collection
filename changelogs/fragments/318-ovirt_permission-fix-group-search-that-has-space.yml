@@ -1,3 +1,0 @@
----
-bugfixes:
-  - ovirt_permission - fix group search that has space in it's name (https://github.com/oVirt/ovirt-ansible-collection/pull/318)
