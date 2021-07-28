@@ -1,0 +1,2 @@
+major_changes:
+  - remove_stale_lun - Add role for removing stale LUN (https://bugzilla.redhat.com/1966873).

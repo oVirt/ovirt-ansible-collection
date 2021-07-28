@@ -1,0 +1,21 @@
+---
+- name: oVirt remove stale LUN
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    # Contains encrypted `engine_password` varibale using ansible-vault
+    - passwords.yml
+
+  vars:
+    engine_fqdn: ovirt.example.com
+    engine_user: admin@internal
+
+    data_center: default
+    lun_wwid: 36001405a77a1ee25cbf4439b7ddd2062
+
+  roles:
+    - remove_stale_lun
+  collections:
+    - @NAMESPACE@.@NAME@
