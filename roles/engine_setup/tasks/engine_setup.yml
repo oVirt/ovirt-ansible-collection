@@ -91,15 +91,6 @@
       name: ovirt-engine
       state: started
 
-  - name: Check if Engine health page is up
-    uri:
-      url: "http://localhost/ovirt-engine/services/health"
-      status_code: 200
-    register: health_page
-    retries: 30
-    delay: 10
-    until: health_page is success
-
   - name: Run engine-config
     command: "engine-config -s {{ item.key }}='{{ item.value }}' {% if item.version is defined %} --cver={{ item.version }} {% endif %}"
     loop: "{{ ovirt_engine_setup_engine_configs | default([]) }}"
@@ -109,6 +100,15 @@
       name: ovirt-engine
       state: restarted
     when: ovirt_engine_setup_engine_configs is defined
+
+  - name: Check if Engine health page is up
+    uri:
+      url: "http://localhost/ovirt-engine/services/health"
+      status_code: 200
+    register: health_page
+    retries: 30
+    delay: 10
+    until: health_page is success
 
   always:
     - name: Clean temporary files
