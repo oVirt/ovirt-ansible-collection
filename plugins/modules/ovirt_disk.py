@@ -652,7 +652,7 @@ class DisksModule(BaseModule):
 
         return changed
 
-    def _update_check(self, entity):
+    def update_check(self, entity):
         return (
             equal(self._module.params.get('name'), entity.name) and
             equal(self._module.params.get('description'), entity.description) and
@@ -681,7 +681,7 @@ class DiskAttachmentsModule(DisksModule):
 
     def update_check(self, entity):
         return (
-            super(DiskAttachmentsModule, self)._update_check(follow_link(self._connection, entity.disk)) and
+            super(DiskAttachmentsModule, self).update_check(follow_link(self._connection, entity.disk)) and
             equal(self._module.params.get('interface'), str(entity.interface)) and
             equal(self._module.params.get('bootable'), entity.bootable) and
             equal(self._module.params.get('pass_discard'), entity.pass_discard) and
