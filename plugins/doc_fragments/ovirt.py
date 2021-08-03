@@ -23,6 +23,7 @@ options:
             - "It will fetch IDs of the VMs disks, snapshots, etc. User can configure to fetch other
                attributes of the nested entities by specifying C(nested_attributes)."
         type: bool
+        default: false
     nested_attributes:
         description:
             - "Specifies list of the attributes which should be fetched from the API."
@@ -66,6 +67,7 @@ options:
                 description:
                     - A boolean flag that indicates if the server TLS certificate and host name should be checked.
                 type: bool
+                default: false
             ca_file:
                 description:
                     - A PEM file containing the trusted CA certificates.

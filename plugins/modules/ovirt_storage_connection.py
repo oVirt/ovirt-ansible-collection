@@ -84,6 +84,7 @@ options:
             - "If I(true) the storage domain don't have to be in I(MAINTENANCE)
                state, so the storage connection is updated."
         type: bool
+        default: false
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 

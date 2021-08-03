@@ -154,14 +154,12 @@ options:
             will be copied to the created template."
             - "This parameter is used only when C(state) I(present)."
         type: bool
-        default: False
     seal:
         description:
             - "'Sealing' is an operation that erases all machine-specific configurations from a filesystem:
                This includes SSH keys, UDEV rules, MAC addresses, system ID, hostname, etc.
                If I(true) subsequent virtual machines made from this template will avoid configuration inheritance."
             - "This parameter is used only when C(state) I(present)."
-        default: False
         type: bool
     operating_system:
         description:
