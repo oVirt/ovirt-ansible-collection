@@ -39,13 +39,11 @@ options:
                     - The name of the user, something like I(admin@internal).
                     - Default value is set by C(OVIRT_USERNAME) environment variable.
                 type: str
-                required: true
             password:
                 description:
                     - The password of the user.
                     - Default value is set by C(OVIRT_PASSWORD) environment variable.
                 type: str
-                required: true
             url:
                 description:
                     - A string containing the API URL of the server, usually something like `I(https://server.example.com/ovirt-engine/api)`.
