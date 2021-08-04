@@ -2,6 +2,10 @@
 
 Ansible role for deploying oVirt Hosted-Engine
 
+# Requirements
+
+Ansible version >= 2.9.21 and < 2.10.0
+
 # Prerequisites
 
 * A fully qualified domain name prepared for your Engine and the host. Forward and reverse lookup records must both be set in the DNS.
