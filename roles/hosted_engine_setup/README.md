@@ -49,6 +49,7 @@ Ansible version >= 2.9.21 and < 2.10.0
 | he_tcp_t_port | null | port to connect if he_network_test is *tcp* |
 | he_pause_host | false | Pause the execution to let the user interactively fix host configuration |
 | he_pause_after_failed_add_host | true | Pause the execution if Add Host failed with status non_operational, to let the user interactively fix host configuration |
+| he_pause_after_failed_restore | true | Pause the execution if engine-backup --mode=restore failed, to let the user handle this manually |
 | he_pause_before_engine_setup | false | Pause the execution and allow the user to make configuration changes to the bootstrap engine VM before running `engine-setup` |
 | he_offline_deployment | false | If `True`, updates for all packages will be disabled |
 | he_additional_package_list | [] | List of additional packages to be installed on engine VM apart from ovirt-engine package |
@@ -377,6 +378,8 @@ Both of the lock-file path and the engine's URL will be presented during the rol
 **On Failure**
 
 If "Add Host" failed and left the host in status "non_operational", by default the deployment will be paused, similarly to "Manual" above, so that the user can try to fix the host to get it to "up" state, before removing the lock file and continuing. If you want the process to fail instead of pausing, set `he_pause_after_failed_add_host` to false.
+
+If `engine-backup --mode=restore` failed, by default the deployment will be paused, to let the user handle this manually. If you want the process to fail instead of pausing, set `he_pause_after_failed_restore` to false.
 
 Demo
 ----

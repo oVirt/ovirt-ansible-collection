@@ -13,7 +13,28 @@
     --file=/root/engine_backup --provision-all-databases --restore-permissions
   environment: "{{ he_cmd_lang }}"
   register: engine_restore_out
+  ignore_errors: true
   changed_when: true
+- name: Pause the execution to let the user interactively handle restore failures
+  block:
+    - name: Let the user connect to the bootstrap engine VM to manually handle restore failures
+      debug:
+        msg: >-
+          engine-backup --mode=restore failed:
+
+          {{ engine_restore_out.stderr }}
+
+          You can now connect from this host to the bootstrap engine VM using ssh as root
+          and the temporary IP address -
+          {{ hostvars[he_ansible_host_name]['local_vm_ip']['stdout_lines'][0] }} -
+          and fix this issue. Please continue only after the backup is restored.
+
+          To retry the command that failed, you can run, on the bootstrap engine VM:
+
+          engine-backup --mode=restore --file=/root/engine_backup --provision-all-databases
+          --restore-permissions
+    - include_tasks: pause_execution.yml
+  when: engine_restore_out.rc != 0
 - name: Remove backup file
   file:
     state: absent
