@@ -23,6 +23,7 @@ options:
             - "It will fetch IDs of the VMs disks, snapshots, etc. User can configure to fetch other
                attributes of the nested entities by specifying C(nested_attributes)."
         type: bool
+        default: false
     nested_attributes:
         description:
             - "Specifies list of the attributes which should be fetched from the API."
@@ -38,13 +39,11 @@ options:
                     - The name of the user, something like I(admin@internal).
                     - Default value is set by C(OVIRT_USERNAME) environment variable.
                 type: str
-                required: true
             password:
                 description:
                     - The password of the user.
                     - Default value is set by C(OVIRT_PASSWORD) environment variable.
                 type: str
-                required: true
             url:
                 description:
                     - A string containing the API URL of the server, usually something like `I(https://server.example.com/ovirt-engine/api)`.
@@ -66,6 +65,7 @@ options:
                 description:
                     - A boolean flag that indicates if the server TLS certificate and host name should be checked.
                 type: bool
+                default: false
             ca_file:
                 description:
                     - A PEM file containing the trusted CA certificates.

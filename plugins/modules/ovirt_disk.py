@@ -121,6 +121,7 @@ options:
             - "Please take a look at C(image_path) documentation to see the correct
                usage of this parameter."
         type: bool
+        default: false
     profile:
         description:
             - "Disk profile name to be attached to disk. By default profile is chosen by oVirt/RHV engine."
@@ -133,7 +134,6 @@ options:
         description:
             - "I(True) if the disk should be bootable. By default when disk is created it isn't bootable."
         type: bool
-        default: 'no'
     shareable:
         description:
             - "I(True) if the disk should be shareable. By default when disk is created it isn't shareable."
@@ -652,7 +652,7 @@ class DisksModule(BaseModule):
 
         return changed
 
-    def _update_check(self, entity):
+    def update_check(self, entity):
         return (
             equal(self._module.params.get('name'), entity.name) and
             equal(self._module.params.get('description'), entity.description) and
@@ -681,7 +681,7 @@ class DiskAttachmentsModule(DisksModule):
 
     def update_check(self, entity):
         return (
-            super(DiskAttachmentsModule, self)._update_check(follow_link(self._connection, entity.disk)) and
+            super(DiskAttachmentsModule, self).update_check(follow_link(self._connection, entity.disk)) and
             equal(self._module.params.get('interface'), str(entity.interface)) and
             equal(self._module.params.get('bootable'), entity.bootable) and
             equal(self._module.params.get('pass_discard'), entity.pass_discard) and

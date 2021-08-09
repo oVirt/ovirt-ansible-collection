@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt_disk - Fix update_check with no VM (https://github.com/oVirt/ovirt-ansible-collection/pull/323).

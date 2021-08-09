@@ -7,7 +7,7 @@ oVirt Ansible Collection
 Requirements
 ------------
 
- * Ansible version 2.9.11 or higher
+ * Ansible version 2.9.21 or higher
  * Python SDK version 4.4.15 or higher
  * Python netaddr library on the ansible controller node
 

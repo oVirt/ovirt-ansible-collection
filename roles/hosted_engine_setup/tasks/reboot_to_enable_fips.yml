@@ -1,0 +1,21 @@
+---
+- name: Reboot the engine VM to ensure that FIPS is enabled
+  reboot:
+    reboot_timeout: 1200
+- name: Check if FIPS mode is enabled
+  command: sysctl -n crypto.fips_enabled
+  changed_when: true
+  register: he_fips_enabled
+- name: Enforce openscap profile on CentOS
+  fail:
+    msg: "OpenSCAP profile is unsupported on CentOS"
+  when:
+    # Checking if FIPS is enabled together with he_apply_openscap_profile=true
+    # since there is no better way to check if OpenSCAP applied correctly
+    - he_apply_openscap_profile|bool
+    - appliance_dist == "CentOS"
+    - he_fips_enabled.stdout != "1"
+- name: Enforce FIPS mode
+  fail:
+    msg: "FIPS mode is not enabled as required"
+  when: he_fips_enabled.stdout != "1"

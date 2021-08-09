@@ -396,6 +396,7 @@ def __get_auth_dict():
     return dict(
         type='dict',
         apply_defaults=True,
+        required=True,
         required_one_of=[['hostname', 'url']],
         options=dict(
             url=dict(
@@ -454,7 +455,7 @@ def ovirt_info_full_argument_spec(**kwargs):
         auth=__get_auth_dict(),
         fetch_nested=dict(default=False, type='bool'),
         nested_attributes=dict(type='list', default=list(), elements='str'),
-        follows=dict(default=list(), type='list'),
+        follows=dict(default=list(), type='list', elements='str'),
     )
     spec.update(kwargs)
     return spec

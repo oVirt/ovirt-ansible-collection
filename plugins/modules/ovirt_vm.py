@@ -554,6 +554,7 @@ options:
             - "If I(true) C(kernel_params), C(initrd_path) and C(kernel_path) will persist in virtual machine configuration,
                if I(False) it will be used for run once."
         type: bool
+        default: false
     kernel_path:
         description:
             - Path to a kernel image used to boot the virtual machine.
@@ -1685,6 +1686,7 @@ class VmsModule(BaseModule):
                     equal(self.param('placement_policy'), str(entity.placement_policy.affinity) if entity.placement_policy else None) and
                     equal([self.param('host')], hosts)
                 )
+            return True
 
         def check_host():
             if self.param('host') is not None:

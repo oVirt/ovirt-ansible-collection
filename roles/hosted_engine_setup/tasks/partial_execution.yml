@@ -120,11 +120,11 @@
   import_tasks: sync_on_engine_machine.yml
   changed_when: true
   ignore_errors: true
-  tags: [create_target_vm, final_clean, never]
+  tags: [final_clean, never]
 
 - name: Final clean
   import_tasks: final_clean.yml
-  tags: [create_target_vm, final_clean, never]
+  tags: [final_clean, never]
 
 
 - name: Validate network interface

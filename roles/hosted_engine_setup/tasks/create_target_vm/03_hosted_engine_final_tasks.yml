@@ -260,6 +260,10 @@
       dest: /etc/hosts
       regexp: "# temporary entry added by hosted-engine-setup for the bootstrap VM$"
       state: absent
+  - name: Set the name for add_host
+    set_fact:
+      he_fqdn_ansible_host: "{{ he_fqdn }}"
+  - import_tasks: ../add_engine_as_ansible_host.yml
   - name: Start ovirt-ha-broker service on the host
     service:
       name: ovirt-ha-broker

@@ -454,3 +454,37 @@ releases:
     - hosted_engine_setup-remove-cloud-init-config.yml
     - inventory_plugin_key_choices.yml
     release_date: '2021-06-17'
+  1.5.2:
+    changes:
+      minor_changes:
+      - hosted_engine_setup - Do not try to sync at end of full_execution (https://github.com/oVirt/ovirt-ansible-collection/pull/305)
+      - ovirt_vm - Add default return value to check_placement_policy (https://github.com/oVirt/ovirt-ansible-collection/pull/301).
+    fragments:
+    - 301-ovirt_vm-add-default-to-check_placement_policy.yml
+    - 305-HE-do-not-sync-at-full-execution-end.yml
+    release_date: '2021-06-23'
+  1.5.3:
+    changes:
+      minor_changes:
+      - Don't rely on safe_eval being able to do math/concat (https://github.com/oVirt/ovirt-ansible-collection/pull/307)
+      - hosted_engine_setup - Fix engine vm add_host for the target machine (https://github.com/oVirt/ovirt-ansible-collection/pull/311)
+      - hosted_engine_setup - Minor doc update (https://github.com/oVirt/ovirt-ansible-collection/pull/310)
+    fragments:
+    - 307-safe-eval-no-concat.yml
+    - 310-HE-minor-doc-update.yml
+    - 311-fix-add-host-target-vm.yml
+    release_date: '2021-06-25'
+  1.5.4:
+    changes:
+      bugfixes:
+      - hosted_engine_setup - Use forward network during an IPv6 deployment (https://github.com/oVirt/ovirt-ansible-collection/pull/315)
+      - hosted_engine_setup - remove duplicate tasks (https://github.com/oVirt/ovirt-ansible-collection/pull/314)
+      - ovirt_permission - fix group search that has space in it's name (https://github.com/oVirt/ovirt-ansible-collection/pull/318)
+      minor_changes:
+      - hosted_engine_setup - Allow FIPS on HE VM (https://github.com/oVirt/ovirt-ansible-collection/pull/313)
+    fragments:
+    - 313-allow-fips-on-HE-vm.yml
+    - 314-remove-duplicate-tasks.yml
+    - 315-use-forward-netrok-during-ipv6-deployment.yml
+    - 318-ovirt_permission-fix-group-search-that-has-space.yml
+    release_date: '2021-07-22'

@@ -2,6 +2,10 @@
 
 Ansible role for deploying oVirt Hosted-Engine
 
+# Requirements
+
+Ansible version >= 2.9.21 and < 2.10.0
+
 # Prerequisites
 
 * A fully qualified domain name prepared for your Engine and the host. Forward and reverse lookup records must both be set in the DNS.
@@ -39,6 +43,7 @@ Ansible role for deploying oVirt Hosted-Engine
 | he_force_ip4 | false | Force resolving engine FQDN to ipv4 only using DNS server |
 | he_force_ip6 | false | Force resolving engine FQDN to ipv6 only using DNS server |
 | he_apply_openscap_profile | false | apply a default OpenSCAP security profile on HE VM |
+| he_enable_fips | false | Enable FIPS on HE VM |
 | he_network_test | dns | the way of the network connectivity check performed by ovirt-hosted-engine-ha and ovirt-hosted-engine-setup, available options: *dns*, *ping*, *tcp* or *none*.  |
 | he_tcp_t_address | null | hostname to connect if he_network_test is *tcp*  |
 | he_tcp_t_port | null | port to connect if he_network_test is *tcp* |
@@ -360,7 +365,7 @@ These playbooks will be consumed automatically by the role when you execute it.
 **Manual:**
 
 To make manual adjustments set the following variables to `true`:
-- `he_pause_before_engine_setup` - This will pause the deployment **before** running the engine setup.
+- `he_pause_before_engine_setup` - This will pause the deployment **before** running engine-setup, and before restoring, when using `he_restore_from_file`.
 - `he_pause_host` - This will pause the deployment **after** the engine has been setup.
 
 Set these variables to `true` will create a lock-file at /tmp that ends with `_he_setup_lock` on the machine the role was executed on. The deployment will continue after deleting the lock-file, or after 24 hours ( if the lock-file hasn't been removed ).

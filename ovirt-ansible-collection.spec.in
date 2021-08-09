@@ -11,7 +11,7 @@ License:	ASL 2.0 and GPLv3+
 BuildArch:	noarch
 Url:		http://www.ovirt.org
 
-Requires:	ansible >= 2.9.11
+Requires:	ansible >= 2.9.21
 Requires:	python3-ovirt-engine-sdk4 >= 4.4.15
 Requires:	python3-netaddr
 Requires:	python3-jmespath
@@ -68,6 +68,21 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Thu Jul 22 2021 Martin Necas <mnecas@redhat.com> - 1.5.4-1
+- hosted_engine_setup - Allow FIPS on HE VM
+- hosted_engine_setup - remove duplicate tasks
+- hosted_engine_setup - Use forward network during an IPv6 deployment
+- ovirt_permission - fix group search that has space in it's name
+
+* Fri Jun 25 2021 Martin Necas <mnecas@redhat.com> - 1.5.3-1
+- disaster_recovery - Don't rely on safe_eval being able to do math/concat
+- hosted_engine_setup - Minor doc update
+- hosted_engine_setup - Fix engine vm add_host for the target machine
+
+* Wed Jun 23 2021 Martin Necas <mnecas@redhat.com> - 1.5.2-1
+- ovirt_vm - Add default return value to check_placement_policy.
+- hosted_engine_setup - Do not try to sync at end of full_execution.
+
 * Thu Jun 17 2021 Martin Necas <mnecas@redhat.com> - 1.5.1-1
 - hosted_engine_setup - Filter VLAN devices with bad names
 - ovirt_vm - Add placement_policy_hosts
