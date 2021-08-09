@@ -231,6 +231,9 @@ options:
             host:
                 description:
                     - The host name from which the template will be imported.
+            clone:
+                description:
+                    - Indicates if the identifiers of the imported template should be regenerated.
     cloud_init:
         description:
             - Dictionary with values for Unix-like Virtual Machine initialization using cloud init.
@@ -899,6 +902,7 @@ def import_template(module, connection):
             host=otypes.Host(
                 name=external_template.get('host'),
             ) if external_template.get('host') else None,
+            clone=external_template.get('clone', None),
         )
     )
 
