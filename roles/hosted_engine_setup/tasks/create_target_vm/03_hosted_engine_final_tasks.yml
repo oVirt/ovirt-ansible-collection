@@ -364,7 +364,7 @@
     register: engine_vm_ip
     when: engine_vm_ip is not defined
     changed_when: true
-  # Workaround for ovn-central being configured with the address of the bootstrap VM.
+  # Workaround for ovn-central being configured with the address of the bootstrap engine VM.
   # Keep this aligned with:
   # https://github.com/oVirt/ovirt-engine/blob/master/packaging/playbooks/roles/ovirt-provider-ovn-driver/tasks/main.yml
   - name: Reconfigure OVN central address
@@ -375,7 +375,7 @@
   # the engine fails deleting a VM if its status in the engine DB
   # is not up to date.
   - include_tasks: ../auth_sso.yml
-  - name: Check for the local bootstrap VM
+  - name: Check for the local bootstrap engine VM
     ovirt_vm_info:
       pattern: id="{{ external_local_vm_uuid.stdout_lines|first }}"
       auth: "{{ ovirt_auth }}"
@@ -390,7 +390,7 @@
           auth: "{{ ovirt_auth }}"
         register: vmstop_result
       - debug: var=vmstop_result
-      - name: Wait for the local bootstrap VM to be down at engine eyes
+      - name: Wait for the local bootstrap engine VM to be down at engine eyes
         ovirt_vm_info:
           pattern: id="{{ external_local_vm_uuid.stdout_lines|first }}"
           auth: "{{ ovirt_auth }}"

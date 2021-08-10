@@ -76,7 +76,7 @@
     register: include_before_engine_setup_results
   - name: Pause the execution to allow the user to configure the bootstrap engine VM
     block:
-      - name: Allow the user to connect to the bootstrap engine and change configuration
+      - name: Allow the user to connect to the bootstrap engine VM and change configuration
         debug:
           msg: >-
             You can now connect from this host to the bootstrap engine VM using ssh as root
@@ -98,7 +98,7 @@
     - name: Get local VM dir path
       set_fact:
         he_local_vm_dir={{ hostvars[he_ansible_host_name]['he_local_vm_dir'] }}
-    - name: Clean bootstrap VM
+    - name: Clean bootstrap engine VM
       import_tasks: ../clean_localvm_dir.yml
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Clean local storage pools
