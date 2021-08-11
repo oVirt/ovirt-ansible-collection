@@ -68,6 +68,17 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Wed Aug 11 2021 Martin Necas <mnecas@redhat.com> - 1.6.0-1
+- remove_stale_lun - Add role for removing stale LUN
+- readme - Update Ansible requirement
+- ovirt_disk - Fix update_check with no VM
+- ovirt_auth - Fix password and username requirements
+- engine_setup - Wait for webserver up after engine-config reboot
+- hosted_engine_setup - Update Ansible requirements in README
+- hosted_engine_setup - Pause deployment on failure of 'engine-backup --mode=restore'
+- hosted_engine_setup - Text change - Consistently use 'bootstrap engine VM'
+- hosted_engine_setup - Align with ansible-lint 5.0.0
+
 * Thu Jul 22 2021 Martin Necas <mnecas@redhat.com> - 1.5.4-1
 - hosted_engine_setup - Allow FIPS on HE VM
 - hosted_engine_setup - remove duplicate tasks
