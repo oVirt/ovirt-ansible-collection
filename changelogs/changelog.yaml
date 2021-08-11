@@ -488,3 +488,28 @@ releases:
     - 315-use-forward-netrok-during-ipv6-deployment.yml
     - 318-ovirt_permission-fix-group-search-that-has-space.yml
     release_date: '2021-07-22'
+  1.5.5:
+    changes:
+      bugfixes:
+      - ovirt_auth - Fix password and username requirements (https://github.com/oVirt/ovirt-ansible-collection/pull/325).
+      - ovirt_disk - Fix update_check with no VM (https://github.com/oVirt/ovirt-ansible-collection/pull/323).
+      major_changes:
+      - remove_stale_lun - Add role for removing stale LUN (https://bugzilla.redhat.com/1966873).
+      minor_changes:
+      - engine_setup - Wait for webserver up after engine-config reboot (https://github.com/oVirt/ovirt-ansible-collection/pull/324).
+      - hosted_engine_setup - Pause deployment on failure of `engine-backup --mode=restore`
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/327).
+      - hosted_engine_setup - Text change - Consistently use 'bootstrap engine VM'
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/328).
+      - hosted_engine_setup - Update Ansible requirements in README (https://github.com/oVirt/ovirt-ansible-collection/pull/321)
+      - readme - Update Ansible requirement (https://github.com/oVirt/ovirt-ansible-collection/pull/326).
+    fragments:
+    - 321-hosted_engine_setup-update-ansible-requirements-in-readme.yml
+    - 323-ovirt_disk-fix-update_check-with-no-vm.yml
+    - 324-engine_setup-wait-for-engine-config-reboot.yml
+    - 325-ovirt_auth-fix-passowrd-and-username-req.yml
+    - 326-readme-update-ansible-requirements.yml
+    - 327-pause-on-restore.yml
+    - 328-bootstrap-texts.yml
+    - add-remove_stale_lun-role.yml
+    release_date: '2021-08-11'

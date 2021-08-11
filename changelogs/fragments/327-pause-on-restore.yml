@@ -1,3 +1,0 @@
----
-minor_changes:
-  - hosted_engine_setup - Pause deployment on failure of `engine-backup --mode=restore` (https://github.com/oVirt/ovirt-ansible-collection/pull/327).

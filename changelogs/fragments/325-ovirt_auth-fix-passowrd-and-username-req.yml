@@ -1,3 +1,0 @@
----
-bugfixes:
-  - ovirt_auth - Fix password and username requirements (https://github.com/oVirt/ovirt-ansible-collection/pull/325).
