@@ -6,8 +6,6 @@
   register: default_net_xml
 - name: IPv6 configuration
   block:
-    - name: Accept IPv6 Router Advertisements
-      shell: echo 2 > /proc/sys/net/ipv6/conf/ovirtmgmt/accept_ra
     - name: Remove IPv4 configuration
       xml:
         xmlstring: "{{ default_net_xml.get_xml }}"
