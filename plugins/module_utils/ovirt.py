@@ -423,7 +423,6 @@ def __get_auth_dict():
             token=dict(
                 type='str',
                 fallback=(env_fallback, ['OVIRT_TOKEN']),
-                no_log=True,
             ),
             ca_file=dict(
                 type='str',
