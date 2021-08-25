@@ -1,3 +1,0 @@
----
-bugfixes:
-  - ovirt_auth - Fix token no_log (https://github.com/oVirt/ovirt-ansible-collection/pull/332).

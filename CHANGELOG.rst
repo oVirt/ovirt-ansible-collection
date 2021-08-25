@@ -5,6 +5,15 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.6.1
+======
+
+Bugfixes
+--------
+
+- hosted_engine_setup - Use default bridge for IPv6 advertisements (https://github.com/oVirt/ovirt-ansible-collection/pull/331).
+- ovirt_auth - Fix token no_log (https://github.com/oVirt/ovirt-ansible-collection/pull/332).
+
 v1.5.5
 ======
 
