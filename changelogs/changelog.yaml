@@ -516,7 +516,9 @@ releases:
   1.6.1:
     changes:
       bugfixes:
+      - hosted_engine_setup - Use default bridge for IPv6 advertisements (https://github.com/oVirt/ovirt-ansible-collection/pull/331)
       - ovirt_auth - Fix token no_log (https://github.com/oVirt/ovirt-ansible-collection/pull/332).
     fragments:
+    - 331-use-default-bridge-for-ipv6-advertisements.yml
     - 332-ovirt_auth-fix-token-no_log.yml
     release_date: '2021-08-25'
