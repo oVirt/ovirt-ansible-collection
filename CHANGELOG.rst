@@ -5,6 +5,14 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.6.1
+======
+
+Bugfixes
+--------
+
+- ovirt_auth - Fix token no_log (https://github.com/oVirt/ovirt-ansible-collection/pull/332).
+
 v1.5.5
 ======
 

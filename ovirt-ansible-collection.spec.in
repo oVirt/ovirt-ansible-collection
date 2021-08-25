@@ -68,6 +68,9 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Wed Aug 25 2021 Martin Necas <mnecas@redhat.com> - 1.6.1-1
+- ovirt_auth - Fix no_log token issue
+
 * Wed Aug 11 2021 Martin Necas <mnecas@redhat.com> - 1.6.0-1
 - remove_stale_lun - Add role for removing stale LUN
 - readme - Update Ansible requirement

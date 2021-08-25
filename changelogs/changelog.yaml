@@ -513,3 +513,10 @@ releases:
     - 328-bootstrap-texts.yml
     - add-remove_stale_lun-role.yml
     release_date: '2021-08-11'
+  1.6.1:
+    changes:
+      bugfixes:
+      - ovirt_auth - Fix token no_log (https://github.com/oVirt/ovirt-ansible-collection/pull/332).
+    fragments:
+    - 332-ovirt_auth-fix-token-no_log.yml
+    release_date: '2021-08-25'
