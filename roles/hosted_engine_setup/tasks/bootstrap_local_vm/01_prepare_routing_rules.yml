@@ -48,6 +48,9 @@
     until: ip_link_show_bridge.rc == 0
     retries: 30
     delay: 3
+  - name: Accept IPv6 Router Advertisements for {{ virbr_default }}
+    shell: echo 2 > /proc/sys/net/ipv6/conf/{{ virbr_default }}/accept_ra
+    when: ipv6_deployment|bool
   - name: Refresh network facts
     setup:
     tags: ['skip_ansible_lint']
