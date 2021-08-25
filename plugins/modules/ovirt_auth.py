@@ -234,7 +234,7 @@ def main():
             kerberos=dict(required=False, type='bool', default=False),
             headers=dict(required=False, type='dict'),
             state=dict(default='present', choices=['present', 'absent']),
-            token=dict(default=None, no_log=True),
+            token=dict(default=None, no_log=False),
             ovirt_auth=dict(required=False, type='dict'),
         ),
         required_if=[
