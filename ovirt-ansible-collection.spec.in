@@ -68,6 +68,9 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Thu Aug 26 2021 Martin Necas <mnecas@redhat.com> - 1.6.2-1
+- remove_stale_lun - Fix example for `remote_stale_lun` role to be able to run it from engine
+
 * Wed Aug 25 2021 Martin Necas <mnecas@redhat.com> - 1.6.1-1
 - ovirt_auth - Fix no_log token issue
 - hosted_engine_setup - Use default bridge for IPv6 advertisements

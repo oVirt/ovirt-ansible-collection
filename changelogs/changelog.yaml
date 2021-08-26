@@ -522,3 +522,11 @@ releases:
     - 331-use-default-bridge-for-ipv6-advertisements.yml
     - 332-ovirt_auth-fix-token-no_log.yml
     release_date: '2021-08-25'
+  1.6.2:
+    changes:
+      minor_changes:
+      - remove_stale_lun - Fix example for `remote_stale_lun` role to be able to run
+        it from engine (https://github.com/oVirt/ovirt-ansible-collection/pull/334).
+    fragments:
+    - 334-remove_stale_lun-role.yml
+    release_date: '2021-08-26'
