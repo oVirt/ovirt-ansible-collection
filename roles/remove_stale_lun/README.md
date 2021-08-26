@@ -2,7 +2,8 @@ oVirt Remove Stale LUN
 =========
 
 The `remove_stale_lun` role iterates through all the hosts in a data center and remove stale LUN devices from these hosts.
-If the playbook is not executed on the engine, user ssh key has to be added on all hosts which belongs to the given data center.
+Example playbook uses engine private ssh key for connection to the hosts and therefore assumes it's executed from the engine machine.
+If the playbook is not executed on the engine, user ssh key has to be added on all hosts which belongs to the given data center or the user has to provide appropriate inventory file.
 
 Role Variables
 --------------
@@ -28,6 +29,10 @@ Example Playbook
     - passwords.yml
 
   vars:
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+    ansible_user: root
+    ansible_ssh_private_key_file: /etc/pki/ovirt-engine/keys/engine_id_rsa
+
     engine_fqdn: ovirt.example.com
     engine_user: admin@internal
 

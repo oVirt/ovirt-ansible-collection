@@ -9,6 +9,10 @@
     - passwords.yml
 
   vars:
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+    ansible_user: root
+    ansible_ssh_private_key_file: /etc/pki/ovirt-engine/keys/engine_id_rsa
+    
     engine_fqdn: ovirt.example.com
     engine_user: admin@internal
 
