@@ -842,6 +842,16 @@ options:
                     - This option is only available for the SPICE protocol.
                     - Possible values are 1, 2 or 4.
                 type: int
+            copy_paste_enabled:
+                description:
+                    - Indicates whether a user is able to copy and paste content from an external host into the graphic console.
+                    - This option is only available for the SPICE console type.
+                type: bool
+            file_transfer_enabled:
+                description:
+                    - Indicates if a user is able to drag and drop files from an external host into the graphic console.
+                    - This option is only available for the SPICE console type.
+                type: bool
     exclusive:
         description:
             - "When C(state) is I(exported) this parameter indicates if the existing VM with the
@@ -1610,8 +1620,12 @@ class VmsModule(BaseModule):
                 disconnect_action=display.get('disconnect_action'),
                 keyboard_layout=display.get('keyboard_layout'),
                 monitors=display.get('monitors'),
+                copy_paste_enabled=display.get('copy_paste_enabled'),
+                file_transfer_enabled=display.get('file_transfer_enabled'),
             ) if (
                 self.param('smartcard_enabled') is not None or
+                display.get('copy_paste_enabled') is not None or
+                display.get('file_transfer_enabled') is not None or
                 display.get('disconnect_action') is not None or
                 display.get('keyboard_layout') is not None or
                 display.get('monitors') is not None
@@ -1748,6 +1762,8 @@ class VmsModule(BaseModule):
             equal(self.param('numa_tune_mode'), str(entity.numa_tune_mode)) and
             equal(self.param('rng_device'), str(entity.rng_device.source) if entity.rng_device else None) and
             equal(provided_vm_display.get('monitors'), getattr(vm_display, 'monitors', None)) and
+            equal(provided_vm_display.get('copy_paste_enabled'), getattr(vm_display, 'copy_paste_enabled', None)) and
+            equal(provided_vm_display.get('file_transfer_enabled'), getattr(vm_display, 'file_transfer_enabled', None)) and
             equal(provided_vm_display.get('keyboard_layout'), getattr(vm_display, 'keyboard_layout', None)) and
             equal(provided_vm_display.get('disconnect_action'), getattr(vm_display, 'disconnect_action', None), ignore_case=True)
         )
@@ -2571,6 +2587,8 @@ def main():
                 disconnect_action=dict(type='str'),
                 keyboard_layout=dict(type='str'),
                 monitors=dict(type='int'),
+                file_transfer_enabled=dict(type='bool'),
+                copy_paste_enabled=dict(type='bool'),
             )
         ),
         exclusive=dict(type='bool'),
