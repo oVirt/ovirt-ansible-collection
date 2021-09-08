@@ -54,7 +54,7 @@ options:
             - "Note that the disk is not downloaded when the file already exists,
                but you can forcibly download the disk when using C(force) I (true)."
             - "Note that in ansible execution enviroment you shouldn't run the playbook on localhost, but specify
-               a host from which you want to upload the image."
+               a host to which you want to download the image."
         type: str
     upload_image_path:
         description:
