@@ -1,3 +1,3 @@
 ---
 bugfixes:
-  - image_template - Fix ansible 2.12 include_tasks (https://github.com/oVirt/ovirt-ansible-collection/pull/341).
+  - image_template - Remove static no - unsupported in ansible 2.12 (https://github.com/oVirt/ovirt-ansible-collection/pull/341).
