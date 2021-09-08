@@ -45,15 +45,13 @@
       - description: "Upgrading host: {{ item.name }}"
 
 - name: Gather self-heal facts about all gluster hosts in the cluster
-  gluster_heal_info:
-    name: "{{ volume_item.name }}"
-    status_filter: self-heal
+  ansible.builtin.shell: gluster volume heal {{ volume_item.name }} info
   register: self_heal_status
   retries: "{{ healing_in_progress_checks }}"
   delay: "{{ healing_in_progress_check_delay }}"
   until: >
-     self_heal_status is defined and
-     self_heal_status.glusterfs.heal_info | map(attribute='no_of_entries') | select('defined') | list | map('int') | sum == 0
+     self_heal_status.stdout_lines is defined and
+     self_heal_status.stdout_lines | select('match','^(Number of entries: )[0-9]+') | map('last') | map('int') | sum == 0
   delegate_to: "{{ host_info.ovirt_hosts[0].address }}"
   connection: ssh
   with_items:
