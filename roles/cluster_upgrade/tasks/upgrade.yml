@@ -50,8 +50,8 @@
   retries: "{{ healing_in_progress_checks }}"
   delay: "{{ healing_in_progress_check_delay }}"
   until: >
-     self_heal_status.stdout is defined and
-     self_heal_status.stdout | map(attribute='no_of_entries') | select('defined') | list | map('int') | sum == 0
+     self_heal_status.stdout_lines is defined and
+     self_heal_status.stdout_lines | select('match','^(Number of entries: )[0-9]+') | map('last') | map('int') | sum == 0
   delegate_to: "{{ host_info.ovirt_hosts[0].address }}"
   connection: ssh
   with_items:
