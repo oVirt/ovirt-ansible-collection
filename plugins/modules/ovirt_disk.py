@@ -53,6 +53,8 @@ options:
                or you must provide it in C(ca_file) parameter."
             - "Note that the disk is not downloaded when the file already exists,
                but you can forcibly download the disk when using C(force) I (true)."
+            - "Note that in ansible execution enviroment you shouldn't run the playbook on localhost, but specify
+               a host from which you want to upload the image."
         type: str
     upload_image_path:
         description:
@@ -66,6 +68,8 @@ options:
                then please use C(force) I(true). If you will use C(force) I(false), which
                is default, then the disk image won't be uploaded."
             - "Note that to upload iso the C(format) should be 'raw'"
+            - "Note that in ansible execution enviroment you shouldn't run the playbook on localhost, but specify
+               a host from which you want to upload the image."
         type: str
         aliases: ['image_path']
     size:
