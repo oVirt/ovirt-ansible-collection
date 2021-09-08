@@ -170,7 +170,7 @@
             vm_ip: "{{ vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4 }}"
 
         - name: Include prerequisites tasks for VM
-          include_tasks: "{{ template_prerequisites_tasks if template_prerequisites_tasks is defined else 'empty.yml' }}"
+          import_tasks: "{{ template_prerequisites_tasks if template_prerequisites_tasks is defined else 'empty.yml' }}"
           delegate_to: "{{ vm_ip }}"
           vars:
             ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
