@@ -2,7 +2,7 @@
 distros:
   - el8
 release_branches:
-  master: [ "ovirt-master" ]
+  ovirt-ansible-collection-1.6: ["ovirt-4.4"]
 stages:
   - build-artifacts:
       substages:
