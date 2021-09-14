@@ -18,40 +18,27 @@
     name: subscription-manager
     state: present
 
-- name: Register and subscribe to multiple pool IDs
-  redhat_subscription:
-    state: present
-    force_register: "{{ ovirt_repositories_force_register }}"
-    username: "{{ ovirt_repositories_rh_username | mandatory }}"
-    password: "{{ ovirt_repositories_rh_password | mandatory }}"
-    pool_ids: "{{ ovirt_repositories_pool_ids }}"
-    server_hostname: "{{ ovirt_repositories_rhsm_server_hostname | default(omit) }}"
-  when: ovirt_repositories_pool_ids is defined
+- name: Register to subscription manager
+  command: subscription-manager register --username {{ ovirt_repositories_rh_username }} --password {{ ovirt_repositories_rh_password }} {% if ovirt_repositories_force_register is defined %} --force {% endif %} {% if ovirt_repositories_rhsm_server_hostname is defined %} --serverurl {{ovirt_repositories_rhsm_server_hostname}} {% endif %}
 
-- name: Register to and subscribe to pool
-  redhat_subscription:
-    state: present
-    force_register: "{{ ovirt_repositories_force_register }}"
-    username: "{{ ovirt_repositories_rh_username | mandatory }}"
-    password: "{{ ovirt_repositories_rh_password | mandatory }}"
-    pool: "^({{ ovirt_repositories_pools | list | map('regex_escape') | join(')$|^(') }})$"
-    server_hostname: "{{ ovirt_repositories_rhsm_server_hostname | default(omit) }}"
-  when: ovirt_repositories_pools is defined
+- include_tasks: search-pool-id.yml
+  with_items:
+    - "{{ ovirt_repositories_pools }}"
+
+- name: Subscribe to multiple pool IDs
+  command: subscription-manager attach {% for id in ovirt_repositories_pool_ids %} --pool {{ id }} {% endfor %}
+  when: ovirt_repositories_pool_ids is defined and ovirt_repositories_pool_ids | list | length != 0
 
 - name: "Include {{ ovirt_repositories_target_host }}_{{ ovirt_repositories_ovirt_version }}.yml variables"
   include_vars: "{{ ovirt_repositories_target_host }}_{{ ovirt_repositories_ovirt_version }}.yml"
   when: ovirt_repositories_subscription_manager_repos | list | length == 0
 
 - name: Disable all repositories
-  rhsm_repository:
-    state: absent
-    name: "*"
+  command: subscription-manager repos --disable=*
   when: ovirt_repositories_clear
 
 - name: Enable required repositories
-  rhsm_repository:
-    name: "{{ item }}"
-    state: "enabled"
+  command: subscription-manager repos --enable={{ item }}
   with_items: "{{ ovirt_repositories_subscription_manager_repos }}"
 
 - name: Enable dnf modules
