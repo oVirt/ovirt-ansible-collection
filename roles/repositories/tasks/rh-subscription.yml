@@ -24,7 +24,7 @@
     --username {{ ovirt_repositories_rh_username }}
     --password {{ ovirt_repositories_rh_password }}
     {% if ovirt_repositories_force_register is defined %} --force {% endif %}
-    {% if ovirt_repositories_rhsm_server_hostname is defined %} --serverurl {{ovirt_repositories_rhsm_server_hostname}} {% endif %}
+    {% if ovirt_repositories_rhsm_server_hostname is defined %} --serverurl {{ ovirt_repositories_rhsm_server_hostname }} {% endif %}
 
 - include_tasks: search-pool-id.yml
   with_items:
@@ -44,6 +44,7 @@
 
 - name: Enable required repositories
   command: subscription-manager repos --enable={{ item }}
+  changed_when: false
   with_items: "{{ ovirt_repositories_subscription_manager_repos }}"
 
 - name: Enable dnf modules

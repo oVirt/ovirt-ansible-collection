@@ -1,6 +1,7 @@
 ---
 - name: Search pool ID for '{{ item }}'
-  shell: subscription-manager list --available --pool-only --matches="{{ item }}"
+  command: subscription-manager list --available --pool-only --matches="{{ item }}"
+  changed_when: false
   register: availible_pool
 
 - name: Search pool ID for '{{ item }}'
