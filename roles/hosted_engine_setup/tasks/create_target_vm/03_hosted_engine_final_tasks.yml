@@ -366,9 +366,9 @@
     changed_when: true
   # Workaround for ovn-central being configured with the address of the bootstrap engine VM.
   # Keep this aligned with:
-  # https://github.com/oVirt/ovirt-engine/blob/master/packaging/playbooks/roles/ovirt-provider-ovn-driver/tasks/main.yml
+  # https://github.com/oVirt/ovirt-engine/blob/master/packaging/ansible-runner-service-project/project/roles/ovirt-provider-ovn-driver/tasks/configure.yml
   - name: Reconfigure OVN central address
-    command: vdsm-tool ovn-config {{ engine_vm_ip.stdout_lines[0] }} {{ he_mgmt_network }}
+    command: vdsm-tool ovn-config {{ engine_vm_ip.stdout_lines[0] }} {{ he_mgmt_network }} {{ he_host_name }}
     environment: "{{ he_cmd_lang }}"
     changed_when: true
   # Workaround for https://bugzilla.redhat.com/1540107
