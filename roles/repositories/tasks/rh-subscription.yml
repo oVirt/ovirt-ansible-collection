@@ -30,6 +30,7 @@
 - include_tasks: search-pool-id.yml
   with_items:
     - "{{ ovirt_repositories_pools }}"
+  when: ovirt_repositories_pools is defined
 
 - name: Subscribe to multiple pool IDs
   command: subscription-manager attach {% for id in ovirt_repositories_pool_ids %} --pool {{ id }} {% endfor %}
