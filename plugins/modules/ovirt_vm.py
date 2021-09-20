@@ -894,6 +894,10 @@ options:
         description:
             - "Sets the value of the custom_emulated_machine attribute."
         type: str
+    virtio_scsi_enabled:
+        description:
+            - "Enable Virtio SCSI support."
+        type: bool
 
 notes:
     - If VM is in I(UNASSIGNED) or I(UNKNOWN) state before any operation, the module will fail.
@@ -1553,6 +1557,9 @@ class VmsModule(BaseModule):
                 self.param('cpu_pinning')
             )) else None,
             cpu_shares=self.param('cpu_shares'),
+            virtio_scsi=otypes.VirtioScsi(
+                enabled=self.param('virtio_scsi_enabled'),
+            ) if self.param('virtio_scsi_enabled') is not None else None,
             os=otypes.OperatingSystem(
                 type=self.param('operating_system'),
                 boot=otypes.Boot(
@@ -1746,6 +1753,7 @@ class VmsModule(BaseModule):
             equal(self.param('serial_policy'), str(getattr(entity.serial_number, 'policy', None))) and
             equal(self.param('serial_policy_value'), getattr(entity.serial_number, 'value', None)) and
             equal(self.param('numa_tune_mode'), str(entity.numa_tune_mode)) and
+            equal(self.param('virtio_scsi_enabled'), entity.virtio_scsi.enabled) and
             equal(self.param('rng_device'), str(entity.rng_device.source) if entity.rng_device else None) and
             equal(provided_vm_display.get('monitors'), getattr(vm_display, 'monitors', None)) and
             equal(provided_vm_display.get('keyboard_layout'), getattr(vm_display, 'keyboard_layout', None)) and
@@ -2579,6 +2587,7 @@ def main():
         force_migrate=dict(type='bool'),
         migrate=dict(type='bool', default=None),
         next_run=dict(type='bool'),
+        virtio_scsi_enabled=dict(type='bool'),
         snapshot_name=dict(type='str'),
         snapshot_vm=dict(type='str'),
     )
