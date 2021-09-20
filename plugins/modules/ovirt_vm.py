@@ -898,10 +898,12 @@ options:
         description:
             - "Enable Virtio SCSI support."
         type: bool
+        version_added: 1.7.0
     multi_queues_enabled:
         description:
             - "If `true`, each virtual interface will get the optimal number of queues, depending on the available virtual Cpus."
         type: bool
+        version_added: 1.7.0
 
 notes:
     - If VM is in I(UNASSIGNED) or I(UNKNOWN) state before any operation, the module will fail.
