@@ -171,7 +171,6 @@
 
         - name: Include prerequisites tasks for VM
           import_tasks: "{{ template_prerequisites_tasks if template_prerequisites_tasks is defined else 'empty.yml' }}"
-          static: no
           delegate_to: "{{ vm_ip }}"
           vars:
             ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
