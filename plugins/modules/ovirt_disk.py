@@ -907,9 +907,7 @@ def main():
                 module.params.get('activate'),
                 module.params.get('bootable'),
                 module.params.get('uses_scsi_reservation'),
-                module.params.get('pass_discard'),
-                ]
-            ):
+                module.params.get('pass_discard'), ]):
             module.warn("Cannot use 'interface', 'activate', 'bootable', 'uses_scsi_reservation' or 'pass_discard' without specifing VM.")
 
         # When the host parameter is specified and the disk is not being
