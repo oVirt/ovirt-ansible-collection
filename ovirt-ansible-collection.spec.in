@@ -68,6 +68,11 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Tue Sep 21 2021 Martin Necas <mnecas@redhat.com> - 1.6.3-1
+- repositories - Replace redhat_subscription and rhsm_repository with command
+- gluster_heal_info - Replacing gluster module to CLI to support RHV automation hub
+- image_template - Remove static no - unsupported in ansible 2.12
+
 * Thu Aug 26 2021 Martin Necas <mnecas@redhat.com> - 1.6.2-1
 - remove_stale_lun - Fix example for `remote_stale_lun` role to be able to run it from engine
 
