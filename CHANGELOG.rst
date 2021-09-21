@@ -5,6 +5,20 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.6.3
+======
+
+Minor Changes
+-------------
+
+- gluster_heal_info - Replacing gluster module to CLI to support RHV automation hub (https://github.com/oVirt/ovirt-ansible-collection/pull/340).
+- repositories - Replace redhat_subscription and rhsm_repository with command (https://github.com/oVirt/ovirt-ansible-collection/pull/346).
+
+Bugfixes
+--------
+
+- image_template - Remove static no - unsupported in ansible 2.12 (https://github.com/oVirt/ovirt-ansible-collection/pull/341).
+
 v1.6.2
 ======
 

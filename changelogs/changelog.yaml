@@ -530,3 +530,17 @@ releases:
     fragments:
     - 334-remove_stale_lun-role.yml
     release_date: '2021-08-26'
+  1.6.3:
+    changes:
+      bugfixes:
+      - image_template - Remove static no - unsupported in ansible 2.12 (https://github.com/oVirt/ovirt-ansible-collection/pull/341).
+      minor_changes:
+      - gluster_heal_info - Replacing gluster module to CLI to support RHV automation
+        hub (https://github.com/oVirt/ovirt-ansible-collection/pull/340).
+      - repositories - Replace redhat_subscription and rhsm_repository with command
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/346).
+    fragments:
+    - 340-replace-gluster-module-to-cli.yml
+    - 341-image_template-fix-include-tasks.yml
+    - 346-repositories-replace-redhat_subscription-and-rhsm_repository-with-command.yml
+    release_date: '2021-09-21'
