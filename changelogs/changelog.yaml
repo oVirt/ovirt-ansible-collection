@@ -544,3 +544,10 @@ releases:
     - 341-image_template-fix-include-tasks.yml
     - 346-repositories-replace-redhat_subscription-and-rhsm_repository-with-command.yml
     release_date: '2021-09-21'
+  1.6.4:
+    changes:
+      minor_changes:
+      - repositories - add no_log to register (https://github.com/oVirt/ovirt-ansible-collection/pull/350).
+    fragments:
+    - 350-repositories-add-no_log-to-register.yml
+    release_date: '2021-09-27'
