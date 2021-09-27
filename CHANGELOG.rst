@@ -5,6 +5,14 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.6.4
+======
+
+Minor Changes
+-------------
+
+- repositories - add no_log to register (https://github.com/oVirt/ovirt-ansible-collection/pull/350).
+
 v1.6.3
 ======
 
