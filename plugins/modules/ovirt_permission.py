@@ -54,6 +54,7 @@ options:
             - vm
             - vm_pool
             - vnic_profile
+            - mac_pool
         default: vm
         type: str
     user_name:
