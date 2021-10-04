@@ -126,6 +126,13 @@ EXAMPLES = '''
     object_name: mydatacenter
     quota_name: myquota
     role: QuotaConsumer
+
+- @NAMESPACE@.@NAME@.ovirt_permission:
+    user_name: user1
+    authz_name: example.com-authz
+    object_type: mac_pool
+    object_name: Default
+    role: MacPoolUser
 '''
 
 RETURN = '''
@@ -279,6 +286,7 @@ def main():
                              'vm',
                              'vm_pool',
                              'vnic_profile',
+                             'mac_pool',
                          ]),
         authz_name=dict(type='str', required=True, aliases=['domain']),
         object_id=dict(type='str'),
