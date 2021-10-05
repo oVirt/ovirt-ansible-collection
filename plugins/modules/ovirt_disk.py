@@ -387,6 +387,7 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     search_by_name,
     wait,
 )
+from ovirt_imageio import client
 
 
 def _search_by_lun(disks_service, lun_id):
@@ -507,30 +508,48 @@ def download_disk_image(connection, module):
 
 
 def upload_disk_image(connection, module):
-    def _transfer(transfer_service, transfer_connection, transfer_url):
-        BUF_SIZE = 128 * 1024
-        path = module.params['upload_image_path']
+    transfer = otypes.ImageTransfer(
+        host=host,
+        direction=direction,
+        backup=backup,
+        inactivity_timeout=inactivity_timeout,
+        timeout_policy=timeout_policy,
 
-        image_size = os.path.getsize(path)
-        transfer_connection.putrequest("PUT", transfer_url.path)
-        transfer_connection.putheader('Content-Length', "%d" % (image_size,))
-        transfer_connection.endheaders()
-        with open(path, "rb") as disk:
-            pos = 0
-            while pos < image_size:
-                to_read = min(image_size - pos, BUF_SIZE)
-                chunk = disk.read(to_read)
-                if not chunk:
-                    transfer_service.pause()
-                    raise RuntimeError("Unexpected end of file at pos=%d" % pos)
-                transfer_connection.send(chunk)
-                pos += len(chunk)
+        # format=raw uses the NBD backend, enabling:
+        # - Transfer raw guest data, regardless of the disk format.
+        # - Automatic format conversion to remote disk format. For example,
+        #   upload qcow2 image to raw disk, or raw image to qcow2 disk.
+        # - Collapsed qcow2 chains to single raw file.
+        # - Extents reporting for qcow2 images and raw images on file storage,
+        #   speeding up downloads.
+        format=types.DiskFormat.RAW,
 
-    return transfer(
-        connection,
-        module,
-        otypes.ImageTransferDirection.UPLOAD,
-        transfer_func=_transfer,
+        shallow=shallow,
+    )
+
+    transfers_service = connection.system_service().image_transfers_service()
+    hosts_service = connection.system_service().hosts_service()
+    transfer = transfers_service.add(
+        otypes.ImageTransfer(
+            image=otypes.Image(
+                id=module.params['id'],
+            ),
+            direction=otypes.ImageTransferDirection.UPLOAD,
+            timeout_policy=otypes.ImageTransferTimeoutPolicy.LEGACY,
+            host=host=otypes.Host(
+                id=get_id_by_name(hosts_service, module.params.get('host'))
+            ) if module.param.get('host') else None,
+        )
+    )
+    transfer_service = transfers_service.image_transfer_service(transfer.id)
+
+    client.upload(
+        module.params.get('upload_image_path'),
+        upload_url,
+        auth.get('ca_file'),
+        secure=not module.params.get('auth').get('insecure'),
+        buffer_size=client.BUFFER_SIZE,
+        **extra_args
     )
 
 
