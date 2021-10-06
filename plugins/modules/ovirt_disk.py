@@ -421,136 +421,142 @@ def create_transfer_connection(module, transfer, context, connect_timeout=10, re
     return connection, url
 
 
-def transfer(connection, module, direction, transfer_func):
-    transfers_service = connection.system_service().image_transfers_service()
-    transfer = transfers_service.add(
-        otypes.ImageTransfer(
-            image=otypes.Image(
-                id=module.params['id'],
-            ),
-            direction=direction,
-        )
-    )
-    transfer_service = transfers_service.image_transfer_service(transfer.id)
-
-    try:
-        # After adding a new transfer for the disk, the transfer's status will be INITIALIZING.
-        # Wait until the init phase is over. The actual transfer can start when its status is "Transferring".
-        while transfer.phase == otypes.ImageTransferPhase.INITIALIZING:
-            time.sleep(module.params['poll_interval'])
-            transfer = transfer_service.get()
-
-        context = ssl.create_default_context()
-        auth = module.params['auth']
-        if auth.get('insecure'):
-            context.check_hostname = False
-            context.verify_mode = ssl.CERT_NONE
-        elif auth.get('ca_file'):
-            context.load_verify_locations(cafile=auth.get('ca_file'))
-
-        transfer_connection, transfer_url = create_transfer_connection(module, transfer, context)
-        transfer_func(
-            transfer_service,
-            transfer_connection,
-            transfer_url,
-        )
-        return True
-    finally:
-        transfer_service.finalize()
-        while transfer.phase in [
-            otypes.ImageTransferPhase.TRANSFERRING,
-            otypes.ImageTransferPhase.FINALIZING_SUCCESS,
-        ]:
-            time.sleep(module.params['poll_interval'])
-            transfer = transfer_service.get()
-        if transfer.phase in [
-            otypes.ImageTransferPhase.UNKNOWN,
-            otypes.ImageTransferPhase.FINISHED_FAILURE,
-            otypes.ImageTransferPhase.FINALIZING_FAILURE,
-            otypes.ImageTransferPhase.CANCELLED,
-        ]:
-            raise Exception(
-                "Error occurred while uploading image. The transfer is in %s" % transfer.phase
-            )
-        if not module.params.get('logical_unit'):
-            disks_service = connection.system_service().disks_service()
-            wait(
-                service=disks_service.service(module.params['id']),
-                condition=lambda d: d.status == otypes.DiskStatus.OK,
-                wait=module.params['wait'],
-                timeout=module.params['timeout'],
-            )
-
-
-def download_disk_image(connection, module):
-    def _transfer(transfer_service, transfer_connection, transfer_url):
-        BUF_SIZE = 128 * 1024
-        transfer_connection.request('GET', transfer_url.path)
-        r = transfer_connection.getresponse()
-        path = module.params["download_image_path"]
-        image_size = int(r.getheader('Content-Length'))
-        with open(path, "wb") as mydisk:
-            pos = 0
-            while pos < image_size:
-                to_read = min(image_size - pos, BUF_SIZE)
-                chunk = r.read(to_read)
-                if not chunk:
-                    raise RuntimeError("Socket disconnected")
-                mydisk.write(chunk)
-                pos += len(chunk)
-
-    return transfer(
-        connection,
-        module,
-        otypes.ImageTransferDirection.DOWNLOAD,
-        transfer_func=_transfer,
-    )
-
-
-def upload_disk_image(connection, module):
-    transfer = otypes.ImageTransfer(
-        host=host,
-        direction=direction,
-        backup=backup,
-        inactivity_timeout=inactivity_timeout,
-        timeout_policy=timeout_policy,
-
-        # format=raw uses the NBD backend, enabling:
-        # - Transfer raw guest data, regardless of the disk format.
-        # - Automatic format conversion to remote disk format. For example,
-        #   upload qcow2 image to raw disk, or raw image to qcow2 disk.
-        # - Collapsed qcow2 chains to single raw file.
-        # - Extents reporting for qcow2 images and raw images on file storage,
-        #   speeding up downloads.
-        format=types.DiskFormat.RAW,
-
-        shallow=shallow,
-    )
-
+def get_transfer(connection, module, direction):
     transfers_service = connection.system_service().image_transfers_service()
     hosts_service = connection.system_service().hosts_service()
     transfer = transfers_service.add(
         otypes.ImageTransfer(
-            image=otypes.Image(
-                id=module.params['id'],
-            ),
-            direction=otypes.ImageTransferDirection.UPLOAD,
-            timeout_policy=otypes.ImageTransferTimeoutPolicy.LEGACY,
-            host=host=otypes.Host(
+            disk = otypes.Disk(id=module.params.get('id')),
+            direction = direction,
+            timeout_policy = otypes.ImageTransferTimeoutPolicy.LEGACY,
+            host = otypes.Host(
                 id=get_id_by_name(hosts_service, module.params.get('host'))
-            ) if module.param.get('host') else None,
+            ) if module.params.get('host') else None,
+            # format=raw uses the NBD backend, enabling:
+            # - Transfer raw guest data, regardless of the disk format.
+            # - Automatic format conversion to remote disk format. For example,
+            #   upload qcow2 image to raw disk, or raw image to qcow2 disk.
+            # - Collapsed qcow2 chains to single raw file.
+            # - Extents reporting for qcow2 images and raw images on file storage,
+            #   speeding up downloads.
+            format=otypes.DiskFormat.RAW,
         )
     )
     transfer_service = transfers_service.image_transfer_service(transfer.id)
 
-    client.upload(
-        module.params.get('upload_image_path'),
-        upload_url,
-        auth.get('ca_file'),
+    start = time.time()
+
+    while True:
+        time.sleep(1)
+        try:
+            transfer = transfer_service.get()
+        except sdk.NotFoundError:
+            # The system has removed the disk and the transfer.
+            raise RuntimeError("Transfer {} was removed".format(transfer.id))
+
+        if transfer.phase == otypes.ImageTransferPhase.FINISHED_FAILURE:
+            # The system will remove the disk and the transfer soon.
+            raise RuntimeError("Transfer {} has failed".format(transfer.id))
+
+        if transfer.phase == otypes.ImageTransferPhase.PAUSED_SYSTEM:
+            transfer_service.cancel()
+            raise RuntimeError(
+                "Transfer {} was paused by system".format(transfer.id))
+
+        if transfer.phase == otypes.ImageTransferPhase.TRANSFERRING:
+            break
+
+        if transfer.phase != otypes.ImageTransferPhase.INITIALIZING:
+            transfer_service.cancel()
+            raise RuntimeError(
+                "Unexpected transfer {} phase {}"
+                .format(transfer.id, transfer.phase))
+
+        if time.time() > start + module.params.get('timeout'):
+            transfer_service.cancel()
+            raise RuntimeError(
+                "Timed out waiting for transfer {}".format(transfer.id))
+
+    hosts_service = connection.system_service().hosts_service()
+    host_service = hosts_service.host_service(transfer.host.id)
+    transfer.host = host_service.get()
+    return transfer
+
+
+def finalize_transfer(connection, module, transfer):
+    transfer_service = (connection.system_service()
+                            .image_transfers_service()
+                            .image_transfer_service(transfer.id))
+    start = time.time()
+
+    transfer_service.finalize()
+    while True:
+        time.sleep(1)
+        try:
+            transfer = transfer_service.get()
+        except sdk.NotFoundError:
+            # Old engine (< 4.4.7): since the transfer was already deleted from
+            # the database, we can assume that the disk status is already
+            # updated, so we can check it only once.
+            disk_service = (connection.system_service()
+                                .disks_service()
+                                .disk_service(module.params['id']))
+            try:
+                disk = disk_service.get()
+            except sdk.NotFoundError:
+                # Disk verification failed and the system removed the disk.
+                raise RuntimeError(
+                    "Transfer {} failed: disk {} was removed"
+                    .format(transfer.id, module.params['id']))
+
+            if disk.status == otypes.DiskStatus.OK:
+                break
+
+            raise RuntimeError(
+                "Transfer {} failed: disk {} is '{}'"
+                .format(transfer.id, module.params['id'], disk.status))
+
+        if transfer.phase == otypes.ImageTransferPhase.FINISHED_SUCCESS:
+            break
+
+        if transfer.phase == otypes.ImageTransferPhase.FINISHED_FAILURE:
+            raise RuntimeError(
+                "Transfer {} failed, phase: {}"
+                .format(transfer.id, transfer.phase))
+
+        if time.time() > start + module.params.get('timeout'):
+            raise RuntimeError(
+                "Timed out waiting for transfer {} to finalize, phase: {}"
+                .format(transfer.id, transfer.phase))
+
+
+def download_disk_image(connection, module):
+    transfers_service = connection.system_service().image_transfers_service()
+    hosts_service = connection.system_service().hosts_service()
+    transfer = get_transfer(connection, module, otypes.ImageTransferDirection.DOWNLOAD)
+    client.download(
+        transfer.transfer_url,
+        module.params.get('download_image_path'),
+        module.params.get('auth').get('ca_file'),
+        fmt='qcow2' if module.params.get('format') == 'cow' else 'raw',
         secure=not module.params.get('auth').get('insecure'),
         buffer_size=client.BUFFER_SIZE,
-        **extra_args
     )
+    finalize_transfer(connection, module, transfer)
+
+
+def upload_disk_image(connection, module):
+    transfers_service = connection.system_service().image_transfers_service()
+    hosts_service = connection.system_service().hosts_service()
+    transfer = get_transfer(connection, module, otypes.ImageTransferDirection.UPLOAD)
+    client.upload(
+        module.params.get('upload_image_path'),
+        transfer.transfer_url,
+        module.params.get('auth').get('ca_file'),
+        secure=not module.params.get('auth').get('insecure'),
+        buffer_size=client.BUFFER_SIZE,
+    )
+    finalize_transfer(connection, module, transfer)
 
 
 class DisksModule(BaseModule):
