@@ -134,7 +134,8 @@ def main():
             search=module.params['search'],
             headers=module.params['headers'],
             query=module.params['query'],
-            wait=module.params['wait']
+            wait=module.params['wait'],
+            follow=",".join(module.params['follows'])
         )
 
         result = dict(

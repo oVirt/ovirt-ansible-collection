@@ -97,7 +97,10 @@ def main():
         auth = module.params.pop('auth')
         connection = create_connection(auth)
         storage_domains_service = connection.system_service().storage_domains_service()
-        storage_domains = storage_domains_service.list(search=module.params['pattern'])
+        storage_domains = storage_domains_service.list(
+            search=module.params['pattern'],
+            follow=",".join(module.params['follows'])
+        )
         result = dict(
             ovirt_storage_domains=[
                 get_dict_of_struct(

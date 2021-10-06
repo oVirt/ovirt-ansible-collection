@@ -97,7 +97,10 @@ def main():
         auth = module.params.pop('auth')
         connection = create_connection(auth)
         networks_service = connection.system_service().networks_service()
-        networks = networks_service.list(search=module.params['pattern'])
+        networks = networks_service.list(
+            search=module.params['pattern'],
+            follow=",".join(module.params['follows'])
+        )
         result = dict(
             ovirt_networks=[
                 get_dict_of_struct(

@@ -97,7 +97,10 @@ def main():
         auth = module.params.pop('auth')
         connection = create_connection(auth)
         templates_service = connection.system_service().templates_service()
-        templates = templates_service.list(search=module.params['pattern'])
+        templates = templates_service.list(
+            search=module.params['pattern'],
+            follow=",".join(module.params['follows'])
+        )
         result = dict(
             ovirt_templates=[
                 get_dict_of_struct(

@@ -97,7 +97,10 @@ def main():
         auth = module.params.pop('auth')
         connection = create_connection(auth)
         clusters_service = connection.system_service().clusters_service()
-        clusters = clusters_service.list(search=module.params['pattern'])
+        clusters = clusters_service.list(
+            search=module.params['pattern'],
+            follow=",".join(module.params['follows'])
+        )
         result = dict(
             ovirt_clusters=[
                 get_dict_of_struct(

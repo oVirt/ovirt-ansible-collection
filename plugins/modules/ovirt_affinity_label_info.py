@@ -130,7 +130,7 @@ def main():
         connection = create_connection(auth)
         affinity_labels_service = connection.system_service().affinity_labels_service()
         labels = []
-        all_labels = affinity_labels_service.list()
+        all_labels = affinity_labels_service.list(follow=",".join(module.params['follows']))
         if module.params['name']:
             labels.extend([
                 l for l in all_labels

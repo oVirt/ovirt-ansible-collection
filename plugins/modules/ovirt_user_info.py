@@ -93,7 +93,10 @@ def main():
         auth = module.params.pop('auth')
         connection = create_connection(auth)
         users_service = connection.system_service().users_service()
-        users = users_service.list(search=module.params['pattern'])
+        users = users_service.list(
+            search=module.params['pattern'],
+            follow=",".join(module.params['follows'])
+        )
         result = dict(
             ovirt_users=[
                 get_dict_of_struct(

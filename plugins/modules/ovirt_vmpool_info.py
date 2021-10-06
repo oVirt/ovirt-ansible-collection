@@ -95,7 +95,10 @@ def main():
         auth = module.params.pop('auth')
         connection = create_connection(auth)
         vmpools_service = connection.system_service().vm_pools_service()
-        vmpools = vmpools_service.list(search=module.params['pattern'])
+        vmpools = vmpools_service.list(
+            search=module.params['pattern'],
+            follow=",".join(module.params['follows'])
+        )
         result = dict(
             ovirt_vm_pools=[
                 get_dict_of_struct(

@@ -132,11 +132,11 @@ def main():
         )
         if module.params['name']:
             external_providers = [
-                e for e in external_providers_service.list()
+                e for e in external_providers_service.list(follow=",".join(module.params['follows']))
                 if fnmatch.fnmatch(e.name, module.params['name'])
             ]
         else:
-            external_providers = external_providers_service.list()
+            external_providers = external_providers_service.list(follow=",".join(module.params['follows']))
 
         result = dict(
             ovirt_external_providers=[

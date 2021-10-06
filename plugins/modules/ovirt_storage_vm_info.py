@@ -112,9 +112,9 @@ def main():
 
         # Find the unregistered VM we want to register:
         if module.params.get('unregistered'):
-            vms = vms_service.list(unregistered=True)
+            vms = vms_service.list(unregistered=True, follow=",".join(module.params['follows']))
         else:
-            vms = vms_service.list()
+            vms = vms_service.list(follow=",".join(module.params['follows']))
         result = dict(
             ovirt_storage_vms=[
                 get_dict_of_struct(

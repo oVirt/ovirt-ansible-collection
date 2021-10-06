@@ -93,7 +93,10 @@ def main():
         auth = module.params.pop('auth')
         connection = create_connection(auth)
         groups_service = connection.system_service().groups_service()
-        groups = groups_service.list(search=module.params['pattern'])
+        groups = groups_service.list(
+            search=module.params['pattern'],
+            follow=",".join(module.params['follows'])
+        )
         result = dict(
             ovirt_groups=[
                 get_dict_of_struct(

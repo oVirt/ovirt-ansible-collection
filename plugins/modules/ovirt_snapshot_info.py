@@ -102,7 +102,7 @@ def main():
         snapshots_service = vms_service.service(vm.id).snapshots_service()
         if module.params['description']:
             snapshots = [
-                e for e in snapshots_service.list()
+                e for e in snapshots_service.list(follow=",".join(module.params['follows']))
                 if fnmatch.fnmatch(e.description, module.params['description'])
             ]
         elif module.params['snapshot_id']:
@@ -110,7 +110,7 @@ def main():
                 snapshots_service.snapshot_service(module.params['snapshot_id']).get()
             ]
         else:
-            snapshots = snapshots_service.list()
+            snapshots = snapshots_service.list(follow=",".join(module.params['follows']))
 
         result = dict(
             ovirt_snapshots=[

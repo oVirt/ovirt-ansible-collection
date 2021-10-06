@@ -109,11 +109,11 @@ def main():
         quotas_service = datacenters_service.service(dc.id).quotas_service()
         if module.params['name']:
             quotas = [
-                e for e in quotas_service.list()
+                e for e in quotas_service.list(follow=",".join(module.params['follows']))
                 if fnmatch.fnmatch(e.name, module.params['name'])
             ]
         else:
-            quotas = quotas_service.list()
+            quotas = quotas_service.list(follow=",".join(module.params['follows']))
 
         result = dict(
             ovirt_quotas=[

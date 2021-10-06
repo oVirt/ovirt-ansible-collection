@@ -96,6 +96,7 @@ def main():
         disks_service = connection.system_service().disks_service()
         disks = disks_service.list(
             search=module.params['pattern'],
+            follow=",".join(module.params['follows'])
         )
         result = dict(
             ovirt_disks=[

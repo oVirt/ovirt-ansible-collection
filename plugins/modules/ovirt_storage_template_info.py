@@ -112,9 +112,15 @@ def main():
 
         # Find the unregistered Template we want to register:
         if module.params.get('unregistered'):
-            templates = templates_service.list(unregistered=True)
+            templates = templates_service.list(
+                unregistered=True,
+                follow=",".join(module.params['follows'])
+            )
         else:
-            templates = templates_service.list(max=module.params['max'])
+            templates = templates_service.list(
+                max=module.params['max'],
+                follow=",".join(module.params['follows'])
+            )
         result = dict(
             ovirt_storage_templates=[
                 get_dict_of_struct(
