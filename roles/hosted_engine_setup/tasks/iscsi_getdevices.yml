@@ -11,6 +11,7 @@
       address: "{{ item.0 }}"
       port: "{{ item.1 }}"
       target: "{{ he_iscsi_target }}"
+      portal: "{{ he_iscsi_tpgt | default(omit) }}"
     auth: "{{ ovirt_auth }}"
   no_log: true
   ignore_errors: true
