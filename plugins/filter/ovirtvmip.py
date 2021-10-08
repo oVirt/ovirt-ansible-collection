@@ -5,6 +5,7 @@ __metaclass__ = type
 
 import socket
 import struct
+from xml.etree import ElementTree
 
 
 class FilterModule(object):
@@ -22,6 +23,7 @@ class FilterModule(object):
             'filtervalue': self.filtervalue,
             'removesensitivevmdata': self.removesensitivevmdata,
             'ovirtdiff': self.ovirtdiff,
+            'get_bridge_xml_to_dict': self.get_bridge_xml_to_dict,
         }
 
     def ovirtdiff(self, vm1, vm2):
@@ -145,3 +147,10 @@ class FilterModule(object):
                 if 'sysprep' in profile and key_to_remove in profile['sysprep']:
                     profile['sysprep'][key_to_remove] = "******"
         return data
+
+    def get_bridge_xml_to_dict(self, data):
+        tree = ElementTree.fromstring(data)
+        for child in tree:
+            if child.tag == 'bridge':
+                return child.attrib
+        return None
