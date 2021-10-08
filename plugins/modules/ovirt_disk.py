@@ -484,7 +484,7 @@ def get_transfer(connection, module, direction):
     return transfer
 
 
-def cancel_transfer(connection, module, transfer):
+def cancel_transfer(connection, transfer):
     transfer_service = (connection.system_service()
                             .image_transfers_service()
                             .image_transfer_service(transfer.id))
@@ -557,9 +557,10 @@ def download_disk_image(connection, module):
             **extra_args
         )
     except:
-        cancel_transfer(connection, module, transfer)
+        cancel_transfer(connection, transfer)
         raise
     finalize_transfer(connection, module, transfer)
+    return True
 
 
 def upload_disk_image(connection, module):
@@ -580,9 +581,10 @@ def upload_disk_image(connection, module):
             **extra_args
         )
     except:
-        cancel_transfer(connection, module, transfer)
+        cancel_transfer(connection, transfer)
         raise
     finalize_transfer(connection, module, transfer)
+    return True
 
 
 class DisksModule(BaseModule):
