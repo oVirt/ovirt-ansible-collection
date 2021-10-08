@@ -365,6 +365,7 @@ import ssl
 import subprocess
 import time
 import traceback
+import inspect
 
 from ansible.module_utils.six.moves.http_client import HTTPSConnection, IncompleteRead
 from ansible.module_utils.six.moves.urllib.parse import urlparse
@@ -534,6 +535,10 @@ def download_disk_image(connection, module):
     transfers_service = connection.system_service().image_transfers_service()
     hosts_service = connection.system_service().hosts_service()
     transfer = get_transfer(connection, module, otypes.ImageTransferDirection.DOWNLOAD)
+    extra_args = {}
+    parameters = inspect.signature(client.download).parameters
+    if "proxy_url" in parameters:
+        extra_args["proxy_url"] = transfer.proxy_url
     client.download(
         transfer.transfer_url,
         module.params.get('download_image_path'),
@@ -541,6 +546,7 @@ def download_disk_image(connection, module):
         fmt='qcow2' if module.params.get('format') == 'cow' else 'raw',
         secure=not module.params.get('auth').get('insecure'),
         buffer_size=client.BUFFER_SIZE,
+        **extra_args
     )
     finalize_transfer(connection, module, transfer)
 
@@ -549,12 +555,17 @@ def upload_disk_image(connection, module):
     transfers_service = connection.system_service().image_transfers_service()
     hosts_service = connection.system_service().hosts_service()
     transfer = get_transfer(connection, module, otypes.ImageTransferDirection.UPLOAD)
+    extra_args = {}
+    parameters = inspect.signature(client.download).parameters
+    if "proxy_url" in parameters:
+        extra_args["proxy_url"] = transfer.proxy_url
     client.upload(
         module.params.get('upload_image_path'),
         transfer.transfer_url,
         module.params.get('auth').get('ca_file'),
         secure=not module.params.get('auth').get('insecure'),
         buffer_size=client.BUFFER_SIZE,
+        **extra_args
     )
     finalize_transfer(connection, module, transfer)
 
