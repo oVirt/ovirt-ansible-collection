@@ -484,6 +484,13 @@ def get_transfer(connection, module, direction):
     return transfer
 
 
+def cancel_transfer(connection, module, transfer):
+    transfer_service = (connection.system_service()
+                            .image_transfers_service()
+                            .image_transfer_service(transfer.id))
+    transfer_service.cancel()
+
+
 def finalize_transfer(connection, module, transfer):
     transfer_service = (connection.system_service()
                             .image_transfers_service()
@@ -535,19 +542,23 @@ def download_disk_image(connection, module):
     transfers_service = connection.system_service().image_transfers_service()
     hosts_service = connection.system_service().hosts_service()
     transfer = get_transfer(connection, module, otypes.ImageTransferDirection.DOWNLOAD)
-    extra_args = {}
-    parameters = inspect.signature(client.download).parameters
-    if "proxy_url" in parameters:
-        extra_args["proxy_url"] = transfer.proxy_url
-    client.download(
-        transfer.transfer_url,
-        module.params.get('download_image_path'),
-        module.params.get('auth').get('ca_file'),
-        fmt='qcow2' if module.params.get('format') == 'cow' else 'raw',
-        secure=not module.params.get('auth').get('insecure'),
-        buffer_size=client.BUFFER_SIZE,
-        **extra_args
-    )
+    try:
+        extra_args = {}
+        parameters = inspect.signature(client.download).parameters
+        if "proxy_url" in parameters:
+            extra_args["proxy_url"] = transfer.proxy_url
+        client.download(
+            transfer.transfer_url,
+            module.params.get('download_image_path'),
+            module.params.get('auth').get('ca_file'),
+            fmt='qcow2' if module.params.get('format') == 'cow' else 'raw',
+            secure=not module.params.get('auth').get('insecure'),
+            buffer_size=client.BUFFER_SIZE,
+            **extra_args
+        )
+    except:
+        cancel_transfer(connection, module, transfer)
+        raise
     finalize_transfer(connection, module, transfer)
 
 
@@ -555,18 +566,22 @@ def upload_disk_image(connection, module):
     transfers_service = connection.system_service().image_transfers_service()
     hosts_service = connection.system_service().hosts_service()
     transfer = get_transfer(connection, module, otypes.ImageTransferDirection.UPLOAD)
-    extra_args = {}
-    parameters = inspect.signature(client.download).parameters
-    if "proxy_url" in parameters:
-        extra_args["proxy_url"] = transfer.proxy_url
-    client.upload(
-        module.params.get('upload_image_path'),
-        transfer.transfer_url,
-        module.params.get('auth').get('ca_file'),
-        secure=not module.params.get('auth').get('insecure'),
-        buffer_size=client.BUFFER_SIZE,
-        **extra_args
-    )
+    try:
+        extra_args = {}
+        parameters = inspect.signature(client.download).parameters
+        if "proxy_url" in parameters:
+            extra_args["proxy_url"] = transfer.proxy_url
+        client.upload(
+            module.params.get('upload_image_path'),
+            transfer.transfer_url,
+            module.params.get('auth').get('ca_file'),
+            secure=not module.params.get('auth').get('insecure'),
+            buffer_size=client.BUFFER_SIZE,
+            **extra_args
+        )
+    except:
+        cancel_transfer(connection, module, transfer)
+        raise
     finalize_transfer(connection, module, transfer)
 
 
