@@ -20,7 +20,7 @@
       enabled: true
   - name: Activate default libvirt network
     command: virsh net-autostart default
-    change_when: false
+    changed_when: false
   - name: Get routing rules, IPv4
     command: ip -j rule
     environment: "{{ he_cmd_lang }}"
