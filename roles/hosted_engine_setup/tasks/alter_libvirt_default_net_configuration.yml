@@ -4,9 +4,9 @@
   changed_when: false
   register: default_net_xml
 
-- name: Set bridge_dict from default_net_xml
+- name: Set network_dict from default_net_xml
   set_fact:
-    bridge_dict: "{{ default_net_xml['stdout'] | ovirt.ovirt.get_bridge_xml_to_dict }}"
+    network_dict: "{{ default_net_xml['stdout'] | ovirt.ovirt.get_network_xml_to_dict }}"
 
 - name: Create he-network-config.xml from network-config.j2 template
   template:

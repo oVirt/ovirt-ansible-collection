@@ -23,7 +23,7 @@ class FilterModule(object):
             'filtervalue': self.filtervalue,
             'removesensitivevmdata': self.removesensitivevmdata,
             'ovirtdiff': self.ovirtdiff,
-            'get_bridge_xml_to_dict': self.get_bridge_xml_to_dict,
+            'get_network_xml_to_dict': self.get_network_xml_to_dict,
         }
 
     def ovirtdiff(self, vm1, vm2):
@@ -148,9 +148,12 @@ class FilterModule(object):
                     profile['sysprep'][key_to_remove] = "******"
         return data
 
-    def get_bridge_xml_to_dict(self, data):
+    def get_network_xml_to_dict(self, data):
         tree = ElementTree.fromstring(data)
+        resp = {}
         for child in tree:
             if child.tag == 'bridge':
-                return child.attrib
-        return None
+                resp['bridge'] = child.attrib
+            if child.tag == 'uuid':
+                resp['uuid'] = child.text
+        return resp
