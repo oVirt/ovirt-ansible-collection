@@ -6,7 +6,6 @@
       <port start='1024' end='65535'/>
     </nat>
   </forward>
-  <mac address='52:54:00:78:d7:dc'/>
   <bridge name='{{ network_dict['bridge']['name'] }}' stp='{{ network_dict['bridge']['stp'] }}' delay='{{ network_dict['bridge']['delay'] }}'/>
 {% if he_ipv6_subnet_prefix is defined %}
   <ip family='ipv6' address='{{ he_ipv6_subnet_prefix + '::1' }}' prefix='64'>
