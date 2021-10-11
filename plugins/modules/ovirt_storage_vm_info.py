@@ -91,7 +91,7 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
 
 def main():
     argument_spec = ovirt_info_full_argument_spec(
-        storage_domain=dict(default=None, required=True),
+        storage_domain=dict(type='str', required=True),
         max=dict(default=None, type='int'),
         unregistered=dict(default=False, type='bool'),
     )
