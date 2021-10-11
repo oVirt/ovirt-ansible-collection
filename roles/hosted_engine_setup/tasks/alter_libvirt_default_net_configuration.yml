@@ -1,6 +1,7 @@
 ---
 - name: Parse libvirt default network configuration
   command: virsh net-dumpxml default
+  changed_when: false
   register: default_net_xml
 
 - set_fact:
@@ -12,13 +13,17 @@
 
 - name: Update libvirt default network configuration, destroy
   command: virsh net-destroy default
+  changed_when: false
 
 - name: Update libvirt default network configuration, undefine
   command: virsh net-undefine default
   ignore_errors: true
+  changed_when: false
 
 - name: Update libvirt default network configuration, define
   command: virsh net-define --file /tmp/he-network-config.xml
+  changed_when: false
 
 - name: Activate default libvirt network
   command: virsh net-start default
+  changed_when: false
