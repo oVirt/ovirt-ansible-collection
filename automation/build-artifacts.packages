@@ -5,3 +5,4 @@ python3-pycodestyle
 python3-pylint
 yamllint
 glibc-langpack-en
+ovirt-imageio-client
