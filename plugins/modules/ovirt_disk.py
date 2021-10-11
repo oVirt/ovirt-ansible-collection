@@ -370,6 +370,7 @@ import inspect
 from ansible.module_utils.six.moves.http_client import HTTPSConnection, IncompleteRead
 from ansible.module_utils.six.moves.urllib.parse import urlparse
 try:
+    import ovirtsdk4 as sdk
     import ovirtsdk4.types as otypes
 except ImportError:
     pass
@@ -427,10 +428,10 @@ def get_transfer(connection, module, direction):
     hosts_service = connection.system_service().hosts_service()
     transfer = transfers_service.add(
         otypes.ImageTransfer(
-            disk = otypes.Disk(id=module.params.get('id')),
-            direction = direction,
-            timeout_policy = otypes.ImageTransferTimeoutPolicy.LEGACY,
-            host = otypes.Host(
+            disk=otypes.Disk(id=module.params.get('id')),
+            direction=direction,
+            timeout_policy=otypes.ImageTransferTimeoutPolicy.LEGACY,
+            host=otypes.Host(
                 id=get_id_by_name(hosts_service, module.params.get('host'))
             ) if module.params.get('host') else None,
             # format=raw uses the NBD backend, enabling:
@@ -486,15 +487,15 @@ def get_transfer(connection, module, direction):
 
 def cancel_transfer(connection, transfer):
     transfer_service = (connection.system_service()
-                            .image_transfers_service()
-                            .image_transfer_service(transfer.id))
+                        .image_transfers_service()
+                        .image_transfer_service(transfer.id))
     transfer_service.cancel()
 
 
 def finalize_transfer(connection, module, transfer):
     transfer_service = (connection.system_service()
-                            .image_transfers_service()
-                            .image_transfer_service(transfer.id))
+                        .image_transfers_service()
+                        .image_transfer_service(transfer.id))
     start = time.time()
 
     transfer_service.finalize()
@@ -556,9 +557,9 @@ def download_disk_image(connection, module):
             buffer_size=client.BUFFER_SIZE,
             **extra_args
         )
-    except:
+    except Exception as e:
         cancel_transfer(connection, transfer)
-        raise
+        raise e
     finalize_transfer(connection, module, transfer)
     return True
 
@@ -580,9 +581,9 @@ def upload_disk_image(connection, module):
             buffer_size=client.BUFFER_SIZE,
             **extra_args
         )
-    except:
+    except Exception as e:
         cancel_transfer(connection, transfer)
-        raise
+        raise e
     finalize_transfer(connection, module, transfer)
     return True
 
