@@ -111,7 +111,7 @@ def main():
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
-            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
+            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follows' parameter",
             version='2.0.0',
             collection_name='ovirt.ovirt'
         )
@@ -121,7 +121,9 @@ def main():
         connection = create_connection(auth)
         tags_service = connection.system_service().tags_service()
         tags = []
-        all_tags = tags_service.list()
+        all_tags = tags_service.list(
+            follow=",".join(module.params['follows'])
+        )
         if module.params['name']:
             tags.extend([
                 t for t in all_tags
@@ -132,13 +134,17 @@ def main():
             host = search_by_name(hosts_service, module.params['host'])
             if host is None:
                 raise Exception("Host '%s' was not found." % module.params['host'])
-            tags.extend(hosts_service.host_service(host.id).tags_service().list())
+            tags.extend(hosts_service.host_service(host.id).tags_service().list(
+                follow=",".join(module.params['follows'])
+            ))
         if module.params['vm']:
             vms_service = connection.system_service().vms_service()
             vm = search_by_name(vms_service, module.params['vm'])
             if vm is None:
                 raise Exception("Vm '%s' was not found." % module.params['vm'])
-            tags.extend(vms_service.vm_service(vm.id).tags_service().list())
+            tags.extend(vms_service.vm_service(vm.id).tags_service().list(
+                follow=",".join(module.params['follows'])
+            ))
 
         if not (module.params['vm'] or module.params['host'] or module.params['name']):
             tags = all_tags
