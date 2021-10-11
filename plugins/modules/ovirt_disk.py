@@ -454,16 +454,16 @@ def get_transfer(connection, module, direction):
             transfer = transfer_service.get()
         except sdk.NotFoundError:
             # The system has removed the disk and the transfer.
-            raise RuntimeError("Transfer {} was removed".format(transfer.id))
+            raise RuntimeError("Transfer {0} was removed".format(transfer.id))
 
         if transfer.phase == otypes.ImageTransferPhase.FINISHED_FAILURE:
             # The system will remove the disk and the transfer soon.
-            raise RuntimeError("Transfer {} has failed".format(transfer.id))
+            raise RuntimeError("Transfer {0} has failed".format(transfer.id))
 
         if transfer.phase == otypes.ImageTransferPhase.PAUSED_SYSTEM:
             transfer_service.cancel()
             raise RuntimeError(
-                "Transfer {} was paused by system".format(transfer.id))
+                "Transfer {0} was paused by system".format(transfer.id))
 
         if transfer.phase == otypes.ImageTransferPhase.TRANSFERRING:
             break
@@ -471,13 +471,13 @@ def get_transfer(connection, module, direction):
         if transfer.phase != otypes.ImageTransferPhase.INITIALIZING:
             transfer_service.cancel()
             raise RuntimeError(
-                "Unexpected transfer {} phase {}"
+                "Unexpected transfer {0} phase {1}"
                 .format(transfer.id, transfer.phase))
 
         if time.time() > start + module.params.get('timeout'):
             transfer_service.cancel()
             raise RuntimeError(
-                "Timed out waiting for transfer {}".format(transfer.id))
+                "Timed out waiting for transfer {0}".format(transfer.id))
 
     hosts_service = connection.system_service().hosts_service()
     host_service = hosts_service.host_service(transfer.host.id)
@@ -515,14 +515,14 @@ def finalize_transfer(connection, module, transfer):
             except sdk.NotFoundError:
                 # Disk verification failed and the system removed the disk.
                 raise RuntimeError(
-                    "Transfer {} failed: disk {} was removed"
+                    "Transfer {0} failed: disk {1} was removed"
                     .format(transfer.id, module.params['id']))
 
             if disk.status == otypes.DiskStatus.OK:
                 break
 
             raise RuntimeError(
-                "Transfer {} failed: disk {} is '{}'"
+                "Transfer {0} failed: disk {1} is '{2}'"
                 .format(transfer.id, module.params['id'], disk.status))
 
         if transfer.phase == otypes.ImageTransferPhase.FINISHED_SUCCESS:
@@ -530,12 +530,12 @@ def finalize_transfer(connection, module, transfer):
 
         if transfer.phase == otypes.ImageTransferPhase.FINISHED_FAILURE:
             raise RuntimeError(
-                "Transfer {} failed, phase: {}"
+                "Transfer {0} failed, phase: {1}"
                 .format(transfer.id, transfer.phase))
 
         if time.time() > start + module.params.get('timeout'):
             raise RuntimeError(
-                "Timed out waiting for transfer {} to finalize, phase: {}"
+                "Timed out waiting for transfer {0} to finalize, phase: {1}"
                 .format(transfer.id, transfer.phase))
 
 
