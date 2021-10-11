@@ -115,7 +115,8 @@ def main():
         hosts_service = connection.system_service().hosts_service()
         hosts = hosts_service.list(
             search=module.params['pattern'],
-            all_content=module.params['all_content']
+            all_content=module.params['all_content'],
+            follow=",".join(module.params['follows'])
         )
         cluster_version = module.params.get('cluster_version')
         if cluster_version is not None:

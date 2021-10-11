@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - info modules - Enable follow parameter (https://github.com/oVirt/ovirt-ansible-collection/pull/355).

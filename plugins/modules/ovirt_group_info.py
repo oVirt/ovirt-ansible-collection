@@ -84,7 +84,7 @@ def main():
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
-            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
+            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follows' parameter",
             version='2.0.0',
             collection_name='ovirt.ovirt'
         )
@@ -93,7 +93,10 @@ def main():
         auth = module.params.pop('auth')
         connection = create_connection(auth)
         groups_service = connection.system_service().groups_service()
-        groups = groups_service.list(search=module.params['pattern'])
+        groups = groups_service.list(
+            search=module.params['pattern'],
+            follow=",".join(module.params['follows'])
+        )
         result = dict(
             ovirt_groups=[
                 get_dict_of_struct(

@@ -118,7 +118,7 @@ def main():
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
-            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
+            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follows' parameter",
             version='2.0.0',
             collection_name='ovirt.ovirt'
         )
@@ -132,11 +132,11 @@ def main():
         )
         if module.params['name']:
             external_providers = [
-                e for e in external_providers_service.list()
+                e for e in external_providers_service.list(follow=",".join(module.params['follows']))
                 if fnmatch.fnmatch(e.name, module.params['name'])
             ]
         else:
-            external_providers = external_providers_service.list()
+            external_providers = external_providers_service.list(follow=",".join(module.params['follows']))
 
         result = dict(
             ovirt_external_providers=[
