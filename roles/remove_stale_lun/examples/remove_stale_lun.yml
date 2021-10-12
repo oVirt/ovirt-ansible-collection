@@ -17,7 +17,7 @@
     engine_user: admin@internal
 
     data_center: default
-    lun_wwid: 36001405a77a1ee25cbf4439b7ddd2062
+    lun_wwid: 36001405a77a1ee25cbf4439b7ddd2062 36001405ddefe8392bb8443e89bde4b40
 
   roles:
     - remove_stale_lun

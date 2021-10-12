@@ -1,5 +1,5 @@
-- name: Get underlying disks (paths) for a multipath device and turn them into a list.
-  ansible.builtin.shell: dmsetup deps -o devname "{{ lun_wwid }}" | cut -f 2 |cut -c 3- |tr -d "()"
+- name: Get underlying disks (paths) for a multipath device(s) and turn them into a list.
+  ansible.builtin.shell: 'for dev in {{ lun_wwid }}; do dmsetup deps -o devname $dev | cut -f 2 |cut -c 3- |tr -d "()"|tr "\r\n" " "; done'
   register: disks
   delegate_to: "{{ host_item.address }}"
   connection: ssh
@@ -10,7 +10,7 @@
     loop_var: host_item
 
 - name: Remove from multipath device.
-  ansible.builtin.shell: multipath -f "{{ lun_wwid }}"
+  ansible.builtin.shell: "for dev in {{ lun_wwid }}; do multipath -f $dev; done"
   delegate_to: "{{ host_item.address }}"
   connection: ssh
   check_mode: "no"
