@@ -11,7 +11,7 @@ Role Variables
 | Name                    | Default value         |                                                     |
 |-------------------------|-----------------------|-----------------------------------------------------|
 | data_center             | Default               | Name of the data center from which hosts stale LUN should be removed. |
-| lun_wwid                | UNDEF                 | WWID of the stale LUN which should be removed from the hosts. |
+| lun_wwid                | UNDEF                 | WWID of the stale LUN(s) which should be removed from the hosts. Separate multiple LUNs with spaces. |
 
 
 Example Playbook
@@ -37,7 +37,7 @@ Example Playbook
     engine_user: admin@internal
 
     data_center: default
-    lun_wwid: 36001405a77a1ee25cbf4439b7ddd2062
+    lun_wwid: 36001405a77a1ee25cbf4439b7ddd2062 36001405ddefe8392bb8443e89bde4b40
 
   roles:
     - remove_stale_lun
