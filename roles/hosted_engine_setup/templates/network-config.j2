@@ -7,7 +7,7 @@
     </nat>
   </forward>
   <bridge name='{{ network_dict['bridge']['name'] }}' stp='{{ network_dict['bridge']['stp'] }}' delay='{{ network_dict['bridge']['delay'] }}'/>
-{% if not he_force_ip4 he_ipv6_subnet_prefix is defined %}
+{% if not he_force_ip4 and he_ipv6_subnet_prefix is defined %}
   <ip family='ipv6' address='{{ he_ipv6_subnet_prefix + '::1' }}' prefix='64'>
     <dhcp>
       <range start='{{ he_ipv6_subnet_prefix + '::10' }}' end='{{ he_ipv6_subnet_prefix + '::ff' }}'/>
