@@ -508,8 +508,8 @@ def finalize_transfer(connection, module, transfer):
             # the database, we can assume that the disk status is already
             # updated, so we can check it only once.
             disk_service = (connection.system_service()
-                                .disks_service()
-                                .disk_service(module.params['id']))
+                            .disks_service()
+                            .disk_service(module.params['id']))
             try:
                 disk = disk_service.get()
             except sdk.NotFoundError:
