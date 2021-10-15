@@ -867,7 +867,7 @@ def main():
             disk = _search_by_lun(disks_service, lun.get('id'))
         else:
             disk = disks_module.search_entity(search_params=searchable_attributes(module))
-            if vm_service and disk:
+            if vm_service and disk and state != 'attached':
                 # If the VM don't exist in VMs disks, but still it's found it means it was found
                 # for template with same name as VM, so we should force create the VM disk.
                 force_create = disk.id not in [a.disk.id for a in vm_service.disk_attachments_service().list() if a.disk]
