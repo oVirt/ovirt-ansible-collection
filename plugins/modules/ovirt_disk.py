@@ -767,7 +767,7 @@ def searchable_attributes(module):
     attributes = {
         'name': module.params.get('name'),
         'Storage.name': module.params.get('storage_domain'),
-        'vm_names': module.params.get('vm_name'),
+        'vm_names': module.params.get('vm_name') if module.params.get('state') != 'attached' else None,
     }
     return dict((k, v) for k, v in attributes.items() if v is not None)
 
