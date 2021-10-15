@@ -237,6 +237,11 @@ options:
             - Defines whether SCSI reservation is enabled for this disk.
         type: bool
         version_added: 1.2.0
+    max_workers:
+        description:
+            - Use multiple workers to speed up the upload.
+        type: bool
+        version_added: 1.7.0
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
@@ -423,7 +428,7 @@ def create_transfer_connection(module, transfer, context, connect_timeout=10, re
     return connection, url
 
 
-def get_transfer(connection, module, direction):
+def start_transfer(connection, module, direction):
     transfers_service = connection.system_service().image_transfers_service()
     hosts_service = connection.system_service().hosts_service()
     transfer = transfers_service.add(
@@ -459,6 +464,10 @@ def get_transfer(connection, module, direction):
         if transfer.phase == otypes.ImageTransferPhase.FINISHED_FAILURE:
             # The system will remove the disk and the transfer soon.
             raise RuntimeError("Transfer {0} has failed".format(transfer.id))
+
+        if transfer.phase == otypes.ImageTransferPhase.CANCELLED_SYSTEM:
+            # The system will remove the disk and the transfer soon.
+            raise RuntimeError("Transfer {0} was cancelled by system".format(transfer.id))
 
         if transfer.phase == otypes.ImageTransferPhase.PAUSED_SYSTEM:
             transfer_service.cancel()
@@ -542,12 +551,14 @@ def finalize_transfer(connection, module, transfer):
 def download_disk_image(connection, module):
     transfers_service = connection.system_service().image_transfers_service()
     hosts_service = connection.system_service().hosts_service()
-    transfer = get_transfer(connection, module, otypes.ImageTransferDirection.DOWNLOAD)
+    transfer = start_transfer(connection, module, otypes.ImageTransferDirection.DOWNLOAD)
     try:
         extra_args = {}
         parameters = inspect.signature(client.download).parameters
         if "proxy_url" in parameters:
             extra_args["proxy_url"] = transfer.proxy_url
+        if module.params.get('max_workers') and "max_workers" in parameters:
+            extra_args["max_workers"] = module.params.get('max_workers')
         client.download(
             transfer.transfer_url,
             module.params.get('download_image_path'),
@@ -567,7 +578,7 @@ def download_disk_image(connection, module):
 def upload_disk_image(connection, module):
     transfers_service = connection.system_service().image_transfers_service()
     hosts_service = connection.system_service().hosts_service()
-    transfer = get_transfer(connection, module, otypes.ImageTransferDirection.UPLOAD)
+    transfer = start_transfer(connection, module, otypes.ImageTransferDirection.UPLOAD)
     try:
         extra_args = {}
         parameters = inspect.signature(client.download).parameters
@@ -813,6 +824,7 @@ def main():
         host=dict(default=None),
         wipe_after_delete=dict(type='bool', default=None),
         activate=dict(default=None, type='bool'),
+        max_workers=dict(default=None, type='int'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
