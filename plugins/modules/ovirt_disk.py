@@ -240,7 +240,7 @@ options:
     max_workers:
         description:
             - Use multiple workers to speed up the upload.
-        type: bool
+        type: int
         version_added: 1.7.0
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
