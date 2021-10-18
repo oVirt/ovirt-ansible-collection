@@ -377,6 +377,7 @@ from ansible.module_utils.six.moves.urllib.parse import urlparse
 try:
     import ovirtsdk4 as sdk
     import ovirtsdk4.types as otypes
+    from ovirt_imageio import client
 except ImportError:
     pass
 from ansible.module_utils.basic import AnsibleModule
@@ -394,7 +395,6 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     search_by_name,
     wait,
 )
-from ovirt_imageio import client
 
 
 def _search_by_lun(disks_service, lun_id):
