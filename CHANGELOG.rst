@@ -5,6 +5,14 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.6.5
+======
+
+Minor Changes
+-------------
+
+- repositories - Update host and engine repositories to 4.4.9 (https://github.com/oVirt/ovirt-ansible-collection/pull/363).
+
 v1.6.4
 ======
 
