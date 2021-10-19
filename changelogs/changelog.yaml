@@ -551,3 +551,10 @@ releases:
     fragments:
     - 350-repositories-add-no_log-to-register.yml
     release_date: '2021-09-27'
+  1.6.5:
+    changes:
+      minor_changes:
+      - repositories - Update host and engine repositories to 4.4.9 (https://github.com/oVirt/ovirt-ansible-collection/pull/363).
+    fragments:
+    - 363-repositories-update-to-4.4.9.yml
+    release_date: '2021-10-19'
