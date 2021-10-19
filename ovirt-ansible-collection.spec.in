@@ -68,7 +68,7 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
-* Mon Oct 19 2021 Martin Necas <mnecas@redhat.com> - 1.6.5-1
+* Tue Oct 19 2021 Martin Necas <mnecas@redhat.com> - 1.6.5-1
 - repositories - Update host and engine repositories to 4.4.9
 
 * Mon Sep 27 2021 Martin Necas <mnecas@redhat.com> - 1.6.4-1
