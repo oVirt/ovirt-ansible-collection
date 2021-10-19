@@ -88,7 +88,7 @@ def main():
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
-            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follows' parameter",
+            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
             version='2.0.0',
             collection_name='ovirt.ovirt'
         )
@@ -99,7 +99,7 @@ def main():
         storage_domains_service = connection.system_service().storage_domains_service()
         storage_domains = storage_domains_service.list(
             search=module.params['pattern'],
-            follow=",".join(module.params['follows'])
+            follow=",".join(module.params['follow'])
         )
         result = dict(
             ovirt_storage_domains=[

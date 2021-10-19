@@ -133,7 +133,7 @@ def main():
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
-            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follows' parameter",
+            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
             version='2.0.0',
             collection_name='ovirt.ovirt'
         )
@@ -143,7 +143,7 @@ def main():
         connection = create_connection(auth)
         permissions_service = _permissions_service(connection, module)
         permissions = []
-        for p in permissions_service.list(follow=",".join(module.params['follows'])):
+        for p in permissions_service.list(follow=",".join(module.params['follow'])):
             newperm = dict()
             for key, value in p.__dict__.items():
                 if value and isinstance(value, sdk.Struct):

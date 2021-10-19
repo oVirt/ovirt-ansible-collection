@@ -99,7 +99,7 @@ def main():
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
-            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follows' parameter",
+            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
             version='2.0.0',
             collection_name='ovirt.ovirt'
         )
@@ -114,9 +114,9 @@ def main():
 
         # Find the unregistered VM we want to register:
         if module.params.get('unregistered'):
-            vms = vms_service.list(unregistered=True, follow=",".join(module.params['follows']))
+            vms = vms_service.list(unregistered=True, follow=",".join(module.params['follow']))
         else:
-            vms = vms_service.list(follow=",".join(module.params['follows']))
+            vms = vms_service.list(follow=",".join(module.params['follow']))
         result = dict(
             ovirt_storage_vms=[
                 get_dict_of_struct(
