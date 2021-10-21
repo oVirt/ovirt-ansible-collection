@@ -50,6 +50,10 @@ options:
             - "The event ID in the oVirt/RHV audit_log table. This ID is not the same as custom_id and is only used when state is absent."
             - "Required when state is absent."
         type: str
+    correlation_id:
+        description:
+            - "The event correlation identifier."
+        type: str
     cluster:
         description:
             - "The id of the cluster associated with this event."
@@ -149,6 +153,7 @@ class EventsModule(BaseModule):
             origin=self._module.params['origin'],
             custom_id=self._module.params['custom_id'],
             id=self._module.params['id'],
+            correlation_id=self._module.params['correlation_id'] if self._module.params['correlation_id'] is not None else None,
             cluster=otypes.Cluster(
                 id=self._module.params['cluster']
             ) if self._module.params['cluster'] is not None else None,
@@ -187,6 +192,7 @@ def main():
         origin=dict(default=None),
         custom_id=dict(default=None, type='int'),
         id=dict(default=None),
+        correlation_id=dict(default=None),
         cluster=dict(default=None),
         data_center=dict(default=None),
         host=dict(default=None),
