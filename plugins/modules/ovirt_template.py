@@ -635,7 +635,7 @@ class TemplatesModule(BaseModule):
         named_templates = [t for t in templates if t.name == self.param('name')]
         if not named_templates:
             return None
-        base_template = min(named_templates, key= lambda x: x.version.version_number)
+        base_template = min(named_templates, key=lambda x: x.version.version_number)
         return otypes.Template(
             id=base_template.id
         )
