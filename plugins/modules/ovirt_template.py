@@ -627,12 +627,18 @@ class TemplatesModule(BaseModule):
         )
 
     def _get_base_template(self):
+        # The base template is the template with the lowest version_number.
+        # Not necessarily version 1
         templates = self._connection.system_service().templates_service().list()
-        for template in templates:
-            if template.version.version_number == 1 and template.name == self.param('name'):
-                return otypes.Template(
-                    id=template.id
-                )
+        if not templates:
+            return None
+        named_templates = [t for t in templates if t.name == self.param('name')]
+        if not named_templates:
+            return None
+        base_template = min(named_templates, key= lambda x: x.version.version_number)
+        return otypes.Template(
+            id=base_template.id
+        )
 
     def post_update(self, entity):
         self.post_present(entity.id)
