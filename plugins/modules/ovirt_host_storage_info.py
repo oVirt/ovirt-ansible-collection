@@ -136,7 +136,7 @@ def main():
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
-            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follows' parameter",
+            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
             version='2.0.0',
             collection_name='ovirt.ovirt'
         )
@@ -155,7 +155,7 @@ def main():
             _login(host_service, module.params.get('iscsi'))
 
         # Get LUNs exposed from the specified target
-        host_storages = host_service.storage_service().list(follow=",".join(module.params['follows']))
+        host_storages = host_service.storage_service().list(follow=",".join(module.params['follow']))
         if module.params.get('iscsi') is not None:
             host_storages = list(filter(lambda x: x.type == otypes.StorageType.ISCSI, host_storages))
             if 'target' in module.params.get('iscsi'):

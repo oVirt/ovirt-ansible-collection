@@ -120,7 +120,7 @@ def main():
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
-            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follows' parameter",
+            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
             version='2.0.0',
             collection_name='ovirt.ovirt'
         )
@@ -130,7 +130,7 @@ def main():
         connection = create_connection(auth)
         affinity_labels_service = connection.system_service().affinity_labels_service()
         labels = []
-        all_labels = affinity_labels_service.list(follow=",".join(module.params['follows']))
+        all_labels = affinity_labels_service.list(follow=",".join(module.params['follow']))
         if module.params['name']:
             labels.extend([
                 l for l in all_labels
