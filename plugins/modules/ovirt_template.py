@@ -632,7 +632,8 @@ class TemplatesModule(BaseModule):
         templates = self._connection.system_service().templates_service().list()
         if not templates:
             return None
-        named_templates = [t for t in templates if t.name == self.param('name')]
+        template_name = self.param('name')
+        named_templates = [t for t in templates if t.name == template_name]
         if not named_templates:
             return None
         base_template = min(named_templates, key=lambda x: x.version.version_number)
