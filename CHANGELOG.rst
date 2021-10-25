@@ -5,14 +5,6 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
-v1.7.0
-======
-
-Bugfixes
---------
-
-- ovirt_template - Fix creating templates where the base template version number is not 1 (https://github.com/oVirt/ovirt-ansible-collection/pull/370).
-
 v1.6.2
 ======
 
