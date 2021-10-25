@@ -116,7 +116,7 @@ def main():
         hosts = hosts_service.list(
             search=module.params['pattern'],
             all_content=module.params['all_content'],
-            follow=",".join(module.params['follows'])
+            follow=",".join(module.params['follow'])
         )
         cluster_version = module.params.get('cluster_version')
         if cluster_version is not None:
