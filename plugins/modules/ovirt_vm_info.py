@@ -98,7 +98,7 @@ EXAMPLES = '''
 # Gather info about VMs original template with follow parameter
 - @NAMESPACE@.@NAME@.ovirt_vm_info:
     pattern: name=myvm
-    follows: ['original_template.permissions', 'original_template.nics.vnic_profile']
+    follow: ['original_template.permissions', 'original_template.nics.vnic_profile']
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_vms[0] }}"
@@ -162,7 +162,7 @@ def main():
                     connection=connection,
                     fetch_nested=module.params.get('fetch_nested'),
                     attributes=module.params.get('nested_attributes'),
-                    follows=module.params.get('follow'),
+                    follow=module.params.get('follow'),
                 ) for c in vms
             ],
         )
