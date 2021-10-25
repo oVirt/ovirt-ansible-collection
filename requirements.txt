@@ -1,1 +1,2 @@
 ovirt-engine-sdk-python>=4.4.11
+ovirt-imageio
