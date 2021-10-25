@@ -239,7 +239,8 @@ options:
         version_added: 1.2.0
     max_workers:
         description:
-            - Use multiple workers to speed up the upload.
+            - The number of workers which should be used in the upload/download of the image.
+            - The use of multiple workers can speed up the process.
         type: int
         version_added: 1.7.0
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
