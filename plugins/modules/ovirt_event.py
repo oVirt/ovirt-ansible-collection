@@ -47,12 +47,14 @@ options:
         type: int
     id:
         description:
-            - "The event ID in the oVirt/RHV audit_log table. This ID is not the same as custom_id and is only used when state is absent."
+            - "The event ID in the oVirt/RHV audit_log table. This ID is not the same as
+              custom_id and is only used when state is absent."
             - "Required when state is absent."
         type: str
     correlation_id:
         description:
-            - "The event correlation identifier."
+            - "The event correlation identifier. If not specified, the 'correlation-id' in the
+              connection header will be used. If neither are available, it is not set."
         type: str
     cluster:
         description:
@@ -147,13 +149,19 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
 class EventsModule(BaseModule):
 
     def build_entity(self):
+        correlation_id = None
+        if self._module.params['correlation_id'] is not None:
+            correlation_id = self._module.params['correlation_id']
+        elif self._connection._headers.get('correlation-id') is not None:
+            correlation_id = self._connection._headers.get('correlation-id')
+
         return otypes.Event(
             description=self._module.params['description'],
             severity=otypes.LogSeverity(self._module.params['severity']),
             origin=self._module.params['origin'],
             custom_id=self._module.params['custom_id'],
             id=self._module.params['id'],
-            correlation_id=self._module.params['correlation_id'] if self._module.params['correlation_id'] is not None else None,
+            correlation_id=correlation_id,
             cluster=otypes.Cluster(
                 id=self._module.params['cluster']
             ) if self._module.params['cluster'] is not None else None,
