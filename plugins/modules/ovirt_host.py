@@ -542,7 +542,7 @@ def main():
                 activate=module.params['activate'],
                 reboot=module.params.get('reboot_after_installation'),
                 result_state=(hoststate.MAINTENANCE if module.params['activate'] is False else hoststate.UP) if host is None else None,
-                fail_condition=hosts_module.failed_state_after_reinstall if host is None else lambda h: False,
+                fail_condition=hosts_module.failed_state_after_reinstall if host is not None else lambda h: False,
             )
             if module.params['activate'] and host is not None:
                 ret = hosts_module.action(
