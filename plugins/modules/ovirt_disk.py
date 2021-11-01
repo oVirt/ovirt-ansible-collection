@@ -466,10 +466,6 @@ def start_transfer(connection, module, direction):
             # The system will remove the disk and the transfer soon.
             raise RuntimeError("Transfer {0} has failed".format(transfer.id))
 
-        if transfer.phase == otypes.ImageTransferPhase.CANCELLED_SYSTEM:
-            # The system will remove the disk and the transfer soon.
-            raise RuntimeError("Transfer {0} was cancelled by system".format(transfer.id))
-
         if transfer.phase == otypes.ImageTransferPhase.PAUSED_SYSTEM:
             transfer_service.cancel()
             raise RuntimeError(
@@ -495,17 +491,17 @@ def start_transfer(connection, module, direction):
     return transfer
 
 
-def cancel_transfer(connection, transfer):
+def cancel_transfer(connection, transfer_id):
     transfer_service = (connection.system_service()
                         .image_transfers_service()
-                        .image_transfer_service(transfer.id))
+                        .image_transfer_service(transfer_id))
     transfer_service.cancel()
 
 
-def finalize_transfer(connection, module, transfer):
+def finalize_transfer(connection, module, transfer_id):
     transfer_service = (connection.system_service()
                         .image_transfers_service()
-                        .image_transfer_service(transfer.id))
+                        .image_transfer_service(transfer_id))
     start = time.time()
 
     transfer_service.finalize()
@@ -570,9 +566,9 @@ def download_disk_image(connection, module):
             **extra_args
         )
     except Exception as e:
-        cancel_transfer(connection, transfer)
+        cancel_transfer(connection, transfer.id)
         raise e
-    finalize_transfer(connection, module, transfer)
+    finalize_transfer(connection, module, transfer.id)
     return True
 
 
@@ -582,9 +578,11 @@ def upload_disk_image(connection, module):
     transfer = start_transfer(connection, module, otypes.ImageTransferDirection.UPLOAD)
     try:
         extra_args = {}
-        parameters = inspect.signature(client.download).parameters
+        parameters = inspect.signature(client.upload).parameters
         if "proxy_url" in parameters:
             extra_args["proxy_url"] = transfer.proxy_url
+        if module.params.get('max_workers') and "max_workers" in parameters:
+            extra_args["max_workers"] = module.params.get('max_workers')
         client.upload(
             module.params.get('upload_image_path'),
             transfer.transfer_url,
@@ -594,9 +592,9 @@ def upload_disk_image(connection, module):
             **extra_args
         )
     except Exception as e:
-        cancel_transfer(connection, transfer)
+        cancel_transfer(connection, transfer.id)
         raise e
-    finalize_transfer(connection, module, transfer)
+    finalize_transfer(connection, module, transfer.id)
     return True
 
 
