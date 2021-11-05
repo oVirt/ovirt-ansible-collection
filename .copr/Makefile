@@ -1,6 +1,9 @@
-.PHONY: srpm
+.PHONY: installdeps srpm
 
-srpm:
+installdeps:
+	dnf -y install git python3-devel
+
+srpm: installdeps
 	mkdir -p tmp.repos/SOURCES tmp.build
 	./build.sh build ovirt tmp.build
 	cp tmp.build/ansible_collections/ovirt/ovirt/*.tar.gz ./tmp.repos/SOURCES/
