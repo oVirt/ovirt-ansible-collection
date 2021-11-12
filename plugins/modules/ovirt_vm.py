@@ -914,6 +914,14 @@ options:
             - "If `true`, each virtual interface will get the optimal number of queues, depending on the available virtual Cpus."
         type: bool
         version_added: 1.7.0
+    virtio_scsi_multi_queues:
+        description:
+            - "Number of queues for a Virtio-SCSI controller, possible values:
+              -1 - Indicates that the queues will be automatically set.
+               0 - Indicates that the Virtio SCSI multi-queue will be disabled.
+              >0 - Number of Virtio SCSI queues to use by virtual machine."
+        type: int
+        version_added: 1.7.0
 
 notes:
     - If VM is in I(UNASSIGNED) or I(UNKNOWN) state before any operation, the module will fail.
@@ -1577,6 +1585,7 @@ class VmsModule(BaseModule):
                 enabled=self.param('virtio_scsi_enabled'),
             ) if self.param('virtio_scsi_enabled') is not None else None,
             multi_queues_enabled=self.param('multi_queues_enabled'),
+            virtio_scsi_multi_queues=self.param('virtio_scsi_multi_queues'),
             os=otypes.OperatingSystem(
                 type=self.param('operating_system'),
                 boot=otypes.Boot(
@@ -1776,6 +1785,7 @@ class VmsModule(BaseModule):
             equal(self.param('numa_tune_mode'), str(entity.numa_tune_mode)) and
             equal(self.param('virtio_scsi_enabled'), entity.virtio_scsi.enabled) and
             equal(self.param('multi_queues_enabled'), entity.multi_queues_enabled) and
+            equal(self.param('virtio_scsi_multi_queues'), entity.virtio_scsi_multi_queues) and
             equal(self.param('rng_device'), str(entity.rng_device.source) if entity.rng_device else None) and
             equal(provided_vm_display.get('monitors'), getattr(vm_display, 'monitors', None)) and
             equal(provided_vm_display.get('copy_paste_enabled'), getattr(vm_display, 'copy_paste_enabled', None)) and
@@ -2615,6 +2625,7 @@ def main():
         next_run=dict(type='bool'),
         virtio_scsi_enabled=dict(type='bool'),
         multi_queues_enabled=dict(type='bool'),
+        virtio_scsi_multi_queues=dict(type='int'),
         snapshot_name=dict(type='str'),
         snapshot_vm=dict(type='str'),
     )
