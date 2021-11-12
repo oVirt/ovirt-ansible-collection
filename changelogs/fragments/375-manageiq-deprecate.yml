@@ -1,3 +1,3 @@
 ---
 major_changes:
-  - manageiq - role deprecated (https://github.com/oVirt/ovirt-ansible-collection/pull/375).
+  - manageiq - role removed (https://github.com/oVirt/ovirt-ansible-collection/pull/375).
