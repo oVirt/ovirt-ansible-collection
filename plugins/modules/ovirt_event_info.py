@@ -118,8 +118,13 @@ def main():
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
+<<<<<<< HEAD
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follows' parameter",
             version='2.0.0',
+=======
+            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
+            version='3.0.0',
+>>>>>>> b51a679c... info: bump deprecate version for fetch_nested and nested_attributes (#378)
             collection_name='ovirt.ovirt'
         )
 
