@@ -51,6 +51,7 @@ options:
         description:
             - "The storage domain name where the templates should be listed."
         type: str
+        required: true
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
@@ -61,7 +62,8 @@ EXAMPLES = '''
 # Gather information about all Templates which relate to a storage domain and
 # are unregistered:
 - @NAMESPACE@.@NAME@.ovirt_storage_template_info:
-    unregistered=True
+    unregistered: True
+    storage_domain: storage
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_storage_templates }}"
@@ -89,7 +91,7 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
 
 def main():
     argument_spec = ovirt_info_full_argument_spec(
-        storage_domain=dict(default=None),
+        storage_domain=dict(type='str', required=True),
         max=dict(default=None, type='int'),
         unregistered=dict(default=False, type='bool'),
     )
@@ -98,7 +100,7 @@ def main():
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
+            version='3.0.0',
             collection_name='ovirt.ovirt'
         )
 
@@ -112,9 +114,15 @@ def main():
 
         # Find the unregistered Template we want to register:
         if module.params.get('unregistered'):
-            templates = templates_service.list(unregistered=True)
+            templates = templates_service.list(
+                unregistered=True,
+                follow=",".join(module.params['follow'])
+            )
         else:
-            templates = templates_service.list(max=module.params['max'])
+            templates = templates_service.list(
+                max=module.params['max'],
+                follow=",".join(module.params['follow'])
+            )
         result = dict(
             ovirt_storage_templates=[
                 get_dict_of_struct(

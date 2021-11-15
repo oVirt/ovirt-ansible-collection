@@ -119,7 +119,7 @@ def main():
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
+            version='3.0.0',
             collection_name='ovirt.ovirt'
         )
 
@@ -134,7 +134,8 @@ def main():
             search=module.params['search'],
             headers=module.params['headers'],
             query=module.params['query'],
-            wait=module.params['wait']
+            wait=module.params['wait'],
+            follow=",".join(module.params['follow'])
         )
 
         result = dict(

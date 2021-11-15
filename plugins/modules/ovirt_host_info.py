@@ -105,7 +105,7 @@ def main():
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
+            version='3.0.0',
             collection_name='ovirt.ovirt'
         )
 
@@ -115,7 +115,8 @@ def main():
         hosts_service = connection.system_service().hosts_service()
         hosts = hosts_service.list(
             search=module.params['pattern'],
-            all_content=module.params['all_content']
+            all_content=module.params['all_content'],
+            follow=",".join(module.params['follow'])
         )
         cluster_version = module.params.get('cluster_version')
         if cluster_version is not None:

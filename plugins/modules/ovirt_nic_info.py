@@ -105,7 +105,7 @@ def main():
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
+            version='3.0.0',
             collection_name='ovirt.ovirt'
         )
 
@@ -127,11 +127,11 @@ def main():
         nics_service = collection_service.service(entity.id).nics_service()
         if module.params['name']:
             nics = [
-                e for e in nics_service.list()
+                e for e in nics_service.list(follow=",".join(module.params['follow']))
                 if fnmatch.fnmatch(e.name, module.params['name'])
             ]
         else:
-            nics = nics_service.list()
+            nics = nics_service.list(follow=",".join(module.params['follow']))
 
         result = dict(
             ovirt_nics=[

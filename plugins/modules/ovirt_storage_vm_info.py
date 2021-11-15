@@ -51,6 +51,7 @@ options:
         description:
             - "The storage domain name where the virtual machines should be listed."
         type: str
+        required: True
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
@@ -61,7 +62,8 @@ EXAMPLES = '''
 # Gather information about all VMs which relate to a storage domain and
 # are unregistered:
 - @NAMESPACE@.@NAME@.ovirt_storage_vm_info:
-    unregistered=True
+    unregistered: True
+    storage_domain: storage
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_storage_vms }}"
@@ -89,7 +91,7 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
 
 def main():
     argument_spec = ovirt_info_full_argument_spec(
-        storage_domain=dict(default=None),
+        storage_domain=dict(type='str', required=True),
         max=dict(default=None, type='int'),
         unregistered=dict(default=False, type='bool'),
     )
@@ -98,7 +100,7 @@ def main():
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
+            version='3.0.0',
             collection_name='ovirt.ovirt'
         )
 
@@ -112,9 +114,9 @@ def main():
 
         # Find the unregistered VM we want to register:
         if module.params.get('unregistered'):
-            vms = vms_service.list(unregistered=True)
+            vms = vms_service.list(unregistered=True, follow=",".join(module.params['follow']))
         else:
-            vms = vms_service.list()
+            vms = vms_service.list(follow=",".join(module.params['follow']))
         result = dict(
             ovirt_storage_vms=[
                 get_dict_of_struct(
