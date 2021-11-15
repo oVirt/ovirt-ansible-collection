@@ -10,12 +10,15 @@
     loop_var: host_item
 
 - name: Remove from multipath device.
-  ansible.builtin.shell: "for dev in {{ lun_wwid }}; do multipath -f $dev; done"
+  ansible.builtin.shell: "for dev in {{ lun_wwid }}; do multipath -f $dev || exit 1; done"
   delegate_to: "{{ host_item.address }}"
   connection: ssh
   check_mode: "no"
   with_items:
     - "{{ host_info.ovirt_hosts }}"
+  register: flush_results
+  retries: 6
+  until: flush_results.rc == 0
   loop_control:
     loop_var: host_item
 
