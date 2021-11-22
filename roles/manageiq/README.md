@@ -1,6 +1,6 @@
 Deploy ManageIQ in oVirt
 ==================================================
-## This role is going to be removed in 2.0.0
+## This role is deprecated in 1.6.6 and will be completely removed in 2.0.0
 
 The `manageiq` role downloads a ManageIQ/CloudForms QCOW image and deploys it into oVirt/Red Hat Virtualization (RHV).
 
