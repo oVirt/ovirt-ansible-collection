@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt_host - Fix failed_state_after_reinstall condition (https://github.com/oVirt/ovirt-ansible-collection/pull/371).
