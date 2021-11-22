@@ -11,7 +11,11 @@ License:	ASL 2.0 and GPLv3+
 BuildArch:	noarch
 Url:		http://www.ovirt.org
 
+%if 0%{?rhel} == 9
+Requires:	ansible >= 2.11
+%else
 Requires:	ansible >= 2.9.21
+%endif
 Requires:	ovirt-imageio-client
 Requires:	python3-ovirt-engine-sdk4 >= 4.4.11
 Requires:	python3-netaddr
