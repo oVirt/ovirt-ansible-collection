@@ -25,6 +25,7 @@ Obsoletes:	ovirt-ansible-engine-setup
 Obsoletes:	ovirt-ansible-hosted-engine-setup
 Obsoletes:	ovirt-ansible-image-template
 Obsoletes:	ovirt-ansible-infra
+Obsoletes:	ovirt-ansible-manageiq
 Obsoletes:	ovirt-ansible-repositories
 Obsoletes:	ovirt-ansible-roles
 Obsoletes:	ovirt-ansible-shutdown-env
@@ -36,6 +37,7 @@ Provides:	ovirt-ansible-engine-setup
 Provides:	ovirt-ansible-hosted-engine-setup
 Provides:	ovirt-ansible-image-template
 Provides:	ovirt-ansible-infra
+Provides:	ovirt-ansible-manageiq
 Provides:	ovirt-ansible-repositories
 Provides:	ovirt-ansible-roles
 Provides:	ovirt-ansible-shutdown-env
