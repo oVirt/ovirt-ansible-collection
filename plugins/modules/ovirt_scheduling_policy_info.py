@@ -91,7 +91,7 @@ def main():
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
-            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
+            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follows' parameter",
             version='2.0.0',
             collection_name='ovirt.ovirt'
         )
@@ -103,7 +103,7 @@ def main():
         sched_policies_service = system_service.scheduling_policies_service()
         if module.params['name']:
             sched_policies = [
-                e for e in sched_policies_service.list()
+                e for e in sched_policies_service.list(follow=",".join(module.params['follows']))
                 if fnmatch.fnmatch(e.name, module.params['name'])
             ]
         elif module.params['id']:
@@ -111,7 +111,7 @@ def main():
                 sched_policies_service.service(module.params['id']).get()
             ]
         else:
-            sched_policies = sched_policies_service.list()
+            sched_policies = sched_policies_service.list(follow=",".join(module.params['follows']))
 
         result = dict(
             ovirt_scheduling_policies=[
