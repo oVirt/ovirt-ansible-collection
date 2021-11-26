@@ -5,6 +5,19 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.6.6
+======
+
+Minor Changes
+-------------
+
+- info - Rename follows to follow parameter and add alias (https://github.com/oVirt/ovirt-ansible-collection/pull/367).
+- info - bump deprecate version for fetch_nested and nested_attributes (https://github.com/oVirt/ovirt-ansible-collection/pull/378).
+- info modules - Enable follow parameter (https://github.com/oVirt/ovirt-ansible-collection/pull/355).
+- manageiq - add deprecation info (https://github.com/oVirt/ovirt-ansible-collection/pull/384).
+- ovirt_remove_stale_lun - Allow user to remove multiple LUNs (https://github.com/oVirt/ovirt-ansible-collection/pull/357).
+- ovirt_remove_stale_lun - Retry "multipath -f" while removing the LUNs (https://github.com/oVirt/ovirt-ansible-collection/pull/382).
+
 v1.6.5
 ======
 

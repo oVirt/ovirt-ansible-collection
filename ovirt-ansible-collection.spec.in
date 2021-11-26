@@ -68,6 +68,14 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Fri Nov 26 2021 Martin Necas <mnecas@redhat.com> - 1.6.6-1
+- ovirt_remove_stale_lun - Allow user to remove multiple LUNs
+- ovirt_remove_stale_lun - Retry "multipath -f" while removing the LUNs
+- manageiq - Add deprecation info
+- info modules - Enable follow parameter
+- info - bump deprecate version for fetch_nested and nested_attributes
+- info - Rename follows to follow parameter and add alias
+
 * Tue Oct 19 2021 Martin Necas <mnecas@redhat.com> - 1.6.5-1
 - repositories - Update host and engine repositories to 4.4.9
 

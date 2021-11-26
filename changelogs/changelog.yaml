@@ -558,3 +558,20 @@ releases:
     fragments:
     - 363-repositories-update-to-4.4.9.yml
     release_date: '2021-10-19'
+  1.6.6:
+    changes:
+      minor_changes:
+      - info - Rename follows to follow parameter and add alias (https://github.com/oVirt/ovirt-ansible-collection/pull/367).
+      - info - bump deprecate version for fetch_nested and nested_attributes (https://github.com/oVirt/ovirt-ansible-collection/pull/378).
+      - info modules - Enable follow parameter (https://github.com/oVirt/ovirt-ansible-collection/pull/355).
+      - manageiq - add deprecation info (https://github.com/oVirt/ovirt-ansible-collection/pull/384).
+      - ovirt_remove_stale_lun - Allow user to remove multiple LUNs (https://github.com/oVirt/ovirt-ansible-collection/pull/357).
+      - ovirt_remove_stale_lun - Retry "multipath -f" while removing the LUNs (https://github.com/oVirt/ovirt-ansible-collection/pull/382).
+    fragments:
+    - 351-ovirt_remove_stale_lun-allow-user-to-remove-multiple-luns.yml
+    - 352-ovirt_remove_stale_lun-Retry-Multipath-f-while-removing-the-luns.yml
+    - 355-info-modules-enable-follow-parameter.yml
+    - 367-info-rename-follows-to-follows.yml
+    - 378-bump-deprecate-version.yml
+    - 384-manageiq-add-deprecation-info.yaml
+    release_date: '2021-11-26'
