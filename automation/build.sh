@@ -6,9 +6,6 @@ ROOT_PATH=$PWD
 rm -rf ../ansible_collections
 rm -f ./*tar.gz
 
-# Create exported-artifacts
-[[ -d exported-artifacts ]] || mkdir -p $ROOT_PATH/exported-artifacts
-
 # Create builds
 
 ./build.sh build ovirt $ROOT_PATH
@@ -26,6 +23,9 @@ rpmbuild \
 
 # install any build requirements
 yum-builddep $ROOT_PATH/output/*src.rpm
+
+# Create exported-artifacts dir
+[[ -d exported-artifacts ]] || mkdir $ROOT_PATH/exported-artifacts/
 
 # Remove the tarball so it will not be included in galaxy build
 mv ./*.gz $ROOT_PATH/exported-artifacts/
@@ -70,7 +70,7 @@ cd $COLLECTION_DIR
 
 pip3 install rstcheck antsibull-changelog "ansible-lint<5.0.0"
 
-/usr/bin/ansible-test sanity
+ansible-test sanity
 /usr/local/bin/antsibull-changelog lint
 /usr/local/bin/ansible-lint roles/* -x 204
 
