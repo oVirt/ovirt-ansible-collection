@@ -1,0 +1,59 @@
+name: Build
+on:
+  [push, pull_request]
+jobs:
+  build_8:
+    name: Build
+    runs-on: ubuntu-latest
+    container:
+      image: quay.io/centos/centos:stream8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+    # INSTALL DEPS
+      - name: Install packages
+        run: yum install -y rpm-build yum-utils git epel-release python3-pycodestyle python3-pylint python3-voluptuous
+      - name: Install ansible packages
+        run: yum install -y ansible ansible-test 
+    # CREATE BUILD AND RPM
+      - name: Run build.sh
+        run: ./automation/build.sh
+
+    # COLLECT ARTIFACTS
+      - name: Collect artifacts
+        run: |
+          mkdir -p exported-artifacts
+          find tmp.repos -iname \*rpm -exec mv "{}" exported-artifacts/ \;
+          mv ./*tar.gz exported-artifacts/
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts
+          path: exported-artifacts/
+
+  build_9stream:
+    name: Build
+    runs-on: ubuntu-latest
+    container:
+      image: quay.io/centos/centos:stream9
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install packages
+        run: yum install -y rpm-build yum-utils git ansible-core ansible-test python3-pip
+
+      - name: Run build.sh
+        run: ./automation/build.sh
+
+
+      - name: Collect artifacts
+        run: |
+          mkdir -p exported-artifacts
+          find tmp.repos -iname \*rpm -exec mv "{}" exported-artifacts/ \;
+          mv ./*tar.gz exported-artifacts/
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts
+          path: exported-artifacts/
