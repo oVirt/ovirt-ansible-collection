@@ -72,7 +72,7 @@ sh build.sh install %{collectionname}
 - ovirt_remove_stale_lun - Allow user to remove multiple LUNs
 - ovirt_remove_stale_lun - Retry "multipath -f" while removing the LUNs
 - manageiq - Add deprecation info
-- info modules - Enable follow parameter
+- info - Enable follow parameter
 - info - bump deprecate version for fetch_nested and nested_attributes
 - info - Rename follows to follow parameter and add alias
 
