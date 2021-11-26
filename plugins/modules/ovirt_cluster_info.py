@@ -99,7 +99,7 @@ def main():
         clusters_service = connection.system_service().clusters_service()
         clusters = clusters_service.list(
             search=module.params['pattern'],
-            follow=",".join(module.params['follows'])
+            follow=",".join(module.params['follow'])
         )
         result = dict(
             ovirt_clusters=[

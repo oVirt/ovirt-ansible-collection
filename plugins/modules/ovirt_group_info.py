@@ -95,7 +95,7 @@ def main():
         groups_service = connection.system_service().groups_service()
         groups = groups_service.list(
             search=module.params['pattern'],
-            follow=",".join(module.params['follows'])
+            follow=",".join(module.params['follow'])
         )
         result = dict(
             ovirt_groups=[

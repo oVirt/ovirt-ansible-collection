@@ -95,7 +95,7 @@ def main():
         users_service = connection.system_service().users_service()
         users = users_service.list(
             search=module.params['pattern'],
-            follow=",".join(module.params['follows'])
+            follow=",".join(module.params['follow'])
         )
         result = dict(
             ovirt_users=[

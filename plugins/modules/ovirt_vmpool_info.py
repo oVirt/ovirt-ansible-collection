@@ -97,7 +97,7 @@ def main():
         vmpools_service = connection.system_service().vm_pools_service()
         vmpools = vmpools_service.list(
             search=module.params['pattern'],
-            follow=",".join(module.params['follows'])
+            follow=",".join(module.params['follow'])
         )
         result = dict(
             ovirt_vm_pools=[

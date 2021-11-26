@@ -99,7 +99,7 @@ def main():
         networks_service = connection.system_service().networks_service()
         networks = networks_service.list(
             search=module.params['pattern'],
-            follow=",".join(module.params['follows'])
+            follow=",".join(module.params['follow'])
         )
         result = dict(
             ovirt_networks=[

@@ -127,11 +127,11 @@ def main():
         nics_service = collection_service.service(entity.id).nics_service()
         if module.params['name']:
             nics = [
-                e for e in nics_service.list(follow=",".join(module.params['follows']))
+                e for e in nics_service.list(follow=",".join(module.params['follow']))
                 if fnmatch.fnmatch(e.name, module.params['name'])
             ]
         else:
-            nics = nics_service.list(follow=",".join(module.params['follows']))
+            nics = nics_service.list(follow=",".join(module.params['follow']))
 
         result = dict(
             ovirt_nics=[

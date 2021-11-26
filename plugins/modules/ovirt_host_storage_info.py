@@ -155,7 +155,7 @@ def main():
             _login(host_service, module.params.get('iscsi'))
 
         # Get LUNs exposed from the specified target
-        host_storages = host_service.storage_service().list(follow=",".join(module.params['follows']))
+        host_storages = host_service.storage_service().list(follow=",".join(module.params['follow']))
         if module.params.get('iscsi') is not None:
             host_storages = list(filter(lambda x: x.type == otypes.StorageType.ISCSI, host_storages))
             if 'target' in module.params.get('iscsi'):

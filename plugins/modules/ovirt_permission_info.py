@@ -143,7 +143,7 @@ def main():
         connection = create_connection(auth)
         permissions_service = _permissions_service(connection, module)
         permissions = []
-        for p in permissions_service.list(follow=",".join(module.params['follows'])):
+        for p in permissions_service.list(follow=",".join(module.params['follow'])):
             newperm = dict()
             for key, value in p.__dict__.items():
                 if value and isinstance(value, sdk.Struct):

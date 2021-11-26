@@ -83,7 +83,7 @@ def main():
         datacenters_service = connection.system_service().data_centers_service()
         datacenters = datacenters_service.list(
             search=module.params['pattern'],
-            follow=",".join(module.params['follows'])
+            follow=",".join(module.params['follow'])
         )
         result = dict(
             ovirt_datacenters=[

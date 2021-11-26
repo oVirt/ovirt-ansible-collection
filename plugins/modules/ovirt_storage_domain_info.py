@@ -99,7 +99,7 @@ def main():
         storage_domains_service = connection.system_service().storage_domains_service()
         storage_domains = storage_domains_service.list(
             search=module.params['pattern'],
-            follow=",".join(module.params['follows'])
+            follow=",".join(module.params['follow'])
         )
         result = dict(
             ovirt_storage_domains=[

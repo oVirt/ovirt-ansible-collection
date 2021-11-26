@@ -122,7 +122,7 @@ def main():
         tags_service = connection.system_service().tags_service()
         tags = []
         all_tags = tags_service.list(
-            follow=",".join(module.params['follows'])
+            follow=",".join(module.params['follow'])
         )
         if module.params['name']:
             tags.extend([
@@ -135,7 +135,7 @@ def main():
             if host is None:
                 raise Exception("Host '%s' was not found." % module.params['host'])
             tags.extend(hosts_service.host_service(host.id).tags_service().list(
-                follow=",".join(module.params['follows'])
+                follow=",".join(module.params['follow'])
             ))
         if module.params['vm']:
             vms_service = connection.system_service().vms_service()
@@ -143,7 +143,7 @@ def main():
             if vm is None:
                 raise Exception("Vm '%s' was not found." % module.params['vm'])
             tags.extend(vms_service.vm_service(vm.id).tags_service().list(
-                follow=",".join(module.params['follows'])
+                follow=",".join(module.params['follow'])
             ))
 
         if not (module.params['vm'] or module.params['host'] or module.params['name']):

@@ -114,12 +114,12 @@ def main():
         if module.params.get('unregistered'):
             templates = templates_service.list(
                 unregistered=True,
-                follow=",".join(module.params['follows'])
+                follow=",".join(module.params['follow'])
             )
         else:
             templates = templates_service.list(
                 max=module.params['max'],
-                follow=",".join(module.params['follows'])
+                follow=",".join(module.params['follow'])
             )
         result = dict(
             ovirt_storage_templates=[

@@ -97,7 +97,7 @@ def main():
         vnic_profiles_service = connection.system_service().vnic_profiles_service()
         vnic_profiles = vnic_profiles_service.list(
             max=module.params.get('max'),
-            follow=",".join(module.params['follows'])
+            follow=",".join(module.params['follow'])
         )
         if module.params.get('name') and vnic_profiles:
             vnic_profiles = [vnic_profile for vnic_profile in vnic_profiles if vnic_profile.name == module.params.get("name")]

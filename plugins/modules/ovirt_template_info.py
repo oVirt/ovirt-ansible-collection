@@ -99,7 +99,7 @@ def main():
         templates_service = connection.system_service().templates_service()
         templates = templates_service.list(
             search=module.params['pattern'],
-            follow=",".join(module.params['follows'])
+            follow=",".join(module.params['follow'])
         )
         result = dict(
             ovirt_templates=[
