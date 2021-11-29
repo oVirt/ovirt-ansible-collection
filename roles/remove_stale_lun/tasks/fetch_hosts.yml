@@ -32,7 +32,7 @@
         hostname: "{{ item.address }}"
         groups: dc_hosts
       with_items:
-        - "{{ host_info.ovirt_hosts }}" 
+        - "{{ host_info.ovirt_hosts }}"
 
   always:
     - name: Logout from oVirt
