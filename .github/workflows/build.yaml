@@ -3,7 +3,7 @@ on:
   [push, pull_request]
 jobs:
   build_8:
-    name: Build 8
+    name: Build 8 - ansible 2.9
     runs-on: ubuntu-latest
     container:
       image: quay.io/centos/centos:stream8
@@ -28,7 +28,7 @@ jobs:
           path: exported-artifacts/
 
   build_9stream:
-    name: Build 9stream
+    name: Build 9stream - ansible-core 2.11
     runs-on: ubuntu-latest
     container:
       image: quay.io/centos/centos:stream9
