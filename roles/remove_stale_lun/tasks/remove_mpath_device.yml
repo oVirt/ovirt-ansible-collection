@@ -1,33 +1,21 @@
+- name: Initialize variables
+  set_fact:
+    lun_wwid: "{{ lun_wwid | mandatory }}"
+
 - name: Get underlying disks (paths) for a multipath device(s) and turn them into a list.
   ansible.builtin.shell: 'for dev in {{ lun_wwid }}; do dmsetup deps -o devname $dev | cut -f 2 |cut -c 3- |tr -d "()"|tr "\r\n" " "; done'
   register: disks
-  delegate_to: "{{ host_item.address }}"
-  connection: ssh
   check_mode: "no"
-  with_items:
-    - "{{ host_info.ovirt_hosts }}"
-  loop_control:
-    loop_var: host_item
 
 - name: Remove from multipath device.
   ansible.builtin.shell: "for dev in {{ lun_wwid }}; do multipath -f $dev || exit 1; done"
-  delegate_to: "{{ host_item.address }}"
-  connection: ssh
-  check_mode: "no"
-  with_items:
-    - "{{ host_info.ovirt_hosts }}"
   register: flush_results
   retries: 6
+  check_mode: "no"
   until: flush_results.rc == 0
-  loop_control:
-    loop_var: host_item
 
 - name: Remove each path from the SCSI subsystem.
-  ansible.builtin.shell: "for dev in {{ result.stdout }}; do echo 1 > /sys/block/$dev/device/delete; done"
-  delegate_to: "{{ result.host_item.address }}"
-  connection: ssh
+  ansible.builtin.shell: "for dev in {{ item.stdout }}; do echo 1 > /sys/block/$dev/device/delete; done"
   check_mode: "no"
   with_items:
-    - "{{ disks.results }}"
-  loop_control:
-    loop_var: result
+    - "{{ disks }}"
