@@ -3,7 +3,7 @@ on:
   [push, pull_request]
 jobs:
   build_8:
-    name: Build
+    name: Build 8
     runs-on: ubuntu-latest
     container:
       image: quay.io/centos/centos:stream8
@@ -28,7 +28,7 @@ jobs:
           path: exported-artifacts/
 
   build_9stream:
-    name: Build
+    name: Build 9stream
     runs-on: ubuntu-latest
     container:
       image: quay.io/centos/centos:stream9
@@ -41,7 +41,7 @@ jobs:
       - name: Update all packages
         run: yum update -y
       - name: Install pip modules
-        run: pip3 install pycodestyle pylint==1.7.5 voluptuous yamllint
+        run: pip3 install pycodestyle pylint==2.4.4 voluptuous yamllint
 
       - name: Run build.sh
         run: ./automation/build.sh
