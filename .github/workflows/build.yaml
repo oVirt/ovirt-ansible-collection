@@ -21,11 +21,6 @@ jobs:
       - name: Run build.sh
         run: ./automation/build.sh
 
-      - name: Collect artifacts
-        run: |
-          mkdir -p exported-artifacts
-          find tmp.repos -iname \*rpm -exec mv "{}" exported-artifacts/ \;
-          mv ./*tar.gz exported-artifacts/
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -51,11 +46,6 @@ jobs:
       - name: Run build.sh
         run: ./automation/build.sh
 
-      - name: Collect artifacts
-        run: |
-          mkdir -p exported-artifacts
-          find tmp.repos -iname \*rpm -exec mv "{}" exported-artifacts/ \;
-          mv ./*tar.gz exported-artifacts/
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
