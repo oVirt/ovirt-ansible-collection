@@ -41,7 +41,7 @@ jobs:
       - name: Update all packages
         run: yum update -y
       - name: Install pip modules
-        run: pip3 install pycodestyle pylint voluptuous yamllint
+        run: pip3 install pycodestyle pylint==1.7.5 voluptuous yamllint
 
       - name: Run build.sh
         run: ./automation/build.sh
