@@ -24,122 +24,177 @@
       tags:
         - always
 
+    - name: progress 0% - need to do info lookups
+      include_tasks: log_progress.yml
+      vars:
+        progress: 0
+        description: "gathering cluster info"
+
     - name: Get API info
       ovirt_api_info:
         auth: "{{ ovirt_auth }}"
-      register: api_info
       check_mode: "no"
+      register: api_info
 
     - name: Get cluster info
       ovirt_cluster_info:
         auth: "{{ ovirt_auth }}"
         pattern: "name={{ cluster_name }}"
-        fetch_nested: True
-        nested_attributes: name
+        follow: gluster_volumes
       check_mode: "no"
       register: cluster_info
 
-    - name: Set cluster upgrade status in progress
-      no_log: true
+    - name: Remember the api version and cluster id
+      set_fact:
+        api_gt43: "{{ api_info.ovirt_api.product_info.version.major >= 4 and api_info.ovirt_api.product_info.version.minor >= 3 }}"
+        cluster_id: "{{ cluster_info.ovirt_clusters[0].id }}"
+
+    - name: progress 2% - cluster upgrade is starting
+      include_tasks: log_progress.yml
+      vars:
+        progress: 2
+        description: "starting upgrade"
+
+    - name: Set cluster upgrade status to running
+      no_log: false
       uri:
-        url: "{{ ovirt_auth.url }}/clusters/{{ cluster_info.ovirt_clusters[0].id }}/upgrade"
+        url: "{{ ovirt_auth.url }}/clusters/{{ cluster_id }}/upgrade"
         method: POST
         body_format: json
         validate_certs: false
         headers:
           Authorization: "Bearer {{ ovirt_auth.token }}"
+          Correlation-Id: "{{ engine_correlation_id }}"
         body:
           upgrade_action: start
+      when: api_gt43
       register: upgrade_set
-      when: api_info.ovirt_api.product_info.version.major >= 4 and api_info.ovirt_api.product_info.version.minor >= 3
 
-    - name: Log event cluster upgrade has started
-      ovirt_event:
-        auth: "{{ ovirt_auth }}"
-        state: present
-        description: "Cluster upgrade started for {{ cluster_name }}."
-        origin: "cluster_upgrade"
-        custom_id: "{{ 2147483647 | random | int }}"
-        severity: normal
-        cluster: "{{ cluster_info.ovirt_clusters[0].id }}"
+    - name: progress 4% - all necessary info is all looked up, hosts can now be upgraded
+      include_tasks: log_progress.yml
+      vars:
+        progress: 4
+        description: "collecting hosts to upgrade"
 
     - name: Get hosts
       ovirt_host_info:
         auth: "{{ ovirt_auth }}"
-        pattern: "cluster={{ cluster_name | mandatory }} {{ check_upgrade | ternary('', 'update_available=true') }} {{ host_names | map('regex_replace', '^(.*)$', 'name=\\1') | list | join(' or ') }} {{ host_statuses | map('regex_replace', '^(.*)$', 'status=\\1') | list | join(' or ') }}"
+        pattern: >-
+          cluster={{ cluster_name | mandatory }}
+          {{ check_upgrade | ternary('', 'update_available=true') }}
+          {{ host_names | map('regex_replace', '^(.*)$', 'name=\1') | list | join(' or ') }}
+          {{ host_statuses | map('regex_replace', '^(.*)$', 'status=\1') | list | join(' or ') }}
       check_mode: "no"
       register: host_info
 
     - block:
-      - name: Print - no hosts to be updated
+      - name: Print - no hosts to be upgraded
         debug:
-          msg: "No hosts to be updated"
+          msg: "No hosts to be upgraded"
 
-      - name: Log event - no hosts to be updated
+      - name: progress 100% - no host need to be upgraded!
+        include_tasks: log_progress.yml
+        vars:
+          progress: 100
+          description: "no hosts need to be upgraded!"
+
+      - name: Log event - no hosts to be upgraded
         ovirt_event:
           auth: "{{ ovirt_auth }}"
           state: present
-          description: "There are no hosts to be updated for cluster {{ cluster_name }}."
+          description: "Upgrade of cluster {{ cluster_name }} complete, there are no hosts to be upgraded."
           origin: "cluster_upgrade"
           custom_id: "{{ 2147483647 | random | int }}"
           severity: normal
-          cluster: "{{ cluster_info.ovirt_clusters[0].id }}"
+          cluster: "{{ cluster_id }}"
+
       when: host_info.ovirt_hosts | length == 0
 
     - block:
-        - name: Log event about hosts that are marked to be updated
-          ovirt_event:
-            auth: "{{ ovirt_auth }}"
-            state: present
-            description: "Hosts {{ host_info.ovirt_hosts | map(attribute='name') | join(',') }} are marked to be updated in cluster {{ cluster_name }}."
-            origin: "cluster_upgrade"
-            custom_id: "{{ 2147483647 | random | int }}"
-            severity: normal
-            cluster: "{{ cluster_info.ovirt_clusters[0].id }}"
+      - name: Start ovirt job session
+        ovirt_job:
+          auth: "{{ ovirt_auth }}"
+          description: "Upgrading hosts in {{ cluster_name }}"
 
-        - include_tasks: cluster_policy.yml
-          when: use_maintenance_policy
+      - name: progress 6% - log hosts that are marked to be upgraded
+        include_tasks: log_progress.yml
+        vars:
+          progress: 6
+          description: "hosts to check for pinned VMs: {{ host_info.ovirt_hosts | map(attribute='name') | join(',') }}"
 
-        - name: Get list of VMs in cluster
-          ovirt_vm_info:
-            auth: "{{ ovirt_auth }}"
-            pattern: "cluster={{ cluster_name }}"
-          check_mode: "no"
-          register: vms_in_cluster
+      - name: Change cluster scheduling_policy to cluster_maintenance
+        include_tasks: cluster_policy.yml
+        when: use_maintenance_policy
 
-        - include_tasks: pinned_vms.yml
+      - name: Get list of VMs in cluster
+        ovirt_vm_info:
+          auth: "{{ ovirt_auth }}"
+          pattern: "cluster={{ cluster_name }}"
+        check_mode: "no"
+        register: vms_in_cluster
 
-        - name: Start ovirt job session
-          ovirt_job:
-            auth: "{{ ovirt_auth }}"
-            description: "Upgrading hosts"
+      - name: Determine what hosts have running pinned vms, they will not be upgraded
+        include_tasks: pinned_vms.yml
 
-        # Update only those hosts that aren't in list of hosts were VMs are pinned
-        # or if stop_non_migratable_vms is enabled, which means we stop pinned VMs
-        - include_tasks: upgrade.yml
-          with_items:
-            - "{{ host_info.ovirt_hosts }}"
-          when: "item.id not in host_ids or stop_non_migratable_vms"
+      - name: Build the list of hosts that will be upgraded (hosts in host_info.ovirt_hosts hosts w/o pinned vms that cannot be stopped)
+        set_fact:
+          good_hosts: "{{ (good_hosts | default([])) | list + [ host ] | list }}"
+        loop: "{{ host_info.ovirt_hosts | flatten(levels=1) }}"
+        loop_control:
+          loop_var: "host"
+        when: "host.id not in host_ids or stop_non_migratable_vms"
 
-        - name: Start ovirt job session
-          ovirt_job:
-            auth: "{{ ovirt_auth }}"
-            description: "Upgrading hosts"
-            state: finished
+      - name: progress 8% - log hosts that will be upgraded
+        include_tasks: log_progress.yml
+        vars:
+          progress: 8
+          description: "hosts to be upgraded: {{ good_hosts | map(attribute='name') | join(',') }}"
 
-        - name: Log event about cluster upgrade finished successfully
-          ovirt_event:
-            auth: "{{ ovirt_auth }}"
-            state: present
-            description: "Upgrade of cluster {{ cluster_name }} finished successfully."
-            origin: "cluster_upgrade"
-            severity: normal
-            custom_id: "{{ 2147483647 | random | int }}"
-            cluster: "{{ cluster_info.ovirt_clusters[0].id }}"
+      - name: progress 10% - host upgrades starting
+        include_tasks: log_progress.yml
+        vars:
+          progress: 10
+          description: "starting the upgrade of {{ good_hosts | length }} hosts"
+
+      # Upgrade only those hosts that aren't in list of hosts were VMs are pinned
+      # or if stop_non_migratable_vms is enabled, which means we stop pinned VMs
+      # Note: Progress goes from 10% to 95%, each host taking up an equal amount of progress
+      - name: Upgrade the hosts in the cluster
+        include_tasks: upgrade.yml
+        vars:
+          progress_start: 10
+          progress_end: 95
+        loop: "{{ good_hosts | flatten(levels=1) }}"
+        loop_control:
+          extended: yes
+          loop_var: "host"
+
+      - name: Finish ovirt job session
+        ovirt_job:
+          auth: "{{ ovirt_auth }}"
+          description: "Upgrading hosts in {{ cluster_name }}"
+          state: finished
+
+      - name: progress 95% - host upgrades completed successfully, only thing left is to start any non-migratable VMs stopped by the playbook
+        include_tasks: log_progress.yml
+        vars:
+          progress: 95
+          description: "the upgrade of {{ good_hosts | length }} hosts finished successfully"
+
+      - name: Log event - cluster upgrade finished successfully
+        ovirt_event:
+          auth: "{{ ovirt_auth }}"
+          state: present
+          description: "Upgrade of cluster {{ cluster_name }} finished successfully."
+          origin: "cluster_upgrade"
+          severity: normal
+          custom_id: "{{ 2147483647 | random | int }}"
+          cluster: "{{ cluster_id }}"
 
       when: host_info.ovirt_hosts | length > 0
+
       rescue:
-        - name: Log event about cluster upgrade failed
+        - name: Log event - cluster upgrade failed
           ovirt_event:
             auth: "{{ ovirt_auth }}"
             state: present
@@ -147,13 +202,19 @@
             origin: "cluster_upgrade"
             custom_id: "{{ 2147483647 | random | int }}"
             severity: error
-            cluster: "{{ cluster_info.ovirt_clusters[0].id }}"
+            cluster: "{{ cluster_id }}"
 
-        - name: Update job failed
+        - name: Fail ovirt job session
           ovirt_job:
             auth: "{{ ovirt_auth }}"
-            description: "Upgrading hosts"
+            description: "Upgrading hosts in {{ cluster_name }}"
             state: failed
+
+        - name: progress 95% - host upgrades failed, only thing left is to start any non-migratable VMs stopped by the playbook
+          include_tasks: log_progress.yml
+          vars:
+            progress: 95
+            description: "hosts upgrades failed"
 
       always:
         - name: Set original cluster policy
@@ -164,14 +225,20 @@
             scheduling_policy_properties: "{{ cluster_scheduling_policy_properties }}"
           when: use_maintenance_policy and cluster_policy.changed | default(false)
 
+        - name: progress 95% - host upgrades are done (successful or not), only need to start VMs that were stopped by the playbook
+          include_tasks: log_progress.yml
+          vars:
+            progress: 95
+            description: "host upgrades are done (successful or not), restarting non-migratable VMs"
+
+        # TODO: These VMs aren't explicity stopped anywhere...should they be?
         - name: Start again stopped VMs
           ovirt_vm:
             auth: "{{ ovirt_auth }}"
             name: "{{ item }}"
             state: running
           ignore_errors: "yes"
-          with_items:
-            - "{{ stopped_vms | default([]) }}"
+          loop: "{{ stopped_vms | default([]) | flatten(levels=1) }}"
 
         - name: Start again pin to host VMs
           ovirt_vm:
@@ -179,32 +246,38 @@
             name: "{{ item }}"
             state: running
           ignore_errors: "yes"
-          with_items:
-            - "{{ pinned_vms_names | default([]) }}"
-          when: "stop_non_migratable_vms"
+          loop: "{{ pinned_vms_names | default([]) | flatten(levels=1) }}"
+          when: stop_non_migratable_vms
+
+        - name: progress 100% - host upgrades are done (successful or not), non-migratable VMs are started, everything is now done
+          include_tasks: log_progress.yml
+          vars:
+            progress: 100
+            description: "host upgrades are done, non-migratable VMs are restarted"
 
   always:
     - name: Set cluster upgrade status to finished
       no_log: true
       uri:
-        url: "{{ ovirt_auth.url }}/clusters/{{ cluster_info.ovirt_clusters[0].id }}/upgrade"
+        url: "{{ ovirt_auth.url }}/clusters/{{ cluster_id }}/upgrade"
         validate_certs: false
         method: POST
         body_format: json
         headers:
           Authorization: "Bearer {{ ovirt_auth.token }}"
+          Correlation-Id: "{{ engine_correlation_id }}"
         body:
           upgrade_action: finish
       when:
         - upgrade_set is defined and not upgrade_set.failed | default(false)
-        - api_info.ovirt_api.product_info.version.major >= 4 and api_info.ovirt_api.product_info.version.minor >= 3
+        - api_gt43
 
     - name: Logout from oVirt
       ovirt_auth:
         state: absent
         ovirt_auth: "{{ ovirt_auth }}"
       when:
-        - login_result.skipped is defined and not login_result.skipped
+        - login_result.skipped is undefined or not login_result.skipped
         - provided_token != ovirt_auth.token
       tags:
         - always
