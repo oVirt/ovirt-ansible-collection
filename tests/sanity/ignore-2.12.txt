@@ -1,6 +1,6 @@
 automation/build.sh shebang!skip
 build.sh shebang!skip
-changelogs/fragments/.gitignore changelog!skip
+changelogs/fragments/.placeholder changelog!skip
 plugins/callback/stdout.py shebang!skip
 roles/disaster_recovery/files/fail_back.py shebang!skip
 roles/disaster_recovery/files/bcolors.py shebang!skip
