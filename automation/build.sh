@@ -70,8 +70,10 @@ cd $COLLECTION_DIR
 
 pip3 install rstcheck antsibull-changelog "ansible-lint<5.0.0"
 
+# The sanity import test failed with error. (https://github.com/ansible/ansible/issues/76473)
 ansible-test sanity --skip-test import
 antsibull-changelog lint
+# 204 - lines should be no longer than 160 chars
 ansible-lint roles/* -x 204
 
 cd $ROOT_PATH
