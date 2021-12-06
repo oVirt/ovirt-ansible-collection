@@ -8,7 +8,7 @@ import sys
 import yaml
 
 import ovirtsdk4 as sdk
-import ovirtsdk4.types as types
+from ovirtsdk4 import types
 
 from bcolors import bcolors
 from configparser import ConfigParser

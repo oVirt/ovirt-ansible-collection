@@ -626,8 +626,8 @@ class ClustersModule(BaseModule):
             elif provider.get('name') and provider.get('name') not in entity_provider_names:
                 return False
         for entity_provider in entity_providers:
-            if not any([self._matches_entity(provider, entity_provider)
-                        for provider in self._get_external_network_providers()]):
+            if not any(self._matches_entity(provider, entity_provider)
+                       for provider in self._get_external_network_providers()):
                 return False
         return True
 

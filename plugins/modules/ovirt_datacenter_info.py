@@ -67,7 +67,10 @@ def main():
     argument_spec = ovirt_info_full_argument_spec(
         pattern=dict(default='', required=False),
     )
-    module = AnsibleModule(argument_spec)
+    module = AnsibleModule(
+        argument_spec,
+        supports_check_mode=True,
+    )
 
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:

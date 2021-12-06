@@ -100,6 +100,7 @@ def main():
     module = AnsibleModule(
         argument_spec,
         required_one_of=[['vm', 'template']],
+        supports_check_mode=True,
     )
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:

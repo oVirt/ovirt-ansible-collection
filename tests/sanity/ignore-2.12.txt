@@ -10,3 +10,4 @@ roles/disaster_recovery/files/generate_vars.py shebang!skip
 roles/disaster_recovery/files/generate_vars_test.py shebang!skip
 roles/disaster_recovery/files/validator.py shebang!skip
 roles/disaster_recovery/files/ovirt-dr shebang!skip
+plugins/module_utils/cloud.py pylint!skip
