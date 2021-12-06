@@ -610,17 +610,17 @@ class StorageDomainModule(BaseModule):
                 timeout=self.param('timeout'),
             )
 
-    def pre_remove(self, storage_domain):
+    def pre_remove(self, entity):
         # In case the user chose to destroy the storage domain there is no need to
         # move it to maintenance or detach it, it should simply be removed from the DB.
         # Also if storage domain in already unattached skip this step.
-        if storage_domain.status == sdstate.UNATTACHED or self.param('destroy'):
+        if entity.status == sdstate.UNATTACHED or self.param('destroy'):
             return
         # Before removing storage domain we need to put it into maintenance state:
-        self._maintenance(storage_domain)
+        self._maintenance(entity)
 
         # Before removing storage domain we need to detach it from data center:
-        self._unattach(storage_domain)
+        self._unattach(entity)
 
     def post_create_check(self, sd_id):
         storage_domain = self._service.service(sd_id).get()

@@ -100,7 +100,10 @@ def main():
         all_content=dict(default=False, type='bool'),
         cluster_version=dict(default=None, type='str'),
     )
-    module = AnsibleModule(argument_spec)
+    module = AnsibleModule(
+        argument_spec,
+        supports_check_mode=True,
+    )
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(

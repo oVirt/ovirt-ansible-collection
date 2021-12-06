@@ -95,7 +95,10 @@ def main():
         max=dict(default=None, type='int'),
         unregistered=dict(default=False, type='bool'),
     )
-    module = AnsibleModule(argument_spec)
+    module = AnsibleModule(
+        argument_spec,
+        supports_check_mode=True,
+    )
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(

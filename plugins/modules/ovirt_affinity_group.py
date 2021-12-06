@@ -177,11 +177,11 @@ class AffinityGroupsModule(BaseModule):
                 if 'complete' not in str(ex):
                     raise ex
 
-    def post_create(self, affinity_group):
-        self.update_vms(affinity_group)
+    def post_create(self, entity):
+        self.update_vms(entity)
 
-    def post_update(self, affinity_group):
-        self.update_vms(affinity_group)
+    def post_update(self, entity):
+        self.update_vms(entity)
 
     def build_entity(self):
         affinity_group = otypes.AffinityGroup(

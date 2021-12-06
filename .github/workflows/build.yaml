@@ -28,7 +28,7 @@ jobs:
           path: exported-artifacts/
 
   build_9stream:
-    name: Build 9stream - ansible-core 2.11
+    name: Build 9stream - ansible-core 2.12
     runs-on: ubuntu-latest
     container:
       image: quay.io/centos/centos:stream9
