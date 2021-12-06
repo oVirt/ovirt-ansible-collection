@@ -1,6 +1,6 @@
 name: Build
 on:
-  [push, pull_request]
+  [push, pull_request, workflow_dispatch]
 jobs:
   build_8:
     name: Build 8 - ansible 2.9
