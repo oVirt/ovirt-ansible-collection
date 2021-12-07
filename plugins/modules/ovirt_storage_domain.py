@@ -803,7 +803,7 @@ def main():
         elif state == 'unattached':
             ret = storage_domains_module.create()
             storage_domains_module.pre_remove(
-                storage_domain=storage_domains_service.service(ret['id']).get()
+                entity=storage_domains_service.service(ret['id']).get()
             )
             ret['changed'] = storage_domains_module.changed
         elif state == 'update_ovf_store':
