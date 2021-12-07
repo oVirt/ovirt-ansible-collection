@@ -34,6 +34,7 @@
     lineinfile:
       path: /root/ovirt-engine-answers
       line: "{{ item }}"
+      create: true
     no_log: true
     with_items:
       - "OVESETUP_CONFIG/adminPassword=str:{{ he_admin_password }}"
