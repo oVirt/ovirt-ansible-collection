@@ -27,3 +27,15 @@
   with_items:
     - /var/log
   when: local_vm_disk_path is defined
+- name: Change ownership of copied engine logs
+  # Files owned by ovirt user/group, will be created owned by uid/gid 108, as
+  # the ovirt user/group do not exist on hosts. OpenSCAP requires having an
+  # owner/group, and no other process should automatically have access. So
+  # using 'root' is good enough.
+  file:
+    path: "{{ destdir }}"
+    owner: root
+    group: root
+    recurse: yes
+  ignore_errors: true
+  changed_when: true
