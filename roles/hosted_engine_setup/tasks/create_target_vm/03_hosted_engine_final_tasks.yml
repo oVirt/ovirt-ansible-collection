@@ -155,8 +155,6 @@
       of="{{ he_conf_disk_path }}"
     environment: "{{ he_cmd_lang }}"
     become: true
-    become_user: vdsm
-    become_method: sudo
     changed_when: true
     args:
       warn: false
