@@ -73,6 +73,26 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Thu Dec 16 2021 Martin Perina <mperina@redhat.com> - 2.0.0-0.3.BETA
+- roles: hosted_engine_setup: Set ownership of copied engine logs
+- roles: hosted_engine_setup: Remove SPICE from graphic protocols
+
+* Wed Dec 8 2021 Martin Perina <mperina@redhat.com> - 2.0.0-0.2.BETA
+- Fix ovirt_storage_domain entity
+- roles: hosted_engine_setup: check if abrt config files exists on HE deploy
+- manageiq: deprecate role
+- Fix remove_stale_lun whitespace
+- ovirt_remove_stale_lun: Use add_host instead of delegate_to
+- manageiq: add deprecation info
+- ovirt_remove_stale_lun: Retry "multipath -f" while removing the LUNs
+- engine_setup: skip pkg install in offline mode
+- add virtio_scsi_multi_queues parameter to ovirt_vm
+- Fix offline deployment
+- ovirt_host: fix failed_state_after_reinstall condition
+
+* Fri Dec 3 2021 Martin Necas <mnecas@redhat.com> - 2.0.0-0.1.BETA
+- ovirt_disk - Use imageio client
+
 * Fri Nov 26 2021 Martin Necas <mnecas@redhat.com> - 1.6.6-1
 - ovirt_remove_stale_lun - Allow user to remove multiple LUNs
 - ovirt_remove_stale_lun - Retry "multipath -f" while removing the LUNs
