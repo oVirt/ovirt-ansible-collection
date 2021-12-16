@@ -130,16 +130,12 @@
       he_sanlock_disk_details: "{{ add_disks.results[1] }}"
       he_conf_disk_details: "{{ add_disks.results[2] }}"
       he_metadata_disk_details: "{{ add_disks.results[3] }}"
-  - name: Set default graphics protocols
+  - name: Set VNC graphic protocol
     set_fact:
-      he_graphic_protocols: [vnc, spice]
+      he_graphic_protocols: [vnc]
   - name: Check if FIPS is enabled
     command: sysctl -n crypto.fips_enabled
     register: he_fips_enabled
-  - name: Select graphic protocols
-    set_fact:
-      he_graphic_protocols: [spice]
-    when: he_fips_enabled.stdout == "1"
   - name: Add VM
     ovirt_vm:
       state: stopped
