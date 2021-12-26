@@ -10,10 +10,10 @@
   stat:
     path: "{{ oscap_datastream }}"
   register: oscap_ds_stat
-- name: Set default OpenSCAP profile
+- name: Set OpenSCAP profile
   shell: >-
     set -euo pipefail && oscap info --profiles {{ oscap_datastream }} |
-    grep -Ei "(standard|disa)" | sort | tail -1 | cut -d':' -f1
+    grep -Ei "({{ he_openscap_profile_name }}:)" | sort | tail -1 | cut -d':' -f1
   register: oscap_profile
   ignore_errors: true
   changed_when: true
@@ -22,8 +22,8 @@
   command: >-
     oscap xccdf eval --profile {{ oscap_profile.stdout }} --remediate
     --report /root/openscap-report.html {{ oscap_datastream }}
-  failed_when: false
-  ignore_errors: true
+  register: oscap_applied
+  failed_when: "'ERROR' in oscap_applied.stderr"
   changed_when: true
   when: oscap_profile.stdout is defined
 - name: Reset PermitRootLogin for sshd
