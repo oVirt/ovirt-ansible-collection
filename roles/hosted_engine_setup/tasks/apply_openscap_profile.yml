@@ -23,7 +23,7 @@
     oscap xccdf eval --profile {{ oscap_profile.stdout }} --remediate
     --report /root/openscap-report.html {{ oscap_datastream }}
   register: oscap_applied
-  failed_when: "'ERROR' in oscap_applied.stderr"
+  failed_when: oscap_applied.rc == 1
   changed_when: true
   when: oscap_profile.stdout is defined
 - name: Reset PermitRootLogin for sshd
