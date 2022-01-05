@@ -15,7 +15,7 @@ jobs:
       image: quay.io/centos/centos:stream8
     steps:
       - name: Install packages
-        run: yum install -y rpm-build yum-utils git epel-release
+        run: yum install -y createrepo_c rpm-build yum-utils git epel-release
       - name: Install ansible packages
         run: yum install -y ansible ansible-test python3-pycodestyle python3-pylint python3-voluptuous yamllint glibc-langpack-en
       - name: Update all packages
@@ -28,6 +28,9 @@ jobs:
 
       - name: Run build.sh
         run: ./automation/build.sh
+
+      - name: Create DNF repository
+        run: createrepo_c exported-artifacts/
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -45,7 +48,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install packages
-        run: yum install -y rpm-build yum-utils git ansible-core ansible-test python3-pip
+        run: yum install -y createrepo_c rpm-build yum-utils git ansible-core ansible-test python3-pip
       - name: Update all packages
         run: yum update -y
       - name: Install pip modules
@@ -53,6 +56,9 @@ jobs:
 
       - name: Run build.sh
         run: ./automation/build.sh
+
+      - name: Create DNF repository
+        run: createrepo_c exported-artifacts/
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
