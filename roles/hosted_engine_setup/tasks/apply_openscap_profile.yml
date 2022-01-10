@@ -23,6 +23,10 @@
     oscap xccdf eval --profile {{ oscap_profile.stdout }} --remediate
     --report /root/openscap-report.html {{ oscap_datastream }}
   register: oscap_applied
+  # Currently, there is no way to know if the security profile
+  # meets the requirments for HE VM (see: https://bugzilla.redhat.com/1983476)
+  # therefore deployment will fail only if there is an error during evaluation
+  # which means rc = 1
   failed_when: oscap_applied.rc == 1
   changed_when: true
   when: oscap_profile.stdout is defined
