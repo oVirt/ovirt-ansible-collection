@@ -68,7 +68,7 @@ mkdir -p $COLLECTION_DIR
 cp -r $OVIRT_BUILD/* $COLLECTION_DIR
 cd $COLLECTION_DIR
 
-pip3 install rstcheck antsibull-changelog "ansible-lint<5.0.0"
+pip3 install rstcheck antsibull-changelog "rich<11.0.0" "ansible-lint<5.0.0"
 
 # The sanity import test failed with error. (https://github.com/ansible/ansible/issues/76473)
 ansible-test sanity --skip-test import
