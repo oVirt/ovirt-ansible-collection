@@ -1,5 +1,5 @@
 ---
-ovirt_engine_setup_version: '4.4'
+ovirt_engine_setup_version: '4.5'
 
 ovirt_engine_setup_provider_ovn_configure: true
 ovirt_engine_setup_provider_ovn_username: 'admin@internal'
