@@ -64,7 +64,7 @@
         validate_certs: false
         headers:
           Authorization: "Bearer {{ ovirt_auth.token }}"
-          Correlation-Id: "{{ engine_correlation_id }}"
+          Correlation-Id: "{{ engine_correlation_id | default(omit) }}"
         body:
           upgrade_action: start
       when: api_gt43
@@ -265,7 +265,7 @@
         body_format: json
         headers:
           Authorization: "Bearer {{ ovirt_auth.token }}"
-          Correlation-Id: "{{ engine_correlation_id }}"
+          Correlation-Id: "{{ engine_correlation_id | default(omit) }}"
         body:
           upgrade_action: finish
       when:
