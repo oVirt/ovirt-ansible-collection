@@ -52,14 +52,14 @@ options:
         description:
             - List of linked entities, which should be fetched along with the main entity.
             - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
-            - For type C(foreman), all follow parameters can be found at following url:
-              https://ovirt.github.io/ovirt-engine-api-model/master/#types/external_host_provider/links_summary
-            - For type C(os_image), all follow parameters can be found at following url:
-              https://ovirt.github.io/ovirt-engine-api-model/master/#types/open_stack_image_provider/links_summary
-            - For type C(os_volume), all follow parameters can be found at following url:
-              https://ovirt.github.io/ovirt-engine-api-model/master/#types/open_stack_volume_provider/links_summary
-            - For type C(os_network), all follow parameters can be found at following url:
-              https://ovirt.github.io/ovirt-engine-api-model/master/#types/open_stack_network_provider/links_summary
+            - "For type C(foreman), all follow parameters can be found at following url:
+              https://ovirt.github.io/ovirt-engine-api-model/master/#types/external_host_provider/links_summary"
+            - "For type C(os_image), all follow parameters can be found at following url:
+              https://ovirt.github.io/ovirt-engine-api-model/master/#types/open_stack_image_provider/links_summary"
+            - "For type C(os_volume), all follow parameters can be found at following url:
+              https://ovirt.github.io/ovirt-engine-api-model/master/#types/open_stack_volume_provider/links_summary"
+            - "For type C(os_network), all follow parameters can be found at following url:
+              https://ovirt.github.io/ovirt-engine-api-model/master/#types/open_stack_network_provider/links_summary"
         type: list
         version_added: 1.5.0
         elements: str
