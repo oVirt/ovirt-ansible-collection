@@ -28,14 +28,6 @@ options:
             - This parameter is deprecated and replaced by C(follows).
         type: list
         elements: str
-    follow:
-      description:
-        - List of linked entities, which should be fetched along with the main entity.
-        - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
-      type: list
-      version_added: 1.5.0
-      elements: str
-      aliases: ['follows']
     auth:
         description:
             - "Dictionary with values needed to create HTTP/HTTPS connection to oVirt:"
