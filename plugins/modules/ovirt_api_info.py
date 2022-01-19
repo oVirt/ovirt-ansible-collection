@@ -17,6 +17,7 @@ description:
     - "Retrieve information about the oVirt/RHV API."
     - This module was called C(ovirt_api_facts) before Ansible 2.9, returning C(ansible_facts).
       Note that the M(@NAMESPACE@.@NAME@.ovirt_api_info) module no longer returns C(ansible_facts)!
+options:
     follow:
       description:
         - List of linked entities, which should be fetched along with the main entity.
