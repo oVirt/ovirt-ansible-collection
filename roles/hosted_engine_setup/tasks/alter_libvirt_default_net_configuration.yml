@@ -16,6 +16,7 @@
 
 - name: Update libvirt default network configuration, destroy
   command: virsh net-destroy default
+  ignore_errors: true
   changed_when: false
 
 - name: Update libvirt default network configuration, undefine
