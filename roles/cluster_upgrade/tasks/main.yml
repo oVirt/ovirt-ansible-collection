@@ -231,15 +231,6 @@
             progress: 95
             description: "host upgrades are done (successful or not), restarting non-migratable VMs"
 
-        # TODO: These VMs aren't explicity stopped anywhere...should they be?
-        - name: Start again stopped VMs
-          ovirt_vm:
-            auth: "{{ ovirt_auth }}"
-            name: "{{ item }}"
-            state: running
-          ignore_errors: "yes"
-          loop: "{{ stopped_vms | default([]) | flatten(levels=1) }}"
-
         - name: Start again pin to host VMs
           ovirt_vm:
             auth: "{{ ovirt_auth }}"
