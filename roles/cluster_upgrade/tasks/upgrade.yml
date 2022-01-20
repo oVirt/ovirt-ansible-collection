@@ -116,17 +116,6 @@
       steps:
         - description: "Upgrading host: {{ host_name }}"
 
-  # - name: Upgrade host (dummy)
-  #   debug:
-  #     msg:
-  #       - "Skipping!!"
-  #       - auth: "{{ ovirt_auth }}"
-  #       - name: "{{ host_name }}"
-  #       - state: upgraded
-  #       - check_upgrade: "{{ check_upgrade }}"
-  #       - reboot_after_upgrade: "{{ reboot_after_upgrade }}"
-  #       - timeout: "{{ upgrade_timeout }}"
-
   - name: Upgrade host
     ovirt_host:
       auth: "{{ ovirt_auth }}"
