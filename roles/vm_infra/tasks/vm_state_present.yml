@@ -97,6 +97,7 @@
   with_items: "{{ create_sensitive_vms }}"
   loop_control:
     loop_var: "current_vm"
+  no_log: true
 
 - name: Wait for VMs to be started
   no_log: "{{ not debug_vm_create }}"
