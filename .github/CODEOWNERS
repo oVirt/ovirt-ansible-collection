@@ -1,3 +1,17 @@
 # https://help.github.com/en/articles/about-code-owners
 # Default reviewers for everything
-* @mnecas @arachmani @barpavel
+
+# Default if nothing more specific matches
+*                                  @mnecas
+
+# Roles
+roles/infra/                       @mnecas
+roles/vm_infra/                    @mnecas
+roles/cluster_upgrade/             @mnecas
+roles/engine_setup/                @mnecas
+roles/repositories/                @mnecas
+roles/image_template/              @mnecas
+roles/disaster_recovery/           @barpavel
+roles/hosted_engine_setup/         @arachmani
+roles/shutdown_env/                @arachmani
+roles/remove_stale_lun/            @vjuranek
