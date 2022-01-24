@@ -46,6 +46,16 @@ options:
       description:
         - "Name of the operating system which should be returned."
       type: str
+    follow:
+        description:
+            - List of linked entities, which should be fetched along with the main entity.
+            - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
+            - "All follow parameters can be found at following url:
+               https://ovirt.github.io/ovirt-engine-api-model/master/#types/operating_system_info/links_summary"
+        type: list
+        version_added: 1.5.0
+        elements: str
+        aliases: ['follows']
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
