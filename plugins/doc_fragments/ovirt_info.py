@@ -18,14 +18,14 @@ options:
             - It will fetch only IDs of nested entity. It doesn't fetch multiple levels of nested attributes.
               Only the attributes of the current entity. User can configure to fetch other
               attributes of the nested entities by specifying C(nested_attributes).
-            - This parameter is deprecated and replaced by C(follows).
+            - This parameter is deprecated and replaced by C(follow).
         type: bool
         default: false
     nested_attributes:
         description:
             - Specifies list of the attributes which should be fetched from the API.
             - This parameter apply only when C(fetch_nested) is I(true).
-            - This parameter is deprecated and replaced by C(follows).
+            - This parameter is deprecated and replaced by C(follow).
         type: list
         elements: str
     auth:
