@@ -73,6 +73,13 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Tue Jan 25 2021 Martin Necas <mnecas@redhat.com> - 2.0.0-0.4.BETA
+- roles: cluster_upgrade: Add progress tracking/reporting
+- roles: hosted_engine_setup: Adjust files permissions
+- roles: hosted_engine_setup: Add an option to define OpenSCAP security profile name
+- roles: engine_setup: Prepare answer files and default values for 4.5 release
+- info - Add follow link url to api model links_summary
+
 * Thu Dec 16 2021 Martin Perina <mperina@redhat.com> - 2.0.0-0.3.BETA
 - roles: hosted_engine_setup: Set ownership of copied engine logs
 - roles: hosted_engine_setup: Remove SPICE from graphic protocols
