@@ -73,7 +73,7 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
-* Tue Jan 25 2021 Martin Necas <mnecas@redhat.com> - 2.0.0-0.4.BETA
+* Tue Jan 25 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.4.BETA
 - roles: cluster_upgrade: Add progress tracking/reporting
 - roles: hosted_engine_setup: Adjust files permissions
 - roles: hosted_engine_setup: Add an option to define OpenSCAP security profile name
