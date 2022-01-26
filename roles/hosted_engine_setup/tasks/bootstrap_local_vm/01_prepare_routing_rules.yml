@@ -20,6 +20,7 @@
       enabled: true
   - name: Activate default libvirt network
     command: virsh net-autostart default
+    ignore_errors: true
     changed_when: false
   - name: Get routing rules, IPv4
     command: ip -j rule
