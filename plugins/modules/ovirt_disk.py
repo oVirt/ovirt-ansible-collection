@@ -633,6 +633,9 @@ class DisksModule(BaseModule):
                     name=self._module.params.get('storage_domain'),
                 ),
             ],
+            disk_profile=otypes.DiskProfile(
+                id=get_id_by_name(self._connection.system_service().disk_profiles_service(), self._module.params.get('profile'))
+            ) if self._module.params.get('profile') else None,
             quota=otypes.Quota(id=self._module.params.get('quota_id')) if self.param('quota_id') else None,
             shareable=self._module.params.get('shareable'),
             sgio=otypes.ScsiGenericIO(self.param('scsi_passthrough')) if self.param('scsi_passthrough') else None,
@@ -713,6 +716,36 @@ class DisksModule(BaseModule):
                         id=new_disk_storage.id,
                     ),
                 )['changed']
+
+        return changed
+
+    def update_disk_profile(self, disk_id):
+        """
+        Updates the disk_profile for a given disk
+
+        :param disk_id: id of the disk
+        :return: Wether a change has been made to the disk or not
+        """
+        changed = False
+        disk_service = self._service.service(disk_id)
+        disk = disk_service.get()
+        dp_service = self._connection.system_service().disk_profiles_service()
+
+        if self._module.params['profile']:
+            new_profile_id = get_id_by_name(dp_service, self._module.params['profile'])
+            if new_profile_id == disk.disk_profile.id:
+                return changed
+            update_disk = otypes.Disk(
+                id=disk.id,
+                disk_profile=otypes.DiskProfile(id=new_profile_id),
+            )
+            changed = self.action(
+                action='update',
+                disk=update_disk,
+                action_condition=lambda d: new_profile_id != d.disk_profile.id,
+                wait_condition=lambda d: d.status == otypes.DiskStatus.OK,
+                post_action=lambda _: time.sleep(self._module.params['poll_interval']),
+            )['changed']
 
         return changed
 
@@ -881,7 +914,7 @@ def main():
                 _wait=True if module.params['upload_image_path'] else module.params['wait'],
             )
             is_new_disk = ret['changed']
-            ret['changed'] = ret['changed'] or disks_module.update_storage_domains(ret['id'])
+            ret['changed'] = ret['changed'] or disks_module.update_storage_domains(ret['id']) or disks_module.update_disk_profile(ret['id'])
             # We need to pass ID to the module, so in case we want detach/attach disk
             # we have this ID specified to attach/detach method:
             module.params['id'] = ret['id']
