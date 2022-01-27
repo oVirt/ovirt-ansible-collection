@@ -91,7 +91,7 @@ define the following variables:
 | he_vm_ip_addr | null | engine VM ip address |
 | he_vm_ip_prefix | null | engine VM ip prefix |
 | he_dns_addr | null | engine VM DNS server |
-| he_default_gateway | null | engine VM default gateway |
+| he_gateway | null | engine VM default gateway |
 | he_vm_etc_hosts | false | Add engine VM ip and fqdn to /etc/hosts on the host |
 
 # Example Playbook
