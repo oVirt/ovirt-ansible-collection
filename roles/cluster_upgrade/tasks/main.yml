@@ -126,13 +126,6 @@
         include_tasks: cluster_policy.yml
         when: use_maintenance_policy
 
-      - name: Get list of VMs in cluster
-        ovirt_vm_info:
-          auth: "{{ ovirt_auth }}"
-          pattern: "cluster={{ cluster_name }}"
-        check_mode: "no"
-        register: vms_in_cluster
-
       - name: Determine what hosts have running pinned vms, they will not be upgraded
         include_tasks: pinned_vms.yml
 
