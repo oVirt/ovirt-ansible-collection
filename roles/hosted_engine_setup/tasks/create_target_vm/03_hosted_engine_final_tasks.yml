@@ -162,8 +162,6 @@
     command: dd bs=1M count=1024 oflag=direct if=/dev/zero of="{{ he_metadata_disk_path }}"
     environment: "{{ he_cmd_lang }}"
     become: true
-    become_user: vdsm
-    become_method: sudo
     changed_when: true
   - include_tasks: ../get_local_vm_disk_path.yml
   - name: Generate DHCP network configuration for the engine VM
@@ -242,15 +240,11 @@
       qemu-img convert -f qcow2 -O raw -t none -T none {{ local_vm_disk_path }} {{ he_virtio_disk_path }}
     environment: "{{ he_cmd_lang }}"
     become: true
-    become_user: vdsm
-    become_method: sudo
     changed_when: true
   - name: Verify copy of VM disk
     command: qemu-img compare {{ local_vm_disk_path }} {{ he_virtio_disk_path }}
     environment: "{{ he_cmd_lang }}"
     become: true
-    become_user: vdsm
-    become_method: sudo
     changed_when: true
     when: he_debug_mode|bool
   - name: Remove temporary entry in /etc/hosts for the local VM
