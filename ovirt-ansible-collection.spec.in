@@ -12,7 +12,7 @@ BuildArch:	noarch
 Url:		http://www.ovirt.org
 
 # TODO: Require ansible-core when both engine and hosts are ready for it
-# Requires:    ansible-core >= 2.11.0
+# Requires:    ansible-core >= 2.12.0
 Requires:	ovirt-imageio-client
 Requires:	python3-ovirt-engine-sdk4 >= 4.4.11
 Requires:	python3-netaddr
