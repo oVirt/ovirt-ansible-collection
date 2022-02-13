@@ -149,12 +149,33 @@
     with_items:
       - {src: "{{ he_local_vm_dir }}/vm.conf", dest: /var/run/ovirt-hosted-engine-ha}
       - {src: "{{ he_local_vm_dir }}/hosted-engine.conf", dest: /etc/ovirt-hosted-engine/}
+  - name: Verify fapolicyd.rules file
+    stat:
+      path: /etc/fapolicyd/fapolicyd.rules
+    register: fapolicy_rules
+  - name: Add rule to fapolicyd.rules file
+    blockinfile:
+      path: /etc/fapolicyd/fapolicyd.rules
+      block: |
+        # temporary entry added by hosted-engine-setup for running commands as vdsm user
+        allow perm=any uid=36 : dir=/var/tmp/
+      insertbefore: "^# Allow any program to open trusted language files"
+      marker: "## {mark} HOSTED-ENGINE-SETUP MANAGED BLOCK ##"
+      backup: yes
+    when: fapolicy_rules.stat.exists
+  - name: Restart fapolicyd service
+    service:
+      name: fapolicyd
+      state: restarted
+    when: fapolicy_rules.stat.exists
   - name: Copy configuration archive to storage
     command: >-
       dd bs=20480 count=1 oflag=direct if="{{ he_local_vm_dir }}/{{ he_conf_disk_details.disk.image_id }}"
       of="{{ he_conf_disk_path }}"
     environment: "{{ he_cmd_lang }}"
     become: true
+    become_user: vdsm
+    become_method: sudo
     changed_when: true
     args:
       warn: false
@@ -162,6 +183,8 @@
     command: dd bs=1M count=1024 oflag=direct if=/dev/zero of="{{ he_metadata_disk_path }}"
     environment: "{{ he_cmd_lang }}"
     become: true
+    become_user: vdsm
+    become_method: sudo
     changed_when: true
   - include_tasks: ../get_local_vm_disk_path.yml
   - name: Generate DHCP network configuration for the engine VM
@@ -240,13 +263,29 @@
       qemu-img convert -f qcow2 -O raw -t none -T none {{ local_vm_disk_path }} {{ he_virtio_disk_path }}
     environment: "{{ he_cmd_lang }}"
     become: true
+    become_user: vdsm
+    become_method: sudo
     changed_when: true
   - name: Verify copy of VM disk
     command: qemu-img compare {{ local_vm_disk_path }} {{ he_virtio_disk_path }}
     environment: "{{ he_cmd_lang }}"
     become: true
+    become_user: vdsm
+    become_method: sudo
     changed_when: true
     when: he_debug_mode|bool
+    # TODO: Check if this rule exists and remove it on cleanup
+  - name: Remove a temporary rule in fapolicyd.rules file
+    blockinfile:
+      path: /etc/fapolicyd/fapolicyd.rules
+      marker: "## {mark} HOSTED-ENGINE-SETUP MANAGED BLOCK ##"
+      state: absent
+    when: fapolicy_rules.stat.exists
+  - name: Restart fapolicyd service
+    service:
+      name: fapolicyd
+      state: restarted
+    when: fapolicy_rules.stat.exists
   - name: Remove temporary entry in /etc/hosts for the local VM
     lineinfile:
       dest: /etc/hosts
