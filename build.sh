@@ -2,7 +2,7 @@
 
 VERSION="2.0.0"
 MILESTONE=master
-RPM_RELEASE="0.4.BETA.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
+RPM_RELEASE="0.5.BETA.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
 
 BUILD_TYPE=$2
 BUILD_PATH=$3
