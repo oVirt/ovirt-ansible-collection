@@ -1,4 +1,11 @@
 ---
+- name: Get list of VMs in cluster
+  ovirt_vm_info:
+    auth: "{{ ovirt_auth }}"
+    pattern: "cluster={{ cluster_name }}"
+  check_mode: "no"
+  register: vms_in_cluster
+
 - name: Create list of host IDs which has running non-migratable VM and are not down
   set_fact:
     host_ids_items: "{{ item.host.id }}"
