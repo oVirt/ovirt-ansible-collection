@@ -12,7 +12,7 @@
       owner: root
       group: root
     when: ovirt_engine_setup_answer_file_path is undefined
-    no_log: yes
+    no_log: true
 
   - name: Copy custom answer file
     template:
@@ -24,7 +24,7 @@
     when: ovirt_engine_setup_answer_file_path is defined and (
       ovirt_engine_setup_use_remote_answer_file is not defined or not
       ovirt_engine_setup_use_remote_answer_file)
-    no_log: yes
+    no_log: true
 
   - name: Use remote's answer file
     set_fact:
@@ -47,7 +47,7 @@
       owner: root
       group: root
       mode: 0644
-      remote_src: yes
+      remote_src: true
 
   - name: Set 'best' to false
     replace:
@@ -71,7 +71,7 @@
     file:
       path: "/tmp/yum.conf"
       state: absent
-    ignore_errors: True
+    ignore_errors: true
 
   - name: Set offline parameter if variable is set
     set_fact:

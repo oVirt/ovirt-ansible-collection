@@ -53,7 +53,7 @@
 - name: Enable dnf modules
   command: "dnf module enable -y {{ ovirt_repositories_rh_dnf_modules | join(' ') }}"
   args:
-    warn: False
+    warn: false
   when:
     - ovirt_repositories_ovirt_version|string >= '4.4'
     - ovirt_repositories_target_host == 'engine'

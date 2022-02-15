@@ -14,6 +14,7 @@
   set_fact:
     cluster_scheduling_policy_properties: "{{ cluster_info.ovirt_clusters[0].custom_scheduling_policy_properties }}"
 
+# TODO: fix line-length, when moved to ansible-lint 5.0.0 remove 204 (line-length)
 - name: Set in cluster upgrade policy
   ovirt_cluster:
     auth: "{{ ovirt_auth }}"
@@ -22,4 +23,4 @@
   register: cluster_policy
   when:
     - (api_info.ovirt_api.product_info.version.major >= 4 and api_info.ovirt_api.product_info.version.major >= 2) or
-      (api_info.ovirt_api.product_info.version.major == 4 and api_info.ovirt_api.product_info.version.major == 1 and api_info.ovirt_api.product_info.version.revision >= 4)
+      (api_info.ovirt_api.product_info.version.major == 4 and api_info.ovirt_api.product_info.version.major == 1 and api_info.ovirt_api.product_info.version.revision >= 4)  # noqa 204 line-length

@@ -9,10 +9,11 @@
     path: "{{ image_path }}"
   register: image_path_st
 
+# TODO: fix line-length, when moved to ansible-lint 5.0.0 remove 204 (line-length)
 - name: Download the qcow image
   get_url:
     url: "{{ qcow_url }}"
-    dest: "{{ image_path_st.stat.isdir is defined and image_path_st.stat.isdir | ternary(image_path~'/'~qcow_url.rpartition('/')[-1], image_path) | regex_replace('//', '/') }}"
+    dest: "{{ image_path_st.stat.isdir is defined and image_path_st.stat.isdir | ternary(image_path~'/'~qcow_url.rpartition('/')[-1], image_path) | regex_replace('//', '/') }}"  # noqa 204 line-length
     force: "{{ not image_cache_download }}"
     checksum: "{{ image_checksum | default(omit) }}"
     timeout: "{{ image_download_timeout }}"
@@ -113,86 +114,88 @@
         - ovirt-template-image
 
     - block:
-      - name: Generate SSH keys
-        command: "ssh-keygen -t rsa -f {{ tmp_private_key_file }} -N ''"
-        args:
-          creates: "{{ tmp_private_key_file }}"
-        when: template_prerequisites_tasks is defined
-        delegate_to: localhost
-
-      - name: Create vm
-        ovirt_vm:
-          auth: "{{ ovirt_auth }}"
-          name: "{{ vm_name }}"
-          state: "{{ 'running' if template_prerequisites_tasks is defined else 'stopped' }}"
-          cluster: "{{ template_cluster }}"
-          io_threads: "{{ template_io_threads | default(omit) }}"
-          memory: "{{ template_memory | default(omit) }}"
-          memory_guaranteed: "{{ template_memory_guaranteed | default(omit) }}"
-          memory_max: "{{ template_memory_max | default(omit) }}"
-          cpu_cores: "{{ template_cpu }}"
-          operating_system: "{{ template_operating_system }}"
-          type: "{{ template_type | default(omit) }}"
-          cloud_init: "{{ {'user_name': 'root', 'authorized_ssh_keys': lookup('file', tmp_private_key_file~'.pub') } if template_prerequisites_tasks is defined else omit }}"
-          disks:
-            - id: "{{ disk_info.ovirt_disks[0].id }}"
-              bootable: true
-              interface: "{{ template_disk_interface }}"
-          nics: "{{ template_nics }}"
-
-      - name: Manage disks
-        ovirt_disk:
-          auth: "{{ ovirt_auth }}"
-          name: "{{ item.name | default(omit) }}"
-          size: "{{ item.size | default(omit) }}"
-          interface: "{{ item.interface | default(template_disk_interface) | default(omit) }}"
-          vm_name: "{{ vm_name }}"
-          format: "{{ item.format | default(template_disk_format) | default(omit) }}"
-          storage_domain: "{{ item.storage_domain | default(template_disk_storage) | default(omit) }}"
-          bootable: "{{ item.bootable | default(omit) }}"
-          wait: true
-        loop: "{{ template_disks }}"
-
-      - block:
-        - name: Wait for VMs IPv4
-          ovirt_vm_info:
-            auth: "{{ ovirt_auth }}"
-            pattern: "name={{ vm_name }}"
-            fetch_nested: true
-            nested_attributes: ips
-          register: vm_info
-          until: "vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4 | length > 0"
-          retries: 10
-          delay: 5
-
-        - name: Set Ip of the VM
-          set_fact:
-            vm_ip: "{{ vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4 }}"
-
-        - name: Include prerequisites tasks for VM
-          import_tasks: "{{ template_prerequisites_tasks if template_prerequisites_tasks is defined else 'empty.yml' }}"
-          delegate_to: "{{ vm_ip }}"
-          vars:
-            ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
-            ansible_user: root
-            ansible_ssh_private_key_file: "{{ tmp_private_key_file | default(omit) }}"
-
-        - name: Remove SSH keys
-          file:
-            state: absent
-            path: "{{ item }}"
+        - name: Generate SSH keys
+          command: "ssh-keygen -t rsa -f {{ tmp_private_key_file }} -N ''"
+          args:
+            creates: "{{ tmp_private_key_file }}"
+          when: template_prerequisites_tasks is defined
           delegate_to: localhost
-          with_items:
-            - "{{ tmp_private_key_file }}"
-            - "{{ tmp_private_key_file }}.pub"
 
-        - name: Stop vm
+        # TODO: fix line-length, when moved to ansible-lint 5.0.0 remove 204 (line-length)
+        - name: Create vm
           ovirt_vm:
             auth: "{{ ovirt_auth }}"
             name: "{{ vm_name }}"
-            state: stopped
+            state: "{{ 'running' if template_prerequisites_tasks is defined else 'stopped' }}"
+            cluster: "{{ template_cluster }}"
+            io_threads: "{{ template_io_threads | default(omit) }}"
+            memory: "{{ template_memory | default(omit) }}"
+            memory_guaranteed: "{{ template_memory_guaranteed | default(omit) }}"
+            memory_max: "{{ template_memory_max | default(omit) }}"
+            cpu_cores: "{{ template_cpu }}"
+            operating_system: "{{ template_operating_system }}"
+            type: "{{ template_type | default(omit) }}"
+            cloud_init: "{{ {'user_name': 'root', 'authorized_ssh_keys': lookup('file', tmp_private_key_file~'.pub') } if template_prerequisites_tasks is defined else omit }}"  # noqa 204 line-length
+            disks:
+              - id: "{{ disk_info.ovirt_disks[0].id }}"
+                bootable: true
+                interface: "{{ template_disk_interface }}"
+            nics: "{{ template_nics }}"
 
-        when: template_prerequisites_tasks is defined
+        - name: Manage disks
+          ovirt_disk:
+            auth: "{{ ovirt_auth }}"
+            name: "{{ item.name | default(omit) }}"
+            size: "{{ item.size | default(omit) }}"
+            interface: "{{ item.interface | default(template_disk_interface) | default(omit) }}"
+            vm_name: "{{ vm_name }}"
+            format: "{{ item.format | default(template_disk_format) | default(omit) }}"
+            storage_domain: "{{ item.storage_domain | default(template_disk_storage) | default(omit) }}"
+            bootable: "{{ item.bootable | default(omit) }}"
+            wait: true
+          loop: "{{ template_disks }}"
+
+        - block:
+            - name: Wait for VMs IPv4
+              ovirt_vm_info:
+                auth: "{{ ovirt_auth }}"
+                pattern: "name={{ vm_name }}"
+                fetch_nested: true
+                nested_attributes: ips
+              register: vm_info
+              until: "vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4 | length > 0"
+              retries: 10
+              delay: 5
+
+            - name: Set Ip of the VM
+              set_fact:
+                vm_ip: "{{ vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4 }}"
+
+            - name: Include prerequisites tasks for VM
+              import_tasks: "{{ template_prerequisites_tasks if template_prerequisites_tasks is defined else 'empty.yml' }}"
+              static: false
+              delegate_to: "{{ vm_ip }}"
+              vars:
+                ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+                ansible_user: root
+                ansible_ssh_private_key_file: "{{ tmp_private_key_file | default(omit) }}"
+
+            - name: Remove SSH keys
+              file:
+                state: absent
+                path: "{{ item }}"
+              delegate_to: localhost
+              with_items:
+                - "{{ tmp_private_key_file }}"
+                - "{{ tmp_private_key_file }}.pub"
+
+            - name: Stop vm
+              ovirt_vm:
+                auth: "{{ ovirt_auth }}"
+                name: "{{ vm_name }}"
+                state: stopped
+
+          when: template_prerequisites_tasks is defined
 
       when: template_info.ovirt_templates | length == 0
 
