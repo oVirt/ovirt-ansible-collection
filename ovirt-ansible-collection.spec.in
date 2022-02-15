@@ -70,6 +70,11 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Tue Feb 15 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.5.BETA
+- spec: Remove ansible requirements
+- roles: cluster_upgrade: Shutdown vms only on pinned to upgrade host
+- roles: hosted_engine_setup: Fix default gateway variable name
+
 * Tue Jan 25 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.4.BETA
 - roles: cluster_upgrade: Add progress tracking/reporting
 - roles: hosted_engine_setup: Adjust files permissions
