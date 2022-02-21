@@ -41,11 +41,15 @@
       auth: "{{ ovirt_auth }}"
     register: datacenter_facts
   - name: Fetch Datacenter ID
-    set_fact: >-
-      datacenter_id={{ cluster_facts.ovirt_clusters|json_query("[?id=='" + cluster_id + "'].data_center.id")|first }}
+    set_fact:
+      datacenter_id: "{{ item.data_center.id }}"
+    with_items: "{{ cluster_facts.ovirt_clusters }}"
+    when: item.id == cluster_id
   - name: Fetch Datacenter name
-    set_fact: >-
-      datacenter_name={{ datacenter_facts.ovirt_datacenters|json_query("[?id=='" + datacenter_id + "'].name")|first }}
+    set_fact:
+      datacenter_name: "{{ item.name }}"
+    with_items: "{{ datacenter_facts.ovirt_datacenters }}"
+    when: item.id == datacenter_id
   - name: Add NFS storage domain
     ovirt_storage_domain:
       state: unattached
