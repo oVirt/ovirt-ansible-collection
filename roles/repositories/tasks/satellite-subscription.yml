@@ -6,22 +6,22 @@
 
 - name: Install Satellite certificates
   dnf:
-    name: "{{ ovirt_repositories_rh_ca_rpm_url }}"
+    name: "{{ ovirt_repositories_ca_rpm_url }}"
     state: present
-    validate_certs: "{{ ovirt_repositories_rh_ca_rpm_validate_certs | default(omit) }}"
-    disable_gpg_check: "{{ ovirt_repositories_rh_ca_rpm_disable_gpg_check | default(omit) }}"
-  when: ovirt_repositories_rh_ca_rpm_url is defined
+    validate_certs: "{{ ovirt_repositories_ca_rpm_validate_certs | default(omit) }}"
+    disable_gpg_check: "{{ ovirt_repositories_ca_rpm_disable_gpg_check | default(omit) }}"
+  when: ovirt_repositories_ca_rpm_url is defined
 
 - name: Register to subscription manager
   command: |
     subscription-manager register
-    --org {{ ovirt_repositories_rh_org }}
-    --activationkey {{ ovirt_repositories_rh_activationkey }}
+    --org {{ ovirt_repositories_org }}
+    --activationkey {{ ovirt_repositories_activationkey }}
     {% if ovirt_repositories_force_register is defined and ovirt_repositories_force_register|bool %} --force {% endif %}
   changed_when: false
 
 - name: Enable dnf modules
-  command: "dnf module enable -y {{ ovirt_repositories_rh_dnf_modules | join(' ') }}"
+  command: "dnf module enable -y {{ ovirt_repositories_dnf_modules | join(' ') }}"
   args:
     warn: False
   when:

@@ -26,6 +26,11 @@ Role Variables
 | ovirt_repositories_force_register          | False                 | Bool to register the system even if it is already registered. |
 | ovirt_repositories_rhsm_server_hostname    | UNDEF                 | Hostname of the RHSM server. By default it's used from rhsm configuration. |
 | ovirt_repositories_clear                   | False                 | If True all repositories will be unregistered before registering new ones. |
+| ovirt_repositories_org                     | UNDEF                 | The org will be used for subscription manager. |
+| ovirt_repositories_activationkey           | UNDEF                 | The activation key will be used for the subscription manager. |
+| ovirt_repositories_ca_rpm_url              | UNDEF                 | The URL for Satellite rpm will set up host certificates. |
+| ovirt_repositories_ca_rpm_validate_certs   | UNDEF                 | If `False` it will ignore all SSL certificates for the `ovirt_repositories_ca_rpm_url`. |
+| ovirt_repositories_ca_rpm_disable_gpg_check| UNDEF                 | If `True` it will ignore all GPG check for the `ovirt_repositories_ca_rpm_url`. |
 
 Example Playbook
 ----------------
