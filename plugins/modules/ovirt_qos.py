@@ -1,15 +1,20 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+# Copyright (c) 2022 Red Hat, Inc.
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 DOCUMENTATION = '''
 ---
 module: ovirt_qos
-short_description: "Module to manage QoS entries in oVirt/RHV"
+short_description: "Module to manage QoS entries in @NAME@"
 author:
 - "Niall O Donnell (niall.odonnell@ppb.com)"
 description:
-    - "Module to manage QoS entries in oVirt/RHV."
+    - "Module to manage QoS entries in @NAME@."
     - "Doesn't support updating a QoS that exists"
     - "Only works with storage QoS entries atm"
 options:
@@ -29,12 +34,6 @@ options:
         description:
             - "Name of the data center where the QoS entry should be created."
         type: str
-        max_iops=dict(default=None),
-        read_iops=dict(default=None),
-        write_iops=dict(default=None),
-        max_throughput=dict(default=None),
-        read_throughput=dict(default=None),
-        write_throughput=dict(default=None),
     max_iops:
         description:
             - "The max number of read/write iops. If passed you can't pass a value for C(read_iops) or C(write_iops)"
@@ -81,7 +80,7 @@ extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 
 EXAMPLES = '''
 # Create a new storage QoS with default values for max_iops and max_throughput
-- ovirt_qos:
+- @NAMESPACE@.@NAME@.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
@@ -89,7 +88,7 @@ EXAMPLES = '''
     type: "storage"
 
 # Create a new storage QoS with default values for max_iops and read_throughput but 100 for write throughput
-- ovirt_qos:
+- @NAMESPACE@.@NAME@.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
@@ -98,7 +97,7 @@ EXAMPLES = '''
     write_throughput: 100
 
 # Create a new storage QoS with default values for write_iops and max_throughput but 100 for read iops
-- ovirt_qos:
+- @NAMESPACE@.@NAME@.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
@@ -107,7 +106,7 @@ EXAMPLES = '''
     read_iops: 100
 
 # Create a new storage QoS with 100 max_iops and 200 max_throughput
-- ovirt_qos:
+- @NAMESPACE@.@NAME@.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
@@ -117,7 +116,7 @@ EXAMPLES = '''
     max_throughput: 100
 
 # Remove a storage QoS
-- ovirt_qos:
+- @NAMESPACE@.@NAME@.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
@@ -132,7 +131,7 @@ id:
     type: str
     sample: 7de90f31-222c-436c-a1ca-7e655bd5b60c
 qos:
-    description: "Dictionary of all the QoS attributes. QoS attributes can be found on your oVirt/RHV instance
+    description: "Dictionary of all the QoS attributes. QoS attributes can be found on your @NAME@ instance
                   at following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/qos."
     returned: "On success if QoS is found."
     type: dict
@@ -154,6 +153,7 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     get_entity
 )
 
+
 class QosModule(BaseModule):
 
     def _get_qos_type(self, type):
@@ -165,8 +165,7 @@ class QosModule(BaseModule):
             return otypes.QosType.HOSTNETWORK
         elif type == 'cpu':
             return otypes.QosType.CPU
-        else:
-            return None
+        return None
 
     def build_entity(self):
         """
@@ -188,6 +187,7 @@ class QosModule(BaseModule):
             max_write_throughput=int(self._module.params.get('write_throughput')) if self._module.params.get('write_throughput') is not None else None,
         )
 
+
 def _get_qoss_service(connection, dc_name):
     """
     Gets the qoss_service from the data_center provided
@@ -200,7 +200,7 @@ def _get_qoss_service(connection, dc_name):
     if dc is None:
         dc = get_entity(dcs_service.service(dc_name))
         if dc is None:
-            return None
+            raise Exception('Datacenter not found')
 
     dc_service = dcs_service.data_center_service(dc.id)
     return dc_service.qoss_service()
@@ -228,9 +228,9 @@ def main():
         argument_spec=argument_spec,
         required_one_of=[['id', 'name']],
         mutually_exclusive=[
-            ['max_iops','read_iops'],
+            ['max_iops', 'read_iops'],
             ['max_iops', 'write_iops'],
-            ['max_throughput','read_throughput'],
+            ['max_throughput', 'read_throughput'],
             ['max_throughput', 'write_througput']
         ]
     )
@@ -259,6 +259,6 @@ def main():
     finally:
         connection.close(logout=auth.get('token') is None)
 
-if __name__ == "__main__":
-  main()
 
+if __name__ == "__main__":
+    main()

@@ -1,15 +1,20 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+# Copyright (c) 2022 Red Hat, Inc.
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 DOCUMENTATION = '''
 ---
 module: ovirt_disk_profile
-short_description: "Module to manage storage domain disk profiles in oVirt/RHV"
+short_description: "Module to manage storage domain disk profiles in @NAME@"
 author:
 - "Niall O Donnell (niall.odonnell@ppb.com)"
 description:
-    - "Module to manage storage domain disk profiles in oVirt/RHV."
+    - "Module to manage storage domain disk profiles in @NAME@."
 options:
     id:
         description:
@@ -33,7 +38,7 @@ options:
         type: str
     qos:
         description:
-            - "Name of the QoS entry on the disk profile. If not passed defaults to oVirt/RHV HE default"
+            - "Name of the QoS entry on the disk profile. If not passed defaults to @NAME@ HE default"
         type: str
     state:
         description:
@@ -46,7 +51,7 @@ extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 
 EXAMPLES = '''
 # Create a new disk profile on storage_domain_01 using the test_qos QoS in the Default datacenter
-- ovirt_disk_profile:
+- @NAMESPACE@.@NAME@.ovirt_disk_profile:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_disk_profile"
@@ -55,7 +60,7 @@ EXAMPLES = '''
     qos: "test_qos"
 
 # Create a new disk profile on storage_domain_01 in the Default datacenter using the HE default qos
-- ovirt_disk_profile:
+- @NAMESPACE@.@NAME@.ovirt_disk_profile:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_disk_profile"
@@ -63,7 +68,7 @@ EXAMPLES = '''
     storage_domain: "storage_domain_01"
 
 # Remove the test_qos disk profile
-- ovirt_disk_profile:
+- @NAMESPACE@.@NAME@.ovirt_disk_profile:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_disk_profile"
@@ -101,6 +106,7 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     get_entity
 )
 
+
 class DiskProfileModule(BaseModule):
 
     def _get_qos(self):
@@ -124,8 +130,6 @@ class DiskProfileModule(BaseModule):
 
         if qos is None:
             qos = get_entity(qos_service.service(self._module.params.get('qos')))
-            if qos is None:
-                return None
 
         return qos
 
@@ -141,11 +145,8 @@ class DiskProfileModule(BaseModule):
 
         if storage_domain is None:
             storage_domain = get_entity(storage_domains_service.service(storage_domain_name))
-            if storage_domain is None:
-                return None
 
         return storage_domain
-
 
     def build_entity(self):
         """
@@ -174,8 +175,6 @@ class DiskProfileModule(BaseModule):
             storage_domain=storage_domain,
         )
 
-
-
 def main():
     argument_spec = ovirt_full_argument_spec(
         state=dict(
@@ -200,7 +199,6 @@ def main():
         auth = module.params.pop('auth')
         connection = create_connection(auth)
 
-
         disk_profiles_service = connection.system_service().disk_profiles_service()
 
         disk_profile_module = DiskProfileModule(
@@ -220,6 +218,6 @@ def main():
     finally:
         connection.close(logout=auth.get('token') is None)
 
-if __name__ == "__main__":
-  main()
 
+if __name__ == "__main__":
+    main()
