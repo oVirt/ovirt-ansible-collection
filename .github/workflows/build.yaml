@@ -26,6 +26,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Upgrade pip
+        run: pip3 install --upgrade pip
+
       - name: Run build.sh
         run: ./automation/build.sh
 
@@ -51,6 +54,7 @@ jobs:
         run: yum install -y createrepo_c rpm-build yum-utils git ansible-core ansible-test python3-pip
       - name: Update all packages
         run: yum update -y
+
       - name: Install pip modules
         run: pip3 install pycodestyle pylint==2.4.4 voluptuous yamllint
 
