@@ -26,6 +26,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Upgrade pip
+        run: pip3 install --upgrade pip
+
       - name: Run build.sh
         run: ./automation/build.sh
 
@@ -52,11 +55,8 @@ jobs:
       - name: Update all packages
         run: yum update -y
 
-      - name: Upgrade pip
-        run: pip3 install --upgrade pip setuptools
-
       - name: Install pip modules
-        run: pip3 install pycodestyle pylint==2.4.4 voluptuous yamllint setuptools_rust
+        run: pip3 install pycodestyle pylint==2.4.4 voluptuous yamllint
 
       - name: Run build.sh
         run: ./automation/build.sh
