@@ -133,6 +133,12 @@
       - cluster_info.ovirt_clusters[0].gluster_service | bool
       - host_info.ovirt_hosts | length > 1
 
+  - name: Delay in minutes to wait to upgraded host getting good state
+    pause:
+      minutes: "{{ wait_before_next_upgrade }}"
+    when:
+      - host_info.ovirt_hosts | length > 1
+
   - name: progress - host upgrade complete (host 100% complete)
     include_tasks: log_progress.yml
     vars:
