@@ -38,32 +38,32 @@ options:
         description:
             - "The max number of read/write iops. If passed you can't pass a value for C(read_iops) or C(write_iops)"
             - "If no value is given it will default to the HE value, assuming C(read_iops) or C(write_iops) hasn't been set"
-        type: str
+        type: int
     write_iops:
         description:
             - "The max number of write iops. If passed you can't pass a value for C(max_iops)"
             - "If no value is given it will default to the HE value, assuming C(max_iops) hasn't been set"
-        type: str
+        type: int
     read_iops:
         description:
             - "The max number of read iops. If passed you can't pass a value for C(max_iops)"
             - "If no value is given it will default to the HE value, assuming C(max_iops) hasn't been set"
-        type: str
+        type: int
     max_throughput:
         description:
             - "The max number of read/write throughput. If passed you can't pass a value for C(read_throughput) or C(write_throughput)"
             - "If no value is given it will default to the HE value, assuming C(read_throughput) or C(write_throughput) hasn't been set"
-        type: str
+        type: int
     write_throughput:
         description:
             - "The max number of write throughput. If passed you can't pass a value for C(max_throughput)"
             - "If no value is given it will default to the HE value, assuming C(max_throughput) hasn't been set"
-        type: str
+        type: int
     read_throughput:
         description:
             - "The max number of read throughput. If passed you can't pass a value for C(max_throughput)"
             - "If no value is given it will default to the HE value, assuming C(max_throughput) hasn't been set"
-        type: str
+        type: int
     type:
         description:
             - "The type of QoS. Allows for one of storage/cpu/network/hostnetwork"
@@ -150,7 +150,8 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     create_connection,
     ovirt_full_argument_spec,
     search_by_name,
-    get_entity
+    get_entity,
+    get_id_by_name
 )
 
 
@@ -176,15 +177,16 @@ class QosModule(BaseModule):
         :return: otypes.QoS
         """
         return otypes.Qos(
-            name=self._module.params.get('id') if self._module.params.get('id') else self._module.params.get('name'),
+            name=self._module.params.get('name') if self._module.params.get('name') else None,
+            id = self._module.params.get('id') if self._module.params.get('id') else None,
             type=self._get_qos_type(self._module.params.get('type')),
             description=self._module.params.get('description') if self._module.params.get('description') else None,
-            max_iops=int(self._module.params.get('max_iops')) if self._module.params.get('max_iops') is not None else None,
-            max_read_iops=int(self._module.params.get('read_iops')) if self._module.params.get('read_iops') is not None else None,
-            max_read_throughput=int(self._module.params.get('read_throughput')) if self._module.params.get('read_throughput') is not None else None,
-            max_throughput=int(self._module.params.get('max_throughput')) if self._module.params.get('max_throughput') is not None else None,
-            max_write_iops=int(self._module.params.get('write_iops')) if self._module.params.get('write_iops') is not None else None,
-            max_write_throughput=int(self._module.params.get('write_throughput')) if self._module.params.get('write_throughput') is not None else None,
+            max_iops=self._module.params.get('max_iops') if self._module.params.get('max_iops') is not None else None,
+            max_read_iops=self._module.params.get('read_iops') if self._module.params.get('read_iops') is not None else None,
+            max_read_throughput=self._module.params.get('read_throughput') if self._module.params.get('read_throughput') is not None else None,
+            max_throughput=self._module.params.get('max_throughput') if self._module.params.get('max_throughput') is not None else None,
+            max_write_iops=self._module.params.get('write_iops') if self._module.params.get('write_iops') is not None else None,
+            max_write_throughput=self._module.params.get('write_throughput') if self._module.params.get('write_throughput') is not None else None,
         )
 
 
@@ -195,15 +197,7 @@ def _get_qoss_service(connection, dc_name):
     :returns: ovirt.services.QossService or None
     """
     dcs_service = connection.system_service().data_centers_service()
-    dc = search_by_name(dcs_service, dc_name)
-
-    if dc is None:
-        dc = get_entity(dcs_service.service(dc_name))
-        if dc is None:
-            raise Exception('Datacenter not found')
-
-    dc_service = dcs_service.data_center_service(dc.id)
-    return dc_service.qoss_service()
+    return dcs_service.data_center_service(get_id_by_name(dcs_service, dc_name)).qoss_service()
 
 
 
@@ -216,12 +210,12 @@ def main():
         id=dict(default=None),
         name=dict(default=None),
         data_center=dict(default=None),
-        max_iops=dict(default=None),
-        read_iops=dict(default=None),
-        write_iops=dict(default=None),
-        max_throughput=dict(default=None),
-        read_throughput=dict(default=None),
-        write_throughput=dict(default=None),
+        max_iops=dict(default=None, type='int'),
+        read_iops=dict(default=None, type='int'),
+        write_iops=dict(default=None, type='int'),
+        max_throughput=dict(default=None, type='int'),
+        read_throughput=dict(default=None, type='int'),
+        write_throughput=dict(default=None, type='int'),
         type=dict(default=None)
     )
     module = AnsibleModule(

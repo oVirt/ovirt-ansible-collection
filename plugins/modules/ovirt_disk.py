@@ -719,36 +719,6 @@ class DisksModule(BaseModule):
 
         return changed
 
-    def update_disk_profile(self, disk_id):
-        """
-        Updates the disk_profile for a given disk
-
-        :param disk_id: id of the disk
-        :return: Wether a change has been made to the disk or not
-        """
-        changed = False
-        disk_service = self._service.service(disk_id)
-        disk = disk_service.get()
-        dp_service = self._connection.system_service().disk_profiles_service()
-
-        if self._module.params['profile']:
-            new_profile_id = get_id_by_name(dp_service, self._module.params['profile'])
-            if new_profile_id == disk.disk_profile.id:
-                return changed
-            update_disk = otypes.Disk(
-                id=disk.id,
-                disk_profile=otypes.DiskProfile(id=new_profile_id),
-            )
-            changed = self.action(
-                action='update',
-                disk=update_disk,
-                action_condition=lambda d: new_profile_id != d.disk_profile.id,
-                wait_condition=lambda d: d.status == otypes.DiskStatus.OK,
-                post_action=lambda _: time.sleep(self._module.params['poll_interval']),
-            )['changed']
-
-        return changed
-
     def update_check(self, entity):
         return (
             equal(self._module.params.get('name'), entity.name) and
@@ -758,7 +728,8 @@ class DisksModule(BaseModule):
             equal(self._module.params.get('shareable'), entity.shareable) and
             equal(self.param('propagate_errors'), entity.propagate_errors) and
             equal(otypes.ScsiGenericIO(self.param('scsi_passthrough')) if self.param('scsi_passthrough') else None, entity.sgio) and
-            equal(self.param('wipe_after_delete'), entity.wipe_after_delete)
+            equal(self.param('wipe_after_delete'), entity.wipe_after_delete) and
+            equal(self.param('profile'), entity.disk_profile)
         )
 
 
@@ -914,7 +885,7 @@ def main():
                 _wait=True if module.params['upload_image_path'] else module.params['wait'],
             )
             is_new_disk = ret['changed']
-            ret['changed'] = ret['changed'] or disks_module.update_storage_domains(ret['id']) or disks_module.update_disk_profile(ret['id'])
+            ret['changed'] = ret['changed'] or disks_module.update_storage_domains(ret['id'])
             # We need to pass ID to the module, so in case we want detach/attach disk
             # we have this ID specified to attach/detach method:
             module.params['id'] = ret['id']

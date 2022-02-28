@@ -102,7 +102,7 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     ovirt_full_argument_spec,
-    search_by_name,
+    get_id_by_name,
     get_entity
 )
 
@@ -117,21 +117,9 @@ class DiskProfileModule(BaseModule):
         """
         dc_name = self._module.params.get('data_center')
         dcs_service = self._connection.system_service().data_centers_service()
-        dc = search_by_name(dcs_service, dc_name)
+        qos_service = dcs_service.data_center_service(get_id_by_name(dcs_service, dc_name)).qoss_service()
+        return get_entity(qos_service.qos_service(get_id_by_name(qos_service, self._module.params.get('qos'))))
 
-        if dc is None:
-            dc = get_entity(dcs_service.service(dc_name))
-            if dc is None:
-                return None
-
-        dc_service = dcs_service.data_center_service(dc.id)
-        qos_service = dc_service.qoss_service()
-        qos = search_by_name(qos_service, self._module.params.get('qos'))
-
-        if qos is None:
-            qos = get_entity(qos_service.service(self._module.params.get('qos')))
-
-        return qos
 
     def _get_storage_domain(self):
         """
@@ -141,12 +129,7 @@ class DiskProfileModule(BaseModule):
         """
         storage_domain_name = self._module.params.get('storage_domain')
         storage_domains_service = self._connection.system_service().storage_domains_service()
-        storage_domain = search_by_name(storage_domains_service, storage_domain_name)
-
-        if storage_domain is None:
-            storage_domain = get_entity(storage_domains_service.service(storage_domain_name))
-
-        return storage_domain
+        return get_entity(storage_domains_service.storage_domain_service(get_id_by_name(storage_domains_service, storage_domain_name)))
 
     def build_entity(self):
         """
@@ -168,7 +151,8 @@ class DiskProfileModule(BaseModule):
                 f"The storage domain: {self._module.params.get('storage_domain')} does not exist."
             )
         return otypes.DiskProfile(
-            name=self._module.params.get('id') if self._module.params.get('id') else self._module.params.get('name'),
+            name=self._module.params.get('name') if self._module.params.get('name') else None,
+            id = self._module.params.get('id') if self._module.params.get('id') else None,
             comment=self._module.params.get('comment'),
             description=self._module.params.get('description'),
             qos=qos,
