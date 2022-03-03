@@ -38,8 +38,8 @@
     retries: 12
     delay: 10
     until: >-
-      ovf_store_status.rc == 0 and ovf_store_status.stdout|from_json|json_query('status') == 'OK' and
-      ovf_store_status.stdout|from_json|json_query('description')|from_json|json_query('Updated')
+      ovf_store_status.rc == 0 and ovf_store_status.stdout|from_json|ovirt.ovirt.json_query('status') == 'OK' and
+      ovf_store_status.stdout|from_json|ovirt.ovirt.json_query('description')|from_json|ovirt.ovirt.json_query('Updated')
     with_items: "{{ ovf_store_disks }}"
   - name: Wait for OVF_STORE disk content
     shell: >-
@@ -72,17 +72,17 @@
   - name: Fetch Hosted Engine configuration disk path
     set_fact:
       he_conf_disk_path: >-
-        {{ (prepareimage_results.results|json_query("[?item.id=='" +
+        {{ (prepareimage_results.results|ovirt.ovirt.json_query("[?item.id=='" +
         he_conf_disk_details.id + "'].stdout")|first|from_json).path }}
   - name: Fetch Hosted Engine virtio disk path
     set_fact:
       he_virtio_disk_path: >-
-        {{ (prepareimage_results.results|json_query("[?item.id=='" +
+        {{ (prepareimage_results.results|ovirt.ovirt.json_query("[?item.id=='" +
         he_virtio_disk_details.id + "'].stdout")|first|from_json).path }}
   - name: Fetch Hosted Engine virtio metadata path
     set_fact:
       he_metadata_disk_path: >-
-        {{ (prepareimage_results.results|json_query("[?item.id=='" +
+        {{ (prepareimage_results.results|ovirt.ovirt.json_query("[?item.id=='" +
         he_metadata_disk_details.id + "'].stdout")|first|from_json).path }}
   - name: Shutdown local VM
     command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} shutdown {{ he_vm_name }}Local"
@@ -315,7 +315,7 @@
         register: health_result
         until: >-
           health_result.rc == 0 and 'health' in health_result.stdout and
-          health_result.stdout|from_json|json_query('*."engine-status"."health"')|first=="good"
+          health_result.stdout|from_json|ovirt.ovirt.json_query('*."engine-status"."health"')|first=="good"
         retries: 180
         delay: 5
         changed_when: true
