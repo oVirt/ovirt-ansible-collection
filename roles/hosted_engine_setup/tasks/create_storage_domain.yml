@@ -42,10 +42,10 @@
     register: datacenter_facts
   - name: Fetch Datacenter ID
     set_fact: >-
-      datacenter_id={{ cluster_facts.ovirt_clusters|ovirt.ovirt.json_query("[?id=='" + cluster_id + "'].data_center.id")|first }}
+      datacenter_id={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].data_center.id")|first }}
   - name: Fetch Datacenter name
     set_fact: >-
-      datacenter_name={{ datacenter_facts.ovirt_datacenters|ovirt.ovirt.json_query("[?id=='" + datacenter_id + "'].name")|first }}
+      datacenter_name={{ datacenter_facts.ovirt_datacenters|@NAMESPACE@.@NAME@.json_query("[?id=='" + datacenter_id + "'].name")|first }}
   - name: Add NFS storage domain
     ovirt_storage_domain:
       state: unattached
