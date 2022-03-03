@@ -123,21 +123,16 @@
       patterns: ^.*.(?<!meta).ovf$
       use_regex: true
     register: app_ovf
-  - name: Parse OVF
-    xml:
-      path: "{{ app_ovf.files[0].path }}"
-      xpath: /ovf:Envelope/Section/Disk
-      namespaces:
-        ovf: http://schemas.dmtf.org/ovf/envelope/1/
-        rasd: http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData
-        vssd: http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData
-        xsi: http://www.w3.org/2001/XMLSchema-instance
-      content: attribute
-    register: disk_size_xml
+  - name: Get ovf data
+    command: cat "{{ app_ovf.files[0].path }}"
+    register: ovf_data
+  - name: Get disk size from ovf data
+    set_fact:
+      disk_size: "{{ ovf_data['stdout'] | @NAMESPACE@.@NAME@.get_ovf_disk_size }}"
   - name: Get required size
     set_fact:
-      required_size: >-
-        {{ disk_size_xml.matches[0].Disk['{http://schemas.dmtf.org/ovf/envelope/1/}size']|int * 1024 * 1024 * 1024 +
+      required_size_new: >-
+        {{ disk_size|int * 1024 * 1024 * 1024 +
         storage_domain_details.ovirt_storage_domains[0].critical_space_action_blocker|int *
         1024 * 1024 * 1024 + 5 * 1024 * 1024 * 1024 }}
     # +5G: 2xOVF_STORE, lockspace, metadata, configuration
