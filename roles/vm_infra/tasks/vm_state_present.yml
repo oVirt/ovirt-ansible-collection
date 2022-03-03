@@ -114,7 +114,7 @@
   ovirt_tag:
     auth: "{{ ovirt_auth }}"
     name: "{{ item }}"
-    vms: "{{ create_vms|to_json|from_json|json_query(query)|map(attribute='name') | list }}"
+    vms: "{{ create_vms|to_json|from_json|@NAMESPACE@.@NAME@.json_query(query)|map(attribute='name') | list }}"
   with_items: "{{ create_vms | selectattr('tag', 'defined') | map(attribute='tag') | list | unique }}"
   vars:
     query: "[?contains(tag, '{{ item }}')]"
@@ -123,7 +123,7 @@
   ovirt_tag:
     auth: "{{ ovirt_auth }}"
     name: "{{ item }}"
-    vms: "{{ create_vms|to_json|from_json|json_query(query)|map(attribute='name') | list }}"
+    vms: "{{ create_vms|to_json|from_json|@NAMESPACE@.@NAME@.json_query(query)|map(attribute='name') | list }}"
   with_items: "{{ create_vms | selectattr('profile', 'defined') | map(attribute='profile')
     | selectattr('tag', 'defined') | map(attribute='tag') | list | unique }}"
   vars:

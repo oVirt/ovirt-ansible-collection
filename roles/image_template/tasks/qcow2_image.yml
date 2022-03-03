@@ -71,7 +71,7 @@
 
     - name: Find data domain
       set_fact:
-        disk_storage_domain: "{{ sd_info.ovirt_storage_domains|json_query(the_query)|list|first }}"
+        disk_storage_domain: "{{ sd_info.ovirt_storage_domains|@NAMESPACE@.@NAME@.json_query(the_query)|list|first }}"
       when: template_disk_storage is undefined
       vars:
         the_query: "[?type=='data']"
