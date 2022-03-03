@@ -71,7 +71,7 @@ options:
         aliases: ['ssh_public_key']
     enroll_certificate:
         description:
-            - "Enrolls the certificate of the host. Useful in case you get a warning that it is about to expire or has already expired.
+            - "Enrolls the certificate of the host. Useful in case you get a warning that it is about to expire or has already expired."
             - "The host must be in maintenance status before enrolling the certificates."
         default: False
         type: bool
