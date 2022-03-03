@@ -131,7 +131,7 @@
       disk_size: "{{ ovf_data['stdout'] | @NAMESPACE@.@NAME@.get_ovf_disk_size }}"
   - name: Get required size
     set_fact:
-      required_size_new: >-
+      required_size: >-
         {{ disk_size|int * 1024 * 1024 * 1024 +
         storage_domain_details.ovirt_storage_domains[0].critical_space_action_blocker|int *
         1024 * 1024 * 1024 + 5 * 1024 * 1024 * 1024 }}
