@@ -1,0 +1,4 @@
+---
+bugfixes:
+  - hosted_engine_setup - Fix cloud-init package removal in airgapped environment (https://github.com/oVirt/ovirt-ansible-collection/pull/442)
+
