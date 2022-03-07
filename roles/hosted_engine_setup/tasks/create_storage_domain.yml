@@ -124,11 +124,11 @@
       use_regex: true
     register: app_ovf
   - name: Get ovf data
-    set_fact:
-      ovf_data: "{{ lookup('file', app_ovf.files[0].path) }}"
+    command: cat "{{ app_ovf.files[0].path }}"
+    register: ovf_data
   - name: Get disk size from ovf data
     set_fact:
-      disk_size: "{{ ovf_data | @NAMESPACE@.@NAME@.get_ovf_disk_size }}"
+      disk_size: "{{ ovf_data['stdout'] | @NAMESPACE@.@NAME@.get_ovf_disk_size }}"
   - name: Get required size
     set_fact:
       required_size: >-
