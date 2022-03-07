@@ -149,12 +149,37 @@
     with_items:
       - {src: "{{ he_local_vm_dir }}/vm.conf", dest: /var/run/ovirt-hosted-engine-ha}
       - {src: "{{ he_local_vm_dir }}/hosted-engine.conf", dest: /etc/ovirt-hosted-engine/}
+  - name: Check fapolicyd status
+    systemd:
+      name: fapolicyd
+    register: fapolicyd_s
+  - name: Set fapolicyd rules path
+    set_fact:
+      fapolicyd_rules_dir: /etc/fapolicyd/rules.d
+  - name: Verify fapolicyd/rules.d directory
+    stat:
+      path: "{{ fapolicyd_rules_dir }}"
+    register: fapolicy_rules
+  - name: Add rule to fapolicy
+    block:
+      - name: Add rule to /etc/fapolicyd/rules.d
+        copy:
+          src: 35-allow-ansible-for-vdsm.rules
+          dest: "{{ fapolicyd_rules_dir }}"
+          mode: 0644
+      - name: Restart fapolicyd service
+        service:
+          name: fapolicyd
+          state: restarted
+    when: fapolicyd_s.status.SubState == 'running' and fapolicy_rules.stat.exists
   - name: Copy configuration archive to storage
     command: >-
       dd bs=20480 count=1 oflag=direct if="{{ he_local_vm_dir }}/{{ he_conf_disk_details.disk.image_id }}"
       of="{{ he_conf_disk_path }}"
     environment: "{{ he_cmd_lang }}"
     become: true
+    become_user: vdsm
+    become_method: sudo
     changed_when: true
     args:
       warn: false
@@ -253,6 +278,17 @@
     become_method: sudo
     changed_when: true
     when: he_debug_mode|bool
+  - name: Remove rule from fapolicy
+    block:
+      - name: Remove rule from /etc/fapolicyd/rules.d
+        file:
+          path: "{{ fapolicyd_rules_dir }}/35-allow-ansible-for-vdsm.rules"
+          state: absent
+      - name: Restart fapolicyd service
+        service:
+          name: fapolicyd
+          state: restarted
+    when: fapolicyd_s.status.SubState == 'running' and fapolicy_rules.stat.exists
   - name: Remove temporary entry in /etc/hosts for the local VM
     lineinfile:
       dest: /etc/hosts
