@@ -12,7 +12,7 @@ jobs:
     name: Build 8 - ansible 2.9
     runs-on: ubuntu-latest
     container:
-      image: quay.io/centos/centos:stream8
+      image: quay.io/ovirt/buildcontainer:el8stream
     steps:
       - name: Install packages
         run: yum install -y createrepo_c rpm-build yum-utils git epel-release
@@ -45,7 +45,7 @@ jobs:
     name: Build 9stream - ansible-core 2.12
     runs-on: ubuntu-latest
     container:
-      image: quay.io/centos/centos:stream9
+      image: quay.io/ovirt/buildcontainer:el9stream
     steps:
       - name: Checkout
         uses: actions/checkout@v2
