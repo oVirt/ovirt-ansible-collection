@@ -1,8 +1,8 @@
 #!/bin/bash
 
-VERSION="1.5.5"
+VERSION="2.0.0"
 MILESTONE=master
-RPM_RELEASE="0.1.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
+RPM_RELEASE="0.6.BETA.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
 
 BUILD_TYPE=$2
 BUILD_PATH=$3
@@ -71,7 +71,7 @@ build() {
     BUILD_PATH=$BUILD_PATH/ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME/
     mkdir -p $BUILD_PATH
     echo "The copying files to $BUILD_PATH"
-    cp --parents $(git ls-files) $BUILD_PATH
+    cp -r * $BUILD_PATH
     cd $BUILD_PATH
     rename
     dist

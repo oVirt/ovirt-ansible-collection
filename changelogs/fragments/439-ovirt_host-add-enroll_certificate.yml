@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - ovirt_host - Add enroll_certificate (https://github.com/oVirt/ovirt-ansible-collection/pull/439).

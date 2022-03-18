@@ -188,14 +188,14 @@ class StorageConnectionModule(BaseModule):
                     )
                 self.changed = True
 
-    def pre_remove(self, entity_id):
+    def pre_remove(self, entity):
         if self.param('storage'):
             sd, sd_service = self._get_storage_domain_service()
-            if entity_id in [
+            if entity in [
                 sd_conn.id for sd_conn in self._connection.follow_link(sd.storage_connections)
             ]:
                 scs_service = sd_service.storage_connections_service()
-                sc_service = scs_service.connection_service(entity_id)
+                sc_service = scs_service.connection_service(entity)
                 if not self._module.check_mode:
                     sc_service.remove()
                 self.changed = True

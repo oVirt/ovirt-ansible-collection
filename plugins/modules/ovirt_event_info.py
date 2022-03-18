@@ -60,6 +60,15 @@ options:
         required: false
         default: true
         type: bool
+    follow:
+        description:
+            - List of linked entities, which should be fetched along with the main entity.
+            - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
+            - "All follow parameters can be found at following url: https://ovirt.github.io/ovirt-engine-api-model/master/#types/event/links_summary"
+        type: list
+        version_added: 1.5.0
+        elements: str
+        aliases: ['follows']
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
@@ -114,12 +123,15 @@ def main():
         query=dict(default='', required=False),
         wait=dict(default=True, type='bool', required=False)
     )
-    module = AnsibleModule(argument_spec)
+    module = AnsibleModule(
+        argument_spec,
+        supports_check_mode=True,
+    )
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
+            version='3.0.0',
             collection_name='ovirt.ovirt'
         )
 
@@ -134,7 +146,8 @@ def main():
             search=module.params['search'],
             headers=module.params['headers'],
             query=module.params['query'],
-            wait=module.params['wait']
+            wait=module.params['wait'],
+            follow=",".join(module.params['follow'])
         )
 
         result = dict(

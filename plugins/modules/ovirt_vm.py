@@ -842,6 +842,16 @@ options:
                     - This option is only available for the SPICE protocol.
                     - Possible values are 1, 2 or 4.
                 type: int
+            copy_paste_enabled:
+                description:
+                    - Indicates whether a user is able to copy and paste content from an external host into the graphic console.
+                    - This option is only available for the SPICE console type.
+                type: bool
+            file_transfer_enabled:
+                description:
+                    - Indicates if a user is able to drag and drop files from an external host into the graphic console.
+                    - This option is only available for the SPICE console type.
+                type: bool
     exclusive:
         description:
             - "When C(state) is I(exported) this parameter indicates if the existing VM with the
@@ -894,6 +904,24 @@ options:
         description:
             - "Sets the value of the custom_emulated_machine attribute."
         type: str
+    virtio_scsi_enabled:
+        description:
+            - "Enable Virtio SCSI support."
+        type: bool
+        version_added: 1.7.0
+    multi_queues_enabled:
+        description:
+            - "If `true`, each virtual interface will get the optimal number of queues, depending on the available virtual Cpus."
+        type: bool
+        version_added: 1.7.0
+    virtio_scsi_multi_queues:
+        description:
+            - "Number of queues for a Virtio-SCSI controller, possible values:
+              -1 - Indicates that the queues will be automatically set.
+               0 - Indicates that the Virtio SCSI multi-queue will be disabled.
+              >0 - Number of Virtio SCSI queues to use by virtual machine."
+        type: int
+        version_added: 1.7.0
 
 notes:
     - If VM is in I(UNASSIGNED) or I(UNKNOWN) state before any operation, the module will fail.
@@ -1553,6 +1581,11 @@ class VmsModule(BaseModule):
                 self.param('cpu_pinning')
             )) else None,
             cpu_shares=self.param('cpu_shares'),
+            virtio_scsi=otypes.VirtioScsi(
+                enabled=self.param('virtio_scsi_enabled'),
+            ) if self.param('virtio_scsi_enabled') is not None else None,
+            multi_queues_enabled=self.param('multi_queues_enabled'),
+            virtio_scsi_multi_queues=self.param('virtio_scsi_multi_queues'),
             os=otypes.OperatingSystem(
                 type=self.param('operating_system'),
                 boot=otypes.Boot(
@@ -1610,8 +1643,12 @@ class VmsModule(BaseModule):
                 disconnect_action=display.get('disconnect_action'),
                 keyboard_layout=display.get('keyboard_layout'),
                 monitors=display.get('monitors'),
+                copy_paste_enabled=display.get('copy_paste_enabled'),
+                file_transfer_enabled=display.get('file_transfer_enabled'),
             ) if (
                 self.param('smartcard_enabled') is not None or
+                display.get('copy_paste_enabled') is not None or
+                display.get('file_transfer_enabled') is not None or
                 display.get('disconnect_action') is not None or
                 display.get('keyboard_layout') is not None or
                 display.get('monitors') is not None
@@ -1746,8 +1783,13 @@ class VmsModule(BaseModule):
             equal(self.param('serial_policy'), str(getattr(entity.serial_number, 'policy', None))) and
             equal(self.param('serial_policy_value'), getattr(entity.serial_number, 'value', None)) and
             equal(self.param('numa_tune_mode'), str(entity.numa_tune_mode)) and
+            equal(self.param('virtio_scsi_enabled'), entity.virtio_scsi.enabled) and
+            equal(self.param('multi_queues_enabled'), entity.multi_queues_enabled) and
+            equal(self.param('virtio_scsi_multi_queues'), entity.virtio_scsi_multi_queues) and
             equal(self.param('rng_device'), str(entity.rng_device.source) if entity.rng_device else None) and
             equal(provided_vm_display.get('monitors'), getattr(vm_display, 'monitors', None)) and
+            equal(provided_vm_display.get('copy_paste_enabled'), getattr(vm_display, 'copy_paste_enabled', None)) and
+            equal(provided_vm_display.get('file_transfer_enabled'), getattr(vm_display, 'file_transfer_enabled', None)) and
             equal(provided_vm_display.get('keyboard_layout'), getattr(vm_display, 'keyboard_layout', None)) and
             equal(provided_vm_display.get('disconnect_action'), getattr(vm_display, 'disconnect_action', None), ignore_case=True)
         )
@@ -2571,6 +2613,8 @@ def main():
                 disconnect_action=dict(type='str'),
                 keyboard_layout=dict(type='str'),
                 monitors=dict(type='int'),
+                file_transfer_enabled=dict(type='bool'),
+                copy_paste_enabled=dict(type='bool'),
             )
         ),
         exclusive=dict(type='bool'),
@@ -2579,6 +2623,9 @@ def main():
         force_migrate=dict(type='bool'),
         migrate=dict(type='bool', default=None),
         next_run=dict(type='bool'),
+        virtio_scsi_enabled=dict(type='bool'),
+        multi_queues_enabled=dict(type='bool'),
+        virtio_scsi_multi_queues=dict(type='int'),
         snapshot_name=dict(type='str'),
         snapshot_vm=dict(type='str'),
     )

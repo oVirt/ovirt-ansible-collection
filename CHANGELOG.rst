@@ -5,6 +5,46 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v1.6.2
+======
+
+Minor Changes
+-------------
+
+- remove_stale_lun - Fix example for `remote_stale_lun` role to be able to run it from engine (https://github.com/oVirt/ovirt-ansible-collection/pull/334).
+
+v1.6.1
+======
+
+Bugfixes
+--------
+
+- hosted_engine_setup - Use default bridge for IPv6 advertisements (https://github.com/oVirt/ovirt-ansible-collection/pull/331)
+- ovirt_auth - Fix token no_log (https://github.com/oVirt/ovirt-ansible-collection/pull/332).
+
+v1.5.5
+======
+
+Major Changes
+-------------
+
+- remove_stale_lun - Add role for removing stale LUN (https://bugzilla.redhat.com/1966873).
+
+Minor Changes
+-------------
+
+- engine_setup - Wait for webserver up after engine-config reboot (https://github.com/oVirt/ovirt-ansible-collection/pull/324).
+- hosted_engine_setup - Pause deployment on failure of `engine-backup --mode=restore` (https://github.com/oVirt/ovirt-ansible-collection/pull/327).
+- hosted_engine_setup - Text change - Consistently use 'bootstrap engine VM' (https://github.com/oVirt/ovirt-ansible-collection/pull/328).
+- hosted_engine_setup - Update Ansible requirements in README (https://github.com/oVirt/ovirt-ansible-collection/pull/321)
+- readme - Update Ansible requirement (https://github.com/oVirt/ovirt-ansible-collection/pull/326).
+
+Bugfixes
+--------
+
+- ovirt_auth - Fix password and username requirements (https://github.com/oVirt/ovirt-ansible-collection/pull/325).
+- ovirt_disk - Fix update_check with no VM (https://github.com/oVirt/ovirt-ansible-collection/pull/323).
+
 v1.5.4
 ======
 

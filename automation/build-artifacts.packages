@@ -1,7 +1,0 @@
-dnf-utils
-git
-python3-voluptuous
-python3-pycodestyle
-python3-pylint
-yamllint
-glibc-langpack-en

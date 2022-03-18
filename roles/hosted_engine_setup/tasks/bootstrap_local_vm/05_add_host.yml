@@ -26,12 +26,12 @@
     async: 86400
     poll: 0
     register: sshpf
-  - name: Evaluate temporary bootstrap engine URL
+  - name: Evaluate temporary bootstrap engine VM URL
     set_fact: bootstrap_engine_url="https://{{ he_host_address }}:{{ he_webui_forward_port }}/ovirt-engine/"
-  - name: Display the temporary bootstrap engine URL
+  - name: Display the temporary bootstrap engine VM URL
     debug:
       msg: >-
-        The bootstrap engine is temporary accessible over {{ bootstrap_engine_url }}
+        The bootstrap engine is temporarily accessible via {{ bootstrap_engine_url }}
   - name: Detect VLAN ID
     shell: ip -d link show {{ he_bridge_if }} | grep 'vlan ' | grep -Po 'id \K[\d]+' | cat
     environment: "{{ he_cmd_lang }}"
@@ -128,7 +128,7 @@
     register: include_after_add_host_results
   - name: Pause the execution to let the user interactively reconfigure the host
     block:
-      - name: Let the user connect to the bootstrap engine to manually fix host configuration
+      - name: Let the user connect to the bootstrap engine VM to manually fix host configuration
         debug:
           msg: >-
             You can now connect to {{ bootstrap_engine_url }} and check the status of this host and

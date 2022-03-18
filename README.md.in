@@ -37,7 +37,6 @@ Content of the collection
   * hosted_engine_setup
   * image_template
   * infra
-  * manageiq
   * repositories
   * shutdown_env
   * vm_infra

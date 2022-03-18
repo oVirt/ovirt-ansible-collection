@@ -46,6 +46,16 @@ options:
       description:
         - "Name of the operating system which should be returned."
       type: str
+    follow:
+        description:
+            - List of linked entities, which should be fetched along with the main entity.
+            - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
+            - "All follow parameters can be found at following url:
+               https://ovirt.github.io/ovirt-engine-api-model/master/#types/operating_system_info/links_summary"
+        type: list
+        version_added: 1.5.0
+        elements: str
+        aliases: ['follows']
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
@@ -91,12 +101,15 @@ def main():
         filter_keys=dict(default=None, type='list', elements='str', no_log=True),
         name=dict(default=None, type='str'),
     )
-    module = AnsibleModule(argument_spec)
+    module = AnsibleModule(
+        argument_spec,
+        supports_check_mode=True,
+    )
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
+            version='3.0.0',
             collection_name='ovirt.ovirt'
         )
 
@@ -104,7 +117,7 @@ def main():
         auth = module.params.pop('auth')
         connection = create_connection(auth)
         operating_systems_service = connection.system_service().operating_systems_service()
-        operating_systems = operating_systems_service.list()
+        operating_systems = operating_systems_service.list(follow=",".join(module.params['follow']))
         if module.params['name']:
             operating_systems = filter(lambda x: x.name == module.params['name'], operating_systems)
         result = dict(

@@ -44,6 +44,15 @@ options:
             - "Search term which is accepted by oVirt/RHV search backend."
             - "For example to search network starting with string vlan1 use: name=vlan1*"
         type: str
+    follow:
+        description:
+            - List of linked entities, which should be fetched along with the main entity.
+            - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
+            - "All follow parameters can be found at following url: https://ovirt.github.io/ovirt-engine-api-model/master/#types/network/links_summary"
+        type: list
+        version_added: 1.5.0
+        elements: str
+        aliases: ['follows']
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
@@ -84,12 +93,15 @@ def main():
     argument_spec = ovirt_info_full_argument_spec(
         pattern=dict(default='', required=False),
     )
-    module = AnsibleModule(argument_spec)
+    module = AnsibleModule(
+        argument_spec,
+        supports_check_mode=True,
+    )
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
+            version='3.0.0',
             collection_name='ovirt.ovirt'
         )
 
@@ -97,7 +109,10 @@ def main():
         auth = module.params.pop('auth')
         connection = create_connection(auth)
         networks_service = connection.system_service().networks_service()
-        networks = networks_service.list(search=module.params['pattern'])
+        networks = networks_service.list(
+            search=module.params['pattern'],
+            follow=",".join(module.params['follow'])
+        )
         result = dict(
             ovirt_networks=[
                 get_dict_of_struct(

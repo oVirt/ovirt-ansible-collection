@@ -18,6 +18,7 @@ he_appliance_ova: ''
 he_root_ssh_pubkey: ''
 he_root_ssh_access: 'yes'
 he_apply_openscap_profile: false
+he_openscap_profile_name: stig
 he_enable_fips: false
 he_cdrom: ''
 he_console_type: vnc
@@ -52,6 +53,7 @@ he_force_ip6: false
 he_pause_before_engine_setup: false
 he_pause_host: false
 he_pause_after_failed_add_host: true
+he_pause_after_failed_restore: true
 he_debug_mode: false
 
 ## Mandatory variables:
@@ -97,7 +99,7 @@ he_vm_ip_addr: null
 he_vm_ip_prefix: null
 he_dns_addr: null  # up to 3 DNS servers IPs can be added
 he_vm_etc_hosts: false  # user can add lines to /etc/hosts on the engine VM
-he_default_gateway: null
+he_gateway: null
 he_network_test: 'dns'  # can be: 'dns', 'ping', 'tcp' or 'none'
 he_tcp_t_address: null
 he_tcp_t_port: null

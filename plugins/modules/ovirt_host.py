@@ -69,6 +69,12 @@ options:
         default: False
         type: bool
         aliases: ['ssh_public_key']
+    enroll_certificate:
+        description:
+            - "Enrolls the certificate of the host. Useful in case you get a warning that it is about to expire or has already expired."
+            - "The host must be in maintenance status before enrolling the certificates."
+        default: False
+        type: bool
     kdump_integration:
         description:
             - "Specify if host will have enabled Kdump integration."
@@ -282,6 +288,12 @@ EXAMPLES = '''
 - @NAMESPACE@.@NAME@.ovirt_host:
     id: 00000000-0000-0000-0000-000000000000
     name: "new host name"
+
+- name: Enroll host certificates
+  @NAMESPACE@.@NAME@.ovirt_host:
+    state: maintenance
+    name: myhost
+    enroll_certificate: True
 '''
 
 RETURN = '''
@@ -493,6 +505,7 @@ def main():
         ssh_port=dict(default=None, type='int'),
         password=dict(default=None, no_log=True),
         public_key=dict(default=False, type='bool', aliases=['ssh_public_key']),
+        enroll_certificate=dict(default=False, type='bool'),
         kdump_integration=dict(default=None, choices=['enabled', 'disabled']),
         spm_priority=dict(default=None, type='int'),
         override_iptables=dict(default=None, type='bool'),
@@ -542,7 +555,7 @@ def main():
                 activate=module.params['activate'],
                 reboot=module.params.get('reboot_after_installation'),
                 result_state=(hoststate.MAINTENANCE if module.params['activate'] is False else hoststate.UP) if host is None else None,
-                fail_condition=hosts_module.failed_state_after_reinstall if host is None else lambda h: False,
+                fail_condition=hosts_module.failed_state_after_reinstall if host is not None else lambda h: False,
             )
             if module.params['activate'] and host is not None:
                 ret = hosts_module.action(
@@ -561,6 +574,13 @@ def main():
                 fail_condition=failed_state,
             )
             ret = hosts_module.create()
+            if module.params['enroll_certificate']:
+                ret = hosts_module.action(
+                    action='enroll_certificate',
+                    action_condition=lambda h: h.status == hoststate.MAINTENANCE,
+                    wait_condition=lambda h: h.status == hoststate.MAINTENANCE,
+                    fail_condition=failed_state,
+                )
         elif state == 'upgraded':
             result_state = hoststate.MAINTENANCE if host.status == hoststate.MAINTENANCE else hoststate.UP
             events_service = connection.system_service().events_service()

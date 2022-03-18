@@ -17,6 +17,16 @@ description:
     - "Retrieve information about the oVirt/RHV API."
     - This module was called C(ovirt_api_facts) before Ansible 2.9, returning C(ansible_facts).
       Note that the M(@NAMESPACE@.@NAME@.ovirt_api_info) module no longer returns C(ansible_facts)!
+options:
+    follow:
+      description:
+        - List of linked entities, which should be fetched along with the main entity.
+        - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
+        - "All follow parameters can be found at following url: https://ovirt.github.io/ovirt-engine-api-model/master/#types/api/links_summary"
+      type: list
+      version_added: 1.5.0
+      elements: str
+      aliases: ['follows']
 notes:
     - "This module returns a variable C(ovirt_api),
        which contains a information about oVirt/RHV API. You need to register the result with
@@ -58,14 +68,11 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
 
 def main():
     argument_spec = ovirt_info_full_argument_spec()
-    module = AnsibleModule(argument_spec)
+    module = AnsibleModule(
+        argument_spec,
+        supports_check_mode=True,
+    )
     check_sdk(module)
-    if module.params['fetch_nested'] or module.params['nested_attributes']:
-        module.deprecate(
-            "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
-            collection_name='ovirt.ovirt'
-        )
 
     try:
         auth = module.params.pop('auth')

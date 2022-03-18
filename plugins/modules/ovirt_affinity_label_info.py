@@ -49,6 +49,15 @@ options:
         description:
             - "Name of the host, which affinity labels should be listed."
         type: str
+    follow:
+        description:
+            - List of linked entities, which should be fetched along with the main entity.
+            - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
+            - "All follow parameters can be found at following url: https://ovirt.github.io/ovirt-engine-api-model/master/#types/affinity_label/links_summary"
+        type: list
+        version_added: 1.5.0
+        elements: str
+        aliases: ['follows']
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
@@ -116,12 +125,15 @@ def main():
         host=dict(default=None),
         vm=dict(default=None),
     )
-    module = AnsibleModule(argument_spec)
+    module = AnsibleModule(
+        argument_spec,
+        supports_check_mode=True,
+    )
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
+            version='3.0.0',
             collection_name='ovirt.ovirt'
         )
 
@@ -130,7 +142,7 @@ def main():
         connection = create_connection(auth)
         affinity_labels_service = connection.system_service().affinity_labels_service()
         labels = []
-        all_labels = affinity_labels_service.list()
+        all_labels = affinity_labels_service.list(follow=",".join(module.params['follow']))
         if module.params['name']:
             labels.extend([
                 l for l in all_labels

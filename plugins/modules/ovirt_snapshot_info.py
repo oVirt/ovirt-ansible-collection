@@ -37,6 +37,15 @@ options:
         description:
             - "Id of the snapshot we want to retrieve information about."
         type: str
+    follow:
+        description:
+            - List of linked entities, which should be fetched along with the main entity.
+            - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
+            - "All follow parameters can be found at following url: https://ovirt.github.io/ovirt-engine-api-model/master/#types/snapshot/links_summary"
+        type: list
+        version_added: 1.5.0
+        elements: str
+        aliases: ['follows']
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
@@ -81,12 +90,15 @@ def main():
         description=dict(default=None),
         snapshot_id=dict(default=None),
     )
-    module = AnsibleModule(argument_spec)
+    module = AnsibleModule(
+        argument_spec,
+        supports_check_mode=True,
+    )
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
+            version='3.0.0',
             collection_name='ovirt.ovirt'
         )
 
@@ -102,7 +114,7 @@ def main():
         snapshots_service = vms_service.service(vm.id).snapshots_service()
         if module.params['description']:
             snapshots = [
-                e for e in snapshots_service.list()
+                e for e in snapshots_service.list(follow=",".join(module.params['follow']))
                 if fnmatch.fnmatch(e.description, module.params['description'])
             ]
         elif module.params['snapshot_id']:
@@ -110,7 +122,7 @@ def main():
                 snapshots_service.snapshot_service(module.params['snapshot_id']).get()
             ]
         else:
-            snapshots = snapshots_service.list()
+            snapshots = snapshots_service.list(follow=",".join(module.params['follow']))
 
         result = dict(
             ovirt_snapshots=[

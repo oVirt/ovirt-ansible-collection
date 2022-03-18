@@ -72,6 +72,15 @@ options:
       type: bool
       default: false
       version_added: 1.2.0
+    follow:
+      description:
+        - List of linked entities, which should be fetched along with the main entity.
+        - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
+        - "All follow parameters can be found at following url: https://ovirt.github.io/ovirt-engine-api-model/master/#types/vm/links_summary"
+      type: list
+      version_added: 1.5.0
+      elements: str
+      aliases: ['follows']
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
@@ -98,7 +107,7 @@ EXAMPLES = '''
 # Gather info about VMs original template with follow parameter
 - @NAMESPACE@.@NAME@.ovirt_vm_info:
     pattern: name=myvm
-    follows: ['original_template.permissions', 'original_template.nics.vnic_profile']
+    follow: ['original_template.permissions', 'original_template.nics.vnic_profile']
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_vms[0] }}"
@@ -132,12 +141,15 @@ def main():
         case_sensitive=dict(default=True, type='bool'),
         max=dict(default=None, type='int'),
     )
-    module = AnsibleModule(argument_spec)
+    module = AnsibleModule(
+        argument_spec,
+        supports_check_mode=True,
+    )
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
+            version='3.0.0',
             collection_name='ovirt.ovirt'
         )
 
@@ -150,7 +162,7 @@ def main():
             all_content=module.params['all_content'],
             case_sensitive=module.params['case_sensitive'],
             max=module.params['max'],
-            follow=",".join(module.params['follows']),
+            follow=",".join(module.params['follow']),
         )
         if module.params['next_run']:
             vms = [vms_service.vm_service(vm.id).get(next_run=True) for vm in vms]
@@ -162,7 +174,7 @@ def main():
                     connection=connection,
                     fetch_nested=module.params.get('fetch_nested'),
                     attributes=module.params.get('nested_attributes'),
-                    follows=module.params.get('follows'),
+                    follow=module.params.get('follow'),
                 ) for c in vms
             ],
         )

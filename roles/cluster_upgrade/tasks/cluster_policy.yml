@@ -1,3 +1,4 @@
+---
 - name: Get name of the original scheduling policy
   ovirt_scheduling_policy_info:
     auth: "{{ ovirt_auth }}"

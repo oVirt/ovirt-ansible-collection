@@ -23,13 +23,6 @@
       - name: Set local vm dir path
         set_fact:
           he_local_vm_dir: "{{ otopi_localvm_dir.path }}"
-      - name: Fix local VM directory permission
-        file:
-          state: directory
-          path: "{{ he_local_vm_dir }}"
-          owner: vdsm
-          group: kvm
-          mode: 0775
       - include_tasks: ../install_appliance.yml
         when: he_appliance_ova is none or he_appliance_ova|length == 0
       - name: Register appliance PATH
@@ -71,7 +64,7 @@
       - debug: var=qemu_img_out
       - name: Parse qemu-img output
         set_fact:
-          virtual_size={{ qemu_img_out.stdout|from_json|json_query('"virtual-size"') }}
+          virtual_size={{ qemu_img_out.stdout|from_json|@NAMESPACE@.@NAME@.json_query('"virtual-size"') }}
         register: otopi_appliance_disk_size
       - debug: var=virtual_size
       - name: Hash the appliance root password
@@ -82,6 +75,7 @@
         template:
           src: "{{ item.src }}"
           dest: "{{ item.dest }}"
+          mode: 0640
         with_items:
           - {src: templates/user-data.j2, dest: "{{ he_local_vm_dir }}/user-data"}
           - {src: templates/meta-data.j2, dest: "{{ he_local_vm_dir }}/meta-data"}
@@ -93,6 +87,14 @@
           {{ he_local_vm_dir }}/network-config
         environment: "{{ he_cmd_lang }}"
         changed_when: true
+      - name: Fix local VM directory permission
+        file:
+          state: directory
+          path: "{{ he_local_vm_dir }}"
+          owner: vdsm
+          group: qemu
+          recurse: yes
+          mode: u=rwX,g=rwX,o=
       - name: Create local VM
         command: >-
           virt-install -n {{ he_vm_name }}Local --os-variant rhel8.0 --virt-type kvm --memory {{ he_mem_size_MB }}

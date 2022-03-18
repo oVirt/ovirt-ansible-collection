@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - ovirt_event - enable correlation_id on events (https://github.com/oVirt/ovirt-ansible-collection/pull/368).

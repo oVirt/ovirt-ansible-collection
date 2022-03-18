@@ -57,6 +57,15 @@ options:
                 description:
                   - "LUN id."
         type: dict
+    follow:
+        description:
+            - List of linked entities, which should be fetched along with the main entity.
+            - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
+            - "All follow parameters can be found at following url: https://ovirt.github.io/ovirt-engine-api-model/master/#types/host_storage/links_summary"
+        type: list
+        version_added: 1.5.0
+        elements: str
+        aliases: ['follows']
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
@@ -132,12 +141,15 @@ def main():
         iscsi=dict(default=None, type='dict'),
         fcp=dict(default=None, type='dict'),
     )
-    module = AnsibleModule(argument_spec)
+    module = AnsibleModule(
+        argument_spec,
+        supports_check_mode=True,
+    )
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
+            version='3.0.0',
             collection_name='ovirt.ovirt'
         )
 
@@ -155,7 +167,7 @@ def main():
             _login(host_service, module.params.get('iscsi'))
 
         # Get LUNs exposed from the specified target
-        host_storages = host_service.storage_service().list()
+        host_storages = host_service.storage_service().list(follow=",".join(module.params['follow']))
         if module.params.get('iscsi') is not None:
             host_storages = list(filter(lambda x: x.type == otypes.StorageType.ISCSI, host_storages))
             if 'target' in module.params.get('iscsi'):

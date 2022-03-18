@@ -83,11 +83,11 @@ def get_dict_of_struct_follow(struct, filter_keys):
     return struct
 
 
-def get_dict_of_struct(struct, connection=None, fetch_nested=False, attributes=None, filter_keys=None, follows=None):
+def get_dict_of_struct(struct, connection=None, fetch_nested=False, attributes=None, filter_keys=None, follow=None):
     """
     Convert SDK Struct type into dictionary.
     """
-    if follows:
+    if follow:
         return get_dict_of_struct_follow(struct, filter_keys)
 
     res = {}
@@ -423,7 +423,7 @@ def __get_auth_dict():
             token=dict(
                 type='str',
                 fallback=(env_fallback, ['OVIRT_TOKEN']),
-                no_log=True,
+                no_log=False,
             ),
             ca_file=dict(
                 type='str',
@@ -455,7 +455,7 @@ def ovirt_info_full_argument_spec(**kwargs):
         auth=__get_auth_dict(),
         fetch_nested=dict(default=False, type='bool'),
         nested_attributes=dict(type='list', default=list(), elements='str'),
-        follows=dict(default=list(), type='list', elements='str'),
+        follow=dict(default=list(), type='list', elements='str', aliases=['follows']),
     )
     spec.update(kwargs)
     return spec

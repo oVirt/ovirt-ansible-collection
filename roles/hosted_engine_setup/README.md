@@ -42,13 +42,15 @@ Ansible version >= 2.9.21 and < 2.10.0
 | he_bridge_if | null | interface used for the management bridge |
 | he_force_ip4 | false | Force resolving engine FQDN to ipv4 only using DNS server |
 | he_force_ip6 | false | Force resolving engine FQDN to ipv6 only using DNS server |
-| he_apply_openscap_profile | false | apply a default OpenSCAP security profile on HE VM |
+| he_apply_openscap_profile | false | Apply an OpenSCAP security profile on HE VM |
+| he_openscap_profile_name | stig | OpenSCAP profile name, available options: *stig*, *pci-dss*. Requires `he_apply_openscap_profile` to be `True` |
 | he_enable_fips | false | Enable FIPS on HE VM |
 | he_network_test | dns | the way of the network connectivity check performed by ovirt-hosted-engine-ha and ovirt-hosted-engine-setup, available options: *dns*, *ping*, *tcp* or *none*.  |
 | he_tcp_t_address | null | hostname to connect if he_network_test is *tcp*  |
 | he_tcp_t_port | null | port to connect if he_network_test is *tcp* |
 | he_pause_host | false | Pause the execution to let the user interactively fix host configuration |
 | he_pause_after_failed_add_host | true | Pause the execution if Add Host failed with status non_operational, to let the user interactively fix host configuration |
+| he_pause_after_failed_restore | true | Pause the execution if engine-backup --mode=restore failed, to let the user handle this manually |
 | he_pause_before_engine_setup | false | Pause the execution and allow the user to make configuration changes to the bootstrap engine VM before running `engine-setup` |
 | he_offline_deployment | false | If `True`, updates for all packages will be disabled |
 | he_additional_package_list | [] | List of additional packages to be installed on engine VM apart from ovirt-engine package |
@@ -89,7 +91,7 @@ define the following variables:
 | he_vm_ip_addr | null | engine VM ip address |
 | he_vm_ip_prefix | null | engine VM ip prefix |
 | he_dns_addr | null | engine VM DNS server |
-| he_default_gateway | null | engine VM default gateway |
+| he_gateway | null | engine VM default gateway |
 | he_vm_etc_hosts | false | Add engine VM ip and fqdn to /etc/hosts on the host |
 
 # Example Playbook
@@ -377,6 +379,8 @@ Both of the lock-file path and the engine's URL will be presented during the rol
 **On Failure**
 
 If "Add Host" failed and left the host in status "non_operational", by default the deployment will be paused, similarly to "Manual" above, so that the user can try to fix the host to get it to "up" state, before removing the lock file and continuing. If you want the process to fail instead of pausing, set `he_pause_after_failed_add_host` to false.
+
+If `engine-backup --mode=restore` failed, by default the deployment will be paused, to let the user handle this manually. If you want the process to fail instead of pausing, set `he_pause_after_failed_restore` to false.
 
 Demo
 ----

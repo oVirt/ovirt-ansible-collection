@@ -48,6 +48,22 @@ options:
         description:
             - "Name of the external provider, can be used as glob expression."
         type: str
+    follow:
+        description:
+            - List of linked entities, which should be fetched along with the main entity.
+            - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
+            - "For type C(foreman), all follow parameters can be found at following url:
+              https://ovirt.github.io/ovirt-engine-api-model/master/#types/external_host_provider/links_summary"
+            - "For type C(os_image), all follow parameters can be found at following url:
+              https://ovirt.github.io/ovirt-engine-api-model/master/#types/open_stack_image_provider/links_summary"
+            - "For type C(os_volume), all follow parameters can be found at following url:
+              https://ovirt.github.io/ovirt-engine-api-model/master/#types/open_stack_volume_provider/links_summary"
+            - "For type C(os_network), all follow parameters can be found at following url:
+              https://ovirt.github.io/ovirt-engine-api-model/master/#types/open_stack_network_provider/links_summary"
+        type: list
+        version_added: 1.5.0
+        elements: str
+        aliases: ['follows']
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
@@ -71,11 +87,11 @@ ovirt_external_providers:
         - "For type C(foreman), attributes appearing in the dictionary can be found on your oVirt/RHV instance
            at the following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/external_host_provider."
         - "For type C(os_image), attributes appearing in the dictionary can be found on your oVirt/RHV instance
-           at the following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/openstack_image_provider."
+           at the following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/open_stack_image_provider."
         - "For type C(os_volume), attributes appearing in the dictionary can be found on your oVirt/RHV instance
-           at the following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/openstack_volume_provider."
+           at the following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/open_stack_volume_provider."
         - "For type C(os_network), attributes appearing in the dictionary can be found on your oVirt/RHV instance
-           at the following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/openstack_network_provider."
+           at the following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/open_stack_network_provider."
     returned: On success
     type: list
 '''
@@ -114,12 +130,15 @@ def main():
             aliases=['provider'],
         ),
     )
-    module = AnsibleModule(argument_spec)
+    module = AnsibleModule(
+        argument_spec,
+        supports_check_mode=True,
+    )
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
+            version='3.0.0',
             collection_name='ovirt.ovirt'
         )
 
@@ -132,11 +151,11 @@ def main():
         )
         if module.params['name']:
             external_providers = [
-                e for e in external_providers_service.list()
+                e for e in external_providers_service.list(follow=",".join(module.params['follow']))
                 if fnmatch.fnmatch(e.name, module.params['name'])
             ]
         else:
-            external_providers = external_providers_service.list()
+            external_providers = external_providers_service.list(follow=",".join(module.params['follow']))
 
         result = dict(
             ovirt_external_providers=[

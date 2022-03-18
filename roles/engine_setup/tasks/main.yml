@@ -4,7 +4,7 @@
 
 - name: Install required packages for oVirt Engine deployment
   include_tasks: install_packages.yml
-  when: not ovirt_engine_setup_perform_upgrade
+  when: not ovirt_engine_setup_perform_upgrade|bool and not ovirt_engine_setup_offline|bool
 
 - name: Run engine setup
   include_tasks: engine_setup.yml

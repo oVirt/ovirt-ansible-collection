@@ -31,7 +31,7 @@ to ``ovirt_engine_setup_answer_file_path`` variable.
 
 | Name                            | Default value         |  Description                                              |
 |---------------------------------|-----------------------|-----------------------------------------------------------|
-| ovirt_engine_setup_version            | 4.4                   | Allowed versions: [4.1, 4.2, 4.3, 4.4]. |
+| ovirt_engine_setup_version            | 4.5                   | Allowed versions: [4.1, 4.2, 4.3, 4.4, 4.5]. |
 | ovirt_engine_setup_package_list       | []                    | List of extra packages to be installed on engine apart from `ovirt-engine` package. |
 | ovirt_engine_setup_fqdn               | UNDEF                 | Host fully qualified DNS name of the server. |
 | ovirt_engine_setup_organization       | UNDEF                 | Organization name for certificate. |
@@ -99,7 +99,7 @@ Example Playbook
     # Contains encrypted `ovirt_engine_setup_admin_password` variable using ansible-vault
     - passwords.yml
   vars:
-    ovirt_engine_setup_version: '4.4'
+    ovirt_engine_setup_version: '4.5'
     ovirt_engine_setup_organization: 'of.ovirt.engine.com'
   roles:
     - engine_setup
@@ -114,7 +114,7 @@ Example Playbook
     # Contains encrypted `ovirt_engine_setup_admin_password` variable using ansible-vault
     - passwords.yml
   vars:
-    ovirt_engine_setup_version: '4.4'
+    ovirt_engine_setup_version: '4.5'
     ovirt_engine_setup_organization: 'rhv.redhat.com'
     ovirt_engine_setup_product_type: 'rhv'
   roles:
@@ -130,7 +130,7 @@ Example Playbook
     # Contains encrypted `ovirt_engine_setup_admin_password` variable using ansible-vault
     - passwords.yml
   vars:
-    ovirt_engine_setup_version: '4.4'
+    ovirt_engine_setup_version: '4.5'
     ovirt_engine_setup_organization: 'of.ovirt.engine.com'
     ovirt_engine_setup_engine_configs:
       - key: SpiceProxyDefault
@@ -150,7 +150,7 @@ Example Playbook
     # Contains encrypted `ovirt_engine_setup_admin_password` variable using ansible-vault
     - passwords.yml
   vars:
-    ovirt_engine_setup_version: '4.4'
+    ovirt_engine_setup_version: '4.5'
     ovirt_engine_setup_organization: 'of.ovirt.engine.com'
     ovirt_engine_setup_restore_engine_cleanup: true
     ovirt_engine_setup_restore_file: '/path/to/backup.file'

@@ -56,19 +56,30 @@
   - name: Enable security policy
     block:
       - import_tasks: ../get_appliance_dist.yml
+      - name: Apply Security profile
+        block:
+          - name: Import OpenSCAP task
+            import_tasks: ../apply_openscap_profile.yml
+            when: he_apply_openscap_profile|bool
       - name: Enable FIPS on the engine VM
         command: >-
           fips-mode-setup --enable
         changed_when: true
-        # 'not he_apply_openscap_profile|bool' is not mere optimization,
-        # but an important part of the logic - FIPS is enabled only when 'he_apply_openscap_profile' is false,
-        # this indicates if the OpenSCAP profile was applied and didn't fail.
-        # See https://bugzilla.redhat.com/1983476
-        when: not he_apply_openscap_profile|bool and he_enable_fips|bool
-      - name: Import OpenSCAP task
-        import_tasks: ../apply_openscap_profile.yml
-        when: he_apply_openscap_profile|bool
-      - import_tasks: ../reboot_to_enable_fips.yml
+        when: he_enable_fips|bool
+      - name: Reboot the engine VM to apply security rules
+        reboot:
+          reboot_timeout: 1200
+      - name: Check if FIPS mode is enabled
+        block:
+          - name: Check if FIPS mode is enabled
+            command: sysctl -n crypto.fips_enabled
+            changed_when: true
+            register: he_fips_enabled
+          - name: Enforce FIPS mode
+            fail:
+              msg: "FIPS mode is not enabled as required"
+            when: he_fips_enabled.stdout != "1"
+        when: he_enable_fips|bool
     when: he_apply_openscap_profile|bool or he_enable_fips|bool
   - name: Include before engine-setup custom tasks files for the engine VM
     include_tasks: "{{ item }}"
@@ -76,7 +87,7 @@
     register: include_before_engine_setup_results
   - name: Pause the execution to allow the user to configure the bootstrap engine VM
     block:
-      - name: Allow the user to connect to the bootstrap engine and change configuration
+      - name: Allow the user to connect to the bootstrap engine VM and change configuration
         debug:
           msg: >-
             You can now connect from this host to the bootstrap engine VM using ssh as root
@@ -98,7 +109,7 @@
     - name: Get local VM dir path
       set_fact:
         he_local_vm_dir={{ hostvars[he_ansible_host_name]['he_local_vm_dir'] }}
-    - name: Clean bootstrap VM
+    - name: Clean bootstrap engine VM
       import_tasks: ../clean_localvm_dir.yml
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Clean local storage pools

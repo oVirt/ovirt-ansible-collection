@@ -19,6 +19,7 @@
   block:
     - name: Install required packages for oVirt Hosted Engine deployment
       import_tasks: install_packages.yml
+      when: not he_offline_deployment|bool
 
     - name: System configuration validations
       include_tasks: "{{ item }}"

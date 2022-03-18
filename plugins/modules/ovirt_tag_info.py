@@ -51,6 +51,15 @@ options:
         description:
             - "Name of the host, which tags should be listed."
         type: str
+    follow:
+        description:
+            - List of linked entities, which should be fetched along with the main entity.
+            - This parameter replaces usage of C(fetch_nested) and C(nested_attributes).
+            - "All follow parameters can be found at following url: https://ovirt.github.io/ovirt-engine-api-model/master/#types/tag/links_summary"
+        type: list
+        version_added: 1.5.0
+        elements: str
+        aliases: ['follows']
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 
@@ -107,12 +116,15 @@ def main():
         host=dict(default=None),
         vm=dict(default=None),
     )
-    module = AnsibleModule(argument_spec)
+    module = AnsibleModule(
+        argument_spec,
+        supports_check_mode=True,
+    )
     check_sdk(module)
     if module.params['fetch_nested'] or module.params['nested_attributes']:
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
-            version='2.0.0',
+            version='3.0.0',
             collection_name='ovirt.ovirt'
         )
 
@@ -121,7 +133,9 @@ def main():
         connection = create_connection(auth)
         tags_service = connection.system_service().tags_service()
         tags = []
-        all_tags = tags_service.list()
+        all_tags = tags_service.list(
+            follow=",".join(module.params['follow'])
+        )
         if module.params['name']:
             tags.extend([
                 t for t in all_tags
@@ -132,13 +146,17 @@ def main():
             host = search_by_name(hosts_service, module.params['host'])
             if host is None:
                 raise Exception("Host '%s' was not found." % module.params['host'])
-            tags.extend(hosts_service.host_service(host.id).tags_service().list())
+            tags.extend(hosts_service.host_service(host.id).tags_service().list(
+                follow=",".join(module.params['follow'])
+            ))
         if module.params['vm']:
             vms_service = connection.system_service().vms_service()
             vm = search_by_name(vms_service, module.params['vm'])
             if vm is None:
                 raise Exception("Vm '%s' was not found." % module.params['vm'])
-            tags.extend(vms_service.vm_service(vm.id).tags_service().list())
+            tags.extend(vms_service.vm_service(vm.id).tags_service().list(
+                follow=",".join(module.params['follow'])
+            ))
 
         if not (module.params['vm'] or module.params['host'] or module.params['name']):
             tags = all_tags
