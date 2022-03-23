@@ -50,6 +50,17 @@
     environment: "{{ he_cmd_lang }}"
     changed_when: true
     when: he_restore_from_file is defined and he_restore_from_file
+  - name: Remove rule from fapolicy
+    block:
+      - name: Remove rule from /etc/fapolicyd/rules.d
+        file:
+          path: "{{ fapolicyd_rules_dir }}/35-allow-ansible-for-postgres.rules"
+          state: absent
+      - name: Restart fapolicyd service
+        service:
+          name: fapolicyd
+          state: restarted
+    when: fapolicyd_s.status.SubState == 'running' and fapolicy_rules.stat.exists
   - name: Remove DisableFenceAtStartupInSec temporary file
     file:
       path: /root/DisableFenceAtStartupInSec.txt

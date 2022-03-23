@@ -81,6 +81,10 @@
             when: he_fips_enabled.stdout != "1"
         when: he_enable_fips|bool
     when: he_apply_openscap_profile|bool or he_enable_fips|bool
+  - name: Set fapolicyd rule file
+    set_fact:
+      fapolicyd_rule_file: 35-allow-ansible-for-postgres.rules
+  - include_tasks: ../apply_fapolicyd_rule.yml
   - name: Include before engine-setup custom tasks files for the engine VM
     include_tasks: "{{ item }}"
     with_fileglob: "hooks/enginevm_before_engine_setup/*.yml"

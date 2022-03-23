@@ -1,0 +1,24 @@
+---
+- name: Check fapolicyd status
+  systemd:
+    name: fapolicyd
+  register: fapolicyd_s
+- name: Set fapolicyd rules path
+  set_fact:
+    fapolicyd_rules_dir: /etc/fapolicyd/rules.d
+- name: Verify fapolicyd/rules.d directory
+  stat:
+    path: "{{ fapolicyd_rules_dir }}"
+  register: fapolicy_rules
+- name: Add rule to fapolicy
+  block:
+    - name: Add rule to /etc/fapolicyd/rules.d
+      copy:
+        src: "{{ fapolicyd_rule_file }}"
+        dest: "{{ fapolicyd_rules_dir }}"
+        mode: 0644
+    - name: Restart fapolicyd service
+      service:
+        name: fapolicyd
+        state: restarted
+  when: fapolicyd_s.status.SubState == 'running' and fapolicy_rules.stat.exists
