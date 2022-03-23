@@ -14,7 +14,7 @@ Url:		http://www.ovirt.org
 # TODO: Require ansible-core when both engine and hosts are ready for it
 # Requires:    ansible-core >= 2.12.0
 Requires:	ovirt-imageio-client
-Requires:	python3-ovirt-engine-sdk4 >= 4.4.11
+Requires:	python3-ovirt-engine-sdk4 >= 4.4.15
 Requires:	python3-netaddr
 Requires:	python3-jmespath
 Requires:	python3-passlib
@@ -70,6 +70,15 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Tue Mar 8 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.6.BETA
+- roles: hosted_engine_setup: Make cloud-init removal airgapped compatible
+- roles: hosted_engine_setup: Replace xml community module
+- roles: hosted_engine_setup: Support disa stig profile
+- roles: hosted_engine_setup: Use cat command instead of lookup
+- roles: repositories: Add satellite support
+- plugins: Remove unused imports
+- ovirt_host: Add enroll_certificate
+
 * Tue Feb 15 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.5.BETA
 - spec: Remove ansible requirements
 - roles: cluster_upgrade: Shutdown vms only on pinned to upgrade host
