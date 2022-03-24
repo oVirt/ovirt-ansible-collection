@@ -21,7 +21,7 @@
   changed_when: false
 
 - name: Enable dnf modules
-  command: "dnf module enable -y {{ ovirt_repositories_dnf_modules | join(' ') }}"
+  command: "dnf module enable -y {{ ovirt_repositories_rh_dnf_modules | join(' ') }}"
   args:
     warn: False
   when:
