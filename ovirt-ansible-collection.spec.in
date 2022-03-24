@@ -25,7 +25,6 @@ Requires:	python38-ovirt-engine-sdk4 >= 4.5.0
 Requires:	python38-netaddr
 Requires:	python38-jmespath
 Requires:	python38-passlib
-Requires:	qemu-img
 %endif
 
 Obsoletes:	ovirt-ansible-cluster-upgrade
