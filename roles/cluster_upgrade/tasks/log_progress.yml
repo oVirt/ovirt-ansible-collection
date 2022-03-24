@@ -21,3 +21,18 @@
       origin: "cluster_upgrade"
       description: "{{ message | join('') }}"
       cluster: "{{ cluster_id | default(omit) }}"
+
+  - name: Update the upgrade progress on the cluster
+    no_log: false
+    uri:
+      url: "{{ ovirt_auth.url }}/clusters/{{ cluster_id }}/upgrade"
+      method: POST
+      body_format: json
+      validate_certs: false
+      headers:
+        Authorization: "Bearer {{ ovirt_auth.token }}"
+        Correlation-Id: "{{ engine_correlation_id | default(omit) }}"
+      body:
+        upgrade_action: update
+        upgrade_percent_complete: "{{ progress }}"
+    when: api_gt45

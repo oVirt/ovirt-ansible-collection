@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - cluster_upgrade - Directly log progress to the cluster (https://github.com/oVirt/ovirt-ansible-collection/pull/449)
