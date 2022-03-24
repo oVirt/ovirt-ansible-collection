@@ -21,9 +21,6 @@ rpmbuild \
     -D "_topmdir $ROOT_PATH/rpmbuild" \
     -ts ./*.gz
 
-# install any build requirements
-yum-builddep $ROOT_PATH/output/*src.rpm
-
 # Create exported-artifacts dir
 [[ -d exported-artifacts ]] || mkdir $ROOT_PATH/exported-artifacts/
 
@@ -67,8 +64,6 @@ export ANSIBLE_LIBRARY="$COLLECTION_DIR/plugins/modules"
 mkdir -p $COLLECTION_DIR
 cp -r $OVIRT_BUILD/* $COLLECTION_DIR
 cd $COLLECTION_DIR
-
-pip3 install rstcheck antsibull-changelog "rich<11.0.0" "ansible-lint<5.0.0"
 
 # The sanity import test failed with error. (https://github.com/ansible/ansible/issues/76473)
 ansible-test sanity --skip-test import
