@@ -77,7 +77,7 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
-* Wed Mar 23 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.7.BETA
+* Thu Mar 24 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.7.BETA
 - spec: add python38 requirements
 
 * Tue Mar 8 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.6.BETA
