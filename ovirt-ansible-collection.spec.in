@@ -78,6 +78,7 @@ sh build.sh install %{collectionname}
 
 %changelog
 * Thu Mar 24 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.7.BETA
+- roles: hosted_engine_setup: Replace calls to psql as postgres with engine_psql.sh
 - spec: add python38 requirements
 
 * Tue Mar 8 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.6.BETA
