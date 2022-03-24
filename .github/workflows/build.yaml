@@ -26,15 +26,15 @@ jobs:
     container:
       image: quay.io/ovirt/buildcontainer:${{ matrix.container-name }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Update pip
         run: pip3 install pip --upgrade
 
       - name: Install pip modules
         run: >
           pip3 install pycodestyle pylint==2.4.4 voluptuous yamllint rstcheck antsibull-changelog "rich<11.0.0" "ansible-lint<5.0.0"
+
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Run build.sh
         run: ./automation/build.sh
