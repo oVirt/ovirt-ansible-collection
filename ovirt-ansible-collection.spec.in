@@ -13,7 +13,9 @@ Url:		http://www.ovirt.org
 
 BuildRequires:	ansible-core
 BuildRequires:	ansible-test
+%if 0%{?rhel} > 7 && 0%{?rhel} < 9
 BuildRequires:	glibc-langpack-en
+%endif
 
 # TODO: Require ansible-core when both engine and hosts are ready for it
 # Requires:    ansible-core >= 2.12.0
