@@ -36,6 +36,8 @@ he_webui_forward_port: 6900  # by default already open for VM console
 he_reserved_memory_MB: 512
 he_avail_memory_grace_MB: 200
 
+engine_psql: /usr/share/ovirt-engine/dbscripts/engine-psql.sh
+
 he_host_ip: null
 he_host_name: null
 he_host_address: null
