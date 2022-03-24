@@ -13,7 +13,6 @@ Url:		http://www.ovirt.org
 
 Buildrequires:	ansible-core
 Buildrequires:	ansible-test
-Buildrequires:	glibc-langpack-en
 
 # TODO: Require ansible-core when both engine and hosts are ready for it
 # Requires:    ansible-core >= 2.12.0
