@@ -11,8 +11,9 @@ License:	ASL 2.0 and GPLv3+
 BuildArch:	noarch
 Url:		http://www.ovirt.org
 
-Buildrequires:	ansible-core
-Buildrequires:	ansible-test
+BuildRequires:	ansible-core
+BuildRequires:	ansible-test
+BuildRequires:	glibc-langpack-en
 
 # TODO: Require ansible-core when both engine and hosts are ready for it
 # Requires:    ansible-core >= 2.12.0
