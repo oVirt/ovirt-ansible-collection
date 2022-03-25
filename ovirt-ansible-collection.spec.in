@@ -11,14 +11,27 @@ License:	ASL 2.0 and GPLv3+
 BuildArch:	noarch
 Url:		http://www.ovirt.org
 
+BuildRequires:	ansible-core
+BuildRequires:	ansible-test
+%if 0%{?rhel} > 7 && 0%{?rhel} < 9
+BuildRequires:	glibc-langpack-en
+%endif
+
 # TODO: Require ansible-core when both engine and hosts are ready for it
 # Requires:    ansible-core >= 2.12.0
 Requires:	ovirt-imageio-client
-Requires:	python3-ovirt-engine-sdk4 >= 4.4.11
+Requires:	python3-ovirt-engine-sdk4 >= 4.5.0
 Requires:	python3-netaddr
 Requires:	python3-jmespath
 Requires:	python3-passlib
 Requires:	qemu-img
+
+%if 0%{?rhel} < 9
+Requires:	python38-ovirt-engine-sdk4 >= 4.5.0
+Requires:	python38-netaddr
+Requires:	python38-jmespath
+Requires:	python38-passlib
+%endif
 
 Obsoletes:	ovirt-ansible-cluster-upgrade
 Obsoletes:	ovirt-ansible-disaster-recovery
@@ -70,6 +83,10 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Thu Mar 24 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.7.BETA
+- roles: hosted_engine_setup: Replace calls to psql as postgres with engine_psql.sh
+- spec: add python38 requirements
+
 * Tue Mar 8 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.6.BETA
 - roles: hosted_engine_setup: Make cloud-init removal airgapped compatible
 - roles: hosted_engine_setup: Replace xml community module

@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - repositories - Fix dnf module variable (https://github.com/oVirt/ovirt-ansible-collection/pull/454).

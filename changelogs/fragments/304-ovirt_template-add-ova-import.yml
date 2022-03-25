@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - ovirt_template - Add ova import of template (https://github.com/oVirt/ovirt-ansible-collection/pull/304).
