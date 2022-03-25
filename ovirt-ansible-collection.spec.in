@@ -24,6 +24,9 @@ Requires:	python3-ovirt-engine-sdk4 >= 4.5.0
 Requires:	python3-netaddr
 Requires:	python3-jmespath
 Requires:	python3-passlib
+Requires:	ansible-collection-ansible-netcommon
+Requires:	ansible-collection-ansible-posix
+Requires:	ansible-collection-ansible-utils
 Requires:	qemu-img
 
 %if 0%{?rhel} < 9
@@ -83,9 +86,13 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Fri Mar 25 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.8.BETA
+- spec: Add collections requirements
+- roles: cluster_upgrade: Directly log progress to the cluster
+
 * Thu Mar 24 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.7.BETA
 - roles: hosted_engine_setup: Replace calls to psql as postgres with engine_psql.sh
-- spec: add python38 requirements
+- spec: Add python38 requirements
 
 * Tue Mar 8 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.6.BETA
 - roles: hosted_engine_setup: Make cloud-init removal airgapped compatible
