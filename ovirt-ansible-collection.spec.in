@@ -87,8 +87,8 @@ sh build.sh install %{collectionname}
 
 %changelog
 * Fri Mar 25 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.8.BETA
-- spec: Add collections requirements
 - roles: cluster_upgrade: Directly log progress to the cluster
+- spec: Add collections requirements
 
 * Thu Mar 24 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.7.BETA
 - roles: hosted_engine_setup: Replace calls to psql as postgres with engine_psql.sh
