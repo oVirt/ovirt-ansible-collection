@@ -86,6 +86,9 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Fri Mar 25 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.9.BETA
+- roles: hosted_engine_setup: Fix call to engine-psql for vds_spm_id
+
 * Fri Mar 25 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.8.BETA
 - roles: cluster_upgrade: Directly log progress to the cluster
 - spec: Add collections requirements
