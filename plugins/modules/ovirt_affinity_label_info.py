@@ -30,7 +30,7 @@ version_added: "1.0.0"
 author: "Ondra Machacek (@machacekondra)"
 description:
     - "Retrieve information about one or more oVirt/RHV affinity labels."
-    - This module was called C(ovirt_affinity_label_facts) before Ansible 2.9, returning C(ansible_facts)
+    - This module was called C(ovirt_affinity_label_facts) before Ansible 2.9, returning C(ansible_facts).
       Note that the M(@NAMESPACE@.@NAME@.ovirt_affinity_label_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_affinity_labels), which
