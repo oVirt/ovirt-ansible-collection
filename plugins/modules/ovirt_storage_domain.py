@@ -230,6 +230,10 @@ options:
             - "If I(True) storage domain blocks will be discarded upon deletion. Enabled by default."
             - "This parameter is relevant only for block based storage domains."
         type: bool
+    storage_format:
+        description:
+            - "One of v1, v2, v3, v4, v5 - sets the storage format of the domain."
+        type: str
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
@@ -255,6 +259,19 @@ EXAMPLES = '''
       address: 10.34.63.199
       path: /path/data
       mount_options: noexec,nosuid
+
+# Add data NFS storage domain in an older format
+# E.g. the following will work if the data center is in 4.2 level.
+# Without this, you might get as error like:
+#     Cannot attach Storage. Storage Domain format V5 is illegal.
+- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+    name: data_nfs
+    host: myhost
+    data_center: mydatacenter
+    nfs:
+      address: 10.34.63.199
+      path: /path/data
+    storage_format: v4
 
 # Add data localfs storage domain
 - @NAMESPACE@.@NAME@.ovirt_storage_domain:
@@ -430,6 +447,11 @@ class StorageDomainModule(BaseModule):
             if self.param(sd_type) is not None:
                 return self.param(sd_type)
 
+    def _get_storage_format(self):
+        for sd_format in otypes.StorageFormat:
+            if self.param('storage_format').lower() == str(sd_format):
+                return sd_format
+
     def _login(self, storage_type, storage):
         if storage_type == 'iscsi':
             hosts_service = self._connection.system_service().hosts_service()
@@ -519,7 +541,8 @@ class StorageDomainModule(BaseModule):
                 nfs_version=otypes.NfsVersion(
                     storage.get('version')
                 ) if storage.get('version') else None,
-            ) if storage_type is not None else None
+            ) if storage_type is not None else None,
+            storage_format=self._get_storage_format(),
         )
 
     def _find_attached_datacenter_name(self, sd_name):
@@ -741,7 +764,8 @@ def main():
         warning_low_space=dict(type='int', default=None),
         destroy=dict(type='bool', default=None),
         format=dict(type='bool', default=None),
-        discard_after_delete=dict(type='bool', default=None)
+        discard_after_delete=dict(type='bool', default=None),
+        storage_format=dict(default=None),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
