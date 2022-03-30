@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - ovirt_template - add boot_menu and bios_type https://github.com/oVirt/ovirt-ansible-collection/pull/465).
