@@ -30,6 +30,7 @@ Requires:	ansible-collection-ansible-utils
 Requires:	qemu-img
 
 %if 0%{?rhel} < 9
+Requires:	ovirt-imageio-python38-client
 Requires:	python38-ovirt-engine-sdk4 >= 4.5.0
 Requires:	python38-netaddr
 Requires:	python38-jmespath
