@@ -1,3 +1,0 @@
----
-minor_changes:
-  - engine_setup - Prepare answer files and default values for 4.5 release (https://github.com/oVirt/ovirt-ansible-collection/pull/414).

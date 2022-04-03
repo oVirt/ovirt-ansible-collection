@@ -1,3 +1,0 @@
----
-minor_changes:
-  - repositories - Add to the documentation variable priority (https://github.com/oVirt/ovirt-ansible-collection/pull/440).
