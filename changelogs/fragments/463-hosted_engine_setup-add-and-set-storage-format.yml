@@ -1,3 +1,0 @@
----
-bugfixes:
-  - hosted_engine_setup - Add an option to set the storage format when createing a storage domain and use it (https://github.com/oVirt/ovirt-ansible-collection/pull/463).

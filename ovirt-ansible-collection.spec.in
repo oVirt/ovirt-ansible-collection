@@ -88,6 +88,7 @@ sh build.sh install %{collectionname}
 %changelog
 * Mon Apr 3 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-1
 - ovirt_template: add boot_menu and bios_type
+- roles: hosted_engine_setup - Add an option to set the storage format when createing a storage domain and use it
 - spec: Add python38-ovirt-imageio-client requirement
 
 * Fri Mar 25 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.9.BETA
