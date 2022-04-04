@@ -1,3 +1,0 @@
----
-bugfixes:
-  - ovirt_template - Fix creating templates where the base template version number is not 1 (https://github.com/oVirt/ovirt-ansible-collection/pull/370).

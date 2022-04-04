@@ -1,3 +1,0 @@
----
-bugfixes:
-  - repositories - fix force flag on subscription-manager (https://github.com/oVirt/ovirt-ansible-collection/pull/430).

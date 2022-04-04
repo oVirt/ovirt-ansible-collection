@@ -1,3 +1,0 @@
----
-minor_changes:
-  - repositories - add satelite support (https://github.com/oVirt/ovirt-ansible-collection/pull/431).

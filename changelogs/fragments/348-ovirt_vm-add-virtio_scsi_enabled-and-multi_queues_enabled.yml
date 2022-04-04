@@ -1,3 +1,0 @@
----
-minor_changes:
-  - ovirt_vm - Add virtio_scsi_enabled and multi_queues_enabled (https://github.com/oVirt/ovirt-ansible-collection/pull/348).

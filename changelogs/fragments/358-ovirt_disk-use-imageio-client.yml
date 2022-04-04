@@ -1,3 +1,0 @@
----
-minor_changes:
-  - ovirt_disk - Use imageio client (https://github.com/oVirt/ovirt-ansible-collection/pull/358).

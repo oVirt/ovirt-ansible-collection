@@ -1,3 +1,0 @@
----
-minor_changes:
-  - ovirt_remove_stale_lun - Use add_host instead of delegate_to (https://github.com/oVirt/ovirt-ansible-collection/pull/390).

@@ -1,3 +1,0 @@
----
-bugfixes:
-  - hosted_engine_setup - Replace xml community module (https://github.com/oVirt/ovirt-ansible-collection/pull/438).
