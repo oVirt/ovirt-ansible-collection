@@ -86,7 +86,10 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
-* Mon Apr 3 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-1
+* Tue Apr 5 2022 Martin Necas <mnecas@redhat.com> - 2.0.1-1
+- ovirt_storage_domain: make storage_format optional
+
+* Mon Apr 4 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-1
 - ovirt_template: add boot_menu and bios_type
 - roles: hosted_engine_setup - Add an option to set the storage format when createing a storage domain and use it
 - spec: Add python38-ovirt-imageio-client requirement
