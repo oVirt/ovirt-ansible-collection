@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Make storage_format optional - do not fail if missing (https://github.com/oVirt/ovirt-ansible-collection/pull/471).
