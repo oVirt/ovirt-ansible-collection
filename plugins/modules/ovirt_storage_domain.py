@@ -448,9 +448,10 @@ class StorageDomainModule(BaseModule):
                 return self.param(sd_type)
 
     def _get_storage_format(self):
-        for sd_format in otypes.StorageFormat:
-            if self.param('storage_format').lower() == str(sd_format):
-                return sd_format
+        if self.param('storage_format') is not None:
+            for sd_format in otypes.StorageFormat:
+                if self.param('storage_format').lower() == str(sd_format):
+                    return sd_format
 
     def _login(self, storage_type, storage):
         if storage_type == 'iscsi':
