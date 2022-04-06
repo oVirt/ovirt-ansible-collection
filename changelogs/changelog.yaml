@@ -666,3 +666,12 @@ releases:
     fragments:
     - 471-make-storage-format-optional.yml
     release_date: '2022-04-05'
+  2.0.2:
+    changes:
+      bugfixes:
+      - Fix progress logging via REST (https://github.com/oVirt/ovirt-ansible-collection/pull/474).
+      - Make storage_format optional - do not fail if missing (https://github.com/oVirt/ovirt-ansible-collection/pull/471).
+    fragments:
+    - 471-make-storage-format-optional.yml
+    - 474-cluster-update-log-progress-fix.yml
+    release_date: '2022-04-06'
