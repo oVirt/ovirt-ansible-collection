@@ -1,9 +1,20 @@
 ---
+- name: Set default admin user name
+  set_fact:
+    he_admin_username: 'admin@internal'
+- name: Set admin user name if keycloak is enabled
+  set_fact:
+    he_admin_username: >-
+      {{ 'admin@ovirt@internalsso'
+          if keycloak_configured_out.stdout_lines[0] == 'True'
+          else 'admin@internal'
+      }}
+    when: keycloak_configured_out.rc == 0
 - name: Obtain SSO token using username/password credentials
   # TODO: remove library/ovirt_auth.py when Ansible 2.5 is out explicitly requiring it
   environment:
     OVIRT_URL: https://{{ he_fqdn }}/ovirt-engine/api
-    OVIRT_USERNAME: admin@internal
+    OVIRT_USERNAME: "{{ he_admin_username }}"
     OVIRT_PASSWORD: "{{ he_admin_password }}"
   ovirt_auth:
     insecure: true

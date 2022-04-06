@@ -48,6 +48,10 @@
     with_items:
       - cloud-init-local
       - cloud-init
+  - name: Check if keycloak is configured
+    command: otopi-config-query query -k OVESETUP_KEYCLOAK_CORE/enable -f /etc/ovirt-engine-setup.conf
+    register: keycloak_configured_out
+    ignore_errors: true
   rescue:
     - name: Sync on engine machine
       command: sync
