@@ -33,6 +33,8 @@
         Authorization: "Bearer {{ ovirt_auth.token }}"
         Correlation-Id: "{{ engine_correlation_id | default(omit) }}"
       body:
-        upgrade_action: update
+        upgrade_action: update_progress
         upgrade_percent_complete: "{{ progress }}"
-    when: api_gt45
+    when:
+      - api_gt45 is defined and api_gt45
+      - upgrade_set is defined
