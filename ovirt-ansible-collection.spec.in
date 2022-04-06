@@ -86,6 +86,9 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Wed Apr 6 2022 Martin Necas <mnecas@redhat.com> - 2.0.2-1
+- cluster_upgrade: fix upgrade progress log_progress task
+
 * Tue Apr 5 2022 Martin Necas <mnecas@redhat.com> - 2.0.1-1
 - ovirt_storage_domain: make storage_format optional
 
