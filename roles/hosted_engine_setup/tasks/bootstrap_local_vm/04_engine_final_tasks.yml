@@ -48,6 +48,9 @@
     with_items:
       - cloud-init-local
       - cloud-init
+  - name: Check Admin username
+    command: otopi-config-query query -k OVESETUP_CONFIG/adminUser -f /etc/ovirt-engine-setup.conf
+    register: he_admin_username_out
   rescue:
     - name: Sync on engine machine
       command: sync
