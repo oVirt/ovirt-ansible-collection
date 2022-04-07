@@ -151,10 +151,12 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
 
 class AffinityGroupsModule(BaseModule):
 
-    def __init__(self, vm_ids, host_ids, *args, **kwargs):
+    def __init__(self, vm_ids, host_ids, host_label_ids, vm_label_ids, *args, **kwargs):
         super(AffinityGroupsModule, self).__init__(*args, **kwargs)
         self._vm_ids = vm_ids
         self._host_ids = host_ids
+        self._host_label_ids = host_label_ids
+        self._vm_label_ids = vm_label_ids
 
     def update_vms(self, affinity_group):
         """
@@ -164,7 +166,9 @@ class AffinityGroupsModule(BaseModule):
         """
         assigned_vms = self.assigned_vms(affinity_group)
         to_remove = [vm for vm in assigned_vms if vm not in self._vm_ids]
-        to_add = [vm for vm in self._vm_ids if vm not in assigned_vms]
+        to_add = []
+        if self._vm_ids:
+            to_add = [vm for vm in self._vm_ids and vm not in assigned_vms]
         ag_service = self._service.group_service(affinity_group.id)
         for vm in to_remove:
             ag_service.vms_service().vm_service(vm).remove()
@@ -223,8 +227,14 @@ class AffinityGroupsModule(BaseModule):
         ) else None
 
         affinity_group.hosts = [
-            otypes.Host(id=host_id) for host_id in self._host_ids
+            otypes.AffinityLabel(id=host_id) for host_id in self._host_ids
         ] if self._host_ids is not None else None
+        affinity_group.vm_labels = [
+            otypes.AffinityLabel(id=host_id) for host_id in self._vm_label_ids
+        ] if self._vm_label_ids is not None else None
+        affinity_group.host_labels = [
+            otypes.AffinityLabel(id=host_id) for host_id in self._host_label_ids
+        ] if self._host_label_ids is not None else None
 
         return affinity_group
 
@@ -271,6 +281,8 @@ def main():
         host_rule=dict(type='str', choices=['disabled', 'negative', 'positive']),
         vms=dict(type='list', elements='str'),
         hosts=dict(type='list', elements='str'),
+        vms_labels=dict(type='list', elements='str'),
+        hosts_labels=dict(type='list', elements='str'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
@@ -297,6 +309,7 @@ def main():
         clusters_service = connection.system_service().clusters_service()
         vms_service = connection.system_service().vms_service()
         hosts_service = connection.system_service().hosts_service()
+        affinity_labels_service = connection.system_service().affinity_labels_service()
         cluster_name = module.params['cluster']
         cluster = search_by_name(clusters_service, cluster_name)
         if cluster is None:
@@ -314,13 +327,22 @@ def main():
             get_id_by_name(hosts_service, host_name)
             for host_name in module.params['hosts']
         ]) if module.params['hosts'] is not None else None
-
+        vm_label_ids = sorted([
+            get_id_by_name(affinity_labels_service, label_name)
+            for label_name in module.params['vms_labels']
+        ]) if module.params['vms_labels'] is not None else None
+        host_label_ids = sorted([
+            get_id_by_name(affinity_labels_service, label_name)
+            for label_name in module.params['hosts_labels']
+        ]) if module.params['hosts_labels'] is not None else None
         affinity_groups_module = AffinityGroupsModule(
             connection=connection,
             module=module,
             service=affinity_groups_service,
             vm_ids=vm_ids,
             host_ids=host_ids,
+            host_label_ids=host_label_ids,
+            vm_label_ids=vm_label_ids,
         )
 
         state = module.params['state']
