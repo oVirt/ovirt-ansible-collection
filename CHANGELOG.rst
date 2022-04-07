@@ -12,7 +12,6 @@ Bugfixes
 --------
 
 - Fix progress logging via REST (https://github.com/oVirt/ovirt-ansible-collection/pull/474).
-- Make storage_format optional - do not fail if missing (https://github.com/oVirt/ovirt-ansible-collection/pull/471).
 
 v2.0.1
 ======
