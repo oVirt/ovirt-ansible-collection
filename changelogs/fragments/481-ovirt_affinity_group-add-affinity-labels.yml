@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - ovirt_affinity_group - Add affinity labels (https://github.com/oVirt/ovirt-ansible-collection/pull/481).
