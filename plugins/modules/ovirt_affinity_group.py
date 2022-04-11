@@ -74,6 +74,16 @@ options:
             - This parameter is support since oVirt/RHV 4.1 version.
         type: list
         elements: str
+    vms_labels:
+        description:
+            - List of the hosts lable names, which should have assigned this affinity group.
+        type: list
+        elements: str
+    hosts_labels:
+        description:
+            - List of the hosts lable names, which should have assigned this affinity group.
+        type: list
+        elements: str
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
