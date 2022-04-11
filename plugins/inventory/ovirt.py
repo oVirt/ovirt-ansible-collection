@@ -52,8 +52,7 @@ DOCUMENTATION = '''
 .services.VmsService.list) for filter parameters.
       ovirt_hostname_preference:
         required: False
-        description: list of options that describe the ordering for which hostnames should be assigned. See U(https://ovirt.github.io/ovirt-engin\
-e-api-model/master/#types/vm) for available attributes.
+        description: list of options that describe the ordering for which hostnames should be assigned. See U(https://ovirt.github.io/ovirt-engine-api-model/master/#types/vm) for available attributes.
         default: ['fqdn', 'name']
         type: list
 '''
