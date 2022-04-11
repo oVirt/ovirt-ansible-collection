@@ -17,7 +17,7 @@ BuildRequires:	ansible-test
 BuildRequires:	glibc-langpack-en
 %endif
 
-Requires:    ansible-core >= 2.12.0
+Requires:	ansible-core >= 2.12.0
 Requires:	ovirt-imageio-client
 Requires:	python3-ovirt-engine-sdk4 >= 4.5.0
 Requires:	python3-netaddr
@@ -36,6 +36,7 @@ Requires:	python38-jmespath
 Requires:	python38-passlib
 %endif
 
+Obsoletes:	ansible < 2.10.0
 Obsoletes:	ovirt-ansible-cluster-upgrade
 Obsoletes:	ovirt-ansible-disaster-recovery
 Obsoletes:	ovirt-ansible-engine-setup
