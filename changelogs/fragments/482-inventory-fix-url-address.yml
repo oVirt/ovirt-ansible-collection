@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - invenory - Fix url address (https://github.com/oVirt/ovirt-ansible-collection/pull/482).
