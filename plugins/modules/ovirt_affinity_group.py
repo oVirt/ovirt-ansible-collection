@@ -175,10 +175,10 @@ class AffinityGroupsModule(BaseModule):
         attached to affinity.
         """
         assigned_vms = self.assigned_vms(affinity_group)
-        to_remove = [vm for vm in assigned_vms if vm not in self._vm_ids]
+        to_remove = list(vm for vm in assigned_vms if vm not in self._vm_ids)
         to_add = []
         if self._vm_ids:
-            to_add = [vm for vm in self._vm_ids and vm not in assigned_vms]
+            to_add = list(vm for vm in self._vm_ids and vm not in assigned_vms)
         ag_service = self._service.group_service(affinity_group.id)
         for vm in to_remove:
             ag_service.vms_service().vm_service(vm).remove()
