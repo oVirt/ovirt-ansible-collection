@@ -1449,6 +1449,7 @@ class VmsModule(BaseModule):
                     disk=otypes.Disk(
                         id=att.disk.id,
                         format=otypes.DiskFormat(self.param('disk_format')),
+                        sparse=self.param('disk_format') != 'raw',
                         storage_domains=[
                             otypes.StorageDomain(
                                 id=get_id_by_name(
