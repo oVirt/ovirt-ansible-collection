@@ -1,8 +1,8 @@
 #!/bin/bash
 
-VERSION="2.0.0"
+VERSION="2.0.3"
 MILESTONE=master
-RPM_RELEASE="0.9.BETA.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
+RPM_RELEASE="0.1.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
 
 BUILD_TYPE=$2
 BUILD_PATH=$3

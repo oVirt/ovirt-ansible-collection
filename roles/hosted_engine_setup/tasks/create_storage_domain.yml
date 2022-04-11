@@ -46,12 +46,30 @@
   - name: Fetch Datacenter name
     set_fact: >-
       datacenter_name={{ datacenter_facts.ovirt_datacenters|@NAMESPACE@.@NAME@.json_query("[?id=='" + datacenter_id + "'].name")|first }}
+  - name: Fetch cluster name
+    set_fact: >-
+      cluster_name={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].name")|first }}
+  - name: Fetch cluster version
+    set_fact: >-
+      cluster_version={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].version")|first }}
+  - name: Enforce cluster major version
+    fail:
+      msg: "Cluster {{ cluster_name }} major version is {{ cluster_version.major }}, needs to be at least 4"
+    when: cluster_version.major < 4
+  - name: Enforce cluster minor version
+    fail:
+      msg: "Cluster {{ cluster_name }} minor version is {{ cluster_version.minor }}, needs to be at least 2"
+    when: cluster_version.minor < 2
+  - name: Set storage_format
+    set_fact: >-
+      storage_format={{ 'v4' if cluster_version.minor == 2 else 'v5' }}
   - name: Add NFS storage domain
     ovirt_storage_domain:
       state: unattached
       name: "{{ he_storage_domain_name }}"
       host: "{{ he_host_name }}"
       data_center: "{{ datacenter_name }}"
+      storage_format: "{{ storage_format }}"
       wait: true
       nfs:
         address: "{{ he_storage_domain_addr }}"
@@ -67,6 +85,7 @@
       name: "{{ he_storage_domain_name }}"
       host: "{{ he_host_name }}"
       data_center: "{{ datacenter_name }}"
+      storage_format: "{{ storage_format }}"
       wait: true
       glusterfs:
         address: "{{ he_storage_domain_addr }}"
@@ -81,6 +100,7 @@
       name: "{{ he_storage_domain_name }}"
       host: "{{ he_host_name }}"
       data_center: "{{ datacenter_name }}"
+      storage_format: "{{ storage_format }}"
       wait: true
       discard_after_delete: "{{ he_discard }}"
       # we are sending a single iSCSI path but, not sure if intended or if
@@ -104,6 +124,7 @@
       name: "{{ he_storage_domain_name }}"
       host: "{{ he_host_name }}"
       data_center: "{{ datacenter_name }}"
+      storage_format: "{{ storage_format }}"
       wait: true
       discard_after_delete: "{{ he_discard }}"
       fcp:

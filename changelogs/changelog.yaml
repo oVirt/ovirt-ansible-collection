@@ -530,3 +530,148 @@ releases:
     fragments:
     - 334-remove_stale_lun-role.yml
     release_date: '2021-08-26'
+  2.0.0:
+    changes:
+      bugfixes:
+      - hosted_engine_setup - Add OpenSCAP security profile name parameter (https://github.com/oVirt/ovirt-ansible-collection/pull/411).
+      - hosted_engine_setup - Add an option to set the storage format when createing
+        a storage domain and use it (https://github.com/oVirt/ovirt-ansible-collection/pull/463).
+      - hosted_engine_setup - Adjust files permissions (https://github.com/oVirt/ovirt-ansible-collection/pull/409).
+      - hosted_engine_setup - Fix call to engine-psql for vds_spm_id (https://github.com/oVirt/ovirt-ansible-collection/pull/459).
+      - hosted_engine_setup - Fix cloud-init package removal in airgapped environment
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/442)
+      - hosted_engine_setup - Remove SPICE graphic protocol (https://github.com/oVirt/ovirt-ansible-collection/pull/394).
+      - hosted_engine_setup - Replace xml community module (https://github.com/oVirt/ovirt-ansible-collection/pull/438).
+      - hosted_engine_setup - Support disa stig profile (https://github.com/oVirt/ovirt-ansible-collection/pull/426).
+      - hosted_engine_setup - Use cat command (https://github.com/oVirt/ovirt-ansible-collection/pull/443).
+      - hosted_engine_setup - Use tpgt in iscsi login (https://github.com/oVirt/ovirt-ansible-collection/pull/338)
+      - image_template - Remove static no - unsupported in ansible 2.12 (https://github.com/oVirt/ovirt-ansible-collection/pull/341).
+      - ovirt_host - Fix failed_state_after_reinstall condition (https://github.com/oVirt/ovirt-ansible-collection/pull/371).
+      - ovirt_template - Fix creating templates where the base template version number
+        is not 1 (https://github.com/oVirt/ovirt-ansible-collection/pull/370).
+      - repositories - Fix dnf module variable (https://github.com/oVirt/ovirt-ansible-collection/pull/454).
+      - repositories - fix force flag on subscription-manager (https://github.com/oVirt/ovirt-ansible-collection/pull/430).
+      major_changes:
+      - manageiq - role removed (https://github.com/oVirt/ovirt-ansible-collection/pull/375).
+      minor_changes:
+      - Add json_query filter (https://github.com/oVirt/ovirt-ansible-collection/pull/436).
+      - cluster_upgrade - Add progress tracking via event logs to the role (https://github.com/oVirt/ovirt-ansible-collection/pull/415)
+      - cluster_upgrade - Directly log progress to the cluster (https://github.com/oVirt/ovirt-ansible-collection/pull/449)
+      - engine_setup - Honor ovirt_engine_setup_offline variable (https://github.com/oVirt/ovirt-ansible-collection/pull/381).
+      - engine_setup - Prepare answer files and default values for 4.5 release (https://github.com/oVirt/ovirt-ansible-collection/pull/414).
+      - gluster_heal_info - Replacing gluster module to CLI to support RHV automation
+        hub (https://github.com/oVirt/ovirt-ansible-collection/pull/340).
+      - hosted_engine - Replace virt_net and xml with commands (https://github.com/oVirt/ovirt-ansible-collection/pull/359).
+      - hosted_engine_setup - Fix default gateway variable name (https://github.com/oVirt/ovirt-ansible-collection/pull/423).
+      - hosted_engine_setup - Fix default gateway variable name (https://github.com/oVirt/ovirt-ansible-collection/pull/423).
+      - hosted_engine_setup - Fix permissions on copied engine logs, needed for OpenSCAP
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/404).
+      - hosted_engine_setup - Honor he_offline_deployment variable (https://github.com/oVirt/ovirt-ansible-collection/pull/380).
+      - hosted_engine_setup - Replace calls to psql as postgres with engine_psql.sh
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/453).
+      - hosted_engine_setup - configured abrt initial files only when needed (https://github.com/oVirt/ovirt-ansible-collection/pull/397).
+      - info - Rename follows to follow parameter and add alias (https://github.com/oVirt/ovirt-ansible-collection/pull/367).
+      - info - bump deprecate version for fetch_nested and nested_attributes (https://github.com/oVirt/ovirt-ansible-collection/pull/378).
+      - info modules - Add follow link url to api model links_summary
+      - info modules - Enable follow parameter (https://github.com/oVirt/ovirt-ansible-collection/pull/355).
+      - manageiq - add deprecation info (https://github.com/oVirt/ovirt-ansible-collection/pull/384).
+      - ovirt_disk - Add warning for disk attachments (https://github.com/oVirt/ovirt-ansible-collection/pull/347).
+      - ovirt_disk - Use imageio client (https://github.com/oVirt/ovirt-ansible-collection/pull/358).
+      - ovirt_event - enable correlation_id on events (https://github.com/oVirt/ovirt-ansible-collection/pull/368).
+      - ovirt_host - Add enroll_certificate (https://github.com/oVirt/ovirt-ansible-collection/pull/439).
+      - ovirt_permission - add mac pool (https://github.com/oVirt/ovirt-ansible-collection/pull/353).
+      - ovirt_remove_stale_lun - Allow user to remove multiple LUNs (https://github.com/oVirt/ovirt-ansible-collection/pull/357).
+      - ovirt_remove_stale_lun - Retry "multipath -f" while removing the LUNs (https://github.com/oVirt/ovirt-ansible-collection/pull/382).
+      - ovirt_remove_stale_lun - Use add_host instead of delegate_to (https://github.com/oVirt/ovirt-ansible-collection/pull/390).
+      - ovirt_storage_template_info - fix docs (https://github.com/oVirt/ovirt-ansible-collection/pull/356).
+      - ovirt_storage_vm_info - fix docs (https://github.com/oVirt/ovirt-ansible-collection/pull/356).
+      - ovirt_template - Add ova import of template (https://github.com/oVirt/ovirt-ansible-collection/pull/304).
+      - ovirt_template - add boot_menu and bios_type https://github.com/oVirt/ovirt-ansible-collection/pull/465).
+      - ovirt_vm - Add display file_transfer_enabled and copy_paste_enabled (https://github.com/oVirt/ovirt-ansible-collection/pull/339).
+      - ovirt_vm - Add virtio_scsi_enabled and multi_queues_enabled (https://github.com/oVirt/ovirt-ansible-collection/pull/348).
+      - ovirt_vm - Add virtio_scsi_multi_queues (https://github.com/oVirt/ovirt-ansible-collection/pull/373).
+      - plugins - Remove unused imports (https://github.com/oVirt/ovirt-ansible-collection/pull/444).
+      - repositories - Add to the documentation variable priority (https://github.com/oVirt/ovirt-ansible-collection/pull/440).
+      - repositories - Replace redhat_subscription and rhsm_repository with command
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/346).
+      - repositories - Update host and engine repositories to 4.4.9 (https://github.com/oVirt/ovirt-ansible-collection/pull/363).
+      - repositories - add no_log to register (https://github.com/oVirt/ovirt-ansible-collection/pull/350).
+      - repositories - add satelite support (https://github.com/oVirt/ovirt-ansible-collection/pull/431).
+      - vm_infra - Add no_log to Manage VMs state task (https://github.com/oVirt/ovirt-ansible-collection/pull/417).
+    fragments:
+    - 304-ovirt_template-add-ova-import.yml
+    - 338-use-tpgt-in-iscsi-login.yml
+    - 339-ovirt_vm-add-display-params.yml
+    - 340-replace-gluster-module-to-cli.yml
+    - 341-image_template-fix-include-tasks.yml
+    - 346-repositories-replace-redhat_subscription-and-rhsm_repository-with-command.yml
+    - 347-ovirt_disk-add-warning-for-disk-attachemtns.yml
+    - 348-ovirt_vm-add-virtio_scsi_enabled-and-multi_queues_enabled.yml
+    - 350-repositories-add-no_log-to-register.yml
+    - 351-ovirt_remove_stale_lun-allow-user-to-remove-multiple-luns.yml
+    - 352-ovirt_remove_stale_lun-Retry-Multipath-f-while-removing-the-luns.yml
+    - 353-ovirt_permission-add-mac-pool.yml
+    - 355-info-modules-enable-follow-parameter.yml
+    - 356-ovirt_storage_vm_info-and-ovirt_storage_template_info-fix-docs.yml
+    - 358-ovirt_disk-use-imageio-client.yml
+    - 359-he-replace-virt_net-and-xml-with-commands.yml
+    - 363-repositories-update-to-4.4.9.yml
+    - 367-info-rename-follows-to-follows.yml
+    - 368-ovirt_event-correlation_id.yml
+    - 370-ovirt_template-fix-template-version.yml
+    - 371-ovirt_host-fix-failed_state_after_reinstall-condition.yml
+    - 371-ovirt_vm-add-virtio_scsi_multi_queues.yml
+    - 375-manageiq-deprecate.yml
+    - 378-bump-deprecate-version.yml
+    - 380-hosted_engine_setup-honor-he_offline_deployment.yaml
+    - 381-engine_setup-honor-ovirt_engine_setup_offline.yaml
+    - 384-manageiq-add-deprecation-info.yaml
+    - 390-ovirt_remove_stale_lun-Use-add_host-instead-of-delegate_to.yml
+    - 394-hosted_engine_setup-remove-spice-graphic-protocol.yml
+    - 396-info-modules-add-follow-link-url.yml
+    - 397-he_engine_abrt_configuration.yaml
+    - 404_fix_permissions_openscap.yml
+    - 409-hosted_engine_setup-Adjust-files-permissions.yml
+    - 411-hosted_engine_setup-Add-security-profile-name-parameter.yml
+    - 414-prepare-for-4.5-release.yaml
+    - 415-cluster_upgrade-progress.yml
+    - 417-add-no_log-to-manage-vms-state-task.yml
+    - 423-hosted_engine_setup-fix-default-gateway-variable-name.yml
+    - 425-cluster_upgrade-shutdown-vms-only-on-pinned-hosts.yml
+    - 426-ovirt_hosted-engine_setup-support-disa-stig-profile.yml
+    - 430-repositories-fix-force-flag-on-subscription-manager.yml
+    - 431-repositories-add-satellite-support.yml
+    - 436-add-json_query-filter.yml
+    - 438-hosted_engine_setup-replace-xml-module.yml
+    - 439-ovirt_host-add-enroll_certificate.yml
+    - 440-repositories-update-docs.yml
+    - 442-cloud-init_fix_removal_in_airgapped_environment.yml
+    - 443-ovirt_hosted_engine_setup-use-cat-command.yml
+    - 444-plugins-remove_unused_imports.yml
+    - 449-cluster_upgrade-progress-log.yml
+    - 453-replace-calls-to-psql-as-postgres-with-engine_psql.yml
+    - 454-repositories-fix-dnf-module-variable.yml
+    - 459-hosted_engine_setup-fix-call-to-engine-psql-for-vds_spm_id.yml
+    - 465-ovirt_template-add-boot_menu-and-bios_type.yml
+    plugins:
+      callback:
+      - description: Output the log of ansible
+        name: stdout
+        namespace: null
+    release_date: '2022-04-03'
+  2.0.1:
+    changes:
+      bugfixes:
+      - Make storage_format optional - do not fail if missing (https://github.com/oVirt/ovirt-ansible-collection/pull/471).
+    fragments:
+    - 471-make-storage-format-optional.yml
+    release_date: '2022-04-05'
+  2.0.2:
+    changes:
+      bugfixes:
+      - Fix progress logging via REST (https://github.com/oVirt/ovirt-ansible-collection/pull/474).
+      - Make storage_format optional - do not fail if missing (https://github.com/oVirt/ovirt-ansible-collection/pull/471).
+    fragments:
+    - 471-make-storage-format-optional.yml
+    - 474-cluster-update-log-progress-fix.yml
+    release_date: '2022-04-06'

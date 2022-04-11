@@ -1,3 +1,0 @@
----
-bugfixes:
-  - hosted_engine_setup - Add OpenSCAP security profile name parameter (https://github.com/oVirt/ovirt-ansible-collection/pull/411).

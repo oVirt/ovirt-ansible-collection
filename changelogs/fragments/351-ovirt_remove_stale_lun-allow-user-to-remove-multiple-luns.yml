@@ -1,3 +1,0 @@
----
-minor_changes:
-  - ovirt_remove_stale_lun - Allow user to remove multiple LUNs (https://github.com/oVirt/ovirt-ansible-collection/pull/357).

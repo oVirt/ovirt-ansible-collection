@@ -1,3 +1,0 @@
----
-minor_changes:
-  - hosted_engine_setup - Replace calls to psql as postgres with engine_psql.sh (https://github.com/oVirt/ovirt-ansible-collection/pull/453).
