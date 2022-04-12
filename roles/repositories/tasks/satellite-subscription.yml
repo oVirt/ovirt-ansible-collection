@@ -5,11 +5,7 @@
     state: present
 
 - name: Install Satellite certificates
-  dnf:
-    name: "{{ ovirt_repositories_ca_rpm_url }}"
-    state: present
-    validate_certs: "{{ ovirt_repositories_ca_rpm_validate_certs | default(omit) }}"
-    disable_gpg_check: "{{ ovirt_repositories_ca_rpm_disable_gpg_check | default(omit) }}"
+  command: "rpm -Uvh --nodigest --nofiledigest {{ ovirt_repositories_ca_rpm_url }} "
   when: ovirt_repositories_ca_rpm_url is defined
 
 - name: Register to subscription manager

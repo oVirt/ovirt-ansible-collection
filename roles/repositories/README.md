@@ -29,8 +29,8 @@ Role Variables
 | ovirt_repositories_org                     | UNDEF                 | The org will be used for subscription manager. The `ovirt_repositories_org` and `ovirt_repositories_activationkey` will be used over `ovirt_repositories_pool_ids`. |
 | ovirt_repositories_activationkey           | UNDEF                 | The activation key will be used for the subscription manager. |
 | ovirt_repositories_ca_rpm_url              | UNDEF                 | The URL for Satellite rpm will set up host certificates. |
-| ovirt_repositories_ca_rpm_validate_certs   | UNDEF                 | If `False` it will ignore all SSL certificates for the `ovirt_repositories_ca_rpm_url`. |
-| ovirt_repositories_ca_rpm_disable_gpg_check| UNDEF                 | If `True` it will ignore all GPG check for the `ovirt_repositories_ca_rpm_url`. |
+| ovirt_repositories_rhsm_environment        | UNDEF                 | The Satellite environment to specify libraries. |
+
 
 Example Playbook
 ----------------
