@@ -670,8 +670,19 @@ releases:
     changes:
       bugfixes:
       - Fix progress logging via REST (https://github.com/oVirt/ovirt-ansible-collection/pull/474).
-      - Make storage_format optional - do not fail if missing (https://github.com/oVirt/ovirt-ansible-collection/pull/471).
     fragments:
     - 471-make-storage-format-optional.yml
     - 474-cluster-update-log-progress-fix.yml
     release_date: '2022-04-06'
+  2.0.3:
+    changes:
+      bugfixes:
+      - invenory - Fix url address (https://github.com/oVirt/ovirt-ansible-collection/pull/482).
+      - ovirt_vm - Fix creating a RAW VM from a COW template  (https://github.com/oVirt/ovirt-ansible-collection/pull/466).
+      minor_changes:
+      - ovirt_affinity_group - Add affinity labels (https://github.com/oVirt/ovirt-ansible-collection/pull/481).
+    fragments:
+    - 466-ovirt_vm-fix-creating-raw-vm-from-cow-template.yml
+    - 481-ovirt_affinity_group-add-affinity-labels.yml
+    - 482-inventory-fix-url-address.yml
+    release_date: '2022-04-13'

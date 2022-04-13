@@ -87,6 +87,12 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Wed Apr 13 2022 Martin Necas <mnecas@redhat.com> - 2.0.3-1
+- spec: Obsolete ansible < 2.10.0
+- ovirt_vm - Fix creating a RAW VM from a COW template
+- ovirt_affinity_group - Add affinity labels
+- invenory - Fix url address
+
 * Wed Apr 6 2022 Martin Necas <mnecas@redhat.com> - 2.0.2-1
 - cluster_upgrade: fix upgrade progress log_progress task
 

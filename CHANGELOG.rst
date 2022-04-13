@@ -5,6 +5,20 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v2.0.3
+======
+
+Minor Changes
+-------------
+
+- ovirt_affinity_group - Add affinity labels (https://github.com/oVirt/ovirt-ansible-collection/pull/481).
+
+Bugfixes
+--------
+
+- invenory - Fix url address (https://github.com/oVirt/ovirt-ansible-collection/pull/482).
+- ovirt_vm - Fix creating a RAW VM from a COW template  (https://github.com/oVirt/ovirt-ansible-collection/pull/466).
+
 v2.0.2
 ======
 
