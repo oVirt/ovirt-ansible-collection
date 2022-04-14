@@ -48,6 +48,18 @@
     with_items:
       - cloud-init-local
       - cloud-init
+  - name: Check if keycloak is configured
+    command: otopi-config-query query -k OVESETUP_KEYCLOAK_CORE/enable -f /etc/ovirt-engine-setup.conf
+    register: keycloak_configured_out
+    ignore_errors: true
+  - name: Set admin username
+    set_fact:
+      he_admin_username: >-
+        {{ 'admin@ovirt@internalsso'
+            if keycloak_configured_out.rc == 0 and keycloak_configured_out.stdout_lines[0] == 'True'
+            else 'admin@internal'
+        }}
+    register: otopi_he_admin_username
   rescue:
     - name: Sync on engine machine
       command: sync
