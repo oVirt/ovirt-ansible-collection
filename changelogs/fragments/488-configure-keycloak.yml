@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Fix the admin user name when using keycloak (https://github.com/oVirt/ovirt-ansible-collection/pull/488).
