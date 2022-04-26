@@ -29,7 +29,7 @@ jobs:
 
       - name: Install pip modules
         run: >
-          pip3 install pycodestyle pylint==2.4.4 voluptuous yamllint rstcheck antsibull-changelog "rich<11.0.0" "ansible-lint<5.0.0"
+          pip3 install pycodestyle pylint==2.4.4 voluptuous yamllint "rstcheck<3.5.0" antsibull-changelog "rich<11.0.0" "ansible-lint<5.0.0"
 
       - name: Checkout
         uses: actions/checkout@v2
