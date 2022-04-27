@@ -1,0 +1,3 @@
+---
+bugfixes:
+   - Use cryptography < 37.0.0, as 37.0.0 emits a warning that fails testing. (https://github.com/oVirt/ovirt-ansible-collection/pull/492).
