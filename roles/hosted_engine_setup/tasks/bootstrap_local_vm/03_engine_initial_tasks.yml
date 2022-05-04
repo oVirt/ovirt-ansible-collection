@@ -59,7 +59,6 @@
       line: "{{ item }}"
     with_items:
       - "OVESETUP_KEYCLOAK_CORE/enable=bool:{{ he_enable_keycloak }}"
-    when: he_enable_keycloak is defined
   - name: Enable security policy
     block:
       - import_tasks: ../get_appliance_dist.yml
