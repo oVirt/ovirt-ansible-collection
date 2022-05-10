@@ -351,7 +351,8 @@
         register: health_result
         until: >-
           health_result.rc == 0 and 'health' in health_result.stdout and
-          health_result.stdout|from_json|@NAMESPACE@.@NAME@.json_query('*."engine-status"."health"')|first=="good"
+          health_result.stdout|from_json|@NAMESPACE@.@NAME@.json_query('*."engine-status"."health"')|first=="good" and
+          health_result.stdout|from_json|@NAMESPACE@.@NAME@.json_query('*."engine-status"."detail"')|first=="Up"
         retries: 180
         delay: 5
         changed_when: true
