@@ -184,7 +184,7 @@
     args:
       warn: false
   - name: Initialize metadata volume
-    command: dd bs=1M count=10 oflag=direct if=/dev/zero of="{{ he_metadata_disk_path }}"
+    command: dd bs=1M count=128 oflag=direct if=/dev/zero of="{{ he_metadata_disk_path }}"
     environment: "{{ he_cmd_lang }}"
     become: true
     become_user: vdsm
