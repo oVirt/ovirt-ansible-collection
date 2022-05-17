@@ -184,7 +184,9 @@
     args:
       warn: false
   - name: Initialize metadata volume
-    command: dd bs=1M count=1024 oflag=direct if=/dev/zero of="{{ he_metadata_disk_path }}"
+    # Data is written at offset 4KiB*host_id and since ovirt supports 250 hosts per dc,
+    # we can have maximum 250*4KiB = ~ 1MiB
+    command: dd conv=notrunc bs=1M count=1 oflag=direct if=/dev/zero of="{{ he_metadata_disk_path }}"
     environment: "{{ he_cmd_lang }}"
     become: true
     become_user: vdsm
