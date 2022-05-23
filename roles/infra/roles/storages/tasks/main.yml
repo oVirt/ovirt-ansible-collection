@@ -101,7 +101,7 @@
     force: true
   with_items:
     - "{{ sd_info.ovirt_storage_domains | default([]) }}"
-  when: item.storage_connections | length == 1 && storages is defined and item.name in storages
+  when: item.storage_connections | length == 1 and storages is defined and item.name in storages
   tags:
     - storages
     - storage_connections
