@@ -79,7 +79,7 @@
 
 - name: Storage connection warning
   debug:
-    msg: "[WARNING]: The storage domain '{{ item.name }}' has multiple connections. This is not supported by the role."
+    msg: "[WARNING]: The storage domain '{{ item.name }}' has multiple connections. This is not supported by the role. The storage connection update of this domain will be skipped."
   when: item.storage_connections | length > 1
   with_items:
     - "{{ sd_info.ovirt_storage_domains | default([]) }}"
