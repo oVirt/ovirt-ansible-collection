@@ -133,6 +133,9 @@
     args:
       chdir: "{{ he_local_vm_dir }}"
       warn: false
+    become: true
+    become_user: vdsm
+    become_method: sudo
     changed_when: true
     tags: ['skip_ansible_lint']
   - name: Create ovirt-hosted-engine-ha run directory
