@@ -56,6 +56,9 @@
     with_items: "{{ ovf_store_disks }}"
     args:
       warn: false
+  - name: Force a failure, to test log collection
+    fail:
+      msg: Forced failure, to test log collection
   - name: Prepare images
     command: >-
       vdsm-client Image prepare storagepoolID={{ datacenter_id }}
