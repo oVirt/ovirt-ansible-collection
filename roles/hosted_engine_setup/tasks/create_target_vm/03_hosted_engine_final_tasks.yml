@@ -461,3 +461,13 @@
     include_tasks: "{{ item }}"
     with_fileglob: "hooks/after_setup/*.yml"
     register: after_setup_results
+  rescue:
+    - name: Fetch logs from the engine VM
+      include_tasks: ../fetch_engine_logs.yml
+      ignore_errors: true
+    - name: Notify the user about a failure
+      fail:
+        msg: >
+          The system may not be provisioned according to the playbook
+          results: please check the logs for the issue,
+          fix accordingly or re-deploy from scratch.
