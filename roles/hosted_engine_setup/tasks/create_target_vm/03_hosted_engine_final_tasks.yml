@@ -9,6 +9,13 @@
       description: "Hosted engine VM"
       serial_console: true
       auth: "{{ ovirt_auth }}"
+  - name: Force updating the OVF store
+    ovirt_storage_domain:
+      auth: "{{ ovirt_auth }}"
+      name: "{{ he_storage_domain_name }}"
+      state: update_ovf_store
+    retries: 12
+    delay: 10
   - name: Wait until OVF update finishes
     ovirt_storage_domain_info:
       auth: "{{ ovirt_auth }}"
