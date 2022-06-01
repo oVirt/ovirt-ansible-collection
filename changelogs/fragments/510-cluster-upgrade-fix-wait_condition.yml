@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - cluster_upgrade - fix wait_condition (https://github.com/oVirt/ovirt-ansible-collection/pull/510).
