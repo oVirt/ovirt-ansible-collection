@@ -9,6 +9,13 @@
       description: "Hosted engine VM"
       serial_console: true
       auth: "{{ ovirt_auth }}"
+  - name: Force updating the OVF store
+    ovirt_storage_domain:
+      auth: "{{ ovirt_auth }}"
+      name: "{{ he_storage_domain_name }}"
+      state: update_ovf_store
+    retries: 12
+    delay: 10
   - name: Wait until OVF update finishes
     ovirt_storage_domain_info:
       auth: "{{ ovirt_auth }}"
@@ -133,6 +140,9 @@
     args:
       chdir: "{{ he_local_vm_dir }}"
       warn: false
+    become: true
+    become_user: vdsm
+    become_method: sudo
     changed_when: true
     tags: ['skip_ansible_lint']
   - name: Create ovirt-hosted-engine-ha run directory
@@ -458,3 +468,13 @@
     include_tasks: "{{ item }}"
     with_fileglob: "hooks/after_setup/*.yml"
     register: after_setup_results
+  rescue:
+    - name: Fetch logs from the engine VM
+      include_tasks: ../fetch_engine_logs.yml
+      ignore_errors: true
+    - name: Notify the user about a failure
+      fail:
+        msg: >
+          The system may not be provisioned according to the playbook
+          results: please check the logs for the issue,
+          fix accordingly or re-deploy from scratch.
