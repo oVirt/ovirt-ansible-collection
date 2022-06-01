@@ -1,3 +1,3 @@
 ---
 bugfixes:
-  - hosted_engine_setup - Force updating the ovf store (https://github.com/oVirt/ovirt-ansible-collection/pull/506).
+  - cluster_upgrade - fix wait_condition (https://github.com/oVirt/ovirt-ansible-collection/pull/510).
