@@ -58,7 +58,7 @@
       path: /root/ovirt-engine-answers
       line: "{{ item }}"
     with_items:
-      - "OVESETUP_KEYCLOAK_CORE/enable=bool:{{ he_enable_keycloak }}"
+      - "OVESETUP_CONFIG/keycloakEnable=bool:{{ he_enable_keycloak }}"
   - name: Enable security policy
     block:
       - import_tasks: ../get_appliance_dist.yml
