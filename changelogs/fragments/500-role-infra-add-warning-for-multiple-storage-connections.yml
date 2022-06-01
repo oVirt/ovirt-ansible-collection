@@ -1,0 +1,3 @@
+---
+bugfixes:
+   - infra - add warning for multiple storage connections (https://github.com/oVirt/ovirt-ansible-collection/pull/500).

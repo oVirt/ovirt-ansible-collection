@@ -77,26 +77,31 @@
     - storages
     - storage_connections
 
+- name: Storage connection warning
+  debug:
+    msg: "[WARNING]: The storage domain '{{ item.name }}' has multiple connections. This is not supported by the role. The storage connection update of this domain will be skipped."
+  when: item.storage_connections | length > 1
+  with_items:
+    - "{{ sd_info.ovirt_storage_domains | default([]) }}"
+
 - name: Update storage parameters
   ovirt_storage_connection:
     auth: "{{ ovirt_auth }}"
-    id: "{{ ansible_version.full is version('2.6.0', '>=') | ternary(item.1.id, item.1.id[0]) }}"
-    storage: "{{ item.0.name }}"
-    address: "{{ storages[item.0.name][item.0.storage.type].address | default(omit) }}"
-    path: "{{ storages[item.0.name][item.0.storage.type].path | default(omit) }}"
-    nfs_timeout: "{{ storages[item.0.name][item.0.storage.type].timeout | default(omit) }}"
-    nfs_version: "{{ storages[item.0.name][item.0.storage.type].version | default(omit) }}"
-    nfs_retrans: "{{ storages[item.0.name][item.0.storage.type].retrans | default(omit) }}"
-    mount_options: "{{ storages[item.0.name][item.0.storage.type].mount_options | default(omit) }}"
-    username: "{{ storages[item.0.name][item.0.storage.type].username | default(omit) }}"
-    password: "{{ storages[item.0.name][item.0.storage.type].password | default(omit) }}"
-    port: "{{ storages[item.0.name][item.0.storage.type].port | default(omit) }}"
+    id: "{{ ansible_version.full is version('2.6.0', '>=') | ternary(item.storage_connections[0].id, item.storage_connections[0].id[0]) }}"
+    storage: "{{ item.name }}"
+    address: "{{ storages[item.name][item.storage.type].address | default(omit) }}"
+    path: "{{ storages[item.name][item.storage.type].path | default(omit) }}"
+    nfs_timeout: "{{ storages[item.name][item.storage.type].timeout | default(omit) }}"
+    nfs_version: "{{ storages[item.name][item.storage.type].version | default(omit) }}"
+    nfs_retrans: "{{ storages[item.name][item.storage.type].retrans | default(omit) }}"
+    mount_options: "{{ storages[item.name][item.storage.type].mount_options | default(omit) }}"
+    username: "{{ storages[item.name][item.storage.type].username | default(omit) }}"
+    password: "{{ storages[item.name][item.storage.type].password | default(omit) }}"
+    port: "{{ storages[item.name][item.storage.type].port | default(omit) }}"
     force: true
-  with_subelements:
+  with_items:
     - "{{ sd_info.ovirt_storage_domains | default([]) }}"
-    - storage_connections
-    - skip_missing: yes
-  when: storages is defined and item.0.name in storages
+  when: item.storage_connections | length == 1 and storages is defined and item.name in storages
   tags:
     - storages
     - storage_connections
