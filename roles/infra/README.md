@@ -197,7 +197,7 @@ More information about the parameters can be found in the [ovirt_host_network](h
 
 ### Storages
 To setup storages you can define dictionary variable called `storages`.
-This role supports only storages with one connection.
+In case of more than one connection, the storage connection update of this domain will be skipped.
 The value of item in `storages` dictionary can contain following parameters (the key is always a name of the storage):
 
 | Name            | Default value  | Description                           |
