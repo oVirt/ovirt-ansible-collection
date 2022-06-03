@@ -5,6 +5,23 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v2.0.4
+======
+
+Bugfixes
+--------
+
+- Fix the admin user name when using keycloak (https://github.com/oVirt/ovirt-ansible-collection/pull/488).
+- Use cryptography < 37.0.0, as 37.0.0 emits a warning that fails testing. (https://github.com/oVirt/ovirt-ansible-collection/pull/492).
+- Use rstcheck < 3.5.0, as 3.5.0 emits a warning that fails testing. (https://github.com/oVirt/ovirt-ansible-collection/pull/490).
+- cluster_upgrade - fix wait_condition (https://github.com/oVirt/ovirt-ansible-collection/pull/510).
+- hosted_engine_setup - Allocate 128MiB instead of 1GiB for he_metadata (https://github.com/oVirt/ovirt-ansible-collection/pull/489).
+- hosted_engine_setup - Collect logs also on failures in 03_hosted_engine_final_tasks.yml (https://github.com/oVirt/ovirt-ansible-collection/pull/504).
+- hosted_engine_setup - Fix keycloak activation/checking (https://github.com/oVirt/ovirt-ansible-collection/pull/509).
+- hosted_engine_setup - Require 'detail' to be 'Up' (https://github.com/oVirt/ovirt-ansible-collection/pull/498).
+- hosted_engine_setup - fix archive ownership (https://github.com/oVirt/ovirt-ansible-collection/pull/501).
+- infra - add warning for multiple storage connections (https://github.com/oVirt/ovirt-ansible-collection/pull/500).
+
 v2.0.3
 ======
 
