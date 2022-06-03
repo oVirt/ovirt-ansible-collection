@@ -1,3 +1,0 @@
----
-bugfixes:
-  - hosted_engine_setup - Force updating the ovf store (https://github.com/oVirt/ovirt-ansible-collection/pull/506).
