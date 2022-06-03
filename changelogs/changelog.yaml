@@ -686,3 +686,29 @@ releases:
     - 481-ovirt_affinity_group-add-affinity-labels.yml
     - 482-inventory-fix-url-address.yml
     release_date: '2022-04-13'
+  2.0.4:
+    changes:
+      bugfixes:
+      - Fix the admin user name when using keycloak (https://github.com/oVirt/ovirt-ansible-collection/pull/488).
+      - Use cryptography < 37.0.0, as 37.0.0 emits a warning that fails testing. (https://github.com/oVirt/ovirt-ansible-collection/pull/492).
+      - Use rstcheck < 3.5.0, as 3.5.0 emits a warning that fails testing. (https://github.com/oVirt/ovirt-ansible-collection/pull/490).
+      - cluster_upgrade - fix wait_condition (https://github.com/oVirt/ovirt-ansible-collection/pull/510).
+      - hosted_engine_setup - Allocate 128MiB instead of 1GiB for he_metadata (https://github.com/oVirt/ovirt-ansible-collection/pull/489).
+      - hosted_engine_setup - Collect logs also on failures in 03_hosted_engine_final_tasks.yml
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/504).
+      - hosted_engine_setup - Fix keycloak activation/checking (https://github.com/oVirt/ovirt-ansible-collection/pull/509).
+      - hosted_engine_setup - Require 'detail' to be 'Up' (https://github.com/oVirt/ovirt-ansible-collection/pull/498).
+      - hosted_engine_setup - fix archive ownership (https://github.com/oVirt/ovirt-ansible-collection/pull/501).
+      - infra - add warning for multiple storage connections (https://github.com/oVirt/ovirt-ansible-collection/pull/500).
+    fragments:
+    - 488-configure-keycloak.yml
+    - 489-ovirt_hosted_engine_setup-use-10mib-intead-of-1gib-for-metadata.yml
+    - 490-use-rstcheck-3.4.yml
+    - 492-use-cryptography-older-than-37.yml
+    - 498-require-detail-up.yml
+    - 500-role-infra-add-warning-for-multiple-storage-connections.yml
+    - 501-fix-archive-ownership.yml
+    - 504-collect-final-logs.yml
+    - 509-fix-keycloak-activation.yml
+    - 510-cluster-upgrade-fix-wait_condition.yml
+    release_date: '2022-06-03'

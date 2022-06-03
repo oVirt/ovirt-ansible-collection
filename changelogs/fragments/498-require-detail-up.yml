@@ -1,3 +1,0 @@
----
-bugfixes:
-   - hosted_engine_setup - Require 'detail' to be 'Up' (https://github.com/oVirt/ovirt-ansible-collection/pull/498).
