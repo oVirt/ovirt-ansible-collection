@@ -103,6 +103,7 @@
 
   - name: Check if Engine health page is up
     uri:
+      validate_certs: "{{ ovirt_engine_setup_validate_certs | default(omit) }}"
       url: "http://localhost/ovirt-engine/services/health"
       status_code: 200
     register: health_page
