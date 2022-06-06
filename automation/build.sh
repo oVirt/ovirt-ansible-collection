@@ -11,8 +11,8 @@ rm -f "$ROOT_PATH/*tar.gz"
 ./build.sh build ovirt "$ROOT_PATH"
 ./build.sh build rhv "$ROOT_PATH"
 
-OVIRT_BUILD="$ROOT_PATH/ansible_collections/ovirt/ovirt/"
-RHV_BUILD="$ROOT_PATH/ansible_collections/redhat/rhv/"
+OVIRT_BUILD="$ROOT_PATH/ansible_collections/ovirt/ovirt"
+RHV_BUILD="$ROOT_PATH/ansible_collections/redhat/rhv"
 
 cd "$OVIRT_BUILD"
 
