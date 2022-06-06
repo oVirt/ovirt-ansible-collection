@@ -29,7 +29,6 @@ from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from packaging.version import parse as LooseVersion
 
-
 from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.cloud import CloudRetry
 from ansible.module_utils.basic import env_fallback
 from ansible.module_utils.common._collections_compat import Mapping
