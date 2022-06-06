@@ -3,8 +3,8 @@
 ROOT_PATH=$PWD
 
 # remove any previous artifacts
-rm -rf ../ansible_collections
-rm -f ./*tar.gz
+rm -rf "$ROOT_PATH/ansible_collections"
+rm -f "$ROOT_PATH/*tar.gz"
 
 # Create builds
 
