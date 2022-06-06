@@ -26,6 +26,7 @@ to ``ovirt_engine_setup_answer_file_path`` variable.
 | ovirt_engine_setup_restore_file       | UNDEF                 | Restored the engine with a backup file which created with engine-backup. |
 | ovirt_engine_setup_restore_scopes     | UNDEF                 | List of scopes following values are available: ["all", "files", "db", "dwhdb", "cinderlibdb"]. |
 | ovirt_engine_setup_restore_options    | {}                    | Dictionary that will add engine restore options as "`--key`=`value`" when `value` is not empty, otherwise it will append "`--key`" only.  |
+| ovirt_engine_setup_validate_certs     | UNDEF                 | If `True`, setup will validate the engine certificates when checking engine health status page. |
 
 * Common options for engine:
 
