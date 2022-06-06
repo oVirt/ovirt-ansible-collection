@@ -1,3 +1,0 @@
----
-minor_changes:
-  - ovirt - Remove deprecated distutils (https://github.com/oVirt/ovirt-ansible-collection/pull/516).
