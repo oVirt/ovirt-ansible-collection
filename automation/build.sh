@@ -2,11 +2,11 @@
 
 ROOT_PATH=$PWD
 
-# remove any previous artifacts
+# Remove any previous artifacts
 rm -rf "$ROOT_PATH/ansible_collections"
 rm -f "$ROOT_PATH/*tar.gz"
 
-# Create builds
+# Create buildss
 
 ./build.sh build ovirt "$ROOT_PATH"
 ./build.sh build rhv "$ROOT_PATH"
@@ -15,7 +15,8 @@ OVIRT_BUILD="$ROOT_PATH/ansible_collections/ovirt/ovirt/"
 RHV_BUILD="$ROOT_PATH/ansible_collections/redhat/rhv/"
 
 cd "$OVIRT_BUILD"
-# create the src.rpm
+
+# Create the src.rpm
 rpmbuild \
     -D "_srcrpmdir $ROOT_PATH/output" \
     -D "_topmdir $ROOT_PATH/rpmbuild" \
@@ -30,14 +31,14 @@ mv ./*.gz "$ROOT_PATH/exported-artifacts/"
 # Overwrite github README with dynamic
 mv ./README.md.in ./README.md
 
-# create tar for galaxy
+# Create tar for galaxy
 ansible-galaxy collection build
 
-# create the rpms
+# Create the rpms
 rpmbuild \
     -D "_rpmdir $ROOT_PATH/output" \
     -D "_topmdir $ROOT_PATH/rpmbuild" \
-    --rebuild "$ROOT_PATH/output/*.src.rpm"
+    --rebuild "$ROOT_PATH"/output/*.src.rpm
 
 cd "$RHV_BUILD"
 
