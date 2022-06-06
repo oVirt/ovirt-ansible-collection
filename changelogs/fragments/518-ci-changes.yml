@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - automation - Use python38 on el8 with ansible-core 2.12 and python39 on el9 with ansible-core 2.13  (https://github.com/oVirt/ovirt-ansible-collection/pull/518).

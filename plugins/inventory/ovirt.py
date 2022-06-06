@@ -5,6 +5,7 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
+# TODO Fix DOCUMENTATION to pass the ansible-test validate-modules
 DOCUMENTATION = '''
     name: ovirt
     plugin_type: inventory
