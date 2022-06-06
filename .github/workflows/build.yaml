@@ -27,9 +27,18 @@ jobs:
       - name: Update pip
         run: pip3 install pip --upgrade
 
+      - name: Install rpm ansible-core
+        run: yum install ansible-core -y
+
       - name: Install pip modules
+        if: ${{ matrix.shortcut == 'cs9' }}
         run: >
-          pip3 install pycodestyle pylint==2.4.4 voluptuous yamllint "rstcheck<3.5.0" antsibull-changelog "rich<11.0.0" "ansible-lint<5.0.0" 'cryptography<37.0.0'
+          pip-3 install pycodestyle pylint==2.4.4 voluptuous yamllint "rstcheck<3.5.0" antsibull-changelog "rich<11.0.0" "ansible-lint<5.0.0" 'cryptography<37.0.0'
+
+      - name: Install pip modules
+        if: ${{ matrix.shortcut == 'cs8' }}
+        run: >
+          pip-3.8 install pycodestyle pylint==2.4.4 voluptuous yamllint "rstcheck<3.5.0" antsibull-changelog "rich<11.0.0" "ansible-lint<5.0.0" 'cryptography<37.0.0'
 
       - name: Checkout
         uses: actions/checkout@v2
