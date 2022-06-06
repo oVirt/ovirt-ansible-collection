@@ -4,7 +4,7 @@ ROOT_PATH=$PWD
 
 # Remove any previous artifacts
 rm -rf "$ROOT_PATH/ansible_collections"
-rm -f "$ROOT_PATH/*tar.gz"
+rm -f "$ROOT_PATH"/*tar.gz
 
 # Create builds
 
@@ -56,14 +56,14 @@ ansible-galaxy collection build
 find "$ROOT_PATH/output" -iname \*rpm -exec mv "{}" "$ROOT_PATH/exported-artifacts/" \;
 
 # Export build for Ansible Galaxy
-mv "$OVIRT_BUILD/*tar.gz" "$ROOT_PATH/exported-artifacts/"
+mv "$OVIRT_BUILD"/*tar.gz "$ROOT_PATH/exported-artifacts/"
 # Export build for Automation Hub
-mv "$RHV_BUILD/*tar.gz" "$ROOT_PATH/exported-artifacts/"
+mv "$RHV_BUILD"/*tar.gz "$ROOT_PATH/exported-artifacts/"
 
 COLLECTION_DIR="/usr/local/share/ansible/collections/ansible_collections/ovirt/ovirt"
 export ANSIBLE_LIBRARY="$COLLECTION_DIR/plugins/modules"
 mkdir -p $COLLECTION_DIR
-cp -r "$OVIRT_BUILD/*" "$COLLECTION_DIR"
+cp -r "$OVIRT_BUILD"/* "$COLLECTION_DIR"
 cd "$COLLECTION_DIR"
 
 # The sanity import test failed with error. (https://github.com/ansible/ansible/issues/76473)
