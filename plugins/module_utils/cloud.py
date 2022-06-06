@@ -1,39 +1,35 @@
+# -*- coding: utf-8 -*-
 #
 # (c) 2016 Allen Sanabria, <asanabria@linuxdynasty.org>
 #
-# This file is part of Ansible
-#
-# Ansible is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Ansible is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
-#
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
+
 """
 This module adds shared support for generic cloud modules
+
 In order to use this module, include it as part of a custom
 module as shown below.
+
 from ansible.module_utils.cloud import CloudRetry
+
 The 'cloud' module provides the following common classes:
+
     * CloudRetry
         - The base class to be used by other cloud providers, in order to
           provide a backoff/retry decorator based on status codes.
+
         - Example using the AWSRetry class which inherits from CloudRetry.
+
           @AWSRetry.exponential_backoff(retries=10, delay=3)
           get_ec2_security_group_ids_from_names()
+
           @AWSRetry.jittered_backoff()
           get_ec2_security_group_ids_from_names()
+
 """
 import random
 from functools import wraps
@@ -135,7 +131,7 @@ class CloudRetry(object):
                     try:
                         return f(*args, **kwargs)
                     except Exception as e:
-                        if isinstance(e, cls.base_class):
+                        if isinstance(e, cls.base_class):  # pylint: disable=isinstance-second-argument-not-valid-type
                             response_code = cls.status_code_from_exception(e)
                             if cls.found(response_code, catch_extra_error_codes):
                                 msg = "{0}: Retrying in {1} seconds...".format(str(e), delay)
@@ -157,6 +153,7 @@ class CloudRetry(object):
     def exponential_backoff(cls, retries=10, delay=3, backoff=2, max_delay=60, catch_extra_error_codes=None):
         """
         Retry calling the Cloud decorated function using an exponential backoff.
+
         Kwargs:
             retries (int): Number of times to retry a failed request before giving up
                 default=10
@@ -176,7 +173,9 @@ class CloudRetry(object):
         """
         Retry calling the Cloud decorated function using a jittered backoff
         strategy. More on this strategy here:
+
         https://www.awsarchitectureblog.com/2015/03/backoff.html
+
         Kwargs:
             retries (int): Number of times to retry a failed request before giving up
                 default=10
@@ -192,9 +191,11 @@ class CloudRetry(object):
     def backoff(cls, tries=10, delay=3, backoff=1.1, catch_extra_error_codes=None):
         """
         Retry calling the Cloud decorated function using an exponential backoff.
+
         Compatibility for the original implementation of CloudRetry.backoff that
         did not provide configurable backoff strategies. Developers should use
         CloudRetry.exponential_backoff instead.
+
         Kwargs:
             tries (int): Number of times to try (not retry) before giving up
                 default=10
