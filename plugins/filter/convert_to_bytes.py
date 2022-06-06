@@ -3,6 +3,7 @@ __metaclass__ = type
 
 from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import convert_to_bytes
 
+
 class FilterModule(object):
 
     def filters(self):
