@@ -27,7 +27,7 @@ import time
 
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
-from packaging.version import parse as LooseVersion
+from distutils.version import LooseVersion
 
 from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.cloud import CloudRetry
 from ansible.module_utils.basic import env_fallback
