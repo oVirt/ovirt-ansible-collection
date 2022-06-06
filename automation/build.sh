@@ -6,7 +6,7 @@ ROOT_PATH=$PWD
 rm -rf "$ROOT_PATH/ansible_collections"
 rm -f "$ROOT_PATH/*tar.gz"
 
-# Create buildss
+# Create builds
 
 ./build.sh build ovirt "$ROOT_PATH"
 ./build.sh build rhv "$ROOT_PATH"
