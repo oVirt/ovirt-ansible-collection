@@ -928,6 +928,7 @@ options:
         description:
             - "Number of seconds which should the module wait after the lease is changed."
         type: int
+        default: 5
         version_added: 2.1.0
 notes:
     - If VM is in I(UNASSIGNED) or I(UNKNOWN) state before any operation, the module will fail.
