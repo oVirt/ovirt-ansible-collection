@@ -28,7 +28,7 @@ import time
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.version import Version
+from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.version import ComparableVersion
 from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.cloud import CloudRetry
 from ansible.module_utils.basic import env_fallback
 from ansible.module_utils.common._collections_compat import Mapping
@@ -38,7 +38,7 @@ try:
     import ovirtsdk4 as sdk
     import ovirtsdk4.version as sdk_version
     import ovirtsdk4.types as otypes
-    HAS_SDK = Version(sdk_version.VERSION) >= Version('4.4.0')
+    HAS_SDK = ComparableVersion(sdk_version.VERSION) >= ComparableVersion('4.4.0')
 except ImportError:
     HAS_SDK = False
 
@@ -500,7 +500,7 @@ def check_params(module):
 
 
 def engine_supported(connection, version):
-    return Version(engine_version(connection)) >= Version(version)
+    return ComparableVersion(engine_version(connection)) >= ComparableVersion(version)
 
 
 def check_support(version, connection, module, params):
@@ -508,11 +508,11 @@ def check_support(version, connection, module, params):
     Check if parameters used by user are supported by oVirt Python SDK
     and oVirt engine.
     """
-    api_version = Version(engine_version(connection))
-    version = Version(version)
+    api_version = ComparableVersion(engine_version(connection))
+    version = ComparableVersion(version)
     for param in params:
         if module.params.get(param) is not None:
-            return Version(sdk_version.VERSION) >= version and api_version >= version
+            return ComparableVersion(sdk_version.VERSION) >= version and api_version >= version
 
     return True
 

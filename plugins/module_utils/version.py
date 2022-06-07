@@ -4,7 +4,7 @@ __metaclass__ = type
 import re
 
 
-class Version:
+class ComparableVersion:
     component_re = re.compile(r'(\d+ | [a-z]+ | \.)', re.VERBOSE)
 
     def __init__(self, vstring=None):
@@ -40,8 +40,8 @@ class Version:
 
     def _cmp(self, other):
         if isinstance(other, str):
-            other = Version(other)
-        elif not isinstance(other, Version):
+            other = ComparableVersion(other)
+        elif not isinstance(other, ComparableVersion):
             return NotImplemented
 
         if self.version == other.version:
