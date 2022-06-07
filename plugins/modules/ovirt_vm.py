@@ -1485,7 +1485,7 @@ class VmsModule(BaseModule):
             None
         )
         if not snap:
-            raise ValueError('Was not able to find snapshot with name "{0}".'.format(self.param('snapshot_name')))
+            raise ValueError('Snapshot with the name "{0}" was not found.'.format(self.param('snapshot_name')))
         return snap
 
     def __get_placement_policy(self):
