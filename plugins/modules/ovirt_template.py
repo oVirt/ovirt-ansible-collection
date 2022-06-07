@@ -165,7 +165,7 @@ options:
         description:
             - Operating system of the template, for example 'rhel_8x64'.
             - Default value is set by oVirt/RHV engine.
-            - Use the M(ovirt_vm_os_info) module to obtain the current list.
+            - Use the M(@NAMESPACE@.@NAME@.ovirt_vm_os_info) module to obtain the current list.
         type: str
     memory:
         description:
