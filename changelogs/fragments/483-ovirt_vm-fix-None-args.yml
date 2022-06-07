@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt_vm - Fix parsing None arguments (https://github.com/oVirt/ovirt-ansible-collection/pull/486).
