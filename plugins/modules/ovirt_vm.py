@@ -1484,6 +1484,8 @@ class VmsModule(BaseModule):
             (s for s in snaps if s.description == self.param('snapshot_name')),
             None
         )
+        if not snap:
+            raise ValueError('Snapshot with the name "{0}" was not found.'.format(self.param('snapshot_name')))
         return snap
 
     def __get_placement_policy(self):
