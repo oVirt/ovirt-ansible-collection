@@ -81,16 +81,19 @@ options:
                 description:
                     - "List of network names in bond."
                 type: list
+                elements: str
             storage_domains:
                 description:
                     - "List of storage domain names and it will automatically get all storage_connections in the domain."
                 type: list
                 default: []
+                elements: str
             storage_connections:
                 description:
                     - "List of storage_connection IDs. Used when you want to use specific storage connection instead of all in storage domain."
                 type: list
                 default: []
+                elements: str
         type: list
         elements: dict
 
