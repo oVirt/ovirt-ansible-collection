@@ -32,6 +32,7 @@ Ansible version >= 2.9.21 and < 2.10.0
 | he_ansible_host_name | localhost | hostname in use on the first HE host (not necessarily the Ansible controller one) |
 | he_restore_from_file | null | a backup file created with engine-backup to be restored on the fly |
 | he_pki_renew_on_restore | false | Renew engine PKI on restore if needed |
+| he_enable_keycloak | true | Configure keycloak on the engine if possible |
 | he_cluster | Default | name of the cluster with hosted-engine hosts |
 | he_cluster_cpu_type | null | cluster CPU type to be used in hosted-engine cluster (the same as HE host or lower) |
 | he_cluster_comp_version | null | Compatibility version of the hosted-engine cluster. Default value is the latest compatibility version |

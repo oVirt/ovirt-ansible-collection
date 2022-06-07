@@ -613,7 +613,15 @@ def main():
             ret = hosts_module.action(
                 action='upgrade',
                 action_condition=lambda h: h.update_available,
-                wait_condition=lambda h: h.status == result_state,
+                wait_condition=lambda h: h.status == result_state and (
+                    len(
+                        events_service.list(
+                            from_=int(last_event.id),
+                            # 840: Host upgrade started
+                            search='type=840 and host.name=%s' % host.name,
+                        )
+                    ) > 0
+                ),
                 post_action=lambda h: time.sleep(module.params['poll_interval']),
                 fail_condition=lambda h: hosts_module.failed_state_after_reinstall(h) or (
                     len([

@@ -768,11 +768,13 @@ options:
                 description:
                     - "List of VM CPU cores indexes to be included in this NUMA node."
                 type: list
+                elements: int
                 required: True
             numa_node_pins:
                 description:
                     - "List of physical NUMA node indexes to pin this virtual NUMA node to."
                 type: list
+                elements: int
     rng_device:
         description:
             - "Random number generator (RNG). You can choose of one the following devices I(urandom), I(random) or I(hwrng)."

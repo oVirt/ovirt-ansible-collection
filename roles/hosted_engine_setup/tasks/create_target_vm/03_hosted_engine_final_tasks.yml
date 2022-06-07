@@ -133,6 +133,9 @@
     args:
       chdir: "{{ he_local_vm_dir }}"
       warn: false
+    become: true
+    become_user: vdsm
+    become_method: sudo
     changed_when: true
     tags: ['skip_ansible_lint']
   - name: Create ovirt-hosted-engine-ha run directory
@@ -184,7 +187,9 @@
     args:
       warn: false
   - name: Initialize metadata volume
-    command: dd bs=1M count=1024 oflag=direct if=/dev/zero of="{{ he_metadata_disk_path }}"
+    # Data is written at offset 4KiB*host_id and since ovirt supports 250 hosts per dc,
+    # we can have maximum 250*4KiB = ~ 1MiB
+    command: dd conv=notrunc bs=1M count=1 oflag=direct if=/dev/zero of="{{ he_metadata_disk_path }}"
     environment: "{{ he_cmd_lang }}"
     become: true
     become_user: vdsm
@@ -351,7 +356,8 @@
         register: health_result
         until: >-
           health_result.rc == 0 and 'health' in health_result.stdout and
-          health_result.stdout|from_json|@NAMESPACE@.@NAME@.json_query('*."engine-status"."health"')|first=="good"
+          health_result.stdout|from_json|@NAMESPACE@.@NAME@.json_query('*."engine-status"."health"')|first=="good" and
+          health_result.stdout|from_json|@NAMESPACE@.@NAME@.json_query('*."engine-status"."detail"')|first=="Up"
         retries: 180
         delay: 5
         changed_when: true
@@ -455,3 +461,13 @@
     include_tasks: "{{ item }}"
     with_fileglob: "hooks/after_setup/*.yml"
     register: after_setup_results
+  rescue:
+    - name: Fetch logs from the engine VM
+      include_tasks: ../fetch_engine_logs.yml
+      ignore_errors: true
+    - name: Notify the user about a failure
+      fail:
+        msg: >
+          The system may not be provisioned according to the playbook
+          results: please check the logs for the issue,
+          fix accordingly or re-deploy from scratch.

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="2.0.4"
+VERSION="2.0.5"
 MILESTONE=master
 RPM_RELEASE="0.1.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
 
@@ -26,7 +26,6 @@ PKG_DOC_DIR=${PKG_DOC_DIR:-$DOC_DIR/$PACKAGE_NAME}
 RPM_VERSION=$VERSION
 PACKAGE_VERSION=$VERSION
 [ -n "$MILESTONE" ] && PACKAGE_VERSION+="_$MILESTONE"
-DISPLAY_VERSION=$PACKAGE$VERSION
 
 TARBALL="$PACKAGE_NAME-$PACKAGE_VERSION.tar.gz"
 
@@ -45,34 +44,31 @@ dist() {
 
 install() {
   echo "Installing data..."
-  mkdir -p $PKG_DATA_DIR/$COLLECTION_NAMESPACE/$COLLECTION_NAME
-  mkdir -p $PKG_DOC_DIR
+  mkdir -p "$PKG_DATA_DIR/$COLLECTION_NAMESPACE/$COLLECTION_NAME"
+  mkdir -p "$PKG_DOC_DIR"
 
-  cp -pR plugins/ roles/ $PKG_DATA_DIR/$COLLECTION_NAMESPACE/$COLLECTION_NAME
+  cp -pR plugins/ roles/ "$PKG_DATA_DIR/$COLLECTION_NAMESPACE/$COLLECTION_NAME"
 
   if [[ $BUILD_TYPE = "rhv" ]]; then
     echo "Creating link to ovirt.ovirt"
-    mkdir -p $PKG_DATA_DIR/ovirt
-    ln -f -s $PKG_DATA_DIR_ORIG/redhat/rhv $PKG_DATA_DIR/ovirt/ovirt
+    mkdir -p "$PKG_DATA_DIR/ovirt"
+    ln -f -s "$PKG_DATA_DIR_ORIG/redhat/rhv" "$PKG_DATA_DIR/ovirt/ovirt"
   fi
   echo "Installation done."
 }
 
 rename() {
   echo "Renaming @NAMESPACE@ to $COLLECTION_NAMESPACE and @NAME@ to $COLLECTION_NAME"
-  for file in $(find ./* -type f)
-  do
-    sed -i -e "s/@NAMESPACE@/$COLLECTION_NAMESPACE/g" -e "s/@NAME@/$COLLECTION_NAME/g" $file
-  done
+  find ./* -type f -exec sed -i -e "s/@NAMESPACE@/$COLLECTION_NAMESPACE/g" -e "s/@NAME@/$COLLECTION_NAME/g" {} \;
 }
 
 build() {
   if [[ $BUILD_PATH ]]; then
-    BUILD_PATH=$BUILD_PATH/ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME/
-    mkdir -p $BUILD_PATH
+    BUILD_PATH="$BUILD_PATH/ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME/"
+    mkdir -p "$BUILD_PATH"
     echo "The copying files to $BUILD_PATH"
-    cp -r * $BUILD_PATH
-    cd $BUILD_PATH
+    cp -r ./* "$BUILD_PATH"
+    cd "$BUILD_PATH"
     rename
     dist
   fi

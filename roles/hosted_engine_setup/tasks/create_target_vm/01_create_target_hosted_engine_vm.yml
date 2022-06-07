@@ -118,7 +118,7 @@
       - {
         name: 'he_metadata',
         description: 'Hosted-Engine metadata disk',
-        size: '1GiB',
+        size: '128MiB',
         format: 'raw',
         sparse: false,
         content: 'hosted_engine_metadata'
