@@ -14,4 +14,4 @@ roles/image_template/              @mnecas
 roles/disaster_recovery/           @barpavel
 roles/hosted_engine_setup/         @arachmani
 roles/shutdown_env/                @arachmani
-roles/remove_stale_lun/            @vjuranek
+roles/remove_stale_lun/            @barpavel
