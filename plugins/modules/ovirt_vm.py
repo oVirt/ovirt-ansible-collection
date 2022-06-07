@@ -924,7 +924,12 @@ options:
               >0 - Number of Virtio SCSI queues to use by virtual machine."
         type: int
         version_added: 1.7.0
-
+    wait_after_lease:
+        description:
+            - "Number of seconds which should the module wait after the lease is changed."
+        type: int
+        default: 5
+        version_added: 2.1.0
 notes:
     - If VM is in I(UNASSIGNED) or I(UNKNOWN) state before any operation, the module will fail.
       If VM is in I(IMAGE_LOCKED) state before any operation, we try to wait for VM to be I(DOWN).
@@ -1359,6 +1364,7 @@ vm:
     type: dict
 '''
 import traceback
+import time
 
 try:
     import ovirtsdk4.types as otypes
@@ -1817,6 +1823,7 @@ class VmsModule(BaseModule):
         self.changed = self.__attach_watchdog(entity)
         self.changed = self.__attach_graphical_console(entity)
         self.changed = self.__attach_host_devices(entity)
+        self._wait_after_lease()
 
     def pre_remove(self, entity):
         # Forcibly stop the VM, if it's not in DOWN state:
@@ -1827,6 +1834,10 @@ class VmsModule(BaseModule):
                     action_condition=lambda vm: vm.status != otypes.VmStatus.DOWN,
                     wait_condition=lambda vm: vm.status == otypes.VmStatus.DOWN,
                 )['changed']
+
+    def _wait_after_lease(self):
+        if self.param('lease') and self.param('wait_after_lease') != 0:
+            time.sleep(self.param('wait_after_lease'))
 
     def __suspend_shutdown_common(self, vm_service):
         if vm_service.get().status in [
@@ -2569,6 +2580,7 @@ def main():
         high_availability=dict(type='bool'),
         high_availability_priority=dict(type='int'),
         lease=dict(type='str'),
+        wait_after_lease=dict(type='int', default=5),
         stateless=dict(type='bool'),
         delete_protected=dict(type='bool'),
         custom_emulated_machine=dict(type='str'),
