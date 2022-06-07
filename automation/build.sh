@@ -66,7 +66,7 @@ mkdir -p $COLLECTION_DIR
 cp -r "$OVIRT_BUILD"/* "$COLLECTION_DIR"
 cd "$COLLECTION_DIR"
 
-ansible-test sanity
+ansible-test sanity --docker
 antsibull-changelog lint -v
 # 204 - lines should be no longer than 160 chars
 ansible-lint roles/* -x 204
