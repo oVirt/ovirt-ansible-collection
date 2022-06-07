@@ -1,3 +1,0 @@
----
-minor_changes:
-  - plugins - Remove unused imports (https://github.com/oVirt/ovirt-ansible-collection/pull/444).

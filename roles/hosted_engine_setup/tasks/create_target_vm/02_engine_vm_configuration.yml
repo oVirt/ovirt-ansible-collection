@@ -29,7 +29,7 @@
     register: db_conf_update
   - name: Fetch host SPM_ID
     command: >-
-      "{{ engine_psql }}" -c
+      "{{ engine_psql }}" -t -c
       "SELECT vds_spm_id FROM vds WHERE vds_name='{{ hostvars[he_ansible_host_name]['he_host_name'] }}'"
     environment: "{{ he_cmd_lang }}"
     changed_when: true

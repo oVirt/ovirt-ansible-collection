@@ -1,3 +1,0 @@
----
-minor_changes:
-  - info - Rename follows to follow parameter and add alias (https://github.com/oVirt/ovirt-ansible-collection/pull/367).

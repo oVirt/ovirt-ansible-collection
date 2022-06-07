@@ -165,7 +165,7 @@ options:
         description:
             - Operating system of the template, for example 'rhel_8x64'.
             - Default value is set by oVirt/RHV engine.
-            - Use the M(ovirt_vm_os_info) module to obtain the current list.
+            - Use the M(@NAMESPACE@.@NAME@.ovirt_vm_os_info) module to obtain the current list.
         type: str
     memory:
         description:
@@ -313,6 +313,19 @@ options:
             - "Memory balloon is a guest device, which may be used to re-distribute / reclaim the host memory
                based on VM needs in a dynamic way. In this way it's possible to create memory over commitment states."
         type: bool
+    bios_type:
+        description:
+            - "Set bios type, necessary for some operating systems and secure boot."
+            - "If no value is passed, default value is set from cluster."
+            - "NOTE - Supported since oVirt 4.3."
+        choices: [ i440fx_sea_bios, q35_ovmf, q35_sea_bios, q35_secure_boot ]
+        type: str
+        version_added: 2.0.0
+    boot_menu:
+        description:
+            - "I(True) enable menu to select boot device, I(False) to disable it. By default is chosen by oVirt/RHV engine."
+        type: bool
+        version_added: 2.0.0
     nics:
         description:
             - List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
@@ -611,6 +624,12 @@ class TemplatesModule(BaseModule):
             vm=otypes.Vm(
                 name=self._module.params['vm']
             ) if self._module.params['vm'] else None,
+            bios=(
+                otypes.Bios(
+                    boot_menu=otypes.BootMenu(enabled=self.param('boot_menu')) if self.param('boot_menu') is not None else None,
+                    type=otypes.BiosType[self.param('bios_type').upper()] if self.param('bios_type') is not None else None
+                )
+            ) if self.param('boot_menu') is not None or self.param('bios_type') is not None else None,
             description=self._module.params['description'],
             cpu_profile=otypes.CpuProfile(
                 id=search_by_name(
@@ -786,6 +805,8 @@ class TemplatesModule(BaseModule):
             equal(self.param('smartcard_enabled'), getattr(template_display, 'smartcard_enabled', False)) and
             equal(self.param('soundcard_enabled'), entity.soundcard_enabled) and
             equal(self.param('ballooning_enabled'), entity.memory_policy.ballooning) and
+            equal(self.param('boot_menu'), entity.bios.boot_menu.enabled) and
+            equal(self.param('bios_type'), entity.bios.type.value) and
             equal(self.param('sso'), True if entity.sso.methods else False) and
             equal(self.param('timezone'), getattr(entity.time_zone, 'name', None)) and
             equal(self.param('usb_support'), entity.usb.enabled) and
@@ -977,6 +998,8 @@ def main():
         storage_domain=dict(default=None),
         exclusive=dict(type='bool'),
         kvm=dict(type='dict'),
+        bios_type=dict(type='str', choices=['i440fx_sea_bios', 'q35_ovmf', 'q35_sea_bios', 'q35_secure_boot']),
+        boot_menu=dict(type='bool'),
         clone_name=dict(default=None),
         image_provider=dict(default=None),
         soundcard_enabled=dict(type='bool', default=None),

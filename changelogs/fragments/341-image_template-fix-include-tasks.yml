@@ -1,3 +1,0 @@
----
-bugfixes:
-  - image_template - Remove static no - unsupported in ansible 2.12 (https://github.com/oVirt/ovirt-ansible-collection/pull/341).

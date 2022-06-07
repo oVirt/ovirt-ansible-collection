@@ -5,6 +5,132 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v2.0.4
+======
+
+Bugfixes
+--------
+
+- Fix the admin user name when using keycloak (https://github.com/oVirt/ovirt-ansible-collection/pull/488).
+- Use cryptography < 37.0.0, as 37.0.0 emits a warning that fails testing. (https://github.com/oVirt/ovirt-ansible-collection/pull/492).
+- Use rstcheck < 3.5.0, as 3.5.0 emits a warning that fails testing. (https://github.com/oVirt/ovirt-ansible-collection/pull/490).
+- cluster_upgrade - fix wait_condition (https://github.com/oVirt/ovirt-ansible-collection/pull/510).
+- hosted_engine_setup - Allocate 128MiB instead of 1GiB for he_metadata (https://github.com/oVirt/ovirt-ansible-collection/pull/489).
+- hosted_engine_setup - Collect logs also on failures in 03_hosted_engine_final_tasks.yml (https://github.com/oVirt/ovirt-ansible-collection/pull/504).
+- hosted_engine_setup - Fix keycloak activation/checking (https://github.com/oVirt/ovirt-ansible-collection/pull/509).
+- hosted_engine_setup - Require 'detail' to be 'Up' (https://github.com/oVirt/ovirt-ansible-collection/pull/498).
+- hosted_engine_setup - fix archive ownership (https://github.com/oVirt/ovirt-ansible-collection/pull/501).
+- infra - add warning for multiple storage connections (https://github.com/oVirt/ovirt-ansible-collection/pull/500).
+
+v2.0.3
+======
+
+Minor Changes
+-------------
+
+- ovirt_affinity_group - Add affinity labels (https://github.com/oVirt/ovirt-ansible-collection/pull/481).
+
+Bugfixes
+--------
+
+- invenory - Fix url address (https://github.com/oVirt/ovirt-ansible-collection/pull/482).
+- ovirt_vm - Fix creating a RAW VM from a COW template  (https://github.com/oVirt/ovirt-ansible-collection/pull/466).
+
+v2.0.2
+======
+
+Bugfixes
+--------
+
+- Fix progress logging via REST (https://github.com/oVirt/ovirt-ansible-collection/pull/474).
+
+v2.0.1
+======
+
+Bugfixes
+--------
+
+- Make storage_format optional - do not fail if missing (https://github.com/oVirt/ovirt-ansible-collection/pull/471).
+
+v2.0.0
+======
+
+Major Changes
+-------------
+
+- manageiq - role removed (https://github.com/oVirt/ovirt-ansible-collection/pull/375).
+
+Minor Changes
+-------------
+
+- Add json_query filter (https://github.com/oVirt/ovirt-ansible-collection/pull/436).
+- cluster_upgrade - Add progress tracking via event logs to the role (https://github.com/oVirt/ovirt-ansible-collection/pull/415)
+- cluster_upgrade - Directly log progress to the cluster (https://github.com/oVirt/ovirt-ansible-collection/pull/449)
+- engine_setup - Honor ovirt_engine_setup_offline variable (https://github.com/oVirt/ovirt-ansible-collection/pull/381).
+- engine_setup - Prepare answer files and default values for 4.5 release (https://github.com/oVirt/ovirt-ansible-collection/pull/414).
+- gluster_heal_info - Replacing gluster module to CLI to support RHV automation hub (https://github.com/oVirt/ovirt-ansible-collection/pull/340).
+- hosted_engine - Replace virt_net and xml with commands (https://github.com/oVirt/ovirt-ansible-collection/pull/359).
+- hosted_engine_setup - Fix default gateway variable name (https://github.com/oVirt/ovirt-ansible-collection/pull/423).
+- hosted_engine_setup - Fix default gateway variable name (https://github.com/oVirt/ovirt-ansible-collection/pull/423).
+- hosted_engine_setup - Fix permissions on copied engine logs, needed for OpenSCAP (https://github.com/oVirt/ovirt-ansible-collection/pull/404).
+- hosted_engine_setup - Honor he_offline_deployment variable (https://github.com/oVirt/ovirt-ansible-collection/pull/380).
+- hosted_engine_setup - Replace calls to psql as postgres with engine_psql.sh (https://github.com/oVirt/ovirt-ansible-collection/pull/453).
+- hosted_engine_setup - configured abrt initial files only when needed (https://github.com/oVirt/ovirt-ansible-collection/pull/397).
+- info - Rename follows to follow parameter and add alias (https://github.com/oVirt/ovirt-ansible-collection/pull/367).
+- info - bump deprecate version for fetch_nested and nested_attributes (https://github.com/oVirt/ovirt-ansible-collection/pull/378).
+- info modules - Add follow link url to api model links_summary
+- info modules - Enable follow parameter (https://github.com/oVirt/ovirt-ansible-collection/pull/355).
+- manageiq - add deprecation info (https://github.com/oVirt/ovirt-ansible-collection/pull/384).
+- ovirt_disk - Add warning for disk attachments (https://github.com/oVirt/ovirt-ansible-collection/pull/347).
+- ovirt_disk - Use imageio client (https://github.com/oVirt/ovirt-ansible-collection/pull/358).
+- ovirt_event - enable correlation_id on events (https://github.com/oVirt/ovirt-ansible-collection/pull/368).
+- ovirt_host - Add enroll_certificate (https://github.com/oVirt/ovirt-ansible-collection/pull/439).
+- ovirt_permission - add mac pool (https://github.com/oVirt/ovirt-ansible-collection/pull/353).
+- ovirt_remove_stale_lun - Allow user to remove multiple LUNs (https://github.com/oVirt/ovirt-ansible-collection/pull/357).
+- ovirt_remove_stale_lun - Retry "multipath -f" while removing the LUNs (https://github.com/oVirt/ovirt-ansible-collection/pull/382).
+- ovirt_remove_stale_lun - Use add_host instead of delegate_to (https://github.com/oVirt/ovirt-ansible-collection/pull/390).
+- ovirt_storage_template_info - fix docs (https://github.com/oVirt/ovirt-ansible-collection/pull/356).
+- ovirt_storage_vm_info - fix docs (https://github.com/oVirt/ovirt-ansible-collection/pull/356).
+- ovirt_template - Add ova import of template (https://github.com/oVirt/ovirt-ansible-collection/pull/304).
+- ovirt_template - add boot_menu and bios_type https://github.com/oVirt/ovirt-ansible-collection/pull/465).
+- ovirt_vm - Add display file_transfer_enabled and copy_paste_enabled (https://github.com/oVirt/ovirt-ansible-collection/pull/339).
+- ovirt_vm - Add virtio_scsi_enabled and multi_queues_enabled (https://github.com/oVirt/ovirt-ansible-collection/pull/348).
+- ovirt_vm - Add virtio_scsi_multi_queues (https://github.com/oVirt/ovirt-ansible-collection/pull/373).
+- plugins - Remove unused imports (https://github.com/oVirt/ovirt-ansible-collection/pull/444).
+- repositories - Add to the documentation variable priority (https://github.com/oVirt/ovirt-ansible-collection/pull/440).
+- repositories - Replace redhat_subscription and rhsm_repository with command (https://github.com/oVirt/ovirt-ansible-collection/pull/346).
+- repositories - Update host and engine repositories to 4.4.9 (https://github.com/oVirt/ovirt-ansible-collection/pull/363).
+- repositories - add no_log to register (https://github.com/oVirt/ovirt-ansible-collection/pull/350).
+- repositories - add satelite support (https://github.com/oVirt/ovirt-ansible-collection/pull/431).
+- vm_infra - Add no_log to Manage VMs state task (https://github.com/oVirt/ovirt-ansible-collection/pull/417).
+
+Bugfixes
+--------
+
+- hosted_engine_setup - Add OpenSCAP security profile name parameter (https://github.com/oVirt/ovirt-ansible-collection/pull/411).
+- hosted_engine_setup - Add an option to set the storage format when createing a storage domain and use it (https://github.com/oVirt/ovirt-ansible-collection/pull/463).
+- hosted_engine_setup - Adjust files permissions (https://github.com/oVirt/ovirt-ansible-collection/pull/409).
+- hosted_engine_setup - Fix call to engine-psql for vds_spm_id (https://github.com/oVirt/ovirt-ansible-collection/pull/459).
+- hosted_engine_setup - Fix cloud-init package removal in airgapped environment (https://github.com/oVirt/ovirt-ansible-collection/pull/442)
+- hosted_engine_setup - Remove SPICE graphic protocol (https://github.com/oVirt/ovirt-ansible-collection/pull/394).
+- hosted_engine_setup - Replace xml community module (https://github.com/oVirt/ovirt-ansible-collection/pull/438).
+- hosted_engine_setup - Support disa stig profile (https://github.com/oVirt/ovirt-ansible-collection/pull/426).
+- hosted_engine_setup - Use cat command (https://github.com/oVirt/ovirt-ansible-collection/pull/443).
+- hosted_engine_setup - Use tpgt in iscsi login (https://github.com/oVirt/ovirt-ansible-collection/pull/338)
+- image_template - Remove static no - unsupported in ansible 2.12 (https://github.com/oVirt/ovirt-ansible-collection/pull/341).
+- ovirt_host - Fix failed_state_after_reinstall condition (https://github.com/oVirt/ovirt-ansible-collection/pull/371).
+- ovirt_template - Fix creating templates where the base template version number is not 1 (https://github.com/oVirt/ovirt-ansible-collection/pull/370).
+- repositories - Fix dnf module variable (https://github.com/oVirt/ovirt-ansible-collection/pull/454).
+- repositories - fix force flag on subscription-manager (https://github.com/oVirt/ovirt-ansible-collection/pull/430).
+
+New Plugins
+-----------
+
+Callback
+~~~~~~~~
+
+- ovirt.ovirt.stdout - Output the log of ansible
+
 v1.6.2
 ======
 
