@@ -8,6 +8,13 @@ on:
       - master
   workflow_dispatch:
 jobs:
+  sanity_test:
+    runs-on: ubuntu-latest
+    name: Test ansible-test
+    steps:
+      - name: Run build.sh
+        run: ansible-test sanity --docker
+
   build:
     runs-on: ubuntu-latest
     strategy:
