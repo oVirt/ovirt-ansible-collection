@@ -10,10 +10,20 @@ on:
 jobs:
   sanity_test:
     runs-on: ubuntu-latest
-    name: Test ansible-test
+    name: ansible-test docker
     steps:
-      - name: Run build.sh
-        run: ansible-test sanity --docker
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Build the project
+        run: ./build.sh build ovirt /tmp
+
+      - name: Run ansible-test sanity
+        run: >
+          cd /tmp/ansible_collections/ovirt/ovirt/ &&
+          ansible-test sanity --docker
 
   build:
     runs-on: ubuntu-latest
