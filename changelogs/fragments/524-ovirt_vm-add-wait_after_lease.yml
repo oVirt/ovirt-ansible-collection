@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - ovirt_vm - add wait_after_lease (https://github.com/oVirt/ovirt-ansible-collection/pull/524).

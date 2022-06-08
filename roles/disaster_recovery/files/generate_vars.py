@@ -9,7 +9,6 @@ import subprocess
 import sys
 
 from configparser import ConfigParser
-from ansible.module_utils.six.moves import input
 
 import ovirtsdk4 as sdk
 

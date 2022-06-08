@@ -7,6 +7,7 @@ from ansible.plugins.callback import CallbackBase
 
 # Not only visible to ansible-doc, it also 'declares' the options the plugin
 # requires and how to configure them.
+# TODO Fix DOCUMENTATION to pass the ansible-test validate-modules
 DOCUMENTATION = '''
   callback: stdout
   callback_type: aggregate
