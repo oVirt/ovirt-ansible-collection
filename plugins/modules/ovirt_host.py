@@ -620,7 +620,7 @@ def main():
                             from_=int(last_event.id),
                             # Finished upgrade:
                             # 841: HOST_UPGRADE_FAILED
-                            # 842, HOST_UPGRADE_FINISHED
+                            # 842: HOST_UPGRADE_FINISHED
                             # 888: HOST_UPGRADE_FINISHED_AND_WILL_BE_REBOOTED
                             search='type=842 or type=841 or type=888',
                         ) if host.name in event.description
