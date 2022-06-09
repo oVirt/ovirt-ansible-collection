@@ -1,3 +1,0 @@
----
-bugfixes:
-  - ovirt_vm - check if the snapshot exists (https://github.com/oVirt/ovirt-ansible-collection/pull/525).

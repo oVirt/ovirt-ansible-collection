@@ -712,3 +712,33 @@ releases:
     - 509-fix-keycloak-activation.yml
     - 510-cluster-upgrade-fix-wait_condition.yml
     release_date: '2022-06-03'
+  2.1.0:
+    changes:
+      bugfixes:
+      - hosted_engine_setup - Fix "'ansible' ModuleNotFoundError" in Disaster Recovery
+        scripts (https://github.com/oVirt/ovirt-ansible-collection/pull/503).
+      - hosted_engine_setup - Use command instead of firewalld module (https://github.com/oVirt/ovirt-ansible-collection/pull/508).
+      - ovirt_vm - Fix parsing None arguments (https://github.com/oVirt/ovirt-ansible-collection/pull/486).
+      - ovirt_vm - check if the snapshot exists (https://github.com/oVirt/ovirt-ansible-collection/pull/525).
+      minor_changes:
+      - Add convert_to_bytes filter (https://github.com/oVirt/ovirt-ansible-collection/pull/515).
+      - automation - Use python38 on el8 with ansible-core 2.12 and python39 on el9
+        with ansible-core 2.13  (https://github.com/oVirt/ovirt-ansible-collection/pull/518).
+      - cloud.py - Sync with orgin (https://github.com/oVirt/ovirt-ansible-collection/pull/519).
+      - engine_setup - Allow to disable cert validation (https://github.com/oVirt/ovirt-ansible-collection/pull/517).
+      - hosted_engine_setup - make vdsm config cleanup optional (https://github.com/oVirt/ovirt-ansible-collection/pull/521).
+      - ovirt - Remove deprecated distutils (https://github.com/oVirt/ovirt-ansible-collection/pull/516).
+      - ovirt_vm - add wait_after_lease (https://github.com/oVirt/ovirt-ansible-collection/pull/524).
+    fragments:
+    - 483-ovirt_vm-fix-None-args.yml
+    - 503-fix-ansible-ModuleNotFoundError.yml
+    - 508-ovirt_hosted_engine_setup-use-firewalld-command.yml
+    - 515-add-convert_to_bytes-filter.yml
+    - 516-remove-distutils-usage.yml
+    - 517-engien_setup-allow-to-disable-cert-validation.yml
+    - 518-ci-changes.yml
+    - 519-sync-cloud_py.yml
+    - 521-optional-cleanup.yml
+    - 524-ovirt_vm-add-wait_after_lease.yml
+    - 525-ovirt_vm-check-if-snap-exists.yml
+    release_date: '2022-06-09'
