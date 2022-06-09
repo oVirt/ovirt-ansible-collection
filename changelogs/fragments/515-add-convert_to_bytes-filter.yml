@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Add convert_to_bytes filter (https://github.com/oVirt/ovirt-ansible-collection/pull/515).

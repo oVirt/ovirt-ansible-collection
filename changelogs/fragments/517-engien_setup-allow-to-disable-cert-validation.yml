@@ -1,3 +1,0 @@
----
-minor_changes:
-  - engine_setup - Allow to disable cert validation (https://github.com/oVirt/ovirt-ansible-collection/pull/517).

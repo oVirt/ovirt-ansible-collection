@@ -1,3 +1,0 @@
----
-bugfixes:
-  - hosted_engine_setup - Fix "'ansible' ModuleNotFoundError" in Disaster Recovery scripts (https://github.com/oVirt/ovirt-ansible-collection/pull/503).

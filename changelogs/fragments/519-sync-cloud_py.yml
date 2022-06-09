@@ -1,3 +1,0 @@
----
-minor_changes:
-  - cloud.py - Sync with orgin (https://github.com/oVirt/ovirt-ansible-collection/pull/519).
