@@ -614,13 +614,17 @@ def main():
                 action='upgrade',
                 action_condition=lambda h: h.update_available,
                 wait_condition=lambda h: h.status == result_state and (
-                    len(
-                        events_service.list(
+                    len([
+                        event
+                        for event in events_service.list(
                             from_=int(last_event.id),
-                            # 840: Host upgrade started
-                            search='type=840 and host.name=%s' % host.name,
-                        )
-                    ) > 0
+                            # Finished upgrade:
+                            # 841: HOST_UPGRADE_FAILED
+                            # 842, HOST_UPGRADE_FINISHED
+                            # 888: HOST_UPGRADE_FINISHED_AND_WILL_BE_REBOOTED
+                            search='type=842 or type=841 or type=888',
+                        ) if host.name in event.description
+                    ]) > 0
                 ),
                 post_action=lambda h: time.sleep(module.params['poll_interval']),
                 fail_condition=lambda h: hosts_module.failed_state_after_reinstall(h) or (
