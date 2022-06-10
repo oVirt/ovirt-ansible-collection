@@ -231,6 +231,7 @@
             auth: "{{ ovirt_auth }}"
             name: "{{ item }}"
             state: running
+            cluster: "{{ cluster_name }}"
           ignore_errors: "yes"
           loop: "{{ stopped_vms | default([]) | flatten(levels=1) }}"
 
@@ -239,6 +240,7 @@
             auth: "{{ ovirt_auth }}"
             name: "{{ item }}"
             state: running
+            cluster: "{{ cluster_name }}"
           ignore_errors: "yes"
           loop: "{{ pinned_vms_names | default([]) | flatten(levels=1) }}"
           when: stop_non_migratable_vms
