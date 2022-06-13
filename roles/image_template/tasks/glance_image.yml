@@ -1,7 +1,7 @@
 ---
 - block:
     - name: Check if template is correct
-      fail:
+      ansible.builtin.fail:
         msg: "one of mandatory parameters glance_image_provider or glance_image is not defined"
       when: "glance_image_provider is undefined or glance_image is undefined"
 
@@ -26,7 +26,7 @@
         - ovirt-template-image
 
     - name: Find data domain
-      set_fact:
+      ansible.builtin.set_fact:
         disk_storage_domain: "{{ sd_info.ovirt_storage_domains|@NAMESPACE@.@NAME@.json_query(the_query)|list|first }}"
       vars:
         the_query: "[?type=='data']"

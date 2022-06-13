@@ -24,7 +24,7 @@
 
   - name: Update the upgrade progress on the cluster
     no_log: false
-    uri:
+    ansible.builtin.uri:
       url: "{{ ovirt_auth.url }}/clusters/{{ cluster_id }}/upgrade"
       method: POST
       body_format: json

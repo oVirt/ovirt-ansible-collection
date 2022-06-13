@@ -1,16 +1,16 @@
 ---
 - block:
     - name: Check if mandatory parameters are correct
-      fail:
+      ansible.builtin.fail:
         msg: "one of mandatory parameter data_center_name or compatibility_version is undefined"
       when: "data_center_name is undefined or compatibility_version is undefined"
 
     - name: Get list of oVirt infra hosts we can use throughtout the role
-      set_fact:
+      ansible.builtin.set_fact:
         ovirt_infra_hosts: "{{ lookup('vars', hosts_var_name, default=[]) }}"
 
     - name: Check if hosts are correct
-      fail:
+      ansible.builtin.fail:
         msg: "'{{ lookup('vars', hosts_var_name) }}' variable does not contain mandatory parameter '{{ item[1] }}'"
       when: item[1] not in item[0]
       with_nested:

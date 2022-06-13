@@ -1,11 +1,11 @@
 ---
 - block:
   - name: Set answer file path
-    set_fact:
+    ansible.builtin.set_fact:
       answer_file_path: "/tmp/answerfile-{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}.txt"
 
   - name: Use the default answerfile
-    template:
+    ansible.builtin.template:
       src: answerfile_{{ ovirt_engine_setup_version }}_basic.txt.j2
       dest: "{{ answer_file_path }}"
       mode: 0600
@@ -15,7 +15,7 @@
     no_log: true
 
   - name: Copy custom answer file
-    template:
+    ansible.builtin.template:
       src: "{{ ovirt_engine_setup_answer_file_path }}"
       dest: "{{ answer_file_path }}"
       mode: 0600
@@ -27,12 +27,12 @@
     no_log: true
 
   - name: Use remote's answer file
-    set_fact:
+    ansible.builtin.set_fact:
       answer_file_path: "{{ ovirt_engine_setup_answer_file_path }}"
     when: ovirt_engine_setup_use_remote_answer_file|bool
 
   - name: Update setup packages
-    yum:
+    ansible.builtin.yum:
       name: "ovirt*setup*"
       update_only: true
       state: latest
@@ -41,7 +41,7 @@
       - "skip_ansible_lint"  # ANSIBLE0006
 
   - name: Copy yum configuration file
-    copy:
+    ansible.builtin.copy:
       src: "/etc/yum.conf"
       dest: "/tmp/yum.conf"
       owner: root
@@ -50,7 +50,7 @@
       remote_src: true
 
   - name: Set 'best' to false
-    replace:
+    ansible.builtin.replace:
       path: "/tmp/yum.conf"
       regexp: '^best=True'
       replace: 'best=False'
@@ -59,7 +59,7 @@
       mode: 0644
 
   - name: Update all packages
-    yum:
+    ansible.builtin.yum:
       name: '*'
       state: latest
       conf_file: /tmp/yum.conf
@@ -68,13 +68,13 @@
       - "skip_ansible_lint"  # ANSIBLE0010
 
   - name: Remove temporary yum configuration file
-    file:
+    ansible.builtin.file:
       path: "/tmp/yum.conf"
       state: absent
     ignore_errors: true
 
   - name: Set offline parameter if variable is set
-    set_fact:
+    ansible.builtin.set_fact:
       offline: "{{ '--offline' if ovirt_engine_setup_offline|bool else '' }}"
 
   - name: Restore engine from file
@@ -87,22 +87,22 @@
       - skip_ansible_lint
 
   - name: Make sure `ovirt-engine` service is running
-    service:
+    ansible.builtin.service:
       name: ovirt-engine
       state: started
 
   - name: Run engine-config
-    command: "engine-config -s {{ item.key }}='{{ item.value }}' {% if item.version is defined %} --cver={{ item.version }} {% endif %}"
+    ansible.builtin.command: "engine-config -s {{ item.key }}='{{ item.value }}' {% if item.version is defined %} --cver={{ item.version }} {% endif %}"
     loop: "{{ ovirt_engine_setup_engine_configs | default([]) }}"
 
   - name: Restart engine after engine-config
-    service:
+    ansible.builtin.service:
       name: ovirt-engine
       state: restarted
     when: ovirt_engine_setup_engine_configs is defined
 
   - name: Check if Engine health page is up
-    uri:
+    ansible.builtin.uri:
       validate_certs: "{{ ovirt_engine_setup_validate_certs | default(omit) }}"
       url: "http://localhost/ovirt-engine/services/health"
       status_code: 200
@@ -113,6 +113,6 @@
 
   always:
     - name: Clean temporary files
-      file:
+      ansible.builtin.file:
         path: "{{ answer_file_path }}"
         state: 'absent'

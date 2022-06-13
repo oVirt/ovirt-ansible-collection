@@ -1,6 +1,6 @@
 ---
 - name: Check if Subscription Manager is about to be used on non RHEL system
-  fail:
+  ansible.builtin.fail:
     msg: "Subscription manager could be used only on Red Hat Enterprise Linux"
   when:
     - ovirt_repositories_use_subscription_manager | bool

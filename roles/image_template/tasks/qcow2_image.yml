@@ -1,19 +1,19 @@
 ---
 - name: Check if template is correct
-  fail:
+  ansible.builtin.fail:
     msg: "mandatory parameter 'qcow_url' is not defined"
   when: "qcow_url is undefined"
 
 - name: Check if {{ image_path }} is directory
-  stat:
+  ansible.builtin.stat:
     path: "{{ image_path }}"
   register: image_path_st
 
 # TODO: fix line-length, when moved to ansible-lint 5.0.0 remove 204 (line-length)
 - name: Download the qcow image
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ qcow_url }}"
-    dest: "{{ image_path_st.stat.isdir is defined and image_path_st.stat.isdir | ternary(image_path~'/'~qcow_url.rpartition('/')[-1], image_path) | regex_replace('//', '/') }}"  # noqa 204 line-length
+    dest: "{{ image_path_st.stat.isdir is defined and image_path_st.stat.isdir | ternary(image_path~'/'~qcow_url.rpartition('/')[-1], image_path) | regex_replace('//', '/') }}" # noqa yaml[line-length]
     force: "{{ not image_cache_download }}"
     checksum: "{{ image_checksum | default(omit) }}"
     timeout: "{{ image_download_timeout }}"
@@ -24,21 +24,21 @@
     - ovirt-template-image
 
 - name: Check file type
-  command: "/usr/bin/file {{ downloaded_file.dest | quote }}"
+  ansible.builtin.command: "/usr/bin/file {{ downloaded_file.dest | quote }}"
   changed_when: false
   register: filetype
   tags:
     - ovirt-template-image
 
 - name: Fail if image is not qcow
-  fail:
+  ansible.builtin.fail:
     msg: "The downloaded file is not valid QCOW file."
   when: '"QCOW" not in filetype.stdout'
   tags:
     - ovirt-template-image
 
 - name: Calculate image size in GiB
-  set_fact:
+  ansible.builtin.set_fact:
     qcow2_size: "{{ (filetype.stdout_lines[0].split()[5] | int / 2**30) | round(0, 'ceil') | int }}GiB"
 
 - block:
@@ -71,7 +71,7 @@
         - ovirt-template-image
 
     - name: Find data domain
-      set_fact:
+      ansible.builtin.set_fact:
         disk_storage_domain: "{{ sd_info.ovirt_storage_domains|@NAMESPACE@.@NAME@.json_query(the_query)|list|first }}"
       when: template_disk_storage is undefined
       vars:
@@ -115,7 +115,7 @@
 
     - block:
         - name: Generate SSH keys
-          command: "ssh-keygen -t rsa -f {{ tmp_private_key_file }} -N ''"
+          ansible.builtin.command: "ssh-keygen -t rsa -f {{ tmp_private_key_file }} -N ''"
           args:
             creates: "{{ tmp_private_key_file }}"
           when: template_prerequisites_tasks is defined
@@ -135,7 +135,7 @@
             cpu_cores: "{{ template_cpu }}"
             operating_system: "{{ template_operating_system }}"
             type: "{{ template_type | default(omit) }}"
-            cloud_init: "{{ {'user_name': 'root', 'authorized_ssh_keys': lookup('file', tmp_private_key_file~'.pub') } if template_prerequisites_tasks is defined else omit }}"  # noqa 204 line-length
+            cloud_init: "{{ {'user_name': 'root', 'authorized_ssh_keys': lookup('file', tmp_private_key_file~'.pub') } if template_prerequisites_tasks is defined else omit }}" # noqa yaml[line-length]
             disks:
               - id: "{{ disk_info.ovirt_disks[0].id }}"
                 bootable: true
@@ -168,7 +168,7 @@
               delay: 5
 
             - name: Set Ip of the VM
-              set_fact:
+              ansible.builtin.set_fact:
                 vm_ip: "{{ vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4 }}"
 
             - name: Include prerequisites tasks for VM
@@ -181,7 +181,7 @@
                 ansible_ssh_private_key_file: "{{ tmp_private_key_file | default(omit) }}"
 
             - name: Remove SSH keys
-              file:
+              ansible.builtin.file:
                 state: absent
                 path: "{{ item }}"
               delegate_to: localhost
@@ -233,7 +233,7 @@
 
   always:
     - name: Remove downloaded image
-      file:
+      ansible.builtin.file:
         path: "{{ downloaded_file.dest }}"
         state: absent
       when: not image_cache_download

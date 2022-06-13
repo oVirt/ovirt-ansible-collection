@@ -4,27 +4,27 @@
 ########################################################################
 - block:
     - name: Set cloud_init fact
-      set_fact:
+      ansible.builtin.set_fact:
         cloud_init: "{{ current_vm.cloud_init | default(current_vm.profile.cloud_init) | default({}) }}"
 
     - block:
-        - set_fact:
+        - ansible.builtin.set_fact:
             cloud_init: "{{ cloud_init | combine({'user_name': cloud_init.user_name | default('root') }) }}"
 
-        - set_fact:
+        - ansible.builtin.set_fact:
             cloud_init: "{{ cloud_init | combine({'authorized_ssh_keys': current_vm.ssh_key | default(current_vm.profile.ssh_key)}) }}"
           when: current_vm.profile.ssh_key is defined or current_vm.ssh_key is defined
 
-        - set_fact:
+        - ansible.builtin.set_fact:
             cloud_init: "{{ cloud_init | combine({'root_password': current_vm.root_password | default(current_vm.profile.root_password)}) }}"
           when: current_vm.profile.root_password is defined or current_vm.root_password is defined
 
-        - set_fact:
+        - ansible.builtin.set_fact:
             cloud_init: "{{ cloud_init | combine({'host_name': current_vm.name~'.'~current_vm.domain | default(current_vm.profile.domain)}) }}"
           when: current_vm.profile.domain is defined or current_vm.domain is defined
 
         - name: Define vm/password dictionary
-          set_fact:
+          ansible.builtin.set_fact:
             vms_passwords: "{{ vms_passwords + [{'name': current_vm.name, 'root_password': cloud_init.root_password}] }}"
           when: "'root_password' in cloud_init"
       when: current_vm.cloud_init is defined or current_vm.profile.cloud_init is defined
@@ -36,23 +36,23 @@
 
 - block:
     - name: Set sysprep fact
-      set_fact:
+      ansible.builtin.set_fact:
         sysprep: "{{ current_vm.sysprep | default(current_vm.profile.sysprep) | default({}) }}"
 
     - block:
-        - set_fact:
+        - ansible.builtin.set_fact:
             sysprep: "{{ sysprep | combine({'user_name': sysprep.user_name | default('Administrator') }) }}"
 
-        - set_fact:
+        - ansible.builtin.set_fact:
             sysprep: "{{ sysprep | combine({'root_password': current_vm.root_password | default(current_vm.profile.root_password)}) }}"
           when: current_vm.profile.root_password is defined or current_vm.root_password is defined
 
-        - set_fact:
+        - ansible.builtin.set_fact:
             sysprep: "{{ sysprep | combine({'host_name': current_vm.name~'.'~current_vm.domain | default(current_vm.profile.domain)}) }}"
           when: current_vm.profile.domain is defined or current_vm.domain is defined
 
         - name: Define vm/password dictionary
-          set_fact:
+          ansible.builtin.set_fact:
             vms_passwords: "{{ vms_passwords + [{'name': current_vm.name, 'root_password': sysprep.root_password}] }}"
           when: "'root_password' in sysprep"
       when: current_vm.sysprep is defined or current_vm.profile.sysprep is defined
@@ -76,5 +76,5 @@
   register: started_vm
 
 - name: Set started_vms list
-  set_fact:
+  ansible.builtin.set_fact:
     started_vms: "{{ started_vms | default([]) + [started_vm] }}"

@@ -1,11 +1,11 @@
 ---
 - name: Set sensitive vms
-  set_fact:
+  ansible.builtin.set_fact:
     sensitive_vms: "{{ vms }}"
   no_log: true
 
 - name: Check if VMs are correct
-  set_fact:
+  ansible.builtin.set_fact:
     vms: "{{ vms | @NAMESPACE@.@NAME@.removesensitivevmdata }}"
 
 - block:
@@ -21,7 +21,7 @@
       register: loggedin
 
     - name: Split list of VMs
-      set_fact:
+      ansible.builtin.set_fact:
         create_vms: "{{ create_vms | default([]) + [item] }}"
       with_items: "{{ vms }}"
       when: (item.state is undefined and item.profile.state is defined and item.profile.state != 'absent')
@@ -29,7 +29,7 @@
       # Uses item state first if not defined it will check profile state and use it.
 
     - name: Split list of sensitive VMs
-      set_fact:
+      ansible.builtin.set_fact:
         create_sensitive_vms: "{{ create_sensitive_vms | default([]) + [item] }}"
       with_items: "{{ sensitive_vms }}"
       no_log: true
@@ -51,7 +51,7 @@
 
   always:
     - name: Unset facts
-      set_fact:
+      ansible.builtin.set_fact:
         create_vms: []
         create_sensitive_vms: []
 

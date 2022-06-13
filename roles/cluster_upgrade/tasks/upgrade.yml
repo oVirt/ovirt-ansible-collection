@@ -58,7 +58,7 @@
     register: pinned_to_host_vms
 
   - name: Create list of VM names which have been shut down
-    set_fact:
+    ansible.builtin.set_fact:
       pinned_vms_names: "{{ pinned_vms_names + pinned_to_host_vms.results | selectattr('changed') | map(attribute='vm.name') | list }}"
 
   - name: progress - done shutting down pinned VMs (host 20% complete)
@@ -68,7 +68,7 @@
       description: "pinned VMs shutdown"
 
   - name: Gather self-heal facts about all gluster hosts in the cluster
-    ansible.builtin.shell: gluster volume heal {{ volume_item.name }} info
+    ansible.builtin.command: gluster volume heal {{ volume_item.name }} info
     register: self_heal_status
     retries: "{{ healing_in_progress_checks }}"
     delay: "{{ healing_in_progress_check_delay }}"
@@ -81,10 +81,10 @@
       - "{{ cluster_info.ovirt_clusters[0].gluster_volumes }}"
     loop_control:
       loop_var: volume_item
-    when:  cluster_info.ovirt_clusters[0].gluster_service | bool
+    when: cluster_info.ovirt_clusters[0].gluster_service | bool
 
   - name: Refresh gluster heal info entries to database
-    uri:
+    ansible.builtin.uri:
       url: "{{ ovirt_auth.url }}/clusters/{{ cluster_id }}/refreshglusterhealstatus"
       method: POST
       body_format: json
@@ -127,7 +127,7 @@
       timeout: "{{ upgrade_timeout }}"
 
   - name: Delay in minutes to wait to finish gluster healing process after successful host upgrade
-    pause:
+    ansible.builtin.pause:
       minutes: "{{ wait_to_finish_healing }}"
     when:
       - cluster_info.ovirt_clusters[0].gluster_service | bool

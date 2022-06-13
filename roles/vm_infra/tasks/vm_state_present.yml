@@ -6,7 +6,7 @@
     loop_var: "current_vm"
 
 - name: Wait for VMs to be added
-  async_status: "jid={{ item.ansible_job_id }}"
+  ansible.builtin.async_status: "jid={{ item.ansible_job_id }}"
   register: job_result
   with_items: "{{ all_vms }}"
   when: all_vms is defined
@@ -101,7 +101,7 @@
 
 - name: Wait for VMs to be started
   no_log: "{{ not debug_vm_create }}"
-  async_status: "jid={{ item.ansible_job_id }}"
+  ansible.builtin.async_status: "jid={{ item.ansible_job_id }}"
   register: job_result
   with_items: "{{ started_vms }}"
   when: started_vms is defined
@@ -133,7 +133,7 @@
 
 - block:
     - name: Filter ovirt_vms to get IP
-      set_fact:
+      ansible.builtin.set_fact:
         ip_cond: "vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmip{{ wait_for_ip_version }}(network_ip='{{ wait_for_ip_range }}') | length > 0"
 
     - name: Wait for VMs IP

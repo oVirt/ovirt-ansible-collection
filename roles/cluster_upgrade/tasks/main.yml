@@ -3,7 +3,7 @@
 ## Ansible 2.3 generates a WARNING when using {{ }} in defaults variables of role
 ## this workarounds it until Ansible resolves the issue:
 - name: Initialize variables
-  set_fact:
+  ansible.builtin.set_fact:
     stop_non_migratable_vms: "{{ stop_non_migratable_vms }}"
     provided_token: "{{ engine_token | default(lookup('env','OVIRT_TOKEN')) | default('') }}"
 
@@ -45,7 +45,7 @@
       register: cluster_info
 
     - name: Remember the api version and cluster id
-      set_fact:
+      ansible.builtin.set_fact:
         api_gt43: "{{ api_info.ovirt_api.product_info.version.major >= 4 and api_info.ovirt_api.product_info.version.minor >= 3 }}"
         api_gt45: "{{ api_info.ovirt_api.product_info.version.major >= 4 and api_info.ovirt_api.product_info.version.minor >= 5 }}"
         cluster_id: "{{ cluster_info.ovirt_clusters[0].id }}"
@@ -58,7 +58,7 @@
 
     - name: Set cluster upgrade status to running
       no_log: false
-      uri:
+      ansible.builtin.uri:
         url: "{{ ovirt_auth.url }}/clusters/{{ cluster_id }}/upgrade"
         method: POST
         body_format: json
@@ -90,101 +90,101 @@
       register: host_info
 
     - block:
-      - name: Print - no hosts to be upgraded
-        debug:
-          msg: "No hosts to be upgraded"
+        - name: Print - no hosts to be upgraded
+          ansible.builtin.debug:
+            msg: "No hosts to be upgraded"
 
-      - name: progress 100% - no host need to be upgraded!
-        include_tasks: log_progress.yml
-        vars:
-          progress: 100
-          description: "no hosts need to be upgraded!"
+        - name: progress 100% - no host need to be upgraded!
+          include_tasks: log_progress.yml
+          vars:
+            progress: 100
+            description: "no hosts need to be upgraded!"
 
-      - name: Log event - no hosts to be upgraded
-        ovirt_event:
-          auth: "{{ ovirt_auth }}"
-          state: present
-          description: "Upgrade of cluster {{ cluster_name }} complete, there are no hosts to be upgraded."
-          origin: "cluster_upgrade"
-          custom_id: "{{ 2147483647 | random | int }}"
-          severity: normal
-          cluster: "{{ cluster_id }}"
+        - name: Log event - no hosts to be upgraded
+          ovirt_event:
+            auth: "{{ ovirt_auth }}"
+            state: present
+            description: "Upgrade of cluster {{ cluster_name }} complete, there are no hosts to be upgraded."
+            origin: "cluster_upgrade"
+            custom_id: "{{ 2147483647 | random | int }}"
+            severity: normal
+            cluster: "{{ cluster_id }}"
 
       when: host_info.ovirt_hosts | length == 0
 
     - block:
-      - name: Start ovirt job session
-        ovirt_job:
-          auth: "{{ ovirt_auth }}"
-          description: "Upgrading hosts in {{ cluster_name }}"
+        - name: Start ovirt job session
+          ovirt_job:
+            auth: "{{ ovirt_auth }}"
+            description: "Upgrading hosts in {{ cluster_name }}"
 
-      - name: progress 6% - log hosts that are marked to be upgraded
-        include_tasks: log_progress.yml
-        vars:
-          progress: 6
-          description: "hosts to check for pinned VMs: {{ host_info.ovirt_hosts | map(attribute='name') | join(',') }}"
+        - name: progress 6% - log hosts that are marked to be upgraded
+          include_tasks: log_progress.yml
+          vars:
+            progress: 6
+            description: "hosts to check for pinned VMs: {{ host_info.ovirt_hosts | map(attribute='name') | join(',') }}"
 
-      - name: Change cluster scheduling_policy to cluster_maintenance
-        include_tasks: cluster_policy.yml
-        when: use_maintenance_policy
+        - name: Change cluster scheduling_policy to cluster_maintenance
+          include_tasks: cluster_policy.yml
+          when: use_maintenance_policy
 
-      - name: Determine what hosts have running pinned vms, they will not be upgraded
-        include_tasks: pinned_vms.yml
+        - name: Determine what hosts have running pinned vms, they will not be upgraded
+          include_tasks: pinned_vms.yml
 
-      - name: Build the list of hosts that will be upgraded (hosts in host_info.ovirt_hosts hosts w/o pinned vms that cannot be stopped)
-        set_fact:
-          good_hosts: "{{ (good_hosts | default([])) | list + [ host ] | list }}"
-        loop: "{{ host_info.ovirt_hosts | flatten(levels=1) }}"
-        loop_control:
-          loop_var: "host"
-        when: "host.id not in host_ids or stop_non_migratable_vms"
+        - name: Build the list of hosts that will be upgraded (hosts in host_info.ovirt_hosts hosts w/o pinned vms that cannot be stopped)
+          ansible.builtin.set_fact:
+            good_hosts: "{{ (good_hosts | default([])) | list + [ host ] | list }}"
+          loop: "{{ host_info.ovirt_hosts | flatten(levels=1) }}"
+          loop_control:
+            loop_var: "host"
+          when: "host.id not in host_ids or stop_non_migratable_vms"
 
-      - name: progress 8% - log hosts that will be upgraded
-        include_tasks: log_progress.yml
-        vars:
-          progress: 8
-          description: "hosts to be upgraded: {{ good_hosts | map(attribute='name') | join(',') }}"
+        - name: progress 8% - log hosts that will be upgraded
+          include_tasks: log_progress.yml
+          vars:
+            progress: 8
+            description: "hosts to be upgraded: {{ good_hosts | map(attribute='name') | join(',') }}"
 
-      - name: progress 10% - host upgrades starting
-        include_tasks: log_progress.yml
-        vars:
-          progress: 10
-          description: "starting the upgrade of {{ good_hosts | length }} hosts"
+        - name: progress 10% - host upgrades starting
+          include_tasks: log_progress.yml
+          vars:
+            progress: 10
+            description: "starting the upgrade of {{ good_hosts | length }} hosts"
 
-      # Upgrade only those hosts that aren't in list of hosts were VMs are pinned
-      # or if stop_non_migratable_vms is enabled, which means we stop pinned VMs
-      # Note: Progress goes from 10% to 95%, each host taking up an equal amount of progress
-      - name: Upgrade the hosts in the cluster
-        include_tasks: upgrade.yml
-        vars:
-          progress_start: 10
-          progress_end: 95
-        loop: "{{ good_hosts | flatten(levels=1) }}"
-        loop_control:
-          extended: yes
-          loop_var: "host"
+        # Upgrade only those hosts that aren't in list of hosts were VMs are pinned
+        # or if stop_non_migratable_vms is enabled, which means we stop pinned VMs
+        # Note: Progress goes from 10% to 95%, each host taking up an equal amount of progress
+        - name: Upgrade the hosts in the cluster
+          include_tasks: upgrade.yml
+          vars:
+            progress_start: 10
+            progress_end: 95
+          loop: "{{ good_hosts | flatten(levels=1) }}"
+          loop_control:
+            extended: true
+            loop_var: "host"
 
-      - name: Finish ovirt job session
-        ovirt_job:
-          auth: "{{ ovirt_auth }}"
-          description: "Upgrading hosts in {{ cluster_name }}"
-          state: finished
+        - name: Finish ovirt job session
+          ovirt_job:
+            auth: "{{ ovirt_auth }}"
+            description: "Upgrading hosts in {{ cluster_name }}"
+            state: finished
 
-      - name: progress 95% - host upgrades completed successfully, only thing left is to start any non-migratable VMs stopped by the playbook
-        include_tasks: log_progress.yml
-        vars:
-          progress: 95
-          description: "the upgrade of {{ good_hosts | length }} hosts finished successfully"
+        - name: progress 95% - host upgrades completed successfully, only thing left is to start any non-migratable VMs stopped by the playbook
+          include_tasks: log_progress.yml
+          vars:
+            progress: 95
+            description: "the upgrade of {{ good_hosts | length }} hosts finished successfully"
 
-      - name: Log event - cluster upgrade finished successfully
-        ovirt_event:
-          auth: "{{ ovirt_auth }}"
-          state: present
-          description: "Upgrade of cluster {{ cluster_name }} finished successfully."
-          origin: "cluster_upgrade"
-          severity: normal
-          custom_id: "{{ 2147483647 | random | int }}"
-          cluster: "{{ cluster_id }}"
+        - name: Log event - cluster upgrade finished successfully
+          ovirt_event:
+            auth: "{{ ovirt_auth }}"
+            state: present
+            description: "Upgrade of cluster {{ cluster_name }} finished successfully."
+            origin: "cluster_upgrade"
+            severity: normal
+            custom_id: "{{ 2147483647 | random | int }}"
+            cluster: "{{ cluster_id }}"
 
       when: host_info.ovirt_hosts | length > 0
 
@@ -233,7 +233,7 @@
             name: "{{ item }}"
             state: running
             cluster: "{{ cluster_name }}"
-          ignore_errors: "yes"
+          ignore_errors: true
           loop: "{{ stopped_vms | default([]) | flatten(levels=1) }}"
 
         - name: Start again pin to host VMs
@@ -242,7 +242,7 @@
             name: "{{ item }}"
             state: running
             cluster: "{{ cluster_name }}"
-          ignore_errors: "yes"
+          ignore_errors: true
           loop: "{{ pinned_vms_names | default([]) | flatten(levels=1) }}"
           when: stop_non_migratable_vms
 
@@ -255,7 +255,7 @@
   always:
     - name: Set cluster upgrade status to finished
       no_log: true
-      uri:
+      ansible.builtin.uri:
         url: "{{ ovirt_auth.url }}/clusters/{{ cluster_id }}/upgrade"
         validate_certs: false
         method: POST
