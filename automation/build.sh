@@ -68,8 +68,7 @@ cd "$COLLECTION_DIR"
 
 ansible-test sanity
 antsibull-changelog lint -v
-# 204 - lines should be no longer than 160 chars
-ansible-lint roles/* -x 204
+ansible-lint roles/* --exclude roles/hosted_engine_setup --exclude roles/shutdown_env --exclude roles/disaster_recovery --exclude roles/remove_stale_lun
 
 cd "$ROOT_PATH"
 

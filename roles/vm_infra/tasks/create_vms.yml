@@ -44,5 +44,5 @@
   register: added_vm
 
 - name: "Add created vm to all_vms"
-  set_fact:
+  ansible.builtin.set_fact:
     all_vms: "{{ all_vms | default([]) + [added_vm] }}"
