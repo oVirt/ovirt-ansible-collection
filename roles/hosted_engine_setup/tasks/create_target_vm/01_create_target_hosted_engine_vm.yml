@@ -45,13 +45,13 @@
         {{ cluster_facts.ovirt_clusters|selectattr('id', 'match', '^'+cluster_id+'$')|
         map(attribute='version')|list|first }}
   - name: Get server CPU list
-    ovirt_system_option_info:
+    ovirt.ovirt.ovirt_system_option_info:
       auth: "{{ ovirt_auth }}"
       name: ServerCPUList
       version: "{{ cluster_version.major }}.{{ cluster_version.minor }}"
     register: server_cpu_list
   - name: Get cluster emulated machine list
-    ovirt_system_option_info:
+    ovirt.ovirt.ovirt_system_option_info:
       name: ClusterEmulatedMachines
       auth: "{{ ovirt_auth }}"
       version: "{{ cluster_version.major }}.{{ cluster_version.minor }}"
