@@ -26,7 +26,7 @@
     virt: "{{ item.virt | default(omit) }}"
     # Parameters part of profile:
     ballooning: "{{ item.ballooning | default(profiles[item.profile | default('_')].ballooning) | default(omit) }}"
-    description: "{{ item.description| default(profiles[item.profile | default('_')].description) | default(omit) }}"
+    description: "{{ item.description | default(profiles[item.profile | default('_')].description) | default(omit) }}"
     ksm: "{{ item.ksm | default(profiles[item.profile | default('_')].ksm) | default(omit) }}"
     ksm_numa: "{{ item.ksm_numa | default(profiles[item.profile | default('_')].ksm_numa) | default(omit) }}"
     host_reason: "{{ item.host_reason | default(profiles[item.profile | default('_')].host_reason) | default(omit) }}"

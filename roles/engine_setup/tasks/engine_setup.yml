@@ -30,7 +30,7 @@
   - name: Use remote's answer file
     ansible.builtin.set_fact:
       answer_file_path: "{{ ovirt_engine_setup_answer_file_path }}"
-    when: ovirt_engine_setup_use_remote_answer_file|bool
+    when: ovirt_engine_setup_use_remote_answer_file | bool
 
   - name: Update setup packages
     ansible.builtin.yum:
@@ -64,7 +64,7 @@
       name: '*'
       state: latest
       conf_file: /tmp/yum.conf
-    when: not ovirt_engine_setup_offline|bool
+    when: not ovirt_engine_setup_offline | bool
     tags:
       - "skip_ansible_lint"  # ANSIBLE0010
 
@@ -76,7 +76,7 @@
 
   - name: Set offline parameter if variable is set
     ansible.builtin.set_fact:
-      offline: "{{ '--offline' if ovirt_engine_setup_offline|bool else '' }}"
+      offline: "{{ '--offline' if ovirt_engine_setup_offline | bool else '' }}"
 
   - name: Restore engine from file
     include_tasks: restore_engine_from_file.yml

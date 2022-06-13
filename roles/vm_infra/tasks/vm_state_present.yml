@@ -11,7 +11,7 @@
   with_items: "{{ all_vms }}"
   when: all_vms is defined
   until: job_result.finished
-  retries: "{{ (vm_infra_create_all_timeout|int // vm_infra_create_poll_interval) + 1  }}"
+  retries: "{{ (vm_infra_create_all_timeout | int // vm_infra_create_poll_interval) + 1  }}"
   delay: "{{ vm_infra_create_poll_interval }}"
 
 - name: Apply any Affinity Groups
@@ -106,7 +106,7 @@
   with_items: "{{ started_vms }}"
   when: started_vms is defined
   until: job_result.finished
-  retries: "{{ (vm_infra_create_all_timeout|int // vm_infra_create_poll_interval) + 1  }}"
+  retries: "{{ (vm_infra_create_all_timeout | int // vm_infra_create_poll_interval) + 1  }}"
   delay: "{{ vm_infra_create_poll_interval }}"
 
 # to_json|from_json in vms is WA for: https://github.com/ansible/ansible/issues/27299
@@ -114,7 +114,7 @@
   ovirt_tag:
     auth: "{{ ovirt_auth }}"
     name: "{{ item }}"
-    vms: "{{ create_vms|to_json|from_json|@NAMESPACE@.@NAME@.json_query(query)|map(attribute='name') | list }}"
+    vms: "{{ create_vms | to_json | from_json | @NAMESPACE@.@NAME@.json_query(query) | map(attribute='name') | list }}"
   with_items: "{{ create_vms | selectattr('tag', 'defined') | map(attribute='tag') | list | unique }}"
   vars:
     query: "[?contains(tag, '{{ item }}')]"
@@ -123,7 +123,7 @@
   ovirt_tag:
     auth: "{{ ovirt_auth }}"
     name: "{{ item }}"
-    vms: "{{ create_vms|to_json|from_json|@NAMESPACE@.@NAME@.json_query(query)|map(attribute='name') | list }}"
+    vms: "{{ create_vms | to_json | from_json | @NAMESPACE@.@NAME@.json_query(query) | map(attribute='name') | list }}"
   with_items: "{{ create_vms | selectattr('profile', 'defined') | map(attribute='profile')
     | selectattr('tag', 'defined') | map(attribute='tag') | list | unique }}"
   vars:

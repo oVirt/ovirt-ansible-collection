@@ -28,7 +28,7 @@
 
     - name: Find data domain
       ansible.builtin.set_fact:
-        disk_storage_domain: "{{ sd_info.ovirt_storage_domains|@NAMESPACE@.@NAME@.json_query(the_query)|list|first }}"
+        disk_storage_domain: "{{ sd_info.ovirt_storage_domains | @NAMESPACE@.@NAME@.json_query(the_query) | list | first }}"
       vars:
         the_query: "[?type=='data']"
       tags:

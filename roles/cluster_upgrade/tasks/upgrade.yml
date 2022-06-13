@@ -13,7 +13,7 @@
   - name: progress - prepare host for upgrade (upgrade can't start until no VMs are running on the host)
     include_tasks: log_progress.yml
     vars:
-      progress: "{{ progress_host_start|int }}"
+      progress: "{{ progress_host_start | int }}"
       description: "preparing host for upgrade"
 
   - name: Get list of VMs in host
@@ -41,7 +41,7 @@
   - name: progress - done migrating VMs (host 10% complete)
     include_tasks: log_progress.yml
     vars:
-      progress: "{{ (progress_host_start|int + (progress_host_step_size|int * 0.10)) | int }}"
+      progress: "{{ (progress_host_start | int + (progress_host_step_size | int * 0.10)) | int }}"
       description: "status=up VMs migrated off host"
 
   - name: Shutdown non-migratable VMs
@@ -65,7 +65,7 @@
   - name: progress - done shutting down pinned VMs (host 20% complete)
     include_tasks: log_progress.yml
     vars:
-      progress: "{{ (progress_host_start|int + (progress_host_step_size|int * 0.20)) | int }}"
+      progress: "{{ (progress_host_start | int + (progress_host_step_size | int * 0.20)) | int }}"
       description: "pinned VMs shutdown"
 
   - name: Gather self-heal facts about all gluster hosts in the cluster
@@ -100,7 +100,7 @@
   - name: progress - host is ready for upgrade (host 30% complete)
     include_tasks: log_progress.yml
     vars:
-      progress: "{{ (progress_host_start|int + (progress_host_step_size|int * 0.30)) | int }}"
+      progress: "{{ (progress_host_start | int + (progress_host_step_size | int * 0.30)) | int }}"
       description: "host is ready for upgrade"
 
   - name: Finish prep host ovirt job step
@@ -137,7 +137,7 @@
   - name: progress - host upgrade complete (host 100% complete)
     include_tasks: log_progress.yml
     vars:
-      progress: "{{ (progress_host_start|int + (progress_host_step_size|int * 1.00)) | int }}"
+      progress: "{{ (progress_host_start | int + (progress_host_step_size | int * 1.00)) | int }}"
       description: "host upgrade complete"
 
   - name: Finish upgrade host ovirt job step
@@ -152,5 +152,5 @@
     host_name: "{{ host.name }}"
     my_step: "{{ ansible_loop.index | int }}"
     progress_host_step_size: "{{ ((progress_end - progress_start) / ansible_loop.length) | round | int }}"
-    progress_host_start: "{{ progress_start|int + (progress_host_step_size|int * (my_step|int - 1)) }}"
-    progress_host_end: "{{ progress_start|int + (progress_host_step_size|int * my_step|int) }}"
+    progress_host_start: "{{ progress_start | int + (progress_host_step_size | int * (my_step | int - 1)) }}"
+    progress_host_end: "{{ progress_start | int + (progress_host_step_size | int * my_step | int) }}"
