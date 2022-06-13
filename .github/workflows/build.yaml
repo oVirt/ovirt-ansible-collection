@@ -43,7 +43,7 @@ jobs:
     steps:
       - name: Install python3.8 modules
         if: ${{ matrix.shortcut == 'cs8' }}
-        run: pip-3.8 install pycodestyle pylint==2.4.4 voluptuous yamllint "rstcheck<3.5.0" antsibull-changelog "rich<11.0.0" "ansible-lint<5.0.0" cryptography
+        run: pip-3.8 install pycodestyle pylint==2.4.4 voluptuous yamllint "rstcheck<3.5.0" antsibull-changelog "rich<11.0.0" ansible-lint cryptography
 
       - name: Install ansible-core 2.13 on el9stream
         # Remove after ansible-core 2.13 is available on el9stream as RPM.
@@ -52,7 +52,7 @@ jobs:
 
       - name: Install python3.9 modules
         if: ${{ matrix.shortcut == 'cs9' }}
-        run: pip-3 install pycodestyle pylint==2.4.4 voluptuous yamllint rstcheck antsibull-changelog "rich<11.0.0" "ansible-lint<5.0.0" cryptography
+        run: pip-3 install pycodestyle pylint==2.4.4 voluptuous yamllint rstcheck antsibull-changelog "rich<11.0.0" ansible-lint cryptography
 
       - name: Checkout
         uses: actions/checkout@v2
