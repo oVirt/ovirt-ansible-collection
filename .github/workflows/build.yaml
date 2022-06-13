@@ -25,6 +25,11 @@ jobs:
           cd /tmp/ansible_collections/ovirt/ovirt/ &&
           ansible-test sanity --docker
 
+      - name: Run ansible-lint 5.0.0
+        run: >
+          cd /tmp/ansible_collections/ovirt/ovirt/ &&
+          pip3 install ansible-lint &&
+          ansible-lint roles/*
   build:
     runs-on: ubuntu-latest
     strategy:
