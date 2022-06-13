@@ -12,7 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_qos
 short_description: "Module to manage QoS entries in @NAME@"
 author:
-- "Niall O Donnell (niall.odonnell@ppb.com)"
+- "Niall O Donnell (@odonnelln)"
 description:
     - "Module to manage QoS entries in @NAME@."
     - "Doesn't support updating a QoS that exists"
@@ -178,7 +178,7 @@ class QosModule(BaseModule):
         """
         return otypes.Qos(
             name=self._module.params.get('name') if self._module.params.get('name') else None,
-            id = self._module.params.get('id') if self._module.params.get('id') else None,
+            id=self._module.params.get('id') if self._module.params.get('id') else None,
             type=self._get_qos_type(self._module.params.get('type')),
             description=self._module.params.get('description') if self._module.params.get('description') else None,
             max_iops=self._module.params.get('max_iops') if self._module.params.get('max_iops') is not None else None,
@@ -200,7 +200,6 @@ def _get_qoss_service(connection, dc_name):
     return dcs_service.data_center_service(get_id_by_name(dcs_service, dc_name)).qoss_service()
 
 
-
 def main():
     argument_spec = ovirt_full_argument_spec(
         state=dict(
@@ -209,6 +208,7 @@ def main():
         ),
         id=dict(default=None),
         name=dict(default=None),
+        description=dict(default=None),
         data_center=dict(default=None),
         max_iops=dict(default=None, type='int'),
         read_iops=dict(default=None, type='int'),
@@ -225,7 +225,7 @@ def main():
             ['max_iops', 'read_iops'],
             ['max_iops', 'write_iops'],
             ['max_throughput', 'read_throughput'],
-            ['max_throughput', 'write_througput']
+            ['max_throughput', 'write_throughput']
         ]
     )
 

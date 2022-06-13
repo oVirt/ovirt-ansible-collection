@@ -12,7 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_disk_profile
 short_description: "Module to manage storage domain disk profiles in @NAME@"
 author:
-- "Niall O Donnell (niall.odonnell@ppb.com)"
+- "Niall O Donnell (@odonnelln)"
 description:
     - "Module to manage storage domain disk profiles in @NAME@."
 options:
@@ -120,7 +120,6 @@ class DiskProfileModule(BaseModule):
         qos_service = dcs_service.data_center_service(get_id_by_name(dcs_service, dc_name)).qoss_service()
         return get_entity(qos_service.qos_service(get_id_by_name(qos_service, self._module.params.get('qos'))))
 
-
     def _get_storage_domain(self):
         """
         Gets the storage domain
@@ -144,20 +143,21 @@ class DiskProfileModule(BaseModule):
 
         if qos is None:
             raise Exception(
-                f"The qos: {self._module.params.get('qos')} does not exist in data center: {self._module.params.get('data_center')}"
+                "The qos: {0} does not exist in data center: {1}".format(self._module.params.get('qos'), self._module.params.get('data_center'))
             )
         if storage_domain is None:
             raise Exception(
-                f"The storage domain: {self._module.params.get('storage_domain')} does not exist."
+                "The storage domain: {0} does not exist.".format(self._module.params.get('storage_domain'))
             )
         return otypes.DiskProfile(
             name=self._module.params.get('name') if self._module.params.get('name') else None,
-            id = self._module.params.get('id') if self._module.params.get('id') else None,
+            id=self._module.params.get('id') if self._module.params.get('id') else None,
             comment=self._module.params.get('comment'),
             description=self._module.params.get('description'),
             qos=qos,
             storage_domain=storage_domain,
         )
+
 
 def main():
     argument_spec = ovirt_full_argument_spec(
