@@ -59,7 +59,7 @@
 
   - name: Create list of VM names which have been shut down
     set_fact:
-      pinned_vms_names: "{{ pinned_vms_names + pinned_to_host_vms.results | selectattr('changed') | map(attribute='host_name') | list }}"
+      pinned_vms_names: "{{ pinned_vms_names + pinned_to_host_vms.results | selectattr('changed') | map(attribute='vm.name') | list }}"
 
   - name: progress - done shutting down pinned VMs (host 20% complete)
     include_tasks: log_progress.yml

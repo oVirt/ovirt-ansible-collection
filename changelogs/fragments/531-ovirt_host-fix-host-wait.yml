@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt_host - Fix host wait (https://github.com/oVirt/ovirt-ansible-collection/pull/531).
