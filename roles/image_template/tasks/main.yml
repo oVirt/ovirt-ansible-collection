@@ -1,6 +1,6 @@
 ---
 - name: Fail when invalid parameters
-  fail:
+  ansible.builtin.fail:
     msg: "You must either specify qcow_url or glance_image"
   when: "glance_image is defined and qcow_url is defined"
 

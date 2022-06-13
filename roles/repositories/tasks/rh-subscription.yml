@@ -1,25 +1,25 @@
 ---
 - name: Check if mandatory variables are set
-  fail:
+  ansible.builtin.fail:
     msg: "Either ovirt_repositories_pool_ids or ovirt_repositories_pools must be defined."
   when:
     - "ovirt_repositories_pool_ids is not defined"
     - "ovirt_repositories_pools is not defined or ovirt_repositories_pools | list | length == 0"
 
 - name: Check if mandatory variables are set
-  fail:
+  ansible.builtin.fail:
     msg: "Both ovirt_repositories_pool_ids and ovirt_repositories_pools can't be defined, only one of them."
   when:
     - "ovirt_repositories_pool_ids is defined"
     - "ovirt_repositories_pools is defined"
 
 - name: Ensure subscription-manager package is installed
-  package:
+  ansible.builtin.package:
     name: subscription-manager
     state: present
 
 - name: Register to subscription manager
-  command: |
+  ansible.builtin.command: |
     subscription-manager register
     --username {{ ovirt_repositories_rh_username }}
     --password {{ ovirt_repositories_rh_password }}
@@ -34,29 +34,29 @@
   when: ovirt_repositories_pools is defined
 
 - name: Subscribe to multiple pool IDs
-  command: subscription-manager attach {% for id in ovirt_repositories_pool_ids %} --pool {{ id }} {% endfor %}
+  ansible.builtin.command: subscription-manager attach {% for id in ovirt_repositories_pool_ids %} --pool {{ id }} {% endfor %}
   when: ovirt_repositories_pool_ids is defined and ovirt_repositories_pool_ids | list | length != 0
 
 - name: "Include {{ ovirt_repositories_target_host }}_{{ ovirt_repositories_ovirt_version }}.yml variables"
-  include_vars: "{{ ovirt_repositories_target_host }}_{{ ovirt_repositories_ovirt_version }}.yml"
+  ansible.builtin.include_vars: "{{ ovirt_repositories_target_host }}_{{ ovirt_repositories_ovirt_version }}.yml"
   when: ovirt_repositories_subscription_manager_repos | list | length == 0
 
 - name: Disable all repositories
-  command: subscription-manager repos --disable=*
+  ansible.builtin.command: subscription-manager repos --disable=*
   when: ovirt_repositories_clear
 
 - name: Enable required repositories
-  command: subscription-manager repos --enable={{ item }}
+  ansible.builtin.command: subscription-manager repos --enable={{ item }}
   changed_when: false
   with_items: "{{ ovirt_repositories_subscription_manager_repos }}"
 
 - name: Enable dnf modules
-  command: "dnf module enable -y {{ ovirt_repositories_rh_dnf_modules | join(' ') }}"
+  ansible.builtin.command: "dnf module enable -y {{ ovirt_repositories_rh_dnf_modules | join(' ') }}"
   args:
-    warn: False
+    warn: false
   when:
     - ovirt_repositories_ovirt_version|string >= '4.4'
     - ovirt_repositories_target_host == 'engine'
 
 - name: set ovirt_repositories_subscription_manager_repos to empty list for the next time
-  include_vars: default.yml
+  ansible.builtin.include_vars: default.yml

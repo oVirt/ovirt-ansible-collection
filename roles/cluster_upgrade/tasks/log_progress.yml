@@ -5,7 +5,8 @@
 #  host_name: (if avaiable) what host in the cluster is being worked on
 #  description: what part of the process is actually done
 
-- block:
+- name: Log process block
+  block:
   - name: Log progress as an event
     vars:
       message:
@@ -24,7 +25,7 @@
 
   - name: Update the upgrade progress on the cluster
     no_log: false
-    uri:
+    ansible.builtin.uri:
       url: "{{ ovirt_auth.url }}/clusters/{{ cluster_id }}/upgrade"
       method: POST
       body_format: json

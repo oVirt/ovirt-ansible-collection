@@ -21,7 +21,7 @@
     - datacenters
 
 - name: Recursively remove data center
-  import_role:
+  ansible.builtin.import_role:
     name: @NAMESPACE@.@NAME@.infra.roles.datacenter_cleanup
   when: data_center_state=='absent' and recursive_cleanup
   tags:
