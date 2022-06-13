@@ -8,7 +8,8 @@
   ansible.builtin.set_fact:
     vms: "{{ vms | @NAMESPACE@.@NAME@.removesensitivevmdata }}"
 
-- block:
+- name: Main block
+  block:
     - name: Login to oVirt
       ovirt_auth:
         url: "{{ engine_url | default(lookup('env','OVIRT_URL')) | default(omit) }}"

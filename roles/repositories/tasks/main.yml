@@ -10,7 +10,8 @@
   include_tasks: backup-repos.yml
   when: ovirt_repositories_repos_backup
 
-- block:
+- name: Setup repositories
+  block:
     - name: Setup repositories using Subscription Manager
       include_tasks: rh-subscription.yml
       when: ovirt_repositories_org is not defined and ovirt_repositories_activationkey is not defined

@@ -1,5 +1,6 @@
 ---
-- block:
+- name: Engine setup block
+  block:
   - name: Set answer file path
     ansible.builtin.set_fact:
       answer_file_path: "/tmp/answerfile-{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}.txt"

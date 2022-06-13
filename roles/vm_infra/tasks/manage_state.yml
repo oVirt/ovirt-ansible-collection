@@ -2,24 +2,30 @@
 ########################################################################
 # Legacy modification of cloud_init:
 ########################################################################
-- block:
+- name: Set cloud_init
+  block:
     - name: Set cloud_init fact
       ansible.builtin.set_fact:
         cloud_init: "{{ current_vm.cloud_init | default(current_vm.profile.cloud_init) | default({}) }}"
 
-    - block:
-        - ansible.builtin.set_fact:
+    - name: Define cloud_init block
+      block:
+        - name: Define cloud_init user_name
+          ansible.builtin.set_fact:
             cloud_init: "{{ cloud_init | combine({'user_name': cloud_init.user_name | default('root') }) }}"
 
-        - ansible.builtin.set_fact:
+        - name: Define cloud_init authorized_ssh_keys
+          ansible.builtin.set_fact:
             cloud_init: "{{ cloud_init | combine({'authorized_ssh_keys': current_vm.ssh_key | default(current_vm.profile.ssh_key)}) }}"
           when: current_vm.profile.ssh_key is defined or current_vm.ssh_key is defined
 
-        - ansible.builtin.set_fact:
+        - name: Define cloud_init root_password
+          ansible.builtin.set_fact:
             cloud_init: "{{ cloud_init | combine({'root_password': current_vm.root_password | default(current_vm.profile.root_password)}) }}"
           when: current_vm.profile.root_password is defined or current_vm.root_password is defined
 
-        - ansible.builtin.set_fact:
+        - name: Define cloud_init host_name
+          ansible.builtin.set_fact:
             cloud_init: "{{ cloud_init | combine({'host_name': current_vm.name~'.'~current_vm.domain | default(current_vm.profile.domain)}) }}"
           when: current_vm.profile.domain is defined or current_vm.domain is defined
 
@@ -34,20 +40,25 @@
 # Legacy modification of sysprep:
 ########################################################################
 
-- block:
+- name: Set sysprep
+  block:
     - name: Set sysprep fact
       ansible.builtin.set_fact:
         sysprep: "{{ current_vm.sysprep | default(current_vm.profile.sysprep) | default({}) }}"
 
-    - block:
-        - ansible.builtin.set_fact:
+    - name: Define cloud_init block
+      block:
+        - name: Define cloud_init user_name
+          ansible.builtin.set_fact:
             sysprep: "{{ sysprep | combine({'user_name': sysprep.user_name | default('Administrator') }) }}"
 
-        - ansible.builtin.set_fact:
+        - name: Define cloud_init root_password
+          ansible.builtin.set_fact:
             sysprep: "{{ sysprep | combine({'root_password': current_vm.root_password | default(current_vm.profile.root_password)}) }}"
           when: current_vm.profile.root_password is defined or current_vm.root_password is defined
 
-        - ansible.builtin.set_fact:
+        - name: Define cloud_init host_name
+          ansible.builtin.set_fact:
             sysprep: "{{ sysprep | combine({'host_name': current_vm.name~'.'~current_vm.domain | default(current_vm.profile.domain)}) }}"
           when: current_vm.profile.domain is defined or current_vm.domain is defined
 

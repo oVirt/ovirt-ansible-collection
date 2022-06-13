@@ -1,5 +1,6 @@
 ---
-- block:
+- name: Glance image
+  block:
     - name: Check if template is correct
       ansible.builtin.fail:
         msg: "one of mandatory parameters glance_image_provider or glance_image is not defined"

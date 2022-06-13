@@ -7,7 +7,8 @@
     stop_non_migratable_vms: "{{ stop_non_migratable_vms }}"
     provided_token: "{{ engine_token | default(lookup('env','OVIRT_TOKEN')) | default('') }}"
 
-- block:
+- name: Main block
+  block:
     - name: Login to oVirt
       ovirt_auth:
         url: "{{ engine_url | default(lookup('env','OVIRT_URL')) | default(omit) }}"
@@ -88,7 +89,8 @@
       check_mode: "no"
       register: host_info
 
-    - block:
+    - name: No hosts to be upgraded block
+      block:
         - name: Print - no hosts to be upgraded
           ansible.builtin.debug:
             msg: "No hosts to be upgraded"
@@ -111,7 +113,8 @@
 
       when: host_info.ovirt_hosts | length == 0
 
-    - block:
+    - name: Upgrade block
+      block:
         - name: Start ovirt job session
           ovirt_job:
             auth: "{{ ovirt_auth }}"

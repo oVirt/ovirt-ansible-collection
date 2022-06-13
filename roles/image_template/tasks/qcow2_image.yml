@@ -41,7 +41,8 @@
   ansible.builtin.set_fact:
     qcow2_size: "{{ (filetype.stdout_lines[0].split()[5] | int / 2**30) | round(0, 'ceil') | int }}GiB"
 
-- block:
+- name: Main block
+  block:
     - name: Login to oVirt
       ovirt_auth:
         url: "{{ engine_url | default(lookup('env','OVIRT_URL')) | default(omit) }}"
@@ -113,7 +114,8 @@
       tags:
         - ovirt-template-image
 
-    - block:
+    - name: Create vm block
+      block:
         - name: Generate SSH keys
           ansible.builtin.command: "ssh-keygen -t rsa -f {{ tmp_private_key_file }} -N ''"
           args:
@@ -154,7 +156,8 @@
             wait: true
           loop: "{{ template_disks }}"
 
-        - block:
+        - name: Wait for IPv4 block
+          block:
             - name: Wait for VMs IPv4
               ovirt_vm_info:
                 auth: "{{ ovirt_auth }}"
@@ -198,7 +201,8 @@
 
       when: template_info.ovirt_templates | length == 0
 
-    - block:
+    - name: Resize disk block
+      block:
         - name: Resize disk if smaller than template_disk_size
           ovirt_disk:
             id: "{{ disk_info.ovirt_disks[0].id }}"

@@ -1,5 +1,6 @@
 ---
-- block:
+- name: Main block
+  block:
     - name: Check if mandatory parameters are correct
       ansible.builtin.fail:
         msg: "one of mandatory parameter data_center_name or compatibility_version is undefined"

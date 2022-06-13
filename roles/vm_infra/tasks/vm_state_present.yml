@@ -131,7 +131,8 @@
     defined_vms: "{{ create_vms | selectattr('profile.tag', 'defined') | list | unique }}"
 
 
-- block:
+- name: Wait for IP block
+  block:
     - name: Filter ovirt_vms to get IP
       ansible.builtin.set_fact:
         ip_cond: "vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmip{{ wait_for_ip_version }}(network_ip='{{ wait_for_ip_range }}') | length > 0"

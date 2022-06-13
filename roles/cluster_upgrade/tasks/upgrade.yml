@@ -1,6 +1,7 @@
 ---
 # Upgrade uses a block to keep the variables local to the block.  Vars are defined after tasks.
-- block:
+- name: Upgrade block
+  block:
 
   - name: Start prep host ovirt job step
     ovirt_job:
