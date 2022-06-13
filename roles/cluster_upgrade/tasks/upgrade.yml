@@ -1,6 +1,7 @@
 ---
 # Upgrade uses a block to keep the variables local to the block.  Vars are defined after tasks.
-- block:
+- name: Upgrade block
+  block:
 
   - name: Start prep host ovirt job step
     ovirt_job:
@@ -12,7 +13,7 @@
   - name: progress - prepare host for upgrade (upgrade can't start until no VMs are running on the host)
     include_tasks: log_progress.yml
     vars:
-      progress: "{{ progress_host_start|int }}"
+      progress: "{{ progress_host_start | int }}"
       description: "preparing host for upgrade"
 
   - name: Get list of VMs in host
@@ -40,7 +41,7 @@
   - name: progress - done migrating VMs (host 10% complete)
     include_tasks: log_progress.yml
     vars:
-      progress: "{{ (progress_host_start|int + (progress_host_step_size|int * 0.10)) | int }}"
+      progress: "{{ (progress_host_start | int + (progress_host_step_size | int * 0.10)) | int }}"
       description: "status=up VMs migrated off host"
 
   - name: Shutdown non-migratable VMs
@@ -58,17 +59,17 @@
     register: pinned_to_host_vms
 
   - name: Create list of VM names which have been shut down
-    set_fact:
-      pinned_vms_names: "{{ pinned_vms_names + pinned_to_host_vms.results | selectattr('changed') | map(attribute='host_name') | list }}"
+    ansible.builtin.set_fact:
+      pinned_vms_names: "{{ pinned_vms_names + pinned_to_host_vms.results | selectattr('changed') | map(attribute='vm.name') | list }}"
 
   - name: progress - done shutting down pinned VMs (host 20% complete)
     include_tasks: log_progress.yml
     vars:
-      progress: "{{ (progress_host_start|int + (progress_host_step_size|int * 0.20)) | int }}"
+      progress: "{{ (progress_host_start | int + (progress_host_step_size | int * 0.20)) | int }}"
       description: "pinned VMs shutdown"
 
   - name: Gather self-heal facts about all gluster hosts in the cluster
-    ansible.builtin.shell: gluster volume heal {{ volume_item.name }} info
+    ansible.builtin.command: gluster volume heal {{ volume_item.name }} info
     register: self_heal_status
     retries: "{{ healing_in_progress_checks }}"
     delay: "{{ healing_in_progress_check_delay }}"
@@ -81,10 +82,10 @@
       - "{{ cluster_info.ovirt_clusters[0].gluster_volumes }}"
     loop_control:
       loop_var: volume_item
-    when:  cluster_info.ovirt_clusters[0].gluster_service | bool
+    when: cluster_info.ovirt_clusters[0].gluster_service | bool
 
   - name: Refresh gluster heal info entries to database
-    uri:
+    ansible.builtin.uri:
       url: "{{ ovirt_auth.url }}/clusters/{{ cluster_id }}/refreshglusterhealstatus"
       method: POST
       body_format: json
@@ -99,7 +100,7 @@
   - name: progress - host is ready for upgrade (host 30% complete)
     include_tasks: log_progress.yml
     vars:
-      progress: "{{ (progress_host_start|int + (progress_host_step_size|int * 0.30)) | int }}"
+      progress: "{{ (progress_host_start | int + (progress_host_step_size | int * 0.30)) | int }}"
       description: "host is ready for upgrade"
 
   - name: Finish prep host ovirt job step
@@ -127,7 +128,7 @@
       timeout: "{{ upgrade_timeout }}"
 
   - name: Delay in minutes to wait to finish gluster healing process after successful host upgrade
-    pause:
+    ansible.builtin.pause:
       minutes: "{{ wait_to_finish_healing }}"
     when:
       - cluster_info.ovirt_clusters[0].gluster_service | bool
@@ -136,7 +137,7 @@
   - name: progress - host upgrade complete (host 100% complete)
     include_tasks: log_progress.yml
     vars:
-      progress: "{{ (progress_host_start|int + (progress_host_step_size|int * 1.00)) | int }}"
+      progress: "{{ (progress_host_start | int + (progress_host_step_size | int * 1.00)) | int }}"
       description: "host upgrade complete"
 
   - name: Finish upgrade host ovirt job step
@@ -151,5 +152,5 @@
     host_name: "{{ host.name }}"
     my_step: "{{ ansible_loop.index | int }}"
     progress_host_step_size: "{{ ((progress_end - progress_start) / ansible_loop.length) | round | int }}"
-    progress_host_start: "{{ progress_start|int + (progress_host_step_size|int * (my_step|int - 1)) }}"
-    progress_host_end: "{{ progress_start|int + (progress_host_step_size|int * my_step|int) }}"
+    progress_host_start: "{{ progress_start | int + (progress_host_step_size | int * (my_step | int - 1)) }}"
+    progress_host_end: "{{ progress_start | int + (progress_host_step_size | int * my_step | int) }}"

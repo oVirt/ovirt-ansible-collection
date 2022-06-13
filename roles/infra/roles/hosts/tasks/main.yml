@@ -49,7 +49,7 @@
     - hosts
 
 - name: Wait for hosts to be added
-  async_status: "jid={{ item.ansible_job_id }}"
+  ansible.builtin.async_status: "jid={{ item.ansible_job_id }}"
   register: job_result
   with_items:
     - "{{ add_hosts.results | @NAMESPACE@.@NAME@.removesensitivevmdata }}"
@@ -57,13 +57,13 @@
     label: "{{ item.item.name }}"
   tags:
     - hosts
-  ignore_errors: yes
+  ignore_errors: true
   until: job_result.finished
   retries: "{{ ovirt_hosts_max_timeout // 20 }}"
   delay: 20
 
 - name: Fail the play with unexpected error
-  fail:
+  ansible.builtin.fail:
     msg: The host deploy failed with message '{{ item["exception"] }}'.
   when: item.failed and "the following networks are missing" not in item["exception"]
   with_items:

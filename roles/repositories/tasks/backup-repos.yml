@@ -1,13 +1,13 @@
 ---
 - name: "Find repo files to backup"
-  find:
+  ansible.builtin.find:
     paths: "/etc/yum.repos.d"
     patterns: "*.repo"
   tags: backup
   register: files_to_backup
 
 - name: Creating folder to backup repositories files
-  file:
+  ansible.builtin.file:
     path: "{{ ovirt_repositories_repos_backup_path }}"
     state: directory
     mode: 0755
@@ -18,7 +18,7 @@
   copy:
     src: "{{ item.path }}"
     dest: "{{ ovirt_repositories_repos_backup_path }}"
-    remote_src: yes
+    remote_src: true
     mode: preserve
   with_items: "{{ files_to_backup.files }}"
   tags:

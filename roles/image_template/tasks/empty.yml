@@ -4,5 +4,5 @@
 # When in future Anibsle will support delegate_to with include_tasks,
 # this file won't be needed.
 - name: Placeholder
-  debug:
+  ansible.builtin.debug:
     msg: ""
