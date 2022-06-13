@@ -5,6 +5,59 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v2.1.0
+======
+
+Minor Changes
+-------------
+
+- Add convert_to_bytes filter (https://github.com/oVirt/ovirt-ansible-collection/pull/515).
+- automation - Use python38 on el8 with ansible-core 2.12 and python39 on el9 with ansible-core 2.13  (https://github.com/oVirt/ovirt-ansible-collection/pull/518).
+- cloud.py - Sync with orgin (https://github.com/oVirt/ovirt-ansible-collection/pull/519).
+- engine_setup - Allow to disable cert validation (https://github.com/oVirt/ovirt-ansible-collection/pull/517).
+- hosted_engine_setup - make vdsm config cleanup optional (https://github.com/oVirt/ovirt-ansible-collection/pull/521).
+- ovirt - Remove deprecated distutils (https://github.com/oVirt/ovirt-ansible-collection/pull/516).
+- ovirt_vm - add wait_after_lease (https://github.com/oVirt/ovirt-ansible-collection/pull/524).
+
+Bugfixes
+--------
+
+- hosted_engine_setup - Fix "'ansible' ModuleNotFoundError" in Disaster Recovery scripts (https://github.com/oVirt/ovirt-ansible-collection/pull/503).
+- hosted_engine_setup - Use command instead of firewalld module (https://github.com/oVirt/ovirt-ansible-collection/pull/508).
+- ovirt_vm - Fix parsing None arguments (https://github.com/oVirt/ovirt-ansible-collection/pull/486).
+- ovirt_vm - check if the snapshot exists (https://github.com/oVirt/ovirt-ansible-collection/pull/525).
+
+v2.0.4
+======
+
+Bugfixes
+--------
+
+- Fix the admin user name when using keycloak (https://github.com/oVirt/ovirt-ansible-collection/pull/488).
+- Use cryptography < 37.0.0, as 37.0.0 emits a warning that fails testing. (https://github.com/oVirt/ovirt-ansible-collection/pull/492).
+- Use rstcheck < 3.5.0, as 3.5.0 emits a warning that fails testing. (https://github.com/oVirt/ovirt-ansible-collection/pull/490).
+- cluster_upgrade - fix wait_condition (https://github.com/oVirt/ovirt-ansible-collection/pull/510).
+- hosted_engine_setup - Allocate 128MiB instead of 1GiB for he_metadata (https://github.com/oVirt/ovirt-ansible-collection/pull/489).
+- hosted_engine_setup - Collect logs also on failures in 03_hosted_engine_final_tasks.yml (https://github.com/oVirt/ovirt-ansible-collection/pull/504).
+- hosted_engine_setup - Fix keycloak activation/checking (https://github.com/oVirt/ovirt-ansible-collection/pull/509).
+- hosted_engine_setup - Require 'detail' to be 'Up' (https://github.com/oVirt/ovirt-ansible-collection/pull/498).
+- hosted_engine_setup - fix archive ownership (https://github.com/oVirt/ovirt-ansible-collection/pull/501).
+- infra - add warning for multiple storage connections (https://github.com/oVirt/ovirt-ansible-collection/pull/500).
+
+v2.0.3
+======
+
+Minor Changes
+-------------
+
+- ovirt_affinity_group - Add affinity labels (https://github.com/oVirt/ovirt-ansible-collection/pull/481).
+
+Bugfixes
+--------
+
+- invenory - Fix url address (https://github.com/oVirt/ovirt-ansible-collection/pull/482).
+- ovirt_vm - Fix creating a RAW VM from a COW template  (https://github.com/oVirt/ovirt-ansible-collection/pull/466).
+
 v2.0.2
 ======
 

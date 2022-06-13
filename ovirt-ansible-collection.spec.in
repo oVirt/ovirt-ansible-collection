@@ -87,6 +87,36 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Thu Jun 9 2022 Martin Necas <mnecas@redhat.com> - 2.1.0-1
+- Add convert_to_bytes filter
+- automation - Use python38 on el8 with ansible-core 2.12 and python39 on el9 with ansible-core 2.13
+- engine_setup - Allow to disable cert validation
+- ovirt - Remove deprecated distutils
+- ovirt_vm - add wait_after_lease
+- ovirt_vm - Fix parsing None arguments
+- ovirt_vm - check if the snapshot exists
+- hosted_engine_setup - make vdsm config cleanup optional
+- hosted_engine_setup - Fix "'ansible' ModuleNotFoundError" in Disaster Recovery scripts
+- hosted_engine_setup - Use command instead of firewalld module
+
+* Fri Jun 3 2022 Martin Necas <mnecas@redhat.com> - 2.0.4-1
+- Fix the admin user name when using keycloak
+- Use cryptography < 37.0.0, as 37.0.0 emits a warning that fails testing
+- Use rstcheck < 3.5.0, as 3.5.0 emits a warning that fails testing
+- cluster_upgrade - fix wait_condition
+- hosted_engine_setup - Allocate 128MiB instead of 1GiB for he_metadata
+- hosted_engine_setup - Collect logs also on failures in 03_hosted_engine_final_tasks.yml
+- hosted_engine_setup - Fix keycloak activation/checking
+- hosted_engine_setup - Require 'detail' to be 'Up'
+- hosted_engine_setup - fix archive ownership
+- infra - add warning for multiple storage connections
+
+* Wed Apr 13 2022 Martin Necas <mnecas@redhat.com> - 2.0.3-1
+- spec: Obsolete ansible < 2.10.0
+- ovirt_vm - Fix creating a RAW VM from a COW template
+- ovirt_affinity_group - Add affinity labels
+- invenory - Fix url address
+
 * Wed Apr 6 2022 Martin Necas <mnecas@redhat.com> - 2.0.2-1
 - cluster_upgrade: fix upgrade progress log_progress task
 

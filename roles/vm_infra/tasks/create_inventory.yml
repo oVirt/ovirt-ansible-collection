@@ -10,12 +10,12 @@
   register: created_vms_info
 
 - name: Set ovirt_vms
-  set_fact:
+  ansible.builtin.set_fact:
     ovirt_vms: "{{ created_vms_info.ovirt_vms }}"
 
 - name: Create inventory of VMs IPv4
   no_log: true
-  add_host:
+  ansible.builtin.add_host:
     name: "{{ item.name }}"
     ansible_host: "{{ item | @NAMESPACE@.@NAME@.ovirtvmipv4(network_ip=wait_for_ip_range) }}"
     groups: "{{ (['ovirt_tag_'] * item.tags | length) | zip(item.tags | map(attribute='name') | list) | map('join') | list + ['ovirt_vm'] }}"
@@ -30,7 +30,7 @@
 
 - name: Create inventory of VMs IPv6
   no_log: true
-  add_host:
+  ansible.builtin.add_host:
     name: "{{ item.name }}"
     ansible_host: "{{ item | @NAMESPACE@.@NAME@.ovirtvmipv6 }}"
     groups: "{{ (['ovirt_tag_'] * item.tags | length) | zip(item.tags | map(attribute='name') | list) | map('join') | list + ['ovirt_vm'] }}"

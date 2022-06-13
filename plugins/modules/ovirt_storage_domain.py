@@ -708,6 +708,9 @@ def control_state(sd_module):
         sd_service = sd_module._attached_sd_service(sd)
         sd = get_entity(sd_service)
 
+    if sd is None:
+        return
+
     if sd.status == sdstate.LOCKED:
         wait(
             service=sd_service,

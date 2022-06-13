@@ -768,11 +768,13 @@ options:
                 description:
                     - "List of VM CPU cores indexes to be included in this NUMA node."
                 type: list
+                elements: int
                 required: True
             numa_node_pins:
                 description:
                     - "List of physical NUMA node indexes to pin this virtual NUMA node to."
                 type: list
+                elements: int
     rng_device:
         description:
             - "Random number generator (RNG). You can choose of one the following devices I(urandom), I(random) or I(hwrng)."
@@ -922,7 +924,12 @@ options:
               >0 - Number of Virtio SCSI queues to use by virtual machine."
         type: int
         version_added: 1.7.0
-
+    wait_after_lease:
+        description:
+            - "Number of seconds which should the module wait after the lease is changed."
+        type: int
+        default: 5
+        version_added: 2.1.0
 notes:
     - If VM is in I(UNASSIGNED) or I(UNKNOWN) state before any operation, the module will fail.
       If VM is in I(IMAGE_LOCKED) state before any operation, we try to wait for VM to be I(DOWN).
@@ -1357,6 +1364,7 @@ vm:
     type: dict
 '''
 import traceback
+import time
 
 try:
     import ovirtsdk4.types as otypes
@@ -1482,6 +1490,8 @@ class VmsModule(BaseModule):
             (s for s in snaps if s.description == self.param('snapshot_name')),
             None
         )
+        if not snap:
+            raise ValueError('Snapshot with the name "{0}" was not found.'.format(self.param('snapshot_name')))
         return snap
 
     def __get_placement_policy(self):
@@ -1749,34 +1759,34 @@ class VmsModule(BaseModule):
             not self.param('cloud_init_persist') and
             not self.param('kernel_params_persist') and
             equal(self.param('cluster'), get_link_name(self._connection, entity.cluster)) and equal(convert_to_bytes(self.param('memory')), entity.memory) and
-            equal(convert_to_bytes(self.param('memory_guaranteed')), entity.memory_policy.guaranteed) and
-            equal(convert_to_bytes(self.param('memory_max')), entity.memory_policy.max) and
-            equal(self.param('cpu_cores'), entity.cpu.topology.cores) and
-            equal(self.param('cpu_sockets'), entity.cpu.topology.sockets) and
-            equal(self.param('cpu_threads'), entity.cpu.topology.threads) and
+            equal(convert_to_bytes(self.param('memory_guaranteed')), getattr(entity.memory_policy, 'guaranteed', None)) and
+            equal(convert_to_bytes(self.param('memory_max')), getattr(entity.memory_policy, 'max', None)) and
+            equal(self.param('cpu_cores'), getattr(getattr(entity.cpu, 'topology', None), 'cores', None)) and
+            equal(self.param('cpu_sockets'), getattr(getattr(entity.cpu, 'topology', None), 'sockets', None)) and
+            equal(self.param('cpu_threads'), getattr(getattr(entity.cpu, 'topology', None), 'threads', None)) and
             equal(self.param('cpu_mode'), str(cpu_mode) if cpu_mode else None) and
             equal(self.param('type'), str(entity.type)) and
             equal(self.param('name'), str(entity.name)) and
-            equal(self.param('operating_system'), str(entity.os.type)) and
-            equal(self.param('boot_menu'), entity.bios.boot_menu.enabled) and
-            equal(self.param('bios_type'), entity.bios.type.value) and
+            equal(self.param('operating_system'), str(getattr(entity.os, 'type', None))) and
+            equal(self.param('boot_menu'), getattr(getattr(entity.bios, 'boot_menu', None), 'enabled', None)) and
+            equal(self.param('bios_type'), getattr(getattr(entity.bios, 'type', None), 'value', None)) and
             equal(self.param('soundcard_enabled'), entity.soundcard_enabled) and
             equal(self.param('smartcard_enabled'), getattr(vm_display, 'smartcard_enabled', False)) and
-            equal(self.param('io_threads'), entity.io.threads) and
-            equal(self.param('ballooning_enabled'), entity.memory_policy.ballooning) and
+            equal(self.param('io_threads'), getattr(entity.io, 'threads', None)) and
+            equal(self.param('ballooning_enabled'), getattr(entity.memory_policy, 'ballooning', None)) and
             equal(self.param('serial_console'), getattr(entity.console, 'enabled', None)) and
-            equal(self.param('usb_support'), entity.usb.enabled) and
-            equal(self.param('sso'), True if entity.sso.methods else False) and
+            equal(self.param('usb_support'), getattr(entity.usb, 'enabled', None)) and
+            equal(self.param('sso'), True if getattr(entity.sso, 'methods', False) else False) and
             equal(self.param('quota_id'), getattr(entity.quota, 'id', None)) and
-            equal(self.param('high_availability'), entity.high_availability.enabled) and
-            equal(self.param('high_availability_priority'), entity.high_availability.priority) and
+            equal(self.param('high_availability'), getattr(entity.high_availability, 'enabled', None)) and
+            equal(self.param('high_availability_priority'), getattr(entity.high_availability, 'priority', None)) and
             equal(self.param('lease'), get_link_name(self._connection, getattr(entity.lease, 'storage_domain', None))) and
             equal(self.param('stateless'), entity.stateless) and
             equal(self.param('cpu_shares'), entity.cpu_shares) and
             equal(self.param('delete_protected'), entity.delete_protected) and
             equal(self.param('custom_emulated_machine'), entity.custom_emulated_machine) and
             equal(self.param('use_latest_template_version'), entity.use_latest_template_version) and
-            equal(self.param('boot_devices'), [str(dev) for dev in getattr(entity.os.boot, 'devices', [])]) and
+            equal(self.param('boot_devices'), [str(dev) for dev in getattr(getattr(entity.os, 'boot', None), 'devices', [])]) and
             equal(self.param('instance_type'), get_link_name(self._connection, entity.instance_type), ignore_case=True) and
             equal(self.param('description'), entity.description) and
             equal(self.param('comment'), entity.comment) and
@@ -1784,7 +1794,7 @@ class VmsModule(BaseModule):
             equal(self.param('serial_policy'), str(getattr(entity.serial_number, 'policy', None))) and
             equal(self.param('serial_policy_value'), getattr(entity.serial_number, 'value', None)) and
             equal(self.param('numa_tune_mode'), str(entity.numa_tune_mode)) and
-            equal(self.param('virtio_scsi_enabled'), entity.virtio_scsi.enabled) and
+            equal(self.param('virtio_scsi_enabled'), getattr(entity.virtio_scsi, 'enabled', None)) and
             equal(self.param('multi_queues_enabled'), entity.multi_queues_enabled) and
             equal(self.param('virtio_scsi_multi_queues'), entity.virtio_scsi_multi_queues) and
             equal(self.param('rng_device'), str(entity.rng_device.source) if entity.rng_device else None) and
@@ -1813,6 +1823,7 @@ class VmsModule(BaseModule):
         self.changed = self.__attach_watchdog(entity)
         self.changed = self.__attach_graphical_console(entity)
         self.changed = self.__attach_host_devices(entity)
+        self._wait_after_lease()
 
     def pre_remove(self, entity):
         # Forcibly stop the VM, if it's not in DOWN state:
@@ -1823,6 +1834,10 @@ class VmsModule(BaseModule):
                     action_condition=lambda vm: vm.status != otypes.VmStatus.DOWN,
                     wait_condition=lambda vm: vm.status == otypes.VmStatus.DOWN,
                 )['changed']
+
+    def _wait_after_lease(self):
+        if self.param('lease') and self.param('wait_after_lease') != 0:
+            time.sleep(self.param('wait_after_lease'))
 
     def __suspend_shutdown_common(self, vm_service):
         if vm_service.get().status in [
@@ -2565,6 +2580,7 @@ def main():
         high_availability=dict(type='bool'),
         high_availability_priority=dict(type='int'),
         lease=dict(type='str'),
+        wait_after_lease=dict(type='int', default=5),
         stateless=dict(type='bool'),
         delete_protected=dict(type='bool'),
         custom_emulated_machine=dict(type='str'),

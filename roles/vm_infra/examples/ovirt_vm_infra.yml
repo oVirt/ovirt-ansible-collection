@@ -13,7 +13,7 @@
     engine_user: admin@internal
     engine_cafile: /etc/pki/ovirt-engine/ca.pem
 
-    debug_vm_create: yes
+    debug_vm_create: true
     db_vm:
       state: running
       cluster: mycluster

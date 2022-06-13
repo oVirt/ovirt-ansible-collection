@@ -53,6 +53,12 @@
     with_items:
       - "OVESETUP_DWH_DB/password=str:{{ he_dwh_db_password }}"
     when: he_dwh_db_password is defined
+  - name: Add keycloak line to answerfile
+    lineinfile:
+      path: /root/ovirt-engine-answers
+      line: "{{ item }}"
+    with_items:
+      - "OVESETUP_CONFIG/keycloakEnable=bool:{{ he_enable_keycloak }}"
   - name: Enable security policy
     block:
       - import_tasks: ../get_appliance_dist.yml
