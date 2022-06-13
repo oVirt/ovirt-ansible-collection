@@ -165,7 +165,7 @@ options:
         description:
             - Operating system of the template, for example 'rhel_8x64'.
             - Default value is set by oVirt/RHV engine.
-            - Use the M(ovirt_vm_os_info) module to obtain the current list.
+            - Use the M(@NAMESPACE@.@NAME@.ovirt_vm_os_info) module to obtain the current list.
         type: str
     memory:
         description:
@@ -213,6 +213,25 @@ options:
         description:
             - "If I(true), use smart card authentication."
         type: bool
+    kvm:
+        description:
+            - Dictionary of values to be used to connect to kvm and import
+              a template to oVirt.
+        type: dict
+        suboptions:
+            url:
+                description:
+                    - The URL to be passed to the I(virt-v2v) tool for conversion.
+                    - For example I(qemu:///system). This is required parameter.
+            storage_domain:
+                description:
+                    - Specifies the target storage domain for converted disks. This is required parameter.
+            host:
+                description:
+                    - The host name from which the template will be imported.
+            clone:
+                description:
+                    - Indicates if the identifiers of the imported template should be regenerated.
     cloud_init:
         description:
             - Dictionary with values for Unix-like Virtual Machine initialization using cloud init.
@@ -294,6 +313,19 @@ options:
             - "Memory balloon is a guest device, which may be used to re-distribute / reclaim the host memory
                based on VM needs in a dynamic way. In this way it's possible to create memory over commitment states."
         type: bool
+    bios_type:
+        description:
+            - "Set bios type, necessary for some operating systems and secure boot."
+            - "If no value is passed, default value is set from cluster."
+            - "NOTE - Supported since oVirt 4.3."
+        choices: [ i440fx_sea_bios, q35_ovmf, q35_sea_bios, q35_secure_boot ]
+        type: str
+        version_added: 2.0.0
+    boot_menu:
+        description:
+            - "I(True) enable menu to select boot device, I(False) to disable it. By default is chosen by oVirt/RHV engine."
+        type: bool
+        version_added: 2.0.0
     nics:
         description:
             - List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
@@ -524,6 +556,18 @@ EXAMPLES = '''
       host_name: windowsad.example.com
       user_name: Administrator
       root_password: SuperPassword123
+
+- name: Import external ova template
+  @NAMESPACE@.@NAME@.ovirt_template:
+    cluster: mycluster
+    name: mytemplate
+    state: present
+    timeout: 1800
+    poll_interval: 30
+    kvm:
+      host: myhost
+      url: ova:///tmp/test.ova
+      storage_domain: mystorage
 '''
 
 RETURN = '''
@@ -560,6 +604,7 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     ovirt_full_argument_spec,
     search_by_attributes,
     search_by_name,
+    wait,
 )
 
 
@@ -579,6 +624,12 @@ class TemplatesModule(BaseModule):
             vm=otypes.Vm(
                 name=self._module.params['vm']
             ) if self._module.params['vm'] else None,
+            bios=(
+                otypes.Bios(
+                    boot_menu=otypes.BootMenu(enabled=self.param('boot_menu')) if self.param('boot_menu') is not None else None,
+                    type=otypes.BiosType[self.param('bios_type').upper()] if self.param('bios_type') is not None else None
+                )
+            ) if self.param('boot_menu') is not None or self.param('bios_type') is not None else None,
             description=self._module.params['description'],
             cpu_profile=otypes.CpuProfile(
                 id=search_by_name(
@@ -754,6 +805,8 @@ class TemplatesModule(BaseModule):
             equal(self.param('smartcard_enabled'), getattr(template_display, 'smartcard_enabled', False)) and
             equal(self.param('soundcard_enabled'), entity.soundcard_enabled) and
             equal(self.param('ballooning_enabled'), entity.memory_policy.ballooning) and
+            equal(self.param('boot_menu'), entity.bios.boot_menu.enabled) and
+            equal(self.param('bios_type'), entity.bios.type.value) and
             equal(self.param('sso'), True if entity.sso.methods else False) and
             equal(self.param('timezone'), getattr(entity.time_zone, 'name', None)) and
             equal(self.param('usb_support'), entity.usb.enabled) and
@@ -850,6 +903,51 @@ def _get_vnic_profile_mappings(module):
     return vnicProfileMappings
 
 
+def import_template(module, connection):
+    templates_service = connection.system_service().templates_service()
+    if search_by_name(templates_service, module.params['name']) is not None:
+        return False
+
+    events_service = connection.system_service().events_service()
+    last_event = events_service.list(max=1)[0]
+
+    external_template = module.params['kvm']
+    imports_service = connection.system_service().external_template_imports_service()
+    imported_template = imports_service.add(
+        otypes.ExternalTemplateImport(
+            template=otypes.Template(
+                name=module.params['name']
+            ),
+            url=external_template.get('url'),
+            cluster=otypes.Cluster(
+                name=module.params['cluster'],
+            ) if module.params['cluster'] else None,
+            storage_domain=otypes.StorageDomain(
+                name=external_template.get('storage_domain'),
+            ) if external_template.get('storage_domain') else None,
+            host=otypes.Host(
+                name=external_template.get('host'),
+            ) if external_template.get('host') else None,
+            clone=external_template.get('clone', None),
+        )
+    )
+
+    # Wait until event with code 1158 for our template:
+    templates_service = connection.system_service().templates_service()
+    wait(
+        service=templates_service.template_service(imported_template.template.id),
+        condition=lambda tmp: len(events_service.list(
+            from_=int(last_event.id),
+            search='type=1158 and message=*%s*' % tmp.name,
+        )
+        ) > 0 if tmp is not None else False,
+        fail_condition=lambda tmp: tmp is None,
+        timeout=module.params['timeout'],
+        poll_interval=module.params['poll_interval'],
+    )
+    return True
+
+
 def find_subversion_template(module, templates_service):
     version = module.params.get('version')
     templates = templates_service.list()
@@ -899,6 +997,9 @@ def main():
         export_domain=dict(default=None),
         storage_domain=dict(default=None),
         exclusive=dict(type='bool'),
+        kvm=dict(type='dict'),
+        bios_type=dict(type='str', choices=['i440fx_sea_bios', 'q35_ovmf', 'q35_sea_bios', 'q35_secure_boot']),
+        boot_menu=dict(type='bool'),
         clone_name=dict(default=None),
         image_provider=dict(default=None),
         soundcard_enabled=dict(type='bool', default=None),
@@ -948,6 +1049,9 @@ def main():
             force_create = False
             if entity is None and module.params['version'] is not None:
                 force_create = True
+
+            if module.params['kvm']:
+                templates_module.changed = import_template(module, connection)
 
             ret = templates_module.create(
                 entity=entity,

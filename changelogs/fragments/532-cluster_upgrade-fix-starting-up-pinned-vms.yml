@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - cluster_upgrade - Fix starting up pinned vms (https://github.com/oVirt/ovirt-ansible-collection/pull/532).

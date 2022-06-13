@@ -30,13 +30,13 @@
       auth: "{{ ovirt_auth }}"
     register: datacenter_facts
   - name: Fetch Cluster name
-    set_fact: cluster_name={{ cluster_facts.ovirt_clusters|json_query("[?id=='" + cluster_id + "'].name")|first }}
+    set_fact: cluster_name={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].name")|first }}
   - name: Fetch Datacenter ID
     set_fact: >-
-      datacenter_id={{ cluster_facts.ovirt_clusters|json_query("[?id=='" + cluster_id + "'].data_center.id")|first }}
+      datacenter_id={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].data_center.id")|first }}
   - name: Fetch Datacenter name
     set_fact: >-
-      datacenter_name={{ datacenter_facts.ovirt_datacenters|json_query("[?id=='" + datacenter_id + "'].name")|first }}
+      datacenter_name={{ datacenter_facts.ovirt_datacenters|@NAMESPACE@.@NAME@.json_query("[?id=='" + datacenter_id + "'].name")|first }}
   - name: Parse Cluster details
     set_fact:
       cluster_cpu: >-
@@ -118,7 +118,7 @@
       - {
         name: 'he_metadata',
         description: 'Hosted-Engine metadata disk',
-        size: '1GiB',
+        size: '128MiB',
         format: 'raw',
         sparse: false,
         content: 'hosted_engine_metadata'

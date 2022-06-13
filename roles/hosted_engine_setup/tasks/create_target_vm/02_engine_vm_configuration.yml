@@ -10,37 +10,28 @@
       mode: 0700
   - name: Update target VM details at DB level
     command: >-
-      psql -d engine -c
+      "{{ engine_psql }}" -c
       "UPDATE vm_static SET {{ item.field }}={{ item.value }} WHERE
       vm_guid='{{ hostvars[he_ansible_host_name]['he_vm_details']['vm']['id'] }}'"
     environment: "{{ he_cmd_lang }}"
-    become: true
-    become_user: postgres
-    become_method: sudo
     changed_when: true
     register: db_vm_update
     with_items:
       - {field: 'origin', value: 6}
   - name: Insert Hosted Engine configuration disk uuid into Engine database
     command: >-
-      psql -d engine -c
+      "{{ engine_psql }}" -c
       "UPDATE vdc_options SET option_value=
       '{{ hostvars[he_ansible_host_name]['he_conf_disk_details']['disk']['id'] }}'
       WHERE option_name='HostedEngineConfigurationImageGuid' AND version='general'"
     environment: "{{ he_cmd_lang }}"
-    become: true
-    become_user: postgres
-    become_method: sudo
     changed_when: true
     register: db_conf_update
   - name: Fetch host SPM_ID
     command: >-
-      psql -t -d engine -c
+      "{{ engine_psql }}" -t -c
       "SELECT vds_spm_id FROM vds WHERE vds_name='{{ hostvars[he_ansible_host_name]['he_host_name'] }}'"
     environment: "{{ he_cmd_lang }}"
-    become: true
-    become_user: postgres
-    become_method: sudo
     changed_when: true
     register: host_spm_id_out
   - name: Parse host SPM_ID

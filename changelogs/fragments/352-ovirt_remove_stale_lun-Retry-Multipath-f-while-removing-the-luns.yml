@@ -1,3 +1,0 @@
----
-minor_changes:
-  - ovirt_remove_stale_lun - Retry "multipath -f" while removing the LUNs (https://github.com/oVirt/ovirt-ansible-collection/pull/382).

@@ -21,8 +21,8 @@ $ ansible-galaxy collection install @NAMESPACE@.@NAME@
 Requirements
 ------------
 
- * Ansible version 2.9.11 or higher
- * Python SDK version 4.4 or higher
+ * Ansible core version 2.12.0 or higher
+ * Python SDK version 4.5.0 or higher
  * Python netaddr library on the ansible controller node
 
 Content of the collection

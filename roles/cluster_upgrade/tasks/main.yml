@@ -47,6 +47,7 @@
     - name: Remember the api version and cluster id
       set_fact:
         api_gt43: "{{ api_info.ovirt_api.product_info.version.major >= 4 and api_info.ovirt_api.product_info.version.minor >= 3 }}"
+        api_gt45: "{{ api_info.ovirt_api.product_info.version.major >= 4 and api_info.ovirt_api.product_info.version.minor >= 5 }}"
         cluster_id: "{{ cluster_info.ovirt_clusters[0].id }}"
 
     - name: progress 2% - cluster upgrade is starting
@@ -125,13 +126,6 @@
       - name: Change cluster scheduling_policy to cluster_maintenance
         include_tasks: cluster_policy.yml
         when: use_maintenance_policy
-
-      - name: Get list of VMs in cluster
-        ovirt_vm_info:
-          auth: "{{ ovirt_auth }}"
-          pattern: "cluster={{ cluster_name }}"
-        check_mode: "no"
-        register: vms_in_cluster
 
       - name: Determine what hosts have running pinned vms, they will not be upgraded
         include_tasks: pinned_vms.yml
@@ -237,6 +231,7 @@
             auth: "{{ ovirt_auth }}"
             name: "{{ item }}"
             state: running
+            cluster: "{{ cluster_name }}"
           ignore_errors: "yes"
           loop: "{{ stopped_vms | default([]) | flatten(levels=1) }}"
 
@@ -245,6 +240,7 @@
             auth: "{{ ovirt_auth }}"
             name: "{{ item }}"
             state: running
+            cluster: "{{ cluster_name }}"
           ignore_errors: "yes"
           loop: "{{ pinned_vms_names | default([]) | flatten(levels=1) }}"
           when: stop_non_migratable_vms

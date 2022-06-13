@@ -5,6 +5,7 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
+# TODO Fix DOCUMENTATION to pass the ansible-test validate-modules
 DOCUMENTATION = '''
     name: ovirt
     plugin_type: inventory
@@ -52,8 +53,9 @@ DOCUMENTATION = '''
 .services.VmsService.list) for filter parameters.
       ovirt_hostname_preference:
         required: False
-        description: list of options that describe the ordering for which hostnames should be assigned. See U(https://ovirt.github.io/ovirt-engin\
-e-api-model/master/#types/vm) for available attributes.
+        description:
+            - List of options that describe the ordering for which hostnames should be assigned.
+            - See U(https://ovirt.github.io/ovirt-engine-api-model/master/#types/vm) for available attributes.
         default: ['fqdn', 'name']
         type: list
 '''

@@ -69,6 +69,12 @@ options:
         default: False
         type: bool
         aliases: ['ssh_public_key']
+    enroll_certificate:
+        description:
+            - "Enrolls the certificate of the host. Useful in case you get a warning that it is about to expire or has already expired."
+            - "The host must be in maintenance status before enrolling the certificates."
+        default: False
+        type: bool
     kdump_integration:
         description:
             - "Specify if host will have enabled Kdump integration."
@@ -282,6 +288,12 @@ EXAMPLES = '''
 - @NAMESPACE@.@NAME@.ovirt_host:
     id: 00000000-0000-0000-0000-000000000000
     name: "new host name"
+
+- name: Enroll host certificates
+  @NAMESPACE@.@NAME@.ovirt_host:
+    state: maintenance
+    name: myhost
+    enroll_certificate: True
 '''
 
 RETURN = '''
@@ -493,6 +505,7 @@ def main():
         ssh_port=dict(default=None, type='int'),
         password=dict(default=None, no_log=True),
         public_key=dict(default=False, type='bool', aliases=['ssh_public_key']),
+        enroll_certificate=dict(default=False, type='bool'),
         kdump_integration=dict(default=None, choices=['enabled', 'disabled']),
         spm_priority=dict(default=None, type='int'),
         override_iptables=dict(default=None, type='bool'),
@@ -561,6 +574,13 @@ def main():
                 fail_condition=failed_state,
             )
             ret = hosts_module.create()
+            if module.params['enroll_certificate']:
+                ret = hosts_module.action(
+                    action='enroll_certificate',
+                    action_condition=lambda h: h.status == hoststate.MAINTENANCE,
+                    wait_condition=lambda h: h.status == hoststate.MAINTENANCE,
+                    fail_condition=failed_state,
+                )
         elif state == 'upgraded':
             result_state = hoststate.MAINTENANCE if host.status == hoststate.MAINTENANCE else hoststate.UP
             events_service = connection.system_service().events_service()
@@ -593,7 +613,19 @@ def main():
             ret = hosts_module.action(
                 action='upgrade',
                 action_condition=lambda h: h.update_available,
-                wait_condition=lambda h: h.status == result_state,
+                wait_condition=lambda h: h.status == result_state and (
+                    len([
+                        event
+                        for event in events_service.list(
+                            from_=int(last_event.id),
+                            # Finished upgrade:
+                            # 841: HOST_UPGRADE_FAILED
+                            # 842: HOST_UPGRADE_FINISHED
+                            # 888: HOST_UPGRADE_FINISHED_AND_WILL_BE_REBOOTED
+                            search='type=842 or type=841 or type=888',
+                        ) if host.name in event.description
+                    ]) > 0
+                ),
                 post_action=lambda h: time.sleep(module.params['poll_interval']),
                 fail_condition=lambda h: hosts_module.failed_state_after_reinstall(h) or (
                     len([

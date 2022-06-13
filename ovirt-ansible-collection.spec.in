@@ -11,18 +11,32 @@ License:	ASL 2.0 and GPLv3+
 BuildArch:	noarch
 Url:		http://www.ovirt.org
 
-%if 0%{?rhel} == 9
-Requires:	ansible-core >= 2.11.0
-%else
-Requires:	ansible >= 2.9.21
+BuildRequires:	ansible-core
+BuildRequires:	ansible-test
+%if 0%{?rhel} > 7 && 0%{?rhel} < 9
+BuildRequires:	glibc-langpack-en
 %endif
+
+Requires:	ansible-core >= 2.12.0
 Requires:	ovirt-imageio-client
-Requires:	python3-ovirt-engine-sdk4 >= 4.4.11
+Requires:	python3-ovirt-engine-sdk4 >= 4.5.0
 Requires:	python3-netaddr
 Requires:	python3-jmespath
 Requires:	python3-passlib
+Requires:	ansible-collection-ansible-netcommon
+Requires:	ansible-collection-ansible-posix
+Requires:	ansible-collection-ansible-utils
 Requires:	qemu-img
 
+%if 0%{?rhel} < 9
+Requires:	python38-ovirt-imageio-client
+Requires:	python38-ovirt-engine-sdk4 >= 4.5.0
+Requires:	python38-netaddr
+Requires:	python38-jmespath
+Requires:	python38-passlib
+%endif
+
+Obsoletes:	ansible < 2.10.0
 Obsoletes:	ovirt-ansible-cluster-upgrade
 Obsoletes:	ovirt-ansible-disaster-recovery
 Obsoletes:	ovirt-ansible-engine-setup
@@ -73,6 +87,72 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Thu Jun 9 2022 Martin Necas <mnecas@redhat.com> - 2.1.0-1
+- Add convert_to_bytes filter
+- automation - Use python38 on el8 with ansible-core 2.12 and python39 on el9 with ansible-core 2.13
+- engine_setup - Allow to disable cert validation
+- ovirt - Remove deprecated distutils
+- ovirt_vm - add wait_after_lease
+- ovirt_vm - Fix parsing None arguments
+- ovirt_vm - check if the snapshot exists
+- hosted_engine_setup - make vdsm config cleanup optional
+- hosted_engine_setup - Fix "'ansible' ModuleNotFoundError" in Disaster Recovery scripts
+- hosted_engine_setup - Use command instead of firewalld module
+
+* Fri Jun 3 2022 Martin Necas <mnecas@redhat.com> - 2.0.4-1
+- Fix the admin user name when using keycloak
+- Use cryptography < 37.0.0, as 37.0.0 emits a warning that fails testing
+- Use rstcheck < 3.5.0, as 3.5.0 emits a warning that fails testing
+- cluster_upgrade - fix wait_condition
+- hosted_engine_setup - Allocate 128MiB instead of 1GiB for he_metadata
+- hosted_engine_setup - Collect logs also on failures in 03_hosted_engine_final_tasks.yml
+- hosted_engine_setup - Fix keycloak activation/checking
+- hosted_engine_setup - Require 'detail' to be 'Up'
+- hosted_engine_setup - fix archive ownership
+- infra - add warning for multiple storage connections
+
+* Wed Apr 13 2022 Martin Necas <mnecas@redhat.com> - 2.0.3-1
+- spec: Obsolete ansible < 2.10.0
+- ovirt_vm - Fix creating a RAW VM from a COW template
+- ovirt_affinity_group - Add affinity labels
+- invenory - Fix url address
+
+* Wed Apr 6 2022 Martin Necas <mnecas@redhat.com> - 2.0.2-1
+- cluster_upgrade: fix upgrade progress log_progress task
+
+* Tue Apr 5 2022 Martin Necas <mnecas@redhat.com> - 2.0.1-1
+- ovirt_storage_domain: make storage_format optional
+
+* Mon Apr 4 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-1
+- ovirt_template: add boot_menu and bios_type
+- roles: hosted_engine_setup - Add an option to set the storage format when createing a storage domain and use it
+- spec: Add python38-ovirt-imageio-client requirement
+
+* Fri Mar 25 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.9.BETA
+- roles: hosted_engine_setup: Fix call to engine-psql for vds_spm_id
+
+* Fri Mar 25 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.8.BETA
+- roles: cluster_upgrade: Directly log progress to the cluster
+- spec: Add collections requirements
+
+* Thu Mar 24 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.7.BETA
+- roles: hosted_engine_setup: Replace calls to psql as postgres with engine_psql.sh
+- spec: Add python38 requirements
+
+* Tue Mar 8 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.6.BETA
+- roles: hosted_engine_setup: Make cloud-init removal airgapped compatible
+- roles: hosted_engine_setup: Replace xml community module
+- roles: hosted_engine_setup: Support disa stig profile
+- roles: hosted_engine_setup: Use cat command instead of lookup
+- roles: repositories: Add satellite support
+- plugins: Remove unused imports
+- ovirt_host: Add enroll_certificate
+
+* Tue Feb 15 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.5.BETA
+- spec: Remove ansible requirements
+- roles: cluster_upgrade: Shutdown vms only on pinned to upgrade host
+- roles: hosted_engine_setup: Fix default gateway variable name
+
 * Tue Jan 25 2022 Martin Necas <mnecas@redhat.com> - 2.0.0-0.4.BETA
 - roles: cluster_upgrade: Add progress tracking/reporting
 - roles: hosted_engine_setup: Adjust files permissions

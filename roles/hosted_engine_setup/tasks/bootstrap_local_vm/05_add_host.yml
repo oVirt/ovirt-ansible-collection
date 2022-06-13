@@ -10,11 +10,7 @@
     retries: 30
     delay: 20
   - name: Open a port on firewalld
-    firewalld:
-      port: "{{ he_webui_forward_port }}/tcp"
-      permanent: false
-      immediate: true
-      state: enabled
+    command: firewall-cmd --zone=public --add-port {{ he_webui_forward_port }}/tcp
   - name: Expose engine VM webui over a local port via ssh port forwarding
     command: >-
       sshpass -e ssh -tt -o ServerAliveInterval=5 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -g -L
@@ -95,22 +91,18 @@
     register: active_f_zone
     changed_when: true
   - name: Configure libvirt firewalld zone
-    firewalld:
-      zone: libvirt
-      service: "{{ service_item }}"
-      permanent: true
-      immediate: true
-      state: enabled
+    command: firewall-cmd --zone=libvirt --permanent --add-service={{ service_item }}
     with_items:
       - vdsm
       - libvirt-tls
       - ovirt-imageio
       - ovirt-vmconsole
       - ssh
-      - vdsm
     loop_control:
       loop_var: service_item
     when: "'libvirt' in active_f_zone.stdout_lines"
+  - name: Reload firewall-cmd
+    command: firewall-cmd --reload
   - name: Add host
     ovirt_host:
       cluster: "{{ he_cluster }}"

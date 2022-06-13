@@ -19,6 +19,7 @@
     ovirt_vm_info:
       auth: "{{ ovirt_auth }}"
       pattern: "cluster={{ cluster_name }} and host={{ host_name }} and status=up"
+    register: vms_in_host
     check_mode: "no"
 
   - name: Move user migratable vms
@@ -32,7 +33,7 @@
     when:
       - "item['placement_policy']['affinity'] == 'user_migratable'"
     with_items:
-      - "{{ vms_in_cluster.ovirt_vms }}"
+      - "{{ vms_in_host.ovirt_vms }}"
     loop_control:
       label: "{{ item.name }}"
 
@@ -49,7 +50,7 @@
       force: true
       name: "{{ item.name }}"
     with_items:
-      - "{{ vms_in_cluster.ovirt_vms }}"
+      - "{{ vms_in_host.ovirt_vms }}"
     when:
       - "item['placement_policy']['affinity'] == 'pinned'"
     loop_control:
@@ -58,7 +59,7 @@
 
   - name: Create list of VM names which have been shut down
     set_fact:
-      pinned_vms_names: "{{ pinned_vms_names + pinned_to_host_vms.results | selectattr('changed') | map(attribute='host_name') | list }}"
+      pinned_vms_names: "{{ pinned_vms_names + pinned_to_host_vms.results | selectattr('changed') | map(attribute='vm.name') | list }}"
 
   - name: progress - done shutting down pinned VMs (host 20% complete)
     include_tasks: log_progress.yml

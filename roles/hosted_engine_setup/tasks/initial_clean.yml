@@ -8,10 +8,10 @@
       state: stopped
       enabled: true
   - name: Drop vdsm config statements
-    command: >-
-      sed -i
+    shell: >-
+      [ -r {{ item }} ] && sed -i
       '/## beginning of configuration section by
-      vdsm-4.[0-9]\+.[0-9]\+/,/## end of configuration section by vdsm-4.[0-9]\+.[0-9]\+/d' {{ item }}
+      vdsm-4.[0-9]\+.[0-9]\+/,/## end of configuration section by vdsm-4.[0-9]\+.[0-9]\+/d' {{ item }} || :
     environment: "{{ he_cmd_lang }}"
     args:
       warn: false

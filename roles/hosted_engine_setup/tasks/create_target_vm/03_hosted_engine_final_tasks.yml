@@ -38,8 +38,8 @@
     retries: 12
     delay: 10
     until: >-
-      ovf_store_status.rc == 0 and ovf_store_status.stdout|from_json|json_query('status') == 'OK' and
-      ovf_store_status.stdout|from_json|json_query('description')|from_json|json_query('Updated')
+      ovf_store_status.rc == 0 and ovf_store_status.stdout|from_json|@NAMESPACE@.@NAME@.json_query('status') == 'OK' and
+      ovf_store_status.stdout|from_json|@NAMESPACE@.@NAME@.json_query('description')|from_json|@NAMESPACE@.@NAME@.json_query('Updated')
     with_items: "{{ ovf_store_disks }}"
   - name: Wait for OVF_STORE disk content
     shell: >-
@@ -72,17 +72,17 @@
   - name: Fetch Hosted Engine configuration disk path
     set_fact:
       he_conf_disk_path: >-
-        {{ (prepareimage_results.results|json_query("[?item.id=='" +
+        {{ (prepareimage_results.results|@NAMESPACE@.@NAME@.json_query("[?item.id=='" +
         he_conf_disk_details.id + "'].stdout")|first|from_json).path }}
   - name: Fetch Hosted Engine virtio disk path
     set_fact:
       he_virtio_disk_path: >-
-        {{ (prepareimage_results.results|json_query("[?item.id=='" +
+        {{ (prepareimage_results.results|@NAMESPACE@.@NAME@.json_query("[?item.id=='" +
         he_virtio_disk_details.id + "'].stdout")|first|from_json).path }}
   - name: Fetch Hosted Engine virtio metadata path
     set_fact:
       he_metadata_disk_path: >-
-        {{ (prepareimage_results.results|json_query("[?item.id=='" +
+        {{ (prepareimage_results.results|@NAMESPACE@.@NAME@.json_query("[?item.id=='" +
         he_metadata_disk_details.id + "'].stdout")|first|from_json).path }}
   - name: Shutdown local VM
     command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} shutdown {{ he_vm_name }}Local"
@@ -133,6 +133,9 @@
     args:
       chdir: "{{ he_local_vm_dir }}"
       warn: false
+    become: true
+    become_user: vdsm
+    become_method: sudo
     changed_when: true
     tags: ['skip_ansible_lint']
   - name: Create ovirt-hosted-engine-ha run directory
@@ -149,17 +152,44 @@
     with_items:
       - {src: "{{ he_local_vm_dir }}/vm.conf", dest: /var/run/ovirt-hosted-engine-ha}
       - {src: "{{ he_local_vm_dir }}/hosted-engine.conf", dest: /etc/ovirt-hosted-engine/}
+  - name: Check fapolicyd status
+    systemd:
+      name: fapolicyd
+    register: fapolicyd_s
+  - name: Set fapolicyd rules path
+    set_fact:
+      fapolicyd_rules_dir: /etc/fapolicyd/rules.d
+  - name: Verify fapolicyd/rules.d directory
+    stat:
+      path: "{{ fapolicyd_rules_dir }}"
+    register: fapolicy_rules
+  - name: Add rule to fapolicy
+    block:
+      - name: Add rule to /etc/fapolicyd/rules.d
+        copy:
+          src: 35-allow-ansible-for-vdsm.rules
+          dest: "{{ fapolicyd_rules_dir }}"
+          mode: 0644
+      - name: Restart fapolicyd service
+        service:
+          name: fapolicyd
+          state: restarted
+    when: fapolicyd_s.status.SubState == 'running' and fapolicy_rules.stat.exists
   - name: Copy configuration archive to storage
     command: >-
       dd bs=20480 count=1 oflag=direct if="{{ he_local_vm_dir }}/{{ he_conf_disk_details.disk.image_id }}"
       of="{{ he_conf_disk_path }}"
     environment: "{{ he_cmd_lang }}"
     become: true
+    become_user: vdsm
+    become_method: sudo
     changed_when: true
     args:
       warn: false
   - name: Initialize metadata volume
-    command: dd bs=1M count=1024 oflag=direct if=/dev/zero of="{{ he_metadata_disk_path }}"
+    # Data is written at offset 4KiB*host_id and since ovirt supports 250 hosts per dc,
+    # we can have maximum 250*4KiB = ~ 1MiB
+    command: dd conv=notrunc bs=1M count=1 oflag=direct if=/dev/zero of="{{ he_metadata_disk_path }}"
     environment: "{{ he_cmd_lang }}"
     become: true
     become_user: vdsm
@@ -253,6 +283,17 @@
     become_method: sudo
     changed_when: true
     when: he_debug_mode|bool
+  - name: Remove rule from fapolicy
+    block:
+      - name: Remove rule from /etc/fapolicyd/rules.d
+        file:
+          path: "{{ fapolicyd_rules_dir }}/35-allow-ansible-for-vdsm.rules"
+          state: absent
+      - name: Restart fapolicyd service
+        service:
+          name: fapolicyd
+          state: restarted
+    when: fapolicyd_s.status.SubState == 'running' and fapolicy_rules.stat.exists
   - name: Remove temporary entry in /etc/hosts for the local VM
     lineinfile:
       dest: /etc/hosts
@@ -315,7 +356,8 @@
         register: health_result
         until: >-
           health_result.rc == 0 and 'health' in health_result.stdout and
-          health_result.stdout|from_json|json_query('*."engine-status"."health"')|first=="good"
+          health_result.stdout|from_json|@NAMESPACE@.@NAME@.json_query('*."engine-status"."health"')|first=="good" and
+          health_result.stdout|from_json|@NAMESPACE@.@NAME@.json_query('*."engine-status"."detail"')|first=="Up"
         retries: 180
         delay: 5
         changed_when: true
@@ -419,3 +461,13 @@
     include_tasks: "{{ item }}"
     with_fileglob: "hooks/after_setup/*.yml"
     register: after_setup_results
+  rescue:
+    - name: Fetch logs from the engine VM
+      include_tasks: ../fetch_engine_logs.yml
+      ignore_errors: true
+    - name: Notify the user about a failure
+      fail:
+        msg: >
+          The system may not be provisioned according to the playbook
+          results: please check the logs for the issue,
+          fix accordingly or re-deploy from scratch.

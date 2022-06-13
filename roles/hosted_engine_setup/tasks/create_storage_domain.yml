@@ -42,16 +42,34 @@
     register: datacenter_facts
   - name: Fetch Datacenter ID
     set_fact: >-
-      datacenter_id={{ cluster_facts.ovirt_clusters|json_query("[?id=='" + cluster_id + "'].data_center.id")|first }}
+      datacenter_id={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].data_center.id")|first }}
   - name: Fetch Datacenter name
     set_fact: >-
-      datacenter_name={{ datacenter_facts.ovirt_datacenters|json_query("[?id=='" + datacenter_id + "'].name")|first }}
+      datacenter_name={{ datacenter_facts.ovirt_datacenters|@NAMESPACE@.@NAME@.json_query("[?id=='" + datacenter_id + "'].name")|first }}
+  - name: Fetch cluster name
+    set_fact: >-
+      cluster_name={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].name")|first }}
+  - name: Fetch cluster version
+    set_fact: >-
+      cluster_version={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].version")|first }}
+  - name: Enforce cluster major version
+    fail:
+      msg: "Cluster {{ cluster_name }} major version is {{ cluster_version.major }}, needs to be at least 4"
+    when: cluster_version.major < 4
+  - name: Enforce cluster minor version
+    fail:
+      msg: "Cluster {{ cluster_name }} minor version is {{ cluster_version.minor }}, needs to be at least 2"
+    when: cluster_version.minor < 2
+  - name: Set storage_format
+    set_fact: >-
+      storage_format={{ 'v4' if cluster_version.minor == 2 else 'v5' }}
   - name: Add NFS storage domain
     ovirt_storage_domain:
       state: unattached
       name: "{{ he_storage_domain_name }}"
       host: "{{ he_host_name }}"
       data_center: "{{ datacenter_name }}"
+      storage_format: "{{ storage_format }}"
       wait: true
       nfs:
         address: "{{ he_storage_domain_addr }}"
@@ -67,6 +85,7 @@
       name: "{{ he_storage_domain_name }}"
       host: "{{ he_host_name }}"
       data_center: "{{ datacenter_name }}"
+      storage_format: "{{ storage_format }}"
       wait: true
       glusterfs:
         address: "{{ he_storage_domain_addr }}"
@@ -81,6 +100,7 @@
       name: "{{ he_storage_domain_name }}"
       host: "{{ he_host_name }}"
       data_center: "{{ datacenter_name }}"
+      storage_format: "{{ storage_format }}"
       wait: true
       discard_after_delete: "{{ he_discard }}"
       # we are sending a single iSCSI path but, not sure if intended or if
@@ -104,6 +124,7 @@
       name: "{{ he_storage_domain_name }}"
       host: "{{ he_host_name }}"
       data_center: "{{ datacenter_name }}"
+      storage_format: "{{ storage_format }}"
       wait: true
       discard_after_delete: "{{ he_discard }}"
       fcp:
@@ -123,21 +144,16 @@
       patterns: ^.*.(?<!meta).ovf$
       use_regex: true
     register: app_ovf
-  - name: Parse OVF
-    xml:
-      path: "{{ app_ovf.files[0].path }}"
-      xpath: /ovf:Envelope/Section/Disk
-      namespaces:
-        ovf: http://schemas.dmtf.org/ovf/envelope/1/
-        rasd: http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData
-        vssd: http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData
-        xsi: http://www.w3.org/2001/XMLSchema-instance
-      content: attribute
-    register: disk_size_xml
+  - name: Get ovf data
+    command: cat "{{ app_ovf.files[0].path }}"
+    register: ovf_data
+  - name: Get disk size from ovf data
+    set_fact:
+      disk_size: "{{ ovf_data['stdout'] | @NAMESPACE@.@NAME@.get_ovf_disk_size }}"
   - name: Get required size
     set_fact:
       required_size: >-
-        {{ disk_size_xml.matches[0].Disk['{http://schemas.dmtf.org/ovf/envelope/1/}size']|int * 1024 * 1024 * 1024 +
+        {{ disk_size|int * 1024 * 1024 * 1024 +
         storage_domain_details.ovirt_storage_domains[0].critical_space_action_blocker|int *
         1024 * 1024 * 1024 + 5 * 1024 * 1024 * 1024 }}
     # +5G: 2xOVF_STORE, lockspace, metadata, configuration

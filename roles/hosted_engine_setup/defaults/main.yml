@@ -36,6 +36,8 @@ he_webui_forward_port: 6900  # by default already open for VM console
 he_reserved_memory_MB: 512
 he_avail_memory_grace_MB: 200
 
+engine_psql: /usr/share/ovirt-engine/dbscripts/engine-psql.sh
+
 he_host_ip: null
 he_host_name: null
 he_host_address: null
@@ -69,6 +71,7 @@ he_enable_hc_gluster_service: false
 he_vm_mac_addr: null
 he_remove_appliance_rpm: true
 he_pki_renew_on_restore: false
+he_enable_keycloak: true
 
 ## Storage domain vars:
 he_domain_type: null  # can be: nfs | iscsi | glusterfs | fc
@@ -99,7 +102,7 @@ he_vm_ip_addr: null
 he_vm_ip_prefix: null
 he_dns_addr: null  # up to 3 DNS servers IPs can be added
 he_vm_etc_hosts: false  # user can add lines to /etc/hosts on the engine VM
-he_default_gateway: null
+he_gateway: null
 he_network_test: 'dns'  # can be: 'dns', 'ping', 'tcp' or 'none'
 he_tcp_t_address: null
 he_tcp_t_port: null

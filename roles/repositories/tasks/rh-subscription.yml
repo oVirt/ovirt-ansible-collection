@@ -23,7 +23,7 @@
     subscription-manager register
     --username {{ ovirt_repositories_rh_username }}
     --password {{ ovirt_repositories_rh_password }}
-    {% if ovirt_repositories_force_register is defined %} --force {% endif %}
+    {% if ovirt_repositories_force_register is defined and ovirt_repositories_force_register|bool %} --force {% endif %}
     {% if ovirt_repositories_rhsm_server_hostname is defined %} --serverurl {{ ovirt_repositories_rhsm_server_hostname }} {% endif %}
   changed_when: false
   no_log: true
