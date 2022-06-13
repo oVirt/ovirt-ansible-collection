@@ -94,6 +94,8 @@
   - name: Run engine-config
     ansible.builtin.command: "engine-config -s {{ item.key }}='{{ item.value }}' {% if item.version is defined %} --cver={{ item.version }} {% endif %}"
     loop: "{{ ovirt_engine_setup_engine_configs | default([]) }}"
+    tags:
+      - skip_ansible_lint
 
   - name: Restart engine after engine-config
     ansible.builtin.service:
