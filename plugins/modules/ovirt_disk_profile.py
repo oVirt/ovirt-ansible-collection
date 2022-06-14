@@ -28,6 +28,10 @@ options:
         description:
             - "Description of the disk profile."
         type: str
+    comment:
+        description:
+            - "Comment of the disk profile."
+        type: str
     storage_domain:
         description:
             - "Name of the storage domain where the disk profile should be created."
@@ -167,6 +171,7 @@ def main():
         ),
         id=dict(default=None),
         name=dict(default=None),
+        comment=dict(default=None),
         storage_domain=dict(default=None),
         data_center=dict(default=None),
         qos=dict(default=None),
