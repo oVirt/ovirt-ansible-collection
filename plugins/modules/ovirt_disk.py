@@ -633,6 +633,9 @@ class DisksModule(BaseModule):
                     name=self._module.params.get('storage_domain'),
                 ),
             ],
+            disk_profile=otypes.DiskProfile(
+                id=get_id_by_name(self._connection.system_service().disk_profiles_service(), self._module.params.get('profile'))
+            ) if self._module.params.get('profile') else None,
             quota=otypes.Quota(id=self._module.params.get('quota_id')) if self.param('quota_id') else None,
             shareable=self._module.params.get('shareable'),
             sgio=otypes.ScsiGenericIO(self.param('scsi_passthrough')) if self.param('scsi_passthrough') else None,
@@ -725,7 +728,8 @@ class DisksModule(BaseModule):
             equal(self._module.params.get('shareable'), entity.shareable) and
             equal(self.param('propagate_errors'), entity.propagate_errors) and
             equal(otypes.ScsiGenericIO(self.param('scsi_passthrough')) if self.param('scsi_passthrough') else None, entity.sgio) and
-            equal(self.param('wipe_after_delete'), entity.wipe_after_delete)
+            equal(self.param('wipe_after_delete'), entity.wipe_after_delete) and
+            equal(self.param('profile'), follow_link(self._connection, entity.disk_profile).name)
         )
 
 
