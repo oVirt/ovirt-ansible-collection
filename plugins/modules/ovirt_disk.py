@@ -729,7 +729,7 @@ class DisksModule(BaseModule):
             equal(self.param('propagate_errors'), entity.propagate_errors) and
             equal(otypes.ScsiGenericIO(self.param('scsi_passthrough')) if self.param('scsi_passthrough') else None, entity.sgio) and
             equal(self.param('wipe_after_delete'), entity.wipe_after_delete) and
-            equal(self.param('profile'), entity.disk_profile)
+            equal(self.param('profile'), getattr(entity.disk_profile, 'name', None))
         )
 
 
