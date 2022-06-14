@@ -72,37 +72,37 @@ options:
     inbound_average:
         description:
             - "The desired average inbound bit rate in Mbps (Megabits per sec)."
-            - "Used to configure virtual machines networks. If defined, `inbound_peak` and `inbound_burst` also has to be set."
+            - "Used to configure virtual machines networks. If defined, C(inbound_peak) and C(inbound_burst) also has to be set."
             - "See link:https://libvirt.org/formatnetwork.html#elementQoS[Libvirt-QOS] for further details."
         type: int
     inbound_peak:
         description:
             - "The maximum inbound rate in Mbps (Megabits per sec)."
-            - "Used to configure virtual machines networks. If defined, `inbound_average` and `inbound_burst` also has to be set."
+            - "Used to configure virtual machines networks. If defined, C(inbound_average) and C(inbound_burst) also has to be set."
             - "See link:https://libvirt.org/formatnetwork.html#elementQoS[Libvirt-QOS] for further details."
         type: int
     inbound_burst:
         description:
             - "The amount of data that can be delivered in a single burst, in MB."
-            - "Used to configure virtual machine networks. If defined, `inbound_average` and `inbound_peak` must also be set."
+            - "Used to configure virtual machine networks. If defined, C(inbound_average) and C(inbound_peak) must also be set."
             - "See link:https://libvirt.org/formatnetwork.html#elementQoS[Libvirt-QOS] for further details."
         type: int
     outbound_average:
         description:
             - "The desired average outbound bit rate in Mbps (Megabits per sec)."
-            - "Used to configure virtual machines networks. If defined, `outbound_peak` and `outbound_burst` also has to be set."
+            - "Used to configure virtual machines networks. If defined, C(outbound_peak) and C(outbound_burst) also has to be set."
             - "See link:https://libvirt.org/formatnetwork.html#elementQoS[Libvirt-QOS] for further details."
         type: int
     outbound_peak:
         description:
             - "The maximum outbound rate in Mbps (Megabits per sec)."
-            - "Used to configure virtual machines networks. If defined, `outbound_average` and `outbound_burst` also has to be set."
+            - "Used to configure virtual machines networks. If defined, C(outbound_average) and C(outbound_burst) also has to be set."
             - "See link:https://libvirt.org/formatnetwork.html#elementQoS[Libvirt-QOS] for further details."
         type: int
     outbound_burst:
         description:
             - "The amount of data that can be sent in a single burst, in MB."
-            - "Used to configure virtual machine networks. If defined, `outbound_average` and `outbound_peak` must also be set."
+            - "Used to configure virtual machine networks. If defined, C(outbound_average) and C(outbound_peak) must also be set."
             - "See link:https://libvirt.org/formatnetwork.html#elementQoS[Libvirt-QOS] for further details."
         type: int
     outbound_average_linkshare:
@@ -115,8 +115,8 @@ options:
     outbound_average_upperlimit:
         description:
             - "The maximum bandwidth to be used by a network in Mbps (Megabits per sec)."
-            - "Used to configure host networks. If `outboundAverageUpperlimit` and
-              `outbound_average_realtime` are provided, the `outbound_averageUpperlimit` must not be lower than the `outbound_average_realtime`."
+            - "Used to configure host networks. If C(outboundAverageUpperlimit) and
+              C(outbound_average_realtime) are provided, the C(outbound_averageUpperlimit) must not be lower than the C(outbound_average_realtime)."
         type: int
     outbound_average_realtime:
         description:
@@ -127,8 +127,8 @@ options:
         type: int
     type:
         description:
-            - "The type of QoS. Allows for one of storage/cpu/network/hostnetwork"
-            - "WARNING: Currently only works for storage"
+            - "The type of QoS."
+        choices: ['storage', 'cpu', 'network', 'hostnetwork']
         type: str
     state:
         description:
@@ -296,7 +296,10 @@ def main():
         outbound_average_linkshare=dict(default=None, type='int'),
         outbound_average_upperlimit=dict(default=None, type='int'),
         outbound_average_realtime=dict(default=None, type='int'),
-        type=dict(default=None)
+        type=dict(
+            choices=['storage', 'cpu', 'network', 'hostnetwork'],
+            default=None,
+        )
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
@@ -306,6 +309,10 @@ def main():
             ['max_iops', 'write_iops'],
             ['max_throughput', 'read_throughput'],
             ['max_throughput', 'write_throughput']
+        ],
+        required_together=[
+            ['inbound_average', 'inbound_peak', 'inbound_burst'],
+            ['outbound_average', 'outbound_peak', 'outbound_burst'],
         ]
     )
 
