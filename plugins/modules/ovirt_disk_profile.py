@@ -54,8 +54,8 @@ extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 EXAMPLES = '''
-# Create a new disk profile on storage_domain_01 using the test_qos QoS in the Default datacenter
-- @NAMESPACE@.@NAME@.ovirt_disk_profile:
+- name: Create a new disk profile on storage_domain_01 using the test_qos QoS in the Default datacenter
+  @NAMESPACE@.@NAME@.ovirt_disk_profile:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_disk_profile"
@@ -63,16 +63,16 @@ EXAMPLES = '''
     storage_domain: "storage_domain_01"
     qos: "test_qos"
 
-# Create a new disk profile on storage_domain_01 in the Default datacenter using the HE default qos
-- @NAMESPACE@.@NAME@.ovirt_disk_profile:
+- name: Create a new disk profile on storage_domain_01 in the Default datacenter using the HE default qos
+  @NAMESPACE@.@NAME@.ovirt_disk_profile:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_disk_profile"
     state: "present"
     storage_domain: "storage_domain_01"
 
-# Remove the test_qos disk profile
-- @NAMESPACE@.@NAME@.ovirt_disk_profile:
+- name: Remove the test_qos disk profile
+  @NAMESPACE@.@NAME@.ovirt_disk_profile:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_disk_profile"

@@ -140,16 +140,16 @@ extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
 EXAMPLES = '''
-# Create a new storage QoS with default values for max_iops and max_throughput
-- @NAMESPACE@.@NAME@.ovirt_qos:
+- name: Create a new storage QoS with default values for max_iops and max_throughput
+  @NAMESPACE@.@NAME@.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
     state: "present"
     type: "storage"
 
-# Create a new storage QoS with default values for max_iops and read_throughput but 100 for write throughput
-- @NAMESPACE@.@NAME@.ovirt_qos:
+- name: Create a new storage QoS with default values for max_iops and read_throughput but 100 for write throughput
+  @NAMESPACE@.@NAME@.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
@@ -157,8 +157,8 @@ EXAMPLES = '''
     type: "storage"
     write_throughput: 100
 
-# Create a new storage QoS with default values for write_iops and max_throughput but 100 for read iops
-- @NAMESPACE@.@NAME@.ovirt_qos:
+- name: Create a new storage QoS with default values for write_iops and max_throughput but 100 for read iops
+  @NAMESPACE@.@NAME@.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
@@ -166,8 +166,8 @@ EXAMPLES = '''
     type: "storage"
     read_iops: 100
 
-# Create a new storage QoS with 100 max_iops and 200 max_throughput
-- @NAMESPACE@.@NAME@.ovirt_qos:
+- name: Create a new storage QoS with 100 max_iops and 200 max_throughput
+  @NAMESPACE@.@NAME@.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
@@ -176,13 +176,47 @@ EXAMPLES = '''
     max_iops: 100
     max_throughput: 100
 
-# Remove a storage QoS
-- @NAMESPACE@.@NAME@.ovirt_qos:
+- name: Remove a storage QoS
+  @NAMESPACE@.@NAME@.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
     state: "absent"
     type: "storage"
+
+- name: Add a network QoS
+  @NAMESPACE@.@NAME@.ovirt_qos:
+    auth: "{{ ovirt_auth }}"
+    name: "myqos"
+    data_center: "Default"
+    state: "present"
+    type: "network"
+    inbound_average: 10
+    inbound_peak: 10
+    inbound_burst: 10
+    outbound_average: 10
+    outbound_peak: 10
+    outbound_burst: 10
+
+- name: Add a hostnetwork QoS
+  @NAMESPACE@.@NAME@.ovirt_qos:
+    auth: "{{ ovirt_auth }}"
+    name: "myqos"
+    data_center: "Default"
+    state: "present"
+    type: "hostnetwork"
+    outbound_average_linkshare: 10
+    outbound_average_upperlimit: 100
+    outbound_average_realtime: 50
+
+- name: Add a hostnetwork QoS
+  @NAMESPACE@.@NAME@.ovirt_qos:
+    auth: "{{ ovirt_auth }}"
+    name: "myqos"
+    data_center: "Default"
+    state: "present"
+    type: "cpu"
+    cpu_limit: 10
 '''
 
 RETURN = '''
