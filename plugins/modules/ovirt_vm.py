@@ -42,7 +42,7 @@ options:
             - I(registered) is supported since 2.4.
             - I(reboot) is supported since 2.10, virtual machine is rebooted only if it's in up state.
             - I(reset) sends a reset request to a virtual machine.
-        choices: [ absent, next_run, present, registered, running, stopped, suspended, exported, reboot, reset]
+        choices: [ absent, next_run, present, registered, running, stopped, suspended, exported, reboot, reset ]
         default: present
         type: str
     cluster:
