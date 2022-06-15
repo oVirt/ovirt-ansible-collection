@@ -146,8 +146,7 @@
       cpu_cores: "{{ he_vcpus }}"
       cpu_sockets: 1
       graphical_console:
-        headless_mode: false
-        protocol: "{{ he_graphic_protocols }}"
+        headless_mode: true
       serial_console: false
       operating_system: rhel_8x64
       bios_type: q35_sea_bios
