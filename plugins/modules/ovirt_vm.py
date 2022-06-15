@@ -931,6 +931,11 @@ options:
         type: int
         default: 5
         version_added: 2.1.0
+    volatile:
+        description:
+            - "Indicates that this run configuration will be discarded even in the case of guest-initiated reboot."
+        type: bool
+        version_added: 2.2.0
 notes:
     - If VM is in I(UNASSIGNED) or I(UNKNOWN) state before any operation, the module will fail.
       If VM is in I(IMAGE_LOCKED) state before any operation, we try to wait for VM to be I(DOWN).
@@ -2636,6 +2641,7 @@ def main():
             )
         ),
         exclusive=dict(type='bool'),
+        volatile=dict(type='bool'),
         export_domain=dict(default=None),
         export_ova=dict(type='dict'),
         force_migrate=dict(type='bool'),
@@ -2723,6 +2729,7 @@ def main():
                     # Start action kwargs:
                     use_cloud_init=True if not module.params.get('cloud_init_persist') and module.params.get('cloud_init') else None,
                     use_sysprep=True if not module.params.get('cloud_init_persist') and module.params.get('sysprep') else None,
+                    volatile=module.params.get('volatile'),
                     vm=otypes.Vm(
                         placement_policy=otypes.VmPlacementPolicy(
                             hosts=[otypes.Host(name=module.params['host'])]
