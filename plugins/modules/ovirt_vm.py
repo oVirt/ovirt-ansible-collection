@@ -41,7 +41,8 @@ options:
             - I(exported) state will export the VM to export domain or as OVA.
             - I(registered) is supported since 2.4.
             - I(reboot) is supported since 2.10, virtual machine is rebooted only if it's in up state.
-        choices: [ absent, next_run, present, registered, running, stopped, suspended, exported, reboot ]
+            - I(reset) sends a reset request to a virtual machine.
+        choices: [ absent, next_run, present, registered, running, stopped, suspended, exported, reboot, reset]
         default: present
         type: str
     cluster:
@@ -2540,7 +2541,7 @@ def control_state(vm, vms_service, module):
 def main():
     argument_spec = ovirt_full_argument_spec(
         state=dict(type='str', default='present', choices=[
-            'absent', 'next_run', 'present', 'registered', 'running', 'stopped', 'suspended', 'exported', 'reboot'
+            'absent', 'next_run', 'present', 'registered', 'running', 'stopped', 'suspended', 'exported', 'reboot', 'reset'
         ]),
         name=dict(type='str'),
         id=dict(type='str'),
@@ -2885,6 +2886,14 @@ def main():
         elif state == 'reboot':
             ret = vms_module.action(
                 action='reboot',
+                entity=vm,
+                action_condition=lambda vm: vm.status == otypes.VmStatus.UP,
+                wait_condition=lambda vm: vm.status == otypes.VmStatus.UP,
+            )
+
+        elif state == 'reset':
+            ret = vms_module.action(
+                action='reset',
                 entity=vm,
                 action_condition=lambda vm: vm.status == otypes.VmStatus.UP,
                 wait_condition=lambda vm: vm.status == otypes.VmStatus.UP,
