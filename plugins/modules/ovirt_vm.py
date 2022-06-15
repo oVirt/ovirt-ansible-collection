@@ -41,7 +41,8 @@ options:
             - I(exported) state will export the VM to export domain or as OVA.
             - I(registered) is supported since 2.4.
             - I(reboot) is supported since 2.10, virtual machine is rebooted only if it's in up state.
-        choices: [ absent, next_run, present, registered, running, stopped, suspended, exported, reboot ]
+            - I(reset) sends a reset request to a virtual machine.
+        choices: [ absent, next_run, present, registered, running, stopped, suspended, exported, reboot, reset ]
         default: present
         type: str
     cluster:
@@ -930,6 +931,11 @@ options:
         type: int
         default: 5
         version_added: 2.1.0
+    volatile:
+        description:
+            - "Indicates that this run configuration will be discarded even in the case of guest-initiated reboot."
+        type: bool
+        version_added: 2.2.0
 notes:
     - If VM is in I(UNASSIGNED) or I(UNKNOWN) state before any operation, the module will fail.
       If VM is in I(IMAGE_LOCKED) state before any operation, we try to wait for VM to be I(DOWN).
@@ -2540,7 +2546,7 @@ def control_state(vm, vms_service, module):
 def main():
     argument_spec = ovirt_full_argument_spec(
         state=dict(type='str', default='present', choices=[
-            'absent', 'next_run', 'present', 'registered', 'running', 'stopped', 'suspended', 'exported', 'reboot'
+            'absent', 'next_run', 'present', 'registered', 'running', 'stopped', 'suspended', 'exported', 'reboot', 'reset'
         ]),
         name=dict(type='str'),
         id=dict(type='str'),
@@ -2635,6 +2641,7 @@ def main():
             )
         ),
         exclusive=dict(type='bool'),
+        volatile=dict(type='bool'),
         export_domain=dict(default=None),
         export_ova=dict(type='dict'),
         force_migrate=dict(type='bool'),
@@ -2722,6 +2729,7 @@ def main():
                     # Start action kwargs:
                     use_cloud_init=True if not module.params.get('cloud_init_persist') and module.params.get('cloud_init') else None,
                     use_sysprep=True if not module.params.get('cloud_init_persist') and module.params.get('sysprep') else None,
+                    volatile=module.params.get('volatile'),
                     vm=otypes.Vm(
                         placement_policy=otypes.VmPlacementPolicy(
                             hosts=[otypes.Host(name=module.params['host'])]
@@ -2885,6 +2893,14 @@ def main():
         elif state == 'reboot':
             ret = vms_module.action(
                 action='reboot',
+                entity=vm,
+                action_condition=lambda vm: vm.status == otypes.VmStatus.UP,
+                wait_condition=lambda vm: vm.status == otypes.VmStatus.UP,
+            )
+
+        elif state == 'reset':
+            ret = vms_module.action(
+                action='reset',
                 entity=vm,
                 action_condition=lambda vm: vm.status == otypes.VmStatus.UP,
                 wait_condition=lambda vm: vm.status == otypes.VmStatus.UP,
