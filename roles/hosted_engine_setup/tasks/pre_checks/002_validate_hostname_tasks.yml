@@ -30,7 +30,9 @@
             cut -d'/' -f1
           register: target_address_v4
           changed_when: true
-        - ansible.builtin.debug: var=target_address_v4
+        - name: Debug var target_address_v4
+          ansible.builtin.debug:
+            var: target_address_v4
         - name: Get target address from selected interface (IPv6)
           ansible.builtin.shell: >-
             ip addr show
@@ -42,7 +44,9 @@
             cut -d'/' -f1
           register: target_address_v6
           changed_when: true
-        - ansible.builtin.debug: var=target_address_v6
+        - name: Debug var target_address_v6
+          ansible.builtin.debug:
+            var: target_address_v6
         - name: Check the resolved address resolves on the selected interface
           ansible.builtin.fail:
             msg: >
@@ -56,7 +60,9 @@
           register: hostname_res_count_output
           changed_when: true
           ignore_errors: true
-        - ansible.builtin.debug: var=hostname_res_count_output
+        - name: Debug var hostname_res_count_output
+          ansible.builtin.debug:
+            var: hostname_res_count_output
         - name: Filter resolved address list
           ansible.builtin.set_fact:
             hostname_res_count_output_filtered: >-

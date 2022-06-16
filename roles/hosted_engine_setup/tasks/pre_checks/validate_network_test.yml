@@ -8,7 +8,9 @@
     when: he_network_test not in ['dns', 'ping', 'tcp', 'none']
   - name: Validate TCP network connectivity check parameters
     block:
-      - ansible.builtin.debug: var=he_tcp_t_address
+      - name: Debug var he_tcp_t_address
+        ansible.builtin.debug:
+          var: he_tcp_t_address
       - name: Fail if he_tcp_t_address is not defined
         ansible.builtin.fail:
           msg: "No he_tcp_t_address is defined"
@@ -17,7 +19,9 @@
           ( he_tcp_t_address is undefined ) or
           ( he_tcp_t_address is none ) or
           ( he_tcp_t_address|trim|length == 0 )
-      - ansible.builtin.debug: var=he_tcp_t_port
+      - name: Debug var he_tcp_t_port
+        ansible.builtin.debug:
+          var: he_tcp_t_port
       - name: Fail if he_tcp_t_port is not defined
         ansible.builtin.fail:
           msg: "No he_tcp_t_port is defined"

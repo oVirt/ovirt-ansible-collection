@@ -333,7 +333,9 @@
         retries: 5
         delay: 10
         changed_when: true
-      - ansible.builtin.debug: var=result2
+      - name: Debug var result2
+        ansible.builtin.debug:
+          var: result2
     when: result.rc != 0
   - name: Start ovirt-ha-agent service on the host
     ansible.builtin.service:
@@ -361,7 +363,9 @@
         retries: 180
         delay: 5
         changed_when: true
-      - ansible.builtin.debug: var=health_result
+      - name: Debug var health_result
+        ansible.builtin.debug:
+          var: health_result
     rescue:
       - name: Check VM status at virt level
         ansible.builtin.shell: virsh -r list | grep {{ he_vm_name }} | grep running
@@ -369,7 +373,9 @@
         ignore_errors: true
         changed_when: true
         register: vm_status_virsh
-      - ansible.builtin.debug: var=vm_status_virsh
+      - name: Debug var vm_status_virsh
+        ansible.builtin.debug:
+          var: vm_status_virsh
       - name: Fail if engine VM is not running
         ansible.builtin.fail:
           msg: "Engine VM is not running, please check vdsm logs"
@@ -388,7 +394,9 @@
         ansible.builtin.set_fact: json_stats={{ engine_vdsm_stats.stdout|from_json }}
       - name: Get target engine VM IP address from VDSM stats
         ansible.builtin.set_fact: engine_vm_ip_vdsm={{ json_stats[0].guestIPs }}
-      - ansible.builtin.debug: var=engine_vm_ip_vdsm
+      - name: Debug var engine_vm_ip_vdsm
+        ansible.builtin.debug:
+          var: engine_vm_ip_vdsm
       - name: Fail if Engine IP is different from engine's he_fqdn resolved IP
         ansible.builtin.fail:
           msg: >-
@@ -429,7 +437,9 @@
           id: "{{ external_local_vm_uuid.stdout_lines|first }}"
           auth: "{{ ovirt_auth }}"
         register: vmstop_result
-      - ansible.builtin.debug: var=vmstop_result
+      - name: Debug var vmstop_result
+        ansible.builtin.debug:
+          var: vmstop_result
       - name: Wait for the local bootstrap engine VM to be down at engine eyes
         ovirt_vm_info:
           pattern: id="{{ external_local_vm_uuid.stdout_lines|first }}"
@@ -438,14 +448,18 @@
         until: local_vm_status.ovirt_vms[0].status == "down"
         retries: 24
         delay: 5
-      - ansible.builtin.debug: var=local_vm_status
+      - name: Debug var local_vm_status
+        ansible.builtin.debug:
+          var: local_vm_status
       - name: Remove bootstrap external VM from the engine
         ovirt_vm:
           state: absent
           id: "{{ external_local_vm_uuid.stdout_lines|first }}"
           auth: "{{ ovirt_auth }}"
         register: vmremove_result
-      - ansible.builtin.debug: var=vmremove_result
+      - name: Debug var vmremove_result
+        ansible.builtin.debug:
+          var: vmremove_result
     when: local_vm_f.ovirt_vms|length > 0
   - name: Remove ovirt-engine-appliance rpm
     ansible.builtin.yum:
