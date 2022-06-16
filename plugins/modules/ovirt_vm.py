@@ -2044,7 +2044,7 @@ class VmsModule(BaseModule):
             return True
 
         # Update consoles:
-        if sorted(protocol) != sorted(current_protocols):
+        if protocol is not None and sorted(protocol) != sorted(current_protocols):
             if not self._module.check_mode:
                 for gc in graphical_consoles:
                     gcs_service.console_service(gc.id).remove()
