@@ -2,7 +2,7 @@
     - name: Fetch unregistered VMs from storage domain
       ovirt_storage_vm_info:
           nested_attributes: "id"
-          unregistered: True
+          unregistered: true
           storage_domain: "{{ storage.name }}"
           auth: "{{ ovirt_auth }}"
       register: storage_vm_info

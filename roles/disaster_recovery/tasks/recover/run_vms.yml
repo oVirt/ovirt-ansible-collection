@@ -3,7 +3,7 @@
       ovirt_vm:
           state: running
           name: "{{ vms.name }}"
-          wait: False
+          wait: false
           auth: "{{ ovirt_auth }}"
       register: result
     - name: Log append succeed_to_run_vms

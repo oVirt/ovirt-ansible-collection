@@ -21,7 +21,7 @@
     - name: Fetch all data of running VMs from file, if exists.
       set_fact: running_vms_fail_back="{{ lookup('file', dr_running_vms) }}"
       when: stat_result.stat.exists
-      ignore_errors: True
+      ignore_errors: true
 
     - name: Init list property for running_vms
       set_fact:

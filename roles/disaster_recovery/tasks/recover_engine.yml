@@ -5,13 +5,13 @@
           username: "{{ vars['dr_sites_' + dr_target_host + '_username'] }}"
           password: "{{ vars['dr_sites_' + dr_target_host + '_password'] }}"
           ca_file: "{{ vars['dr_sites_' + dr_target_host + '_ca_file'] }}"
-      ignore_errors: False
+      ignore_errors: false
 
     - name: Delete previous report log
       file:
           path: "/tmp/{{ dr_report_file }}"
           state: absent
-      ignore_errors: True
+      ignore_errors: true
 
     - name: Create report file
       file:

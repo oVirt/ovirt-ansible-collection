@@ -3,8 +3,8 @@
       ovirt_vm:
           state: stopped
           name: "{{ vms.name }}"
-          force: True
-          wait: True
+          force: true
+          wait: true
           auth: "{{ ovirt_auth }}"
   ignore_errors: "{{ dr_ignore_error_clean }}"
   tags:

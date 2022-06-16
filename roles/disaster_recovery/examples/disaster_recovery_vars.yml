@@ -21,8 +21,8 @@ dr_import_storages:
       dr_secondary_name: "secondary_master_storage"
 
     - dr_domain_type: "nfs"
-      dr_wipe_after_delete: False
-      dr_backup: False
+      dr_wipe_after_delete: false
+      dr_backup: false
       dr_critical_space_action_blocker: 5
       dr_warning_low_space: 5
       dr_primary_master_domain: "False"
@@ -31,14 +31,14 @@ dr_import_storages:
       dr_primary_path: "/export/path2"
       dr_primary_dc_name: "Prod"
       dr_secondary_name: "path2"
-      dr_secondary_master_domain: False
+      dr_secondary_master_domain: false
       dr_secondary_address: "yy.yy.yy.yy"
       dr_secondary_path: "/export/path2"
       dr_secondary_dc_name: "Recovery"
 
     - dr_domain_type: "iscsi"
-      dr_wipe_after_delete: False
-      dr_backup: False
+      dr_wipe_after_delete: false
+      dr_backup: false
       dr_critical_space_action_blocker: 1
       dr_warning_low_space: 5
       dr_primary_master_domain: "False"

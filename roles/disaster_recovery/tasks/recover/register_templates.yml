@@ -2,7 +2,7 @@
     - name: Fetch unregistered Templates from storage domain
       ovirt_storage_template_info:
           nested_attributes: "id"
-          unregistered: True
+          unregistered: true
           storage_domain: "{{ storage.name }}"
           auth: "{{ ovirt_auth }}"
       register: storage_template_info
