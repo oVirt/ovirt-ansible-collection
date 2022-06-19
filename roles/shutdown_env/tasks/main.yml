@@ -2,17 +2,17 @@
 - block:
 
     - name: Populate service facts
-      service_facts:
+      ansible.builtin.service_facts:
 
     - name: Enforce ovirt-engine machine
-      fail:
+      ansible.builtin.fail:
         msg: >
           This role has be designed to be run only against the machine
           where ovirt-engine is running.
       when: '"ovirt-engine.service" not in ansible_facts.services'
 
     - name: Enforce ovirt-engine status
-      fail:
+      ansible.builtin.fail:
         msg: >
           ovirt-engine is required to be enabled and running in order
           to correctly run this role.
@@ -38,41 +38,41 @@
       register: hosts_result
 
     - name: Set a variable
-      set_fact:
+      ansible.builtin.set_fact:
         startup: false
 
     - name: Set a variable
-      set_fact:
+      ansible.builtin.set_fact:
         startup: true
       tags: ['never', 'startup']
 
     - name: Define a query for HE hosts
-      set_fact:
+      ansible.builtin.set_fact:
         he_hosts: >-
           {{ hosts_result.ovirt_hosts | selectattr('hosted_engine', 'defined') | selectattr('hosted_engine.configured') | list }}
 
     - name: Define a query for non HE hosts
-      set_fact:
+      ansible.builtin.set_fact:
         non_he_hosts: >-
           {{ hosts_result.ovirt_hosts | difference(he_hosts) }}
 
     - name: Define a query for non HE hosts with power management
-      set_fact:
+      ansible.builtin.set_fact:
         non_he_hosts_ipmi: >-
           {{ non_he_hosts | selectattr('power_management', 'defined') |
           selectattr('power_management.enabled') | list }}
 
     - name: Define a query for non HE hosts without power management
-      set_fact:
+      ansible.builtin.set_fact:
         non_he_hosts_noipmi: "{{ non_he_hosts | difference(non_he_hosts_ipmi) }}"
 
     - name: Define a query for hosts with power management
-      set_fact:
+      ansible.builtin.set_fact:
         hosts_ipmi: >-
           {{ hosts_result.ovirt_hosts | selectattr('power_management', 'defined') | selectattr('power_management.enabled') | list }}
 
     - name: Define commands
-      set_fact:
+      ansible.builtin.set_fact:
         he_shutdown_cmd: >-
           while hosted-engine --vm-status | grep "\"vm\": \"up\"" >/dev/null;
           do sleep 5;
@@ -102,7 +102,7 @@
           when: "item.origin != 'managed_hosted_engine'"
           with_items:
             - "{{ vm_result.ovirt_vms }}"
-          ignore_errors: true
+          failed_when: false
 
         - name: Refresh VM list
           ovirt_vm_info:
@@ -130,7 +130,7 @@
             - "{{ non_he_hosts_ipmi }}"
 
         - name: Shutdown remaining non HE hosts
-          command: >-
+          ansible.builtin.command: >-
             ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
             -i /etc/pki/ovirt-engine/keys/engine_id_rsa
             -p {{ item.ssh.port }}
@@ -140,10 +140,11 @@
           poll: 0
           with_items:
             - "{{ non_he_hosts_noipmi }}"
-          ignore_errors: true
+          failed_when: false
+          changed_when: false
 
         - name: Set global maintenance mode
-          command: >-
+          ansible.builtin.command: >-
             ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
             -i /etc/pki/ovirt-engine/keys/engine_id_rsa
             -p {{ item.ssh.port }} -t root@{{ item.address }}
@@ -151,26 +152,28 @@
           with_items:
             - "{{ he_hosts }}"
           ignore_errors: true
+          changed_when: false
           register: globalmm
 
-        - set_fact:
+        - name: Set globalmm_set variable
+          ansible.builtin.set_fact:
             globalmm_set: "{{ globalmm.results | rejectattr('failed') | list | length }}"
           when: globalmm is defined and globalmm.results is defined
 
         - name: Enforce global maintenance mode
-          fail:
+          ansible.builtin.fail:
             msg: >
               Failed setting global maintenance mode.
           when: he_hosts|length > 0 and globalmm_set|int == 0
 
         - name: Warn about HE global maintenace mode
-          debug:
+          ansible.builtin.debug:
             msg: >
               HE global maintenance mode has been set; you have to exit it to get the engine VM started when needed
           when: globalmm_set|int > 0
 
         - name: Shutdown of HE hosts
-          command: >-
+          ansible.builtin.command: >-
             ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
             -i /etc/pki/ovirt-engine/keys/engine_id_rsa -p {{ item.ssh.port }}
             -t root@{{ item.address }} '{{ he_shutdown_cmd }}'
@@ -178,11 +181,13 @@
           poll: 0
           with_items:
             - "{{ he_hosts }}"
+          changed_when: false
 
         - name: Shutdown engine host/VM
-          command: shutdown -h now
+          ansible.builtin.command: shutdown -h now
           async: 1000
           poll: 0
+          changed_when: false
 
       when: not startup
 
@@ -196,21 +201,23 @@
             - "{{ hosts_ipmi }}"
 
         - name: Unset global maintenance mode
-          command: >-
+          ansible.builtin.command: >-
             ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
             -i /etc/pki/ovirt-engine/keys/engine_id_rsa -p {{ item.ssh.port }}
             -t root@{{ item.address }} '{{ ugmaintenance_mode_cmd }}'
           with_items:
             - "{{ he_hosts }}"
           ignore_errors: true
+          changed_when: false
           register: uglobalmm
 
-        - set_fact:
+        - name: Set globalmm_set variable
+          ansible.builtin.set_fact:
             globalmm_set: "{{ uglobalmm.results | rejectattr('failed') | list | length }}"
           when: uglobalmm is defined and uglobalmm.results is defined
 
         - name: Enforce no global maintenance mode
-          fail:
+          ansible.builtin.fail:
             msg: >
               Failed unsetting global maintenance mode.
           when: he_hosts|length > 0 and globalmm_set|int == 0
