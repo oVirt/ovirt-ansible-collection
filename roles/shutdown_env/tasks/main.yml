@@ -1,5 +1,6 @@
 ---
-- block:
+- name: shutdown_env role
+  block:
 
     - name: Populate service facts
       ansible.builtin.service_facts:
@@ -92,7 +93,8 @@
         all_content: true
       register: vm_result
 
-    - block:
+    - name: Shoutdown VMs and hosts
+      block:
         - name: Shutdown all VMs, except HostedEngine
           ovirt_vm:
             state: stopped
@@ -191,7 +193,8 @@
 
       when: not startup
 
-    - block:
+    - name: Startup mode
+      block:
         - name: Power-on IPMI configured hosts
           ovirt_host:
             state: started
