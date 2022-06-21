@@ -36,6 +36,6 @@
     path: "{{ destdir }}"
     owner: root
     group: root
-    recurse: yes
+    recurse: true
   ignore_errors: true
   changed_when: true

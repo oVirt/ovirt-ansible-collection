@@ -99,7 +99,7 @@
           path: "{{ he_local_vm_dir }}"
           owner: vdsm
           group: qemu
-          recurse: yes
+          recurse: true
           mode: u=rwX,g=rwX,o=
       - name: Create local VM
         ansible.builtin.command: >-
