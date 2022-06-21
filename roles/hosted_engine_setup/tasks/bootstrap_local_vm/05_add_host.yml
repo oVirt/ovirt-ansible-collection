@@ -155,7 +155,8 @@
 
   - name: Emit error messages about the failure
     block:
-      - ansible.builtin.set_fact: host_id={{ host_result_up_check.ovirt_hosts[0].id }}
+      - name: Set host_id
+        ansible.builtin.set_fact: host_id={{ host_result_up_check.ovirt_hosts[0].id }}
       - name: Collect error events from the Engine
         ovirt_event_info:
           auth: "{{ ovirt_auth }}"
@@ -217,7 +218,8 @@
 
   - name: Handle deployment failure
     block:
-      - ansible.builtin.set_fact: host_id={{ host_result_up_check.ovirt_hosts[0].id }}
+      - name: Set host_id
+        ansible.builtin.set_fact: host_id={{ host_result_up_check.ovirt_hosts[0].id }}
       - name: Collect error events from the Engine
         ovirt_event_info:
           auth: "{{ ovirt_auth }}"

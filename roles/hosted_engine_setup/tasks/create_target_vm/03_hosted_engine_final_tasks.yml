@@ -321,7 +321,8 @@
     retries: 5
     delay: 10
     changed_when: true
-  - block:
+  - name: Initialize lockspace volume block
+    block:
       - name: Workaround for ovirt-ha-broker start failures
         # Ugly workaround for https://bugzilla.redhat.com/1768511
         # fix it on ovirt-ha-broker side and remove ASAP
