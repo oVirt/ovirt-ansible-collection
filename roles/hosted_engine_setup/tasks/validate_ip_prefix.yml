@@ -6,6 +6,7 @@
         - name: Get IPv4 route
           ansible.builtin.command: ip route get {{ he_ipv4_subnet_prefix + ".1" }}
           register: ip_route_result
+          changed_when: false
         - name: Debug var ip_route_result
           ansible.builtin.debug:
             var: ip_route_result
@@ -18,6 +19,7 @@
         - name: Get IPv6 route
           ansible.builtin.command: ip route get {{ he_ipv6_subnet_prefix + "::1" }}
           register: ip_route_result
+          changed_when: false
         - name: Debug var ip_route_result
           ansible.builtin.debug:
             var: ip_route_result

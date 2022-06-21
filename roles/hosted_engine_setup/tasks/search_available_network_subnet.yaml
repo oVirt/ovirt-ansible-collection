@@ -11,6 +11,7 @@
     - name: Get ip route
       ansible.builtin.shell: ip route get 192.168.{{ chunk }}.1 | grep "via" | cat
       register: result
+      changed_when: false
     - name: Fail if can't find an available subnet
       ansible.builtin.fail:
         msg: >-
@@ -38,6 +39,7 @@
     - name: Get ip route
       ansible.builtin.shell: ip -6 route get fd00:1234:{{ chunk }}:900::1 | grep "via" | cat
       register: result
+      changed_when: false
     - name: Fail if can't find an available subnet
       ansible.builtin.fail:
         msg: >-

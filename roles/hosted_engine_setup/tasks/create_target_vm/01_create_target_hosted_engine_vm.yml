@@ -136,6 +136,7 @@
   - name: Check if FIPS is enabled
     ansible.builtin.command: sysctl -n crypto.fips_enabled
     register: he_fips_enabled
+    changed_when: false
   - name: Add VM
     ovirt_vm:
       state: stopped

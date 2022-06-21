@@ -87,6 +87,7 @@
   - name: Shutdown local VM
     ansible.builtin.command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} shutdown {{ he_vm_name }}Local"
     environment: "{{ he_cmd_lang }}"
+    changed_when: true
   - name: Wait for local VM shutdown
     ansible.builtin.command: virsh -r domstate "{{ he_vm_name }}Local"
     environment: "{{ he_cmd_lang }}"
@@ -98,13 +99,16 @@
   - name: Undefine local VM
     ansible.builtin.command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} undefine {{ he_vm_name }}Local"
     environment: "{{ he_cmd_lang }}"
+    changed_when: true
   - name: Update libvirt default network configuration, destroy
     ansible.builtin.command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} net-destroy default"
     environment: "{{ he_cmd_lang }}"
+    changed_when: true
   - name: Update libvirt default network configuration, undefine
     ansible.builtin.command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} net-undefine default"
     environment: "{{ he_cmd_lang }}"
     ignore_errors: true
+    changed_when: true
   - name: Detect ovirt-hosted-engine-ha version
     ansible.builtin.command: >-
       {{ ansible_python.executable }} -c

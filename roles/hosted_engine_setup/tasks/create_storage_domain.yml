@@ -147,6 +147,7 @@
   - name: Get ovf data
     ansible.builtin.command: cat "{{ app_ovf.files[0].path }}"
     register: ovf_data
+    changed_when: false
   - name: Get disk size from ovf data
     ansible.builtin.set_fact:
       disk_size: "{{ ovf_data['stdout'] | @NAMESPACE@.@NAME@.get_ovf_disk_size }}"

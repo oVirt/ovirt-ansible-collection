@@ -52,6 +52,7 @@
     ansible.builtin.command: otopi-config-query query -k OVESETUP_CONFIG/keycloakEnable -f /etc/ovirt-engine-setup.conf
     register: keycloak_configured_out
     ignore_errors: true
+    changed_when: false
   - name: Set admin username
     ansible.builtin.set_fact:
       he_admin_username: >-

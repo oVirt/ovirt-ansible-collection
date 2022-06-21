@@ -11,6 +11,7 @@
     delay: 20
   - name: Open a port on firewalld
     ansible.builtin.command: firewall-cmd --zone=public --add-port {{ he_webui_forward_port }}/tcp
+    changed_when: true
   - name: Expose engine VM webui over a local port via ssh port forwarding
     ansible.builtin.command: >-
       sshpass -e ssh -tt -o ServerAliveInterval=5 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -g -L
@@ -103,6 +104,7 @@
     when: "'libvirt' in active_f_zone.stdout_lines"
   - name: Reload firewall-cmd
     ansible.builtin.command: firewall-cmd --reload
+    changed_when: true
   - name: Add host
     ovirt_host:
       cluster: "{{ he_cluster }}"
