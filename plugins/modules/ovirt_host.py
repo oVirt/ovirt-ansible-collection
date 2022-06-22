@@ -702,9 +702,10 @@ def main():
                 fence_type='stop',
             )
         elif state == 'restarted':
+            result_state = hoststate.MAINTENANCE if host.status == hoststate.MAINTENANCE else hoststate.UP
             ret = hosts_module.action(
                 action='fence',
-                wait_condition=lambda h: h.status == hoststate.UP,
+                wait_condition=lambda h: h.status == result_state,
                 fail_condition=hosts_module.failed_state_after_reinstall,
                 fence_type='restart',
             )
