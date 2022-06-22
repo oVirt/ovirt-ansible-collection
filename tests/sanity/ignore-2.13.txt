@@ -4,6 +4,7 @@ changelogs/fragments/.placeholder changelog!skip
 plugins/callback/stdout.py shebang!skip
 plugins/callback/stdout.py validate-modules!skip
 plugins/inventory/ovirt.py validate-modules!skip
+plugins/modules/ovirt_event.py validate-modules!skip
 roles/disaster_recovery/files/fail_back.py shebang!skip
 roles/disaster_recovery/files/bcolors.py shebang!skip
 roles/disaster_recovery/files/fail_over.py shebang!skip
