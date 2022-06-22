@@ -17,8 +17,7 @@
       sshpass -e ssh -tt -o ServerAliveInterval=5 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -g -L
       {{ he_webui_forward_port }}:{{ he_fqdn }}:443 {{ he_fqdn }}
     environment:
-      - "{{ he_cmd_lang }}"
-      - SSHPASS: "{{ he_appliance_password }}"
+      "{{ he_cmd_lang | combine( { 'SSHPASS': he_appliance_password } ) }}"
     changed_when: true
     async: 86400
     poll: 0
