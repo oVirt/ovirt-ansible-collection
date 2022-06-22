@@ -39,9 +39,13 @@ options:
         type: str
     vm_name:
         description:
-            - "Name of the Virtual Machine to manage."
-        required: true
+            - "Name of the Virtual Machine to manage. Required one of C(vm_name) or C(vm_id)."
         type: str
+    vm_id:
+        description:
+            - "ID of the Virtual Machine to manage. Required one of C(vm_name) or C(vm_id)."
+        type: str
+        version_added: "2.2.0"
     state:
         description:
             - "Should the Virtual Machine snapshot be restore/present/absent."
@@ -193,6 +197,7 @@ snapshots:
 import traceback
 
 try:
+    import ovirtsdk4 as sdk
     import ovirtsdk4.types as otypes
 except ImportError:
     pass
@@ -483,7 +488,8 @@ def main():
             choices=['restore', 'present', 'absent'],
             default='present',
         ),
-        vm_name=dict(required=True),
+        vm_name=dict(default=None),
+        vm_id=dict(default=None),
         snapshot_id=dict(default=None),
         disks=dict(
             type='list',
@@ -508,6 +514,7 @@ def main():
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
+        required_one_of=[['vm_name', 'vm_id']],
         required_if=[
             ('state', 'absent', ['snapshot_id']),
             ('state', 'restore', ['snapshot_id']),
@@ -516,15 +523,23 @@ def main():
 
     check_sdk(module)
     ret = {}
-    vm_name = module.params.get('vm_name')
     auth = module.params['auth']
     connection = create_connection(auth)
     vms_service = connection.system_service().vms_service()
-    vm = search_by_name(vms_service, vm_name)
-    if not vm:
-        module.fail_json(
-            msg="Vm '{name}' doesn't exist.".format(name=vm_name),
-        )
+
+    if module.params.get('vm_id'):
+        try:
+            vm = vms_service.vm_service(module.params.get('vm_id')).get()
+        except sdk.NotFoundError:
+            module.fail_json(
+                msg="Vm '{vm_id}' doesn't exist.".format(vm_id=module.params.get('vm_id')),
+            )
+    elif module.params.get('vm_name'):
+        vm = search_by_name(vms_service, module.params.get('vm_name'))
+        if not vm:
+            module.fail_json(
+                msg="Vm '{name}' doesn't exist.".format(name=module.params.get('vm_name')),
+            )
 
     vm_service = vms_service.vm_service(vm.id)
     snapshots_service = vms_service.vm_service(vm.id).snapshots_service()
