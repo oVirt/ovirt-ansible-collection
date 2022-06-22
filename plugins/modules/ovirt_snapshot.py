@@ -45,6 +45,7 @@ options:
         description:
             - "ID of the Virtual Machine to manage. Required one of C(vm_name) or C(vm_id)."
         type: str
+        version_added: "2.2.0"
     state:
         description:
             - "Should the Virtual Machine snapshot be restore/present/absent."
@@ -537,7 +538,7 @@ def main():
         vm = search_by_name(vms_service, module.params.get('vm_name'))
         if not vm:
             module.fail_json(
-                msg="Vm '{name}' doesn't exist.".format(module.params.get('vm_name')),
+                msg="Vm '{name}' doesn't exist.".format(name=module.params.get('vm_name')),
             )
 
     vm_service = vms_service.vm_service(vm.id)
