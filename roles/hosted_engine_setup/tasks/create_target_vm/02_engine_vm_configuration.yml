@@ -66,7 +66,7 @@
         ansible.builtin.replace:
           path: /etc/ovirt-engine/engine.conf.d/11-setup-sso.conf
           regexp: '^#(SSO_ALTERNATE_ENGINE_FQDNS=.*) # pre hosted-engine-setup'
-          ansible.builtin.replace: '\1'
+          replace: '\1'
   - name: Remove temporary directory for ansible as postgres user
     ansible.builtin.file:
       path: /var/lib/pgsql/.ansible

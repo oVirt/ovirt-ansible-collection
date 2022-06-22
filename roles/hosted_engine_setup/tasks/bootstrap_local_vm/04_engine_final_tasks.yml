@@ -31,7 +31,7 @@
         ansible.builtin.replace:
           path: /etc/ovirt-engine/engine.conf.d/11-setup-sso.conf
           regexp: '^(SSO_ALTERNATE_ENGINE_FQDNS=.*)'
-          ansible.builtin.replace: '#\1 # pre hosted-engine-setup'
+          replace: '#\1 # pre hosted-engine-setup'
       - name: Adding new SSO_ALTERNATE_ENGINE_FQDNS line
         ansible.builtin.lineinfile:
           path: /etc/ovirt-engine/engine.conf.d/11-setup-sso.conf
