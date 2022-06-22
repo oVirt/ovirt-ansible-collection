@@ -1,6 +1,6 @@
 ---
 - name: Force facts gathering
-  setup:
+  ansible.builtin.setup:
   tags:
     - initial_clean
     - final_clean
@@ -59,12 +59,12 @@
             ovirt_engine_setup_offline: "{{ he_offline_deployment }}"
             ovirt_engine_setup_package_list: "{{ he_additional_package_list }}"
             ovirt_engine_setup_admin_password: "{{ he_admin_password }}"
-          import_role:
+          ansible.builtin.import_role:
             name: @NAMESPACE@.@NAME@.engine_setup
           delegate_to: "{{ groups.engine[0] }}"
       rescue:
         - name: Sync on engine machine
-          command: sync
+          ansible.builtin.command: sync
           changed_when: true
           delegate_to: "{{ groups.engine[0] }}"
         - name: Fetch logs from the engine VM
@@ -72,7 +72,7 @@
           ignore_errors: true
           delegate_to: "{{ he_ansible_host_name }}"
         - name: Notify the user about a failure
-          fail:
+          ansible.builtin.fail:
             msg: >
               There was a failure deploying the engine on the local engine VM.
               The system may not be provisioned according to the playbook

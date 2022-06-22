@@ -3,12 +3,12 @@
   block:
   - include_tasks: ../auth_sso.yml
   - name: Get local VM IP
-    shell: virsh -r net-dhcp-leases default | grep -i {{ he_vm_mac_addr }} | awk '{ print $5 }' | cut -f1 -d'/'
+    ansible.builtin.shell: virsh -r net-dhcp-leases default | grep -i {{ he_vm_mac_addr }} | awk '{ print $5 }' | cut -f1 -d'/'
     environment: "{{ he_cmd_lang }}"
     register: local_vm_ip
     changed_when: true
   - name: Set the name for add_host
-    set_fact:
+    ansible.builtin.set_fact:
       he_fqdn_ansible_host: "{{ local_vm_ip.stdout_lines[0] }}"
   - import_tasks: ../add_engine_as_ansible_host.yml
   - name: Fetch host facts
@@ -20,7 +20,7 @@
     retries: 50
     delay: 10
   - name: Fetch Cluster ID
-    set_fact: cluster_id="{{ host_result.ovirt_hosts[0].cluster.id }}"
+    ansible.builtin.set_fact: cluster_id="{{ host_result.ovirt_hosts[0].cluster.id }}"
   - name: Fetch Cluster facts
     ovirt_cluster_info:
       auth: "{{ ovirt_auth }}"
@@ -30,15 +30,15 @@
       auth: "{{ ovirt_auth }}"
     register: datacenter_facts
   - name: Fetch Cluster name
-    set_fact: cluster_name={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].name")|first }}
+    ansible.builtin.set_fact: cluster_name={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].name")|first }}
   - name: Fetch Datacenter ID
-    set_fact: >-
+    ansible.builtin.set_fact: >-
       datacenter_id={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].data_center.id")|first }}
   - name: Fetch Datacenter name
-    set_fact: >-
+    ansible.builtin.set_fact: >-
       datacenter_name={{ datacenter_facts.ovirt_datacenters|@NAMESPACE@.@NAME@.json_query("[?id=='" + datacenter_id + "'].name")|first }}
   - name: Parse Cluster details
-    set_fact:
+    ansible.builtin.set_fact:
       cluster_cpu: >-
         {{ cluster_facts.ovirt_clusters|selectattr('id', 'match', '^'+cluster_id+'$')|map(attribute='cpu')|list|first }}
       cluster_version: >-
@@ -57,18 +57,18 @@
       version: "{{ cluster_version.major }}.{{ cluster_version.minor }}"
     register: emulated_machine_list
   - name: Prepare for parsing server CPU list
-    set_fact:
+    ansible.builtin.set_fact:
       server_cpu_dict: {}
   - name: Parse server CPU list
-    set_fact:
+    ansible.builtin.set_fact:
       server_cpu_dict: "{{ server_cpu_dict | combine({item.split(':')[1]: item.split(':')[3]}) }}"
     with_items: >-
       {{ server_cpu_list['ovirt_system_option']['values'][0]['value'].split('; ')|list|difference(['']) }}
   - name: Convert CPU model name
-    set_fact:
+    ansible.builtin.set_fact:
       cluster_cpu_model: "{{ server_cpu_dict[cluster_cpu.type] }}"
   - name: Parse emulated_machine
-    set_fact:
+    ansible.builtin.set_fact:
       emulated_machine: >-
         {{ emulated_machine_list['ovirt_system_option']['values'][0]['value'].replace(
         '[','').replace(']','').split(', ')|first }}
@@ -125,16 +125,16 @@
       }
     register: add_disks
   - name: Register disk details
-    set_fact:
+    ansible.builtin.set_fact:
       he_virtio_disk_details: "{{ add_disks.results[0] }}"
       he_sanlock_disk_details: "{{ add_disks.results[1] }}"
       he_conf_disk_details: "{{ add_disks.results[2] }}"
       he_metadata_disk_details: "{{ add_disks.results[3] }}"
   - name: Set VNC graphic protocol
-    set_fact:
+    ansible.builtin.set_fact:
       he_graphic_protocols: [vnc]
   - name: Check if FIPS is enabled
-    command: sysctl -n crypto.fips_enabled
+    ansible.builtin.command: sysctl -n crypto.fips_enabled
     register: he_fips_enabled
   - name: Add VM
     ovirt_vm:
@@ -166,7 +166,7 @@
       auth: "{{ ovirt_auth }}"
     register: he_vm_details
   - name: Register external local VM uuid
-    shell: virsh -r domuuid {{ he_vm_name }}Local | head -1
+    ansible.builtin.shell: virsh -r domuuid {{ he_vm_name }}Local | head -1
     environment: "{{ he_cmd_lang }}"
     register: external_local_vm_uuid
     changed_when: true

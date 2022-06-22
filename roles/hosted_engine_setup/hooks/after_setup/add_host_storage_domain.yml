@@ -1,15 +1,15 @@
 ---
 - name: Include Host vars
-  include_vars: "{{ file_item }}"
+  ansible.builtin.include_vars: "{{ file_item }}"
   with_fileglob: "/usr/share/ovirt-hosted-engine-setup/gdeploy-inventory.yml"
   loop_control:
     loop_var: file_item
-- debug: var=gluster
+- ansible.builtin.debug: var=gluster
 
 - name: Set Engine public key as authorized key without validating the TLS/SSL certificates
   connection: ssh
   authorized_key:
-    user: root
+    ansible.builtin.user: root
     state: present
     key: https://{{ he_fqdn }}/ovirt-engine/services/pki-resource?resource=engine-certificate&format=OPENSSH-PUBKEY
     validate_certs: false

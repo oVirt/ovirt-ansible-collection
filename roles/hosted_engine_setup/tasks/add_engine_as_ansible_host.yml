@@ -2,13 +2,13 @@
 - name: Add the engine VM as an ansible host
   block:
   - name: Fetch the value of HOST_KEY_CHECKING
-    set_fact: host_key_checking="{{ lookup('config', 'HOST_KEY_CHECKING') }}"
+    ansible.builtin.set_fact: host_key_checking="{{ lookup('config', 'HOST_KEY_CHECKING') }}"
   - name: Get the username running the deploy
     become: false
-    command: whoami
+    ansible.builtin.command: whoami
     register: username_on_host
   - name: Register the engine FQDN as a host
-    add_host:
+    ansible.builtin.add_host:
       name: "{{ he_fqdn }}"
       groups: engine
       ansible_connection: smart

@@ -8,19 +8,19 @@
 - name: Validate host hostname
   block:
     - name: Avoid localhost
-      fail:
+      ansible.builtin.fail:
         msg: >
           localhost is not a valid address
       when: he_host_address in ['localhost', 'localhost.localdomain']
     - name: Ensure host address resolves locally
-      fail:
+      ansible.builtin.fail:
         msg: >
           The address proposed for this host does not resolves locally
       when: he_host_ip not in ansible_all_ipv4_addresses | union(ansible_all_ipv6_addresses)
     - name: Ensure the resolved address resolves on the selected interface
       block:
         - name: Get target address from selected interface (IPv4)
-          shell: >-
+          ansible.builtin.shell: >-
             ip addr show
             {{ he_mgmt_network
             if 'ansible_' + he_mgmt_network.replace('-','_') in hostvars[inventory_hostname]
@@ -30,9 +30,9 @@
             cut -d'/' -f1
           register: target_address_v4
           changed_when: true
-        - debug: var=target_address_v4
+        - ansible.builtin.debug: var=target_address_v4
         - name: Get target address from selected interface (IPv6)
-          shell: >-
+          ansible.builtin.shell: >-
             ip addr show
             {{ he_mgmt_network
             if 'ansible_' + he_mgmt_network.replace('-','_') in hostvars[inventory_hostname]
@@ -42,9 +42,9 @@
             cut -d'/' -f1
           register: target_address_v6
           changed_when: true
-        - debug: var=target_address_v6
+        - ansible.builtin.debug: var=target_address_v6
         - name: Check the resolved address resolves on the selected interface
-          fail:
+          ansible.builtin.fail:
             msg: >
               The resolved address doesn't resolve
               on the selected interface
@@ -52,19 +52,19 @@
             he_host_ip not in target_address_v4.stdout_lines and
             he_host_ip not in target_address_v6.stdout_lines
         - name: Check for alias
-          shell: getent {{ ip_key }} {{ he_host_address }} | cut -d' ' -f1 | uniq
+          ansible.builtin.shell: getent {{ ip_key }} {{ he_host_address }} | cut -d' ' -f1 | uniq
           register: hostname_res_count_output
           changed_when: true
           ignore_errors: true
-        - debug: var=hostname_res_count_output
+        - ansible.builtin.debug: var=hostname_res_count_output
         - name: Filter resolved address list
-          set_fact:
+          ansible.builtin.set_fact:
             hostname_res_count_output_filtered: >-
               {{ hostname_res_count_output.stdout_lines |
               difference(target_address_v6.stdout_lines) |
               difference(target_address_v4.stdout_lines) }}
         - name: Ensure the resolved address resolves only on the selected interface
-          fail:
+          ansible.builtin.fail:
             msg: >
               hostname '{{ he_host_address }}' doesn't uniquely match the interface
               '{{ he_bridge_if }}' selected for the management bridge;
@@ -79,31 +79,31 @@
 - name: Validate engine he_fqdn
   block:
     - name: Avoid localhost
-      fail:
+      ansible.builtin.fail:
         msg: >
           localhost is not a valid he_fqdn for the engine VM
       when: he_fqdn in ['localhost', 'localhost.localdomain']
     - name: Get engine FQDN resolution
-      shell: getent {{ ip_key }} {{ he_fqdn }} | grep STREAM
+      ansible.builtin.shell: getent {{ ip_key }} {{ he_fqdn }} | grep STREAM
       environment: "{{ he_cmd_lang }}"
       register: fqdn_resolution_output
       changed_when: true
       ignore_errors: true
     - name: Check engine he_fqdn resolution
-      fail:
+      ansible.builtin.fail:
         msg: >
           Unable to resolve address
       when: fqdn_resolution_output.rc != 0
     - name: Parse engine he_fqdn resolution
-      set_fact:
+      ansible.builtin.set_fact:
         r_fqdn_address: "{{ fqdn_resolution_output.stdout.split()[0] }}"
     - name: Ensure engine he_fqdn doesn't resolve locally
-      fail:
+      ansible.builtin.fail:
         msg: >
           The he_fqdn proposed for the engine VM resolves on this host
       when: r_fqdn_address in ansible_all_ipv4_addresses | union(ansible_all_ipv6_addresses)
     - name: Check http/https proxy
-      fail:
+      ansible.builtin.fail:
         msg: >
           Your system is configured to use a proxy, please
           add an exception for {{ url }} with no_proxy directive.

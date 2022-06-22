@@ -23,12 +23,12 @@
     register: storage_domain_details
     until: "storage_domain_details.ovirt_storage_domains[0].disks | selectattr('name', 'match', '^OVF_STORE$') | list"
   - name: Parse OVF_STORE disk list
-    set_fact:
+    ansible.builtin.set_fact:
       ovf_store_disks: >-
         {{ storage_domain_details.ovirt_storage_domains[0].disks |
         selectattr('name', 'match', '^OVF_STORE$') | list }}
   - name: Check OVF_STORE volume status
-    command: >-
+    ansible.builtin.command: >-
       vdsm-client Volume getInfo storagepoolID={{ datacenter_id }}
       storagedomainID={{ storage_domain_details.ovirt_storage_domains[0].id }}
       imageID={{ item.id }} volumeID={{ item.image_id  }}
@@ -42,7 +42,7 @@
       ovf_store_status.stdout|from_json|@NAMESPACE@.@NAME@.json_query('description')|from_json|@NAMESPACE@.@NAME@.json_query('Updated')
     with_items: "{{ ovf_store_disks }}"
   - name: Wait for OVF_STORE disk content
-    shell: >-
+    ansible.builtin.shell: >-
       vdsm-client Image prepare storagepoolID={{ datacenter_id }}
       storagedomainID={{ storage_domain_details.ovirt_storage_domains[0].id }} imageID={{ item.id }}
       volumeID={{ item.image_id  }} | grep path | awk '{ print $2 }' |
@@ -57,7 +57,7 @@
     args:
       warn: false
   - name: Prepare images
-    command: >-
+    ansible.builtin.command: >-
       vdsm-client Image prepare storagepoolID={{ datacenter_id }}
       storagedomainID={{ storage_domain_details.ovirt_storage_domains[0].id }}
       imageID={{ item.disk.id }} volumeID={{ item.disk.image_id  }}
@@ -70,25 +70,25 @@
     register: prepareimage_results
     changed_when: true
   - name: Fetch Hosted Engine configuration disk path
-    set_fact:
+    ansible.builtin.set_fact:
       he_conf_disk_path: >-
         {{ (prepareimage_results.results|@NAMESPACE@.@NAME@.json_query("[?item.id=='" +
         he_conf_disk_details.id + "'].stdout")|first|from_json).path }}
   - name: Fetch Hosted Engine virtio disk path
-    set_fact:
+    ansible.builtin.set_fact:
       he_virtio_disk_path: >-
         {{ (prepareimage_results.results|@NAMESPACE@.@NAME@.json_query("[?item.id=='" +
         he_virtio_disk_details.id + "'].stdout")|first|from_json).path }}
   - name: Fetch Hosted Engine virtio metadata path
-    set_fact:
+    ansible.builtin.set_fact:
       he_metadata_disk_path: >-
         {{ (prepareimage_results.results|@NAMESPACE@.@NAME@.json_query("[?item.id=='" +
         he_metadata_disk_details.id + "'].stdout")|first|from_json).path }}
   - name: Shutdown local VM
-    command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} shutdown {{ he_vm_name }}Local"
+    ansible.builtin.command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} shutdown {{ he_vm_name }}Local"
     environment: "{{ he_cmd_lang }}"
   - name: Wait for local VM shutdown
-    command: virsh -r domstate "{{ he_vm_name }}Local"
+    ansible.builtin.command: virsh -r domstate "{{ he_vm_name }}Local"
     environment: "{{ he_cmd_lang }}"
     changed_when: true
     register: dominfo_out
@@ -96,26 +96,26 @@
     retries: 120
     delay: 5
   - name: Undefine local VM
-    command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} undefine {{ he_vm_name }}Local"
+    ansible.builtin.command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} undefine {{ he_vm_name }}Local"
     environment: "{{ he_cmd_lang }}"
   - name: Update libvirt default network configuration, destroy
-    command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} net-destroy default"
+    ansible.builtin.command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} net-destroy default"
     environment: "{{ he_cmd_lang }}"
   - name: Update libvirt default network configuration, undefine
-    command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} net-undefine default"
+    ansible.builtin.command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} net-undefine default"
     environment: "{{ he_cmd_lang }}"
     ignore_errors: true
   - name: Detect ovirt-hosted-engine-ha version
-    command: >-
+    ansible.builtin.command: >-
       {{ ansible_python.executable }} -c
       'from ovirt_hosted_engine_ha.agent import constants as agentconst; print(agentconst.PACKAGE_VERSION)'
     environment: "{{ he_cmd_lang }}"
     register: ha_version_out
     changed_when: true
   - name: Set ha_version
-    set_fact: ha_version="{{ ha_version_out.stdout_lines|first }}"
+    ansible.builtin.set_fact: ha_version="{{ ha_version_out.stdout_lines|first }}"
   - name: Create configuration templates
-    template:
+    ansible.builtin.template:
       src: "{{ item.src }}"
       dest: "{{ item.dest }}"
       mode: 0644
@@ -126,7 +126,7 @@
       - {src: templates/fhanswers.conf.j2, dest: "{{ he_local_vm_dir }}/fhanswers.conf"}
       - {src: templates/hosted-engine.conf.j2, dest: "{{ he_local_vm_dir }}/hosted-engine.conf"}
   - name: Create configuration archive
-    command: >-
+    ansible.builtin.command: >-
       tar --record-size=20480 -cvf {{ he_conf_disk_details.disk.image_id }}
       vm.conf broker.conf version fhanswers.conf hosted-engine.conf
     environment: "{{ he_cmd_lang }}"
@@ -139,12 +139,12 @@
     changed_when: true
     tags: ['skip_ansible_lint']
   - name: Create ovirt-hosted-engine-ha run directory
-    file:
+    ansible.builtin.file:
       path: /var/run/ovirt-hosted-engine-ha
       state: directory
       mode: 0755
   - name: Copy configuration files to the right location on host
-    copy:
+    ansible.builtin.copy:
       remote_src: true
       src: "{{ item.src }}"
       dest: "{{ item.dest }}"
@@ -153,30 +153,30 @@
       - {src: "{{ he_local_vm_dir }}/vm.conf", dest: /var/run/ovirt-hosted-engine-ha}
       - {src: "{{ he_local_vm_dir }}/hosted-engine.conf", dest: /etc/ovirt-hosted-engine/}
   - name: Check fapolicyd status
-    systemd:
+    ansible.builtin.systemd:
       name: fapolicyd
     register: fapolicyd_s
   - name: Set fapolicyd rules path
-    set_fact:
+    ansible.builtin.set_fact:
       fapolicyd_rules_dir: /etc/fapolicyd/rules.d
   - name: Verify fapolicyd/rules.d directory
-    stat:
+    ansible.builtin.stat:
       path: "{{ fapolicyd_rules_dir }}"
     register: fapolicy_rules
   - name: Add rule to fapolicy
     block:
       - name: Add rule to /etc/fapolicyd/rules.d
-        copy:
+        ansible.builtin.copy:
           src: 35-allow-ansible-for-vdsm.rules
           dest: "{{ fapolicyd_rules_dir }}"
           mode: 0644
       - name: Restart fapolicyd service
-        service:
+        ansible.builtin.service:
           name: fapolicyd
           state: restarted
     when: fapolicyd_s.status.SubState == 'running' and fapolicy_rules.stat.exists
   - name: Copy configuration archive to storage
-    command: >-
+    ansible.builtin.command: >-
       dd bs=20480 count=1 oflag=direct if="{{ he_local_vm_dir }}/{{ he_conf_disk_details.disk.image_id }}"
       of="{{ he_conf_disk_path }}"
     environment: "{{ he_cmd_lang }}"
@@ -189,7 +189,7 @@
   - name: Initialize metadata volume
     # Data is written at offset 4KiB*host_id and since ovirt supports 250 hosts per dc,
     # we can have maximum 250*4KiB = ~ 1MiB
-    command: dd conv=notrunc bs=1M count=1 oflag=direct if=/dev/zero of="{{ he_metadata_disk_path }}"
+    ansible.builtin.command: dd conv=notrunc bs=1M count=1 oflag=direct if=/dev/zero of="{{ he_metadata_disk_path }}"
     environment: "{{ he_cmd_lang }}"
     become: true
     become_user: vdsm
@@ -197,7 +197,7 @@
     changed_when: true
   - include_tasks: ../get_local_vm_disk_path.yml
   - name: Generate DHCP network configuration for the engine VM
-    template:
+    ansible.builtin.template:
       src: templates/ifcfg-eth0-dhcp.j2
       dest: "{{ he_local_vm_dir }}/ifcfg-eth0"
       owner: root
@@ -205,7 +205,7 @@
       mode: 0644
     when: he_vm_ip_addr is none
   - name: Generate static network configuration for the engine VM, IPv4
-    template:
+    ansible.builtin.template:
       src: templates/ifcfg-eth0-static.j2
       dest: "{{ he_local_vm_dir }}/ifcfg-eth0"
       owner: root
@@ -213,7 +213,7 @@
       mode: 0644
     when: he_vm_ip_addr is not none and he_vm_ip_addr | ipv4
   - name: Generate static network configuration for the engine VM, IPv6
-    template:
+    ansible.builtin.template:
       src: templates/ifcfg-eth0-static-ipv6.j2
       dest: "{{ he_local_vm_dir }}/ifcfg-eth0"
       owner: root
@@ -221,7 +221,7 @@
       mode: 0644
     when: he_vm_ip_addr is not none and he_vm_ip_addr | ipv6
   - name: Inject network configuration with guestfish
-    command: >-
+    ansible.builtin.command: >-
       guestfish -a {{ local_vm_disk_path }} --rw -i copy-in "{{ he_local_vm_dir }}/ifcfg-eth0"
       /etc/sysconfig/network-scripts {{ ":" }} selinux-relabel /etc/selinux/targeted/contexts/files/file_contexts
       /etc/sysconfig/network-scripts/ifcfg-eth0 force{{ ":" }}true
@@ -232,7 +232,7 @@
       LC_ALL: en_US.UTF-8
     changed_when: true
   - name: Extract /etc/hosts from the Hosted Engine VM
-    command: virt-copy-out -a {{ local_vm_disk_path }} /etc/hosts "{{ he_local_vm_dir }}"
+    ansible.builtin.command: virt-copy-out -a {{ local_vm_disk_path }} /etc/hosts "{{ he_local_vm_dir }}"
     environment:
       LIBGUESTFS_BACKEND: direct
       LANG: en_US.UTF-8
@@ -240,24 +240,24 @@
       LC_ALL: en_US.UTF-8
     changed_when: true
   - name: Clean /etc/hosts for the Hosted Engine VM for Engine VM FQDN
-    lineinfile:
+    ansible.builtin.lineinfile:
       dest: "{{ he_local_vm_dir }}/hosts"
       regexp: "# hosted-engine-setup-{{ hostvars[he_ansible_host_name]['he_local_vm_dir'] }}$"
       state: absent
   - name: Add an entry on /etc/hosts for the Hosted Engine VM for the VM itself
-    lineinfile:
+    ansible.builtin.lineinfile:
       dest: "{{ he_local_vm_dir }}/hosts"
       line: "{{ he_vm_ip_addr }} {{ he_fqdn }}"
       state: present
     when: he_vm_etc_hosts and he_vm_ip_addr is not none
   - name: Clean /etc/hosts for the Hosted Engine VM for host address
-    lineinfile:
+    ansible.builtin.lineinfile:
       dest: "{{ he_local_vm_dir }}/hosts"
       line: "{{ he_host_ip }} {{ he_host_address }}"
       state: absent
     when: not he_vm_etc_hosts
   - name: Inject /etc/hosts with guestfish
-    command: >-
+    ansible.builtin.command: >-
       guestfish -a {{ local_vm_disk_path }} --rw -i copy-in "{{ he_local_vm_dir }}/hosts"
       /etc {{ ":" }} selinux-relabel /etc/selinux/targeted/contexts/files/file_contexts
       /etc/hosts force{{ ":" }}true
@@ -268,7 +268,7 @@
       LC_ALL: en_US.UTF-8
     changed_when: true
   - name: Copy local VM disk to shared storage
-    command: >-
+    ansible.builtin.command: >-
       qemu-img convert -f qcow2 -O raw -t none -T none {{ local_vm_disk_path }} {{ he_virtio_disk_path }}
     environment: "{{ he_cmd_lang }}"
     become: true
@@ -276,7 +276,7 @@
     become_method: sudo
     changed_when: true
   - name: Verify copy of VM disk
-    command: qemu-img compare {{ local_vm_disk_path }} {{ he_virtio_disk_path }}
+    ansible.builtin.command: qemu-img compare {{ local_vm_disk_path }} {{ he_virtio_disk_path }}
     environment: "{{ he_cmd_lang }}"
     become: true
     become_user: vdsm
@@ -286,30 +286,30 @@
   - name: Remove rule from fapolicy
     block:
       - name: Remove rule from /etc/fapolicyd/rules.d
-        file:
+        ansible.builtin.file:
           path: "{{ fapolicyd_rules_dir }}/35-allow-ansible-for-vdsm.rules"
           state: absent
       - name: Restart fapolicyd service
-        service:
+        ansible.builtin.service:
           name: fapolicyd
           state: restarted
     when: fapolicyd_s.status.SubState == 'running' and fapolicy_rules.stat.exists
   - name: Remove temporary entry in /etc/hosts for the local VM
-    lineinfile:
+    ansible.builtin.lineinfile:
       dest: /etc/hosts
       regexp: "# temporary entry added by hosted-engine-setup for the bootstrap VM$"
       state: absent
   - name: Set the name for add_host
-    set_fact:
+    ansible.builtin.set_fact:
       he_fqdn_ansible_host: "{{ he_fqdn }}"
   - import_tasks: ../add_engine_as_ansible_host.yml
   - name: Start ovirt-ha-broker service on the host
-    service:
+    ansible.builtin.service:
       name: ovirt-ha-broker
       state: started
       enabled: true
   - name: Initialize lockspace volume
-    command: hosted-engine --reinitialize-lockspace --force
+    ansible.builtin.command: hosted-engine --reinitialize-lockspace --force
     environment: "{{ he_cmd_lang }}"
     register: result
     until: result.rc == 0
@@ -321,27 +321,27 @@
       - name: Workaround for ovirt-ha-broker start failures
         # Ugly workaround for https://bugzilla.redhat.com/1768511
         # fix it on ovirt-ha-broker side and remove ASAP
-        systemd:
+        ansible.builtin.systemd:
           state: restarted
           enabled: true
           name: ovirt-ha-broker
       - name: Initialize lockspace volume
-        command: hosted-engine --reinitialize-lockspace --force
+        ansible.builtin.command: hosted-engine --reinitialize-lockspace --force
         environment: "{{ he_cmd_lang }}"
         register: result2
         until: result2.rc == 0
         retries: 5
         delay: 10
         changed_when: true
-      - debug: var=result2
+      - ansible.builtin.debug: var=result2
     when: result.rc != 0
   - name: Start ovirt-ha-agent service on the host
-    service:
+    ansible.builtin.service:
       name: ovirt-ha-agent
       state: started
       enabled: true
   - name: Exit HE maintenance mode
-    command: hosted-engine --set-maintenance --mode=none
+    ansible.builtin.command: hosted-engine --set-maintenance --mode=none
     environment: "{{ he_cmd_lang }}"
     register: mresult
     until: mresult.rc == 0
@@ -351,7 +351,7 @@
   - name: Wait for the engine to come up on the target VM
     block:
       - name: Check engine VM health
-        command: hosted-engine --vm-status --json
+        ansible.builtin.command: hosted-engine --vm-status --json
         environment: "{{ he_cmd_lang }}"
         register: health_result
         until: >-
@@ -361,45 +361,45 @@
         retries: 180
         delay: 5
         changed_when: true
-      - debug: var=health_result
+      - ansible.builtin.debug: var=health_result
     rescue:
       - name: Check VM status at virt level
-        shell: virsh -r list | grep {{ he_vm_name }} | grep running
+        ansible.builtin.shell: virsh -r list | grep {{ he_vm_name }} | grep running
         environment: "{{ he_cmd_lang }}"
         ignore_errors: true
         changed_when: true
         register: vm_status_virsh
-      - debug: var=vm_status_virsh
+      - ansible.builtin.debug: var=vm_status_virsh
       - name: Fail if engine VM is not running
-        fail:
+        ansible.builtin.fail:
           msg: "Engine VM is not running, please check vdsm logs"
         when: vm_status_virsh.rc != 0
       - name: Get target engine VM IP address
-        shell: getent {{ ip_key }} {{ he_fqdn }} | cut -d' ' -f1 | uniq
+        ansible.builtin.shell: getent {{ ip_key }} {{ he_fqdn }} | cut -d' ' -f1 | uniq
         environment: "{{ he_cmd_lang }}"
         register: engine_vm_ip
         changed_when: true
       - name: Get VDSM's target engine VM stats
-        command: vdsm-client VM getStats vmID={{ he_vm_details.vm.id }}
+        ansible.builtin.command: vdsm-client VM getStats vmID={{ he_vm_details.vm.id }}
         environment: "{{ he_cmd_lang }}"
         register: engine_vdsm_stats
         changed_when: true
       - name: Convert stats to JSON format
-        set_fact: json_stats={{ engine_vdsm_stats.stdout|from_json }}
+        ansible.builtin.set_fact: json_stats={{ engine_vdsm_stats.stdout|from_json }}
       - name: Get target engine VM IP address from VDSM stats
-        set_fact: engine_vm_ip_vdsm={{ json_stats[0].guestIPs }}
-      - debug: var=engine_vm_ip_vdsm
+        ansible.builtin.set_fact: engine_vm_ip_vdsm={{ json_stats[0].guestIPs }}
+      - ansible.builtin.debug: var=engine_vm_ip_vdsm
       - name: Fail if Engine IP is different from engine's he_fqdn resolved IP
-        fail:
+        ansible.builtin.fail:
           msg: >-
             Engine VM IP address is {{ engine_vm_ip_vdsm }} while the engine's he_fqdn {{ he_fqdn }} resolves to
             {{ engine_vm_ip.stdout_lines[0] }}. If you are using DHCP, check your DHCP reservation configuration
         when: engine_vm_ip_vdsm != engine_vm_ip.stdout_lines[0]
       - name: Fail is for any other reason the engine didn't started
-        fail:
+        ansible.builtin.fail:
           msg: The engine failed to start inside the engine VM; please check engine.log.
   - name: Get target engine VM address
-    shell: getent {{ ip_key }} {{ he_fqdn }} | cut -d ' ' -f1 | uniq
+    ansible.builtin.shell: getent {{ ip_key }} {{ he_fqdn }} | cut -d ' ' -f1 | uniq
     environment: "{{ he_cmd_lang }}"
     register: engine_vm_ip
     when: engine_vm_ip is not defined
@@ -408,7 +408,7 @@
   # Keep this aligned with:
   # https://github.com/oVirt/ovirt-engine/blob/master/packaging/playbooks/roles/ovirt-provider-ovn-driver/tasks/main.yml
   - name: Reconfigure OVN central address
-    command: vdsm-tool ovn-config {{ engine_vm_ip.stdout_lines[0] }} {{ he_mgmt_network }}
+    ansible.builtin.command: vdsm-tool ovn-config {{ engine_vm_ip.stdout_lines[0] }} {{ he_mgmt_network }}
     environment: "{{ he_cmd_lang }}"
     changed_when: true
   # Workaround for https://bugzilla.redhat.com/1540107
@@ -429,7 +429,7 @@
           id: "{{ external_local_vm_uuid.stdout_lines|first }}"
           auth: "{{ ovirt_auth }}"
         register: vmstop_result
-      - debug: var=vmstop_result
+      - ansible.builtin.debug: var=vmstop_result
       - name: Wait for the local bootstrap engine VM to be down at engine eyes
         ovirt_vm_info:
           pattern: id="{{ external_local_vm_uuid.stdout_lines|first }}"
@@ -438,17 +438,17 @@
         until: local_vm_status.ovirt_vms[0].status == "down"
         retries: 24
         delay: 5
-      - debug: var=local_vm_status
+      - ansible.builtin.debug: var=local_vm_status
       - name: Remove bootstrap external VM from the engine
         ovirt_vm:
           state: absent
           id: "{{ external_local_vm_uuid.stdout_lines|first }}"
           auth: "{{ ovirt_auth }}"
         register: vmremove_result
-      - debug: var=vmremove_result
+      - ansible.builtin.debug: var=vmremove_result
     when: local_vm_f.ovirt_vms|length > 0
   - name: Remove ovirt-engine-appliance rpm
-    yum:
+    ansible.builtin.yum:
       name: ovirt-engine-appliance
       state: absent
     register: yum_result
@@ -466,7 +466,7 @@
       include_tasks: ../fetch_engine_logs.yml
       ignore_errors: true
     - name: Notify the user about a failure
-      fail:
+      ansible.builtin.fail:
         msg: >
           The system may not be provisioned according to the playbook
           results: please check the logs for the issue,
