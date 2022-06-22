@@ -68,6 +68,7 @@ cd "$COLLECTION_DIR"
 
 antsibull-changelog lint -v
 ansible-lint roles/* --exclude roles/hosted_engine_setup -x experimental
+ansible-lint -x var-spacing,ignore-errors,var-naming roles/hosted_engine_setup
 
 cd "$ROOT_PATH"
 
