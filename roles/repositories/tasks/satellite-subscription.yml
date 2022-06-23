@@ -4,14 +4,6 @@
     name: subscription-manager
     state: present
 
-- name: Install Satellite certificates
-  ansible.builtin.dnf:
-    name: "{{ ovirt_repositories_ca_rpm_url }}"
-    state: present
-    validate_certs: "{{ ovirt_repositories_ca_rpm_validate_certs | default(omit) }}"
-    disable_gpg_check: "{{ ovirt_repositories_ca_rpm_disable_gpg_check | default(omit) }}"
-  when: ovirt_repositories_ca_rpm_url is defined
-
 - name: Register to subscription manager
   ansible.builtin.command: |
     subscription-manager register
