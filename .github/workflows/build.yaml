@@ -53,7 +53,7 @@ jobs:
       - name: Install ansible-core 2.13 on el9stream
         # Remove after ansible-core 2.13 is available on el9stream as RPM.
         if: ${{ matrix.shortcut == 'cs9' }}
-        run: pip-3 install "ansible>=6.0.0b"
+        run: pip-3 install ansible
 
       - name: Install python3.9 modules
         if: ${{ matrix.shortcut == 'cs9' }}
