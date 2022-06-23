@@ -1,0 +1,13 @@
+---
+
+- name: Install Satellite certificates wihtout FIPS
+  ansible.builtin.dnf:
+    name: "{{ ovirt_repositories_ca_rpm_url }}"
+    state: present
+    validate_certs: "{{ ovirt_repositories_ca_rpm_validate_certs | default(omit) }}"
+    disable_gpg_check: "{{ ovirt_repositories_ca_rpm_disable_gpg_check | default(omit) }}"
+  when: not ovirt_repositories_fips_enabled
+
+- name: Install Satellite certificates with FIPS
+  ansible.builtin.command: "rpm -Uvh --nodigest --nofiledigest {{ ovirt_repositories_ca_rpm_url }}" # noqa command-instead-of-module
+  when: ovirt_repositories_fips_enabled

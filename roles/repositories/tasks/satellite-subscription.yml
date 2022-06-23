@@ -4,10 +4,6 @@
     name: subscription-manager
     state: present
 
-- name: Install Satellite certificates
-  command: "rpm -Uvh --nodigest --nofiledigest {{ ovirt_repositories_ca_rpm_url }} "
-  when: ovirt_repositories_ca_rpm_url is defined
-
 - name: Register to subscription manager
   ansible.builtin.command: |
     subscription-manager register
