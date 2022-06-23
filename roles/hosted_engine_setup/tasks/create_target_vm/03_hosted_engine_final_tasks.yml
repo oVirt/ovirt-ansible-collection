@@ -477,8 +477,10 @@
     when: he_remove_appliance_rpm|bool
 
   - name: Include custom tasks for after setup customization
-    include_tasks: "{{ item }}"
+    include_tasks: "{{ after_setup_item }}"
     with_fileglob: "hooks/after_setup/*.yml"
+    loop_control:
+      loop_var: after_setup_item
     register: after_setup_results
   rescue:
     - name: Fetch logs from the engine VM

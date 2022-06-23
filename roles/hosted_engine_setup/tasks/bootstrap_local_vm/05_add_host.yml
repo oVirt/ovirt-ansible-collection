@@ -116,8 +116,10 @@
     async: 1
     poll: 0
   - name: Include after_add_host tasks files
-    include_tasks: "{{ item }}"
+    include_tasks: "{{ after_add_host_item }}"
     with_fileglob: "hooks/after_add_host/*.yml"
+    loop_control:
+      loop_var: after_add_host_item
     register: include_after_add_host_results
   - name: Pause the execution to let the user interactively reconfigure the host
     block:

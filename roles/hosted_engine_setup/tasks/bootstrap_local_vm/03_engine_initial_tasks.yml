@@ -88,8 +88,10 @@
         when: he_enable_fips|bool
     when: he_apply_openscap_profile|bool or he_enable_fips|bool
   - name: Include before engine-setup custom tasks files for the engine VM
-    include_tasks: "{{ item }}"
+    include_tasks: "{{ before_engine_setup_item }}"
     with_fileglob: "hooks/enginevm_before_engine_setup/*.yml"
+    loop_control:
+      loop_var: before_engine_setup_item
     register: include_before_engine_setup_results
   - name: Pause the execution to allow the user to configure the bootstrap engine VM
     block:

@@ -22,8 +22,10 @@
       when: not he_offline_deployment|bool
 
     - name: System configuration validations
-      include_tasks: "{{ item }}"
+      include_tasks: "{{ pre_checks_item }}"
       with_fileglob: "pre_checks/*.yml"
+      loop_control:
+        loop_var: pre_checks_item
 
     - name: Clean environment before deployment
       import_tasks: initial_clean.yml

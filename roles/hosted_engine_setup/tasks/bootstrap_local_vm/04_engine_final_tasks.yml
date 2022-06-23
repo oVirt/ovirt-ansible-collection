@@ -2,8 +2,10 @@
 - name: Final engine tasks
   block:
   - name: Include after engine-setup custom tasks files for the engine VM
-    include_tasks: "{{ item }}"
+    include_tasks: "{{ after_engine_setup_item }}"
     with_fileglob: "hooks/enginevm_after_engine_setup/*.yml"
+    loop_control:
+      loop_var: after_engine_setup_item
     register: include_after_engine_setup_results
   # After a restart the engine has a 5 minute grace time,
   # other actions like electing a new SPM host or reconstructing
