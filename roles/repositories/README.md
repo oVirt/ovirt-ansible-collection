@@ -41,7 +41,9 @@ Example Playbook
 ---
 - name: Setup repositories using oVirt release package
   hosts: localhost
-
+  vars_files:
+    # Contains encrypted `username` and `password` variables using ansible-vault
+    - passwords.yml
   vars:
     ovirt_repositories_ovirt_release_rpm: http://resources.ovirt.org/pub/yum-repo/ovirt-master-release.rpm
 
@@ -49,19 +51,17 @@ Example Playbook
     - repositories
   collections:
     - @NAMESPACE@.@NAME@
+```
 
-- vars_files:
-    # Contains encrypted `username` and `password` variables using ansible-vault
-    - passwords.yml
-
+```yaml
 - name: Setup repositories using Subscription Manager
   hosts: localhost
 
   vars:
     ovirt_repositories_use_subscription_manager: True
     ovirt_repositories_force_register: True
-    ovirt_repositories_rh_username: "{{ovirt_repositories_rh_username}}"
-    ovirt_repositories_rh_password: "{{ovirt_repositories_rh_password}}"
+    ovirt_repositories_rh_username: "{{ ovirt_repositories_rh_username }}"
+    ovirt_repositories_rh_password: "{{ ovirt_repositories_rh_password }}"
     # The following pool IDs are not valid and should be replaced.
     ovirt_repositories_pool_ids:
       - 0123456789abcdef0123456789abcdef
@@ -71,18 +71,59 @@ Example Playbook
     - repositories
   collections:
     - @NAMESPACE@.@NAME@
+```
 
-
+```yaml
 - name: Setup repositories using Subscription Manager pool name
   hosts: localhost
 
   vars:
     ovirt_repositories_use_subscription_manager: True
     ovirt_repositories_force_register: True
-    ovirt_repositories_rh_username: "{{ovirt_repositories_rh_username}}"
-    ovirt_repositories_rh_password: "{{ovirt_repositories_rh_password}}"
+    ovirt_repositories_rh_username: "{{ ovirt_repositories_rh_username }}"
+    ovirt_repositories_rh_password: "{{ ovirt_repositories_rh_password }}"
     ovirt_repositories_pools:
       - "Red Hat Cloud Infrastructure, Premium (2-sockets)"
+
+  roles:
+    - repositories
+  collections:
+    - @NAMESPACE@.@NAME@
+```
+
+```yaml
+- name: Setup repositories using Subscription Manager with Satellite using username and password
+  hosts: localhost
+
+  vars:
+    ovirt_repositories_use_subscription_manager: true
+    ovirt_repositories_ca_rpm_url: https://example.com/pub/katello-ca-consumer-latest.noarch.rpm
+    ovirt_repositories_ca_rpm_validate_certs: false
+    ovirt_repositories_ca_rpm_disable_gpg_check: true
+    ovirt_repositories_target_host: engine
+    ovirt_repositories_rhsm_environment: Library
+    ovirt_repositories_rh_password: "{{ ovirt_repositories_rh_username }}"
+    ovirt_repositories_rh_username: "{{ ovirt_repositories_rh_password }}"
+    ovirt_repositories_pool_ids:
+      - 8aa508b87f922c3b017f97a785a40068
+
+  roles:
+    - repositories
+  collections:
+    - @NAMESPACE@.@NAME@
+```
+
+```yaml
+- name: Setup repositories using Subscription Manager with Satellite using org and activationkey
+  hosts: localhost
+  vars:
+    ovirt_repositories_use_subscription_manager: true
+    ovirt_repositories_org: "4fc82b1a-7d80-44cf-8ef6-affd8c6daa4f"
+    ovirt_repositories_activationkey: "RHV_CDN_Host"
+    ovirt_repositories_ca_rpm_url: https://example.com/pub/katello-ca-consumer-latest.noarch.rpm
+    ovirt_repositories_ca_rpm_validate_certs: false
+    ovirt_repositories_ca_rpm_disable_gpg_check: true
+    ovirt_repositories_target_host: engine
 
   roles:
     - repositories
