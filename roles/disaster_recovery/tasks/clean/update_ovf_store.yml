@@ -1,7 +1,7 @@
 - block:
     - name: Fetch storage domain only if active
       ovirt_storage_domain_info:
-          pattern:  status = active and storage.name={{ storage['dr_' + dr_source_map + '_name'] }}
+          pattern: status = active and storage.name={{ storage['dr_' + dr_source_map + '_name'] }}
           auth: "{{ ovirt_auth }}"
       register: storage_domain_info
 

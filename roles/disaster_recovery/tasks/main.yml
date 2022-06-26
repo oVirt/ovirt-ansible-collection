@@ -1,5 +1,5 @@
 - block:
-    - name:  Start to unregister entities
+    - name: Start to unregister entities
       include_tasks: unregister_entities.yml
       tags:
           - fail_back

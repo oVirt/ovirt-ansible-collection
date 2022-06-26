@@ -8,7 +8,7 @@
           auth: "{{ ovirt_auth }}"
           cluster_mappings: "{{ dr_cluster_map }}"
           domain_mappings: "{{ dr_domain_map }}"
-          vnic_profile_mappings:  "{{ dr_network_map }}"
+          vnic_profile_mappings: "{{ dr_network_map }}"
           role_mappings: "{{ dr_role_map }}"
       register: template_register_result
 

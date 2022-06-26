@@ -9,7 +9,7 @@
     # Get all the running VMs and shut them down
     - name: Fetch running VMs in the setup
       ovirt_vm_info:
-          pattern:  status = up
+          pattern: status = up
           auth: "{{ ovirt_auth }}"
       register: vm_info
 
