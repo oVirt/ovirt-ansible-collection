@@ -1,30 +1,30 @@
 - block:
     - name: Obtain SSO token
       ovirt_auth:
-          url: "{{ vars['dr_sites_' + dr_target_host + '_url'] }}"
-          username: "{{ vars['dr_sites_' + dr_target_host + '_username'] }}"
-          password: "{{ vars['dr_sites_' + dr_target_host + '_password'] }}"
-          ca_file: "{{ vars['dr_sites_' + dr_target_host + '_ca_file'] }}"
+        url: "{{ vars['dr_sites_' + dr_target_host + '_url'] }}"
+        username: "{{ vars['dr_sites_' + dr_target_host + '_username'] }}"
+        password: "{{ vars['dr_sites_' + dr_target_host + '_password'] }}"
+        ca_file: "{{ vars['dr_sites_' + dr_target_host + '_ca_file'] }}"
 
     - name: Read file that contains running VMs from the previous setup
       set_fact: running_vms_fail_back="{{ lookup('file', dr_running_vms) }}"
 
     - name: Remove dr_running_vms file after being used
       file:
-          path: "{{ dr_running_vms }}"
-          state: absent
+        path: "{{ dr_running_vms }}"
+        state: absent
 
     - name: Run all the high availability VMs
       include_tasks: recover/run_vms.yml
       vars:
-          vms: "{{ item }}"
+        vms: "{{ item }}"
       with_items: "{{ running_vms_fail_back }}"
       when: item.high_availability.enabled | bool
 
     - name: Run all the entire running VMs
       include_tasks: recover/run_vms.yml
       vars:
-          vms: "{{ item }}"
+        vms: "{{ item }}"
       with_items: "{{ running_vms_fail_back }}"
       when: not item.high_availability.enabled | bool
 
@@ -32,9 +32,9 @@
 
   ignore_errors: "{{ dr_ignore_error_clean }}"
   tags:
-      - fail_back
+    - fail_back
   always:
     - name: Revoke the SSO token
       ovirt_auth:
-          state: absent
-          ovirt_auth: "{{ ovirt_auth }}"
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"

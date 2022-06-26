@@ -5,4 +5,4 @@
   roles:
      - disaster_recovery
   collections:
-    - @NAMESPACE@.@NAME@
+     - @NAMESPACE@.@NAME@

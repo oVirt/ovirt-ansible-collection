@@ -1,21 +1,21 @@
 - block:
     - name: Obtain SSO token
       ovirt_auth:
-          url: "{{ vars['dr_sites_' + dr_source_map + '_url'] }}"
-          username: "{{ vars['dr_sites_' + dr_source_map + '_username'] }}"
-          password: "{{ vars['dr_sites_' + dr_source_map + '_password'] }}"
-          ca_file: "{{ vars['dr_sites_' + dr_source_map + '_ca_file'] }}"
+        url: "{{ vars['dr_sites_' + dr_source_map + '_url'] }}"
+        username: "{{ vars['dr_sites_' + dr_source_map + '_username'] }}"
+        password: "{{ vars['dr_sites_' + dr_source_map + '_password'] }}"
+        ca_file: "{{ vars['dr_sites_' + dr_source_map + '_ca_file'] }}"
 
     # Get all the running VMs and shut them down
     - name: Fetch running VMs in the setup
       ovirt_vm_info:
-          pattern: status = up
-          auth: "{{ ovirt_auth }}"
+        pattern: status = up
+        auth: "{{ ovirt_auth }}"
       register: vm_info
 
     - name: Check whether file with running VMs info exists
       stat:
-          path: '{{ dr_running_vms }}'
+        path: '{{ dr_running_vms }}'
       register: stat_result
 
     - name: Fetch all data of running VMs from file, if exists.
@@ -25,17 +25,17 @@
 
     - name: Init list property for running_vms
       set_fact:
-          res_ovirt_vms="[]"
+        res_ovirt_vms="[]"
 
     - name: Map all running vms in fact
       set_fact:
-          res_ovirt_vms: "{{ res_ovirt_vms + [
-              {
-                  'id': item.id,
-                  'name': item.name,
-                  'high_availability': item.high_availability
-              }
-          ] }}"
+        res_ovirt_vms: "{{ res_ovirt_vms + [
+        {
+            'id': item.id,
+            'name': item.name,
+            'high_availability': item.high_availability
+        }
+        ] }}"
       with_items: "{{ vm_info.ovirt_vms }}"
       when: item.id is defined
 
@@ -52,9 +52,9 @@
 
   ignore_errors: "{{ dr_ignore_error_clean }}"
   tags:
-      - fail_back
+    - fail_back
   always:
     - name: Revoke the SSO token
       ovirt_auth:
-          state: absent
-          ovirt_auth: "{{ ovirt_auth }}"
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"

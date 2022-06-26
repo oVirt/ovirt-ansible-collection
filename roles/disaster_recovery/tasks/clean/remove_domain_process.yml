@@ -35,15 +35,15 @@
     - name: Remove storage domain with no force
       include_tasks: remove_domain.yml
       vars:
-          host: "{{ host_info.ovirt_hosts[0].id }}"
+        host: "{{ host_info.ovirt_hosts[0].id }}"
       when: "host_info.ovirt_hosts is defined and host_info.ovirt_hosts|length > 0 and not dr_force"
 
     - name: Force remove storage domain
       include_tasks: remove_domain.yml
       vars:
-          host: "00000000-0000-0000-0000-000000000000"
+        host: "00000000-0000-0000-0000-000000000000"
       when: "dr_force"
   ignore_errors: "{{ dr_ignore_error_clean }}"
   tags:
-      - fail_back
-      - clean_engine
+    - fail_back
+    - clean_engine
