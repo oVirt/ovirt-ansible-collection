@@ -1,10 +1,10 @@
 - block:
     - name: Run VMs
       ovirt_vm:
-          state: running
-          name: "{{ vms.name }}"
-          wait: False
-          auth: "{{ ovirt_auth }}"
+        state: running
+        name: "{{ vms.name }}"
+        wait: false
+        auth: "{{ ovirt_auth }}"
       register: result
     - name: Log append succeed_to_run_vms
       set_fact:
@@ -17,5 +17,5 @@
       when: result is failed
   ignore_errors: "{{ dr_ignore_error_recover }}"
   tags:
-      - fail_over
-      - fail_back
+    - fail_over
+    - fail_back

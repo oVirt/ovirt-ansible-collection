@@ -1,15 +1,15 @@
 - block:
     - name: Register unregistered Template
       ovirt_template:
-          state: registered
-          storage_domain: "{{ storage.name }}"
-          id: "{{ unreg_template.id }}"
-          allow_partial_import: "{{ dr_partial_import }}"
-          auth: "{{ ovirt_auth }}"
-          cluster_mappings: "{{ dr_cluster_map }}"
-          domain_mappings: "{{ dr_domain_map }}"
-          vnic_profile_mappings:  "{{ dr_network_map }}"
-          role_mappings: "{{ dr_role_map }}"
+        state: registered
+        storage_domain: "{{ storage.name }}"
+        id: "{{ unreg_template.id }}"
+        allow_partial_import: "{{ dr_partial_import }}"
+        auth: "{{ ovirt_auth }}"
+        cluster_mappings: "{{ dr_cluster_map }}"
+        domain_mappings: "{{ dr_domain_map }}"
+        vnic_profile_mappings: "{{ dr_network_map }}"
+        role_mappings: "{{ dr_role_map }}"
       register: template_register_result
 
     - name: Log append failed Template to issues failed_template_names
@@ -23,5 +23,5 @@
       when: template_register_result is succeeded
   ignore_errors: "{{ dr_ignore_error_recover }}"
   tags:
-      - fail_over
-      - fail_back
+    - fail_over
+    - fail_back

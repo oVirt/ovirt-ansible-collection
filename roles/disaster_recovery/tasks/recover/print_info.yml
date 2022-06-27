@@ -12,5 +12,5 @@
     - name: Print report file to stdout
       debug: msg="{{ content.stdout_lines | quote }}"
   tags:
-      - fail_over
-      - fail_back
+    - fail_over
+    - fail_back
