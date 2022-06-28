@@ -151,7 +151,7 @@
             'dest_logical_unit_id': item[dr_target_host + '_logical_unit_id'] | default('EMPTY_ELEMENT', true),
             'dest_storage_type': item[dr_target_host + '_storage_type'] | default('EMPTY_ELEMENT', true),
             'dest_logical_unit_address': item[dr_target_host + '_logical_unit_address'] | default('EMPTY_ELEMENT', true),
-            'dest_logical_unit_port': item[dr_target_host + '_logical_unit_port'] | default('3260'|int, true),
+            'dest_logical_unit_port': item[dr_target_host + '_logical_unit_port'] | default('3260' | int, true),
             'dest_logical_unit_portal': item[dr_target_host + '_logical_unit_portal'] | default('1', true),
             'dest_logical_unit_username': item[dr_target_host + '_logical_unit_username'] | default('', true),
             'dest_logical_unit_password': item[dr_target_host + '_logical_unit_password'] | default('', true),
