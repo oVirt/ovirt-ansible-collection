@@ -2,6 +2,7 @@
 version: 1
 dependencies:
   system: bindep.txt
+  galaxy: requirements.yml
   python: requirements.txt
 
 additional_build_steps:
