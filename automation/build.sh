@@ -69,7 +69,7 @@ cd "$COLLECTION_DIR"
 ansible-test sanity
 antsibull-changelog lint -v
 ansible-lint roles/* --exclude roles/hosted_engine_setup --exclude roles/disaster_recovery --exclude roles/remove_stale_lun -x experimental
-ansible-lint -x unnamed-task,fqcn-builtins,no-changed-when,risky-shell-pipe,ignore-errors roles/disaster_recovery roles/remove_stale_lun
+ansible-lint -x unnamed-task,fqcn-builtins,no-changed-when,ignore-errors roles/disaster_recovery roles/remove_stale_lun
 
 cd "$ROOT_PATH"
 
