@@ -1,4 +1,6 @@
-- block:
+---
+- name: Run VMs main block
+  block:
     - name: Run VMs
       ovirt_vm:
         state: running

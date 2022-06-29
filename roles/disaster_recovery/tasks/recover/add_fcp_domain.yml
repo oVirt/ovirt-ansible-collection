@@ -1,4 +1,6 @@
-- block:
+---
+- name: Import FCP storage domain main block
+  block:
     - name: Import FCP storage domain
       ovirt_storage_domain:
         state: imported

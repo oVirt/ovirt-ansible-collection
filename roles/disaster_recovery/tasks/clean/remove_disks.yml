@@ -1,5 +1,7 @@
-- block:
-    - name: Remove disk
+---
+- name: Remove disk main block
+  block:
+    - name: "Remove disk '{{ disk.id }}'"
       ovirt_disk:
         state: absent
         id: "{{ disk.id }}"

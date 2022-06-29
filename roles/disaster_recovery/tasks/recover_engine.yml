@@ -1,4 +1,6 @@
-- block:
+---
+- name: Recover engine main block
+  block:
     - name: Obtain SSO token
       ovirt_auth:
         url: "{{ vars['dr_sites_' + dr_target_host + '_url'] }}"

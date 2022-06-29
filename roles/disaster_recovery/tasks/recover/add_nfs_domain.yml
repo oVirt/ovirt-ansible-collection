@@ -1,4 +1,6 @@
-- block:
+---
+- name: Add NFS storage domain main block
+  block:
     - name: Add NFS storage domain
       ovirt_storage_domain:
         name: "{{ nfs_storage['dr_' + dr_target_host + '_name'] }}"

@@ -1,4 +1,6 @@
-- block:
+---
+- name: Register VMs main block
+  block:
     - name: Fetch unregistered VMs from storage domain
       ovirt_storage_vm_info:
         nested_attributes: "id"
@@ -12,7 +14,7 @@
         unreg_vms: "{{ unreg_vms | default([]) + storage_vm_info.ovirt_storage_vms }}"
 
     # TODO: We should filter out VMs which already exist in the setup (diskless VMs)
-    - name: Register VM
+    - name: Register VMs
       include: register_vm.yml
       with_items: "{{ storage_vm_info.ovirt_storage_vms }}"
       # We use loop_control so storage.name will not be overridden by the nested loop.

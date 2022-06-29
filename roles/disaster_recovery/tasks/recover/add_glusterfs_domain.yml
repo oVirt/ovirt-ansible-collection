@@ -1,4 +1,6 @@
-- block:
+---
+- name: Add Gluster storage domain main block
+  block:
     - name: Add Gluster storage domain
       ovirt_storage_domain:
         name: "{{ gluster_storage['dr_' + dr_target_host + '_name'] }}"

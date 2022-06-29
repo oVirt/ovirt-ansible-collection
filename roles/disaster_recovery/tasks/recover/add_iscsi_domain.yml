@@ -1,7 +1,10 @@
-- block:
+---
+- name: Import iSCSI storage domain main block
+  block:
     # TODO: Add support for connect to multiple targets with the same LUN.
-    # Every connect should be done using a different ip
-    - block:
+    # Every connect should be done using a different IP.
+    - name: Import iSCSI storage domain block
+      block:
         - name: Login to iSCSI targets
           ovirt_host:
             state: iscsilogin

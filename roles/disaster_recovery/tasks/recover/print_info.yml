@@ -1,4 +1,6 @@
-- block:
+---
+- name: Print report file main block
+  block:
     - name: Generate log file through template
       template:
         src: report_log_template.j2

@@ -1,4 +1,6 @@
-- block:
+---
+- name: Run unregistered entities main block
+  block:
     - name: Obtain SSO token
       ovirt_auth:
         url: "{{ vars['dr_sites_' + dr_target_host + '_url'] }}"
@@ -14,14 +16,14 @@
         path: "{{ dr_running_vms }}"
         state: absent
 
-    - name: Run all the high availability VMs
+    - name: Run all the (previously running) high availability VMs
       include_tasks: recover/run_vms.yml
       vars:
         vms: "{{ item }}"
       with_items: "{{ running_vms_fail_back }}"
       when: item.high_availability.enabled | bool
 
-    - name: Run all the entire running VMs
+    - name: Run all the (previously running) non high availability VMs
       include_tasks: recover/run_vms.yml
       vars:
         vms: "{{ item }}"

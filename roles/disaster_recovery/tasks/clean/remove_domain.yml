@@ -1,7 +1,9 @@
-- block:
+---
+- name: Remove storage domain main block
+  block:
     # If we get the exception "Cannot deactivate Master Data Domain while there are running tasks on its Data Center."
     # We should wait for some time and try again
-    - name: Remove storage domain
+    - name: "Remove storage domain '{{ sd.name }}'"
       ovirt_storage_domain:
         state: absent
         id: "{{ sd.id }}"

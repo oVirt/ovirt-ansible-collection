@@ -1,4 +1,6 @@
-- block:
+---
+- name: Remove storage domain process main block
+  block:
     # TODO: Check what happens when we force remove unattached storage domain (probably should add a default empty GUID as a data center
     # Answer: When we force remove an unattached storage domain, ansible tries to move it to maintenance and detach it first,
     # although it might be that this storage domain is already detached and has no related data center, therefor the move to maintenance will fail

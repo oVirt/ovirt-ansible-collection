@@ -1,4 +1,6 @@
-- block:
+---
+- name: Clean engine main block
+  block:
     - name: Obtain SSO token
       ovirt_auth:
         url: "{{ vars['dr_sites_' + dr_source_map + '_url'] }}"
@@ -44,7 +46,7 @@
 
     # We use inactive filter only at the end, since we are not sure if there were any storage domains
     # which became inactive on the process or if there were any at the beginning.
-    - name: Set force remove flag to true for non master domains
+    - name: Set force remove flag to true for non master storage domains
       set_fact: dr_force=True
 
     - name: Remove non master storage domains with invalid statuses using force remove
@@ -92,7 +94,7 @@
       register: vm_info
       when: dr_clean_orphaned_vms and storage_domain_info.ovirt_storage_domains | length == 0
 
-    - name: Remove vms if no storage domains left in setup
+    - name: Remove VMs if no storage domains left in setup
       include_tasks: clean/remove_vms.yml
       vars:
         vm: "{{ item }}"

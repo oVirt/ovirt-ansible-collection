@@ -1,14 +1,20 @@
-- block:
+---
+- name: Add storage domain main block
+  block:
     - name: Fetch available hosts in data center
       ovirt_host_info:
         pattern: "status=up and datacenter={{ storage['dr_' + dr_target_host + '_dc_name'] }}"
         auth: "{{ ovirt_auth }}"
       register: host_info
-    - block:
+
+    - name: Check for available hosts block
+      block:
         - name: "Check for available hosts"
           fail: msg="No hosts available"
           when: host_info.ovirt_hosts.0 is undefined
-    - block:
+
+    - name: Add storage domain block
+      block:
         - name: Add storage domain if NFS
           include_tasks: add_nfs_domain.yml
           with_items:
@@ -25,7 +31,7 @@
           loop_control:
             loop_var: gluster_storage
 
-        - name: Add storage domain if Posix
+        - name: Add storage domain if POSIX
           include_tasks: add_posixfs_domain.yml
           with_items:
             - "{{ storage }}"
@@ -33,7 +39,7 @@
           loop_control:
             loop_var: posix_storage
 
-        - name: Add storage domain is scsi
+        - name: Add storage domain if iSCSI
           include_tasks: add_iscsi_domain.yml
           with_items:
             - "{{ storage }}"
@@ -41,7 +47,7 @@
           loop_control:
             loop_var: iscsi_storage
 
-        - name: Add storage domain if fcp
+        - name: Add storage domain if FCP
           include_tasks: add_fcp_domain.yml
           with_items:
             - "{{ storage }}"
