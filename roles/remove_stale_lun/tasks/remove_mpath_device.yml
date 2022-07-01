@@ -1,5 +1,5 @@
 - name: Initialize variables
-  set_fact:
+  ansible.builtin.set_fact:
     lun_wwid: "{{ lun_wwid | mandatory }}"
 
 - name: Get underlying disks (paths) for a multipath device(s) and turn them into a list.

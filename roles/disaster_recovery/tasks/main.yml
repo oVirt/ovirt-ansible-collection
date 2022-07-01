@@ -13,7 +13,7 @@
         - clean_engine
 
     - name: Failback Replication Sync pause
-      pause:
+      ansible.builtin.pause:
         prompt: "[Failback Replication Sync] Please press ENTER once the destination storage domains are ready to be used for the destination setup"
       tags:
         - fail_back

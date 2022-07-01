@@ -19,12 +19,12 @@
       register: vm_register_result
 
     - name: Log append failed VM to failed_vm_names
-      set_fact:
+      ansible.builtin.set_fact:
         failed_vm_names: "{{ failed_vm_names }} + [ '{{ unreg_vm.name }}' ]"
       when: vm_register_result is failed
 
     - name: Log append succeeded VM to succeed_vm_names
-      set_fact:
+      ansible.builtin.set_fact:
         succeed_vm_names: "{{ succeed_vm_names }} + [ '{{ unreg_vm.name }}' ]"
       when: vm_register_result is succeeded
   ignore_errors: "{{ dr_ignore_error_recover }}"

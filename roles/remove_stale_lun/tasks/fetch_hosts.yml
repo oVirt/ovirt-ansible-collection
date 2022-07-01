@@ -3,7 +3,7 @@
 ## Ansible 2.3 generates a WARNING when using {{ }} in default variables of role
 ## these workarounds it until Ansible resolves the issue:
 - name: Initialize variables
-  set_fact:
+  ansible.builtin.set_fact:
     data_center: "{{ data_center | mandatory }}"
 
 - name: Fetch hosts main block

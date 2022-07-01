@@ -15,12 +15,12 @@
       register: template_register_result
 
     - name: Log append failed template to failed_template_names
-      set_fact:
+      ansible.builtin.set_fact:
         failed_template_names: "{{ failed_template_names }} + [ '{{ unreg_template.name }}' ]"
       when: template_register_result is failed
 
     - name: Log append succeeded template succeed_template_names
-      set_fact:
+      ansible.builtin.set_fact:
         succeed_template_names: "{{ succeed_template_names }} + [ '{{ unreg_template.name }}' ]"
       when: template_register_result is succeeded
   ignore_errors: "{{ dr_ignore_error_recover }}"

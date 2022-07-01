@@ -10,7 +10,7 @@
     - name: Check for available hosts block
       block:
         - name: "Check for available hosts"
-          fail: msg="No hosts available"
+          ansible.builtin.fail: msg="No hosts available"
           when: host_info.ovirt_hosts.0 is undefined
 
     - name: Add storage domain block
