@@ -9,6 +9,7 @@
         -p "{{ password }}"
         -c "{{ ca }}"
         -f "{{ var_file }}"
+      changed_when: true
       run_once: true
   tags:
     - generate_mapping
