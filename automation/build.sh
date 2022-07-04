@@ -66,7 +66,6 @@ mkdir -p $COLLECTION_DIR
 cp -r "$OVIRT_BUILD"/* "$COLLECTION_DIR"
 cd "$COLLECTION_DIR"
 
-ansible-test sanity
 antsibull-changelog lint -v
 ansible-lint roles/* --exclude roles/hosted_engine_setup -x experimental
 
