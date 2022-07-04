@@ -1,4 +1,6 @@
-- block:
+---
+- name: Remove invalid storage domain main block
+  block:
     - name: Fetch invalid storage domain for remove
       ovirt_storage_domain_info:
         pattern: name={{ storage['dr_' + dr_source_map + '_name'] }} and {{ dr_inactive_domain_search }}

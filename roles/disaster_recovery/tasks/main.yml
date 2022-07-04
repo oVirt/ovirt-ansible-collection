@@ -1,4 +1,6 @@
-- block:
+---
+- name: Main block
+  block:
     - name: Start to unregister entities
       include_tasks: unregister_entities.yml
       tags:
@@ -11,7 +13,7 @@
         - clean_engine
 
     - name: Failback Replication Sync pause
-      pause:
+      ansible.builtin.pause:
         prompt: "[Failback Replication Sync] Please press ENTER once the destination storage domains are ready to be used for the destination setup"
       tags:
         - fail_back
@@ -27,7 +29,7 @@
       tags:
         - fail_back
 
-    - name: Genereate mapping var file
+    - name: Generate mapping var file
       include_tasks: generate_mapping.yml
       tags:
         - generate_mapping

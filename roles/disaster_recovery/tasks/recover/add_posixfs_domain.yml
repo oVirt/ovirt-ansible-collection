@@ -1,5 +1,7 @@
-- block:
-    - name: Add posix storage domain
+---
+- name: Add POSIX storage domain main block
+  block:
+    - name: Add POSIX storage domain
       ovirt_storage_domain:
         name: "{{ posix_storage['dr_' + dr_target_host + '_name'] }}"
         critical_space_action_blocker: "{{ posix_storage['dr_critical_space_action_blocker'] }}"
@@ -17,12 +19,12 @@
       register: result
 
     - name: Log append to succeed_storage_domains
-      set_fact:
+      ansible.builtin.set_fact:
         succeed_storage_domains: "{{ succeed_storage_domains }} + [ \"{{ posix_storage['dr_' + dr_target_host + '_name'] }}\" ]"
       when: result is succeeded
 
     - name: Log append to failed_storage_domains
-      set_fact:
+      ansible.builtin.set_fact:
         failed_storage_domains: "{{ failed_storage_domains }} + [ \"{{ posix_storage['dr_' + dr_target_host + '_name'] }}\" ]"
       when: result is failed
   ignore_errors: "{{ dr_ignore_error_recover }}"

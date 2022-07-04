@@ -1,12 +1,13 @@
 ---
 ## https://github.com/ansible/ansible/issues/22397
-## Ansible 2.3 generates a WARNING when using {{ }} in defaults variables of role
-## this workarounds it until Ansible resolves the issue:
+## Ansible 2.3 generates a WARNING when using {{ }} in default variables of role
+## these workarounds it until Ansible resolves the issue:
 - name: Initialize variables
-  set_fact:
+  ansible.builtin.set_fact:
     data_center: "{{ data_center | mandatory }}"
 
-- block:
+- name: Fetch hosts main block
+  block:
     - name: Login to oVirt
       ovirt_auth:
         url: "{{ engine_url | default(lookup('env','OVIRT_URL')) | default(omit) }}"

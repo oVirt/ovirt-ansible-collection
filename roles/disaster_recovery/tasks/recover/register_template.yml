@@ -1,5 +1,7 @@
-- block:
-    - name: Register unregistered Template
+---
+- name: Register unregistered template main block
+  block:
+    - name: "Register unregistered template '{{ unreg_template.id }}'"
       ovirt_template:
         state: registered
         storage_domain: "{{ storage.name }}"
@@ -12,13 +14,13 @@
         role_mappings: "{{ dr_role_map }}"
       register: template_register_result
 
-    - name: Log append failed Template to issues failed_template_names
-      set_fact:
+    - name: Log append failed template to failed_template_names
+      ansible.builtin.set_fact:
         failed_template_names: "{{ failed_template_names }} + [ '{{ unreg_template.name }}' ]"
       when: template_register_result is failed
 
-    - name: Log append succeed_template_names
-      set_fact:
+    - name: Log append succeeded template succeed_template_names
+      ansible.builtin.set_fact:
         succeed_template_names: "{{ succeed_template_names }} + [ '{{ unreg_template.name }}' ]"
       when: template_register_result is succeeded
   ignore_errors: "{{ dr_ignore_error_recover }}"

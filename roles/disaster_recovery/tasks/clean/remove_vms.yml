@@ -1,5 +1,7 @@
-- block:
-    - name: Remove diskless VMs
+---
+- name: Remove diskless VM main block
+  block:
+    - name: "Remove diskless VM '{{ vm.name }}'"
       ovirt_vm:
         state: absent
         name: "{{ vm.name }}"

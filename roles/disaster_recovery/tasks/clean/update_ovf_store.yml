@@ -1,4 +1,6 @@
-- block:
+---
+- name: Update OVF store for active storage domain main block
+  block:
     - name: Fetch storage domain only if active
       ovirt_storage_domain_info:
         pattern: status = active and storage.name={{ storage['dr_' + dr_source_map + '_name'] }}

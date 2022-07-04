@@ -1,4 +1,6 @@
-- block:
+---
+- name: Add NFS storage domain main block
+  block:
     - name: Add NFS storage domain
       ovirt_storage_domain:
         name: "{{ nfs_storage['dr_' + dr_target_host + '_name'] }}"
@@ -13,12 +15,12 @@
           path: "{{ nfs_storage['dr_' + dr_target_host + '_path'] }}"
           address: "{{ nfs_storage['dr_' + dr_target_host + '_address'] }}"
     - name: Log append to successful storage domains
-      set_fact:
+      ansible.builtin.set_fact:
         succeed_storage_domains: "{{ succeed_storage_domains }} + [ \"{{ nfs_storage['dr_' + dr_target_host + '_name'] }}\" ]"
 
   rescue:
     - name: Log append to failed storage domains
-      set_fact:
+      ansible.builtin.set_fact:
         failed_storage_domains: "{{ failed_storage_domains }} + [ \"{{ nfs_storage['dr_' + dr_target_host + '_name'] }}\" ]"
   ignore_errors: "{{ dr_ignore_error_recover }}"
   tags:

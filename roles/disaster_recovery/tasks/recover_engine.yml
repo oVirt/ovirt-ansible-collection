@@ -1,4 +1,6 @@
-- block:
+---
+- name: Recover engine main block
+  block:
     - name: Obtain SSO token
       ovirt_auth:
         url: "{{ vars['dr_sites_' + dr_target_host + '_url'] }}"
@@ -8,19 +10,19 @@
       ignore_errors: false
 
     - name: Delete previous report log
-      file:
+      ansible.builtin.file:
         path: "/tmp/{{ dr_report_file }}"
         state: absent
       ignore_errors: true
 
     - name: Create report file
-      file:
+      ansible.builtin.file:
         path: "/tmp/{{ dr_report_file }}"
         state: touch
         mode: 0644
 
     - name: Init entity status list
-      set_fact:
+      ansible.builtin.set_fact:
         failed_vm_names: []
         succeed_vm_names: []
         failed_template_names: []
@@ -65,7 +67,7 @@
       register: storage_domain_info
 
     - name: Set initial Maps
-      set_fact:
+      ansible.builtin.set_fact:
         dr_cluster_map: "{{ [] }}"
         dr_affinity_group_map: "{{ [] }}"
         dr_affinity_label_map: "{{ [] }}"
@@ -75,7 +77,7 @@
         dr_network_map: "{{ [] }}"
 
     - name: Set Cluster Map
-      set_fact:
+      ansible.builtin.set_fact:
         dr_cluster_map: "{{ dr_cluster_map + [
         {
             'source_name': item[dr_source_map + '_name'] | default('EMPTY_ELEMENT', true),
@@ -86,7 +88,7 @@
       when: dr_cluster_mappings is not none
 
     - name: Set Affinity Group Map
-      set_fact:
+      ansible.builtin.set_fact:
         dr_affinity_group_map: "{{ dr_affinity_group_map + [
         {
             'source_name': item[dr_source_map + '_name'] | default('EMPTY_ELEMENT', true),
@@ -97,7 +99,7 @@
       when: dr_affinity_group_mappings is not none
 
     - name: Set Network Map
-      set_fact:
+      ansible.builtin.set_fact:
         dr_network_map: "{{ dr_network_map + [
         {
             'source_network_name': item[dr_source_map + '_network_name'] | default('EMPTY_ELEMENT', true),
@@ -110,7 +112,7 @@
       when: dr_network_mappings is not none
 
     - name: Set Affinity Label Map
-      set_fact:
+      ansible.builtin.set_fact:
         dr_affinity_label_map: "{{ dr_affinity_label_map + [
         {
             'source_name': item[dr_source_map + '_name'] | default('EMPTY_ELEMENT', true),
@@ -121,7 +123,7 @@
       when: dr_affinity_label_mappings is not none
 
     - name: Set aaa extensions Map
-      set_fact:
+      ansible.builtin.set_fact:
         dr_domain_map: "{{ dr_domain_map + [
         {
             'source_name': item[dr_source_map + '_name'] | default('EMPTY_ELEMENT', true),
@@ -132,7 +134,7 @@
       when: dr_domain_mappings is not none
 
     - name: Set Role Map
-      set_fact:
+      ansible.builtin.set_fact:
         dr_role_map: "{{ dr_role_map + [
         {
             'source_name': item[dr_source_map + '_name'] | default('EMPTY_ELEMENT', true),
@@ -143,7 +145,7 @@
       when: dr_role_mappings is not none
 
     - name: Set Lun Map
-      set_fact:
+      ansible.builtin.set_fact:
         dr_lun_map: "{{ dr_lun_map + [
         {
             'source_logical_unit_id': item[dr_source_map + '_logical_unit_id'] | default('EMPTY_ELEMENT', true),
@@ -151,7 +153,7 @@
             'dest_logical_unit_id': item[dr_target_host + '_logical_unit_id'] | default('EMPTY_ELEMENT', true),
             'dest_storage_type': item[dr_target_host + '_storage_type'] | default('EMPTY_ELEMENT', true),
             'dest_logical_unit_address': item[dr_target_host + '_logical_unit_address'] | default('EMPTY_ELEMENT', true),
-            'dest_logical_unit_port': item[dr_target_host + '_logical_unit_port'] | default('3260'|int, true),
+            'dest_logical_unit_port': item[dr_target_host + '_logical_unit_port'] | default('3260' | int, true),
             'dest_logical_unit_portal': item[dr_target_host + '_logical_unit_portal'] | default('1', true),
             'dest_logical_unit_username': item[dr_target_host + '_logical_unit_username'] | default('', true),
             'dest_logical_unit_password': item[dr_target_host + '_logical_unit_password'] | default('', true),

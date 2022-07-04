@@ -1,5 +1,7 @@
-- block:
-    - name: Fetch unregistered Templates from storage domain
+---
+- name: Register unregistered templates main block
+  block:
+    - name: Fetch unregistered templates from storage domain
       ovirt_storage_template_info:
         nested_attributes: "id"
         unregistered: true
@@ -7,7 +9,7 @@
         auth: "{{ ovirt_auth }}"
       register: storage_template_info
 
-    - name: Register template
+    - name: Register unregistered templates
       include: register_template.yml
       # The main task is already declared to ignore errors so that might be
       # redundant to put it here ignore_errors: "{{ ignore | default(yes) }}"
