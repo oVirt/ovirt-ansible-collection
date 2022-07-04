@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - HE - Handle migration to hosts that use systemd-coredump (https://github.com/oVirt/ovirt-ansible-collection/pull/557).

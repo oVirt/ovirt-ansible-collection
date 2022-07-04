@@ -29,10 +29,14 @@
     args:
       warn: false
     environment: "{{ he_cmd_lang }}"
-  - name: Verify abrt-action-save-package-data file
+  - name: Check if vdsm's abrt-action-save-package-data config exists
     stat:
       path: /etc/abrt/abrt-action-save-package-data.conf
-    register: abrt_exists
+    register: abrt_vdsm_config
+  - name: Check if abrt is installed
+    stat:
+      path: /usr/share/abrt/conf.d/abrt-action-save-package-data.conf
+    register: abrt_installed_config
   - name: Restore initial abrt config files
     copy:
       remote_src: true
@@ -56,12 +60,28 @@
         src: /usr/share/abrt/conf.d/plugins/vmcore.conf,
         dest: /etc/abrt/plugins/vmcore.conf
       }
-    when: abrt_exists.stat.exists
+    when:
+      - abrt_vdsm_config.stat.exists
+      - abrt_installed_config.stat.exists
   - name: Restart abrtd service
     service:
       name: abrtd
       state: restarted
-    when: abrt_exists.stat.exists
+    when:
+      - abrt_vdsm_config.stat.exists
+      - abrt_installed_config.stat.exists
+  - name: Remove vdsm's abrt config files
+    file:
+      state: absent
+      path: "{{ item }}"
+    with_items:
+      - /etc/abrt/abrt-action-save-package-data.conf
+      - /etc/abrt/abrt.conf
+      - /etc/abrt/plugins/CCpp.conf
+      - /etc/abrt/plugins/vmcore.conf
+    when:
+      - abrt_vdsm_config.stat.exists
+      - not abrt_installed_config.stat.exists
   - name: Drop libvirt sasl2 configuration by vdsm
     command: >-
       sed -i '/## start vdsm-4.[0-9]\+.[0-9]\+ configuration/,/## end vdsm configuration/d' /etc/sasl2/libvirt.conf
