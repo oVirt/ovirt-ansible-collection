@@ -73,6 +73,8 @@ options:
             - "Size of the disk. Size should be specified using IEC standard units.
                For example 10GiB, 1024MiB, etc."
             - "Size can be only increased, not decreased."
+            - "If the disk is referenced by C(name) and is attached to a VM, make sure to specify C(vm_name)/C(vm_id)
+               to prevent extension of another disk that is not attached to the VM."
         type: str
     interface:
         description:
