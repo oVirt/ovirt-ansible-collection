@@ -4,7 +4,7 @@
   - name: Initial tasks
     block:
       - name: Get host unique id
-        shell: |
+        ansible.builtin.shell: |
           if [ -e /etc/vdsm/vdsm.id ];
           then cat /etc/vdsm/vdsm.id;
           elif [ -e /proc/device-tree/system-id ];
@@ -15,33 +15,35 @@
         changed_when: true
         register: unique_id_out
       - name: Create directory for local VM
-        tempfile:
+        ansible.builtin.tempfile:
           state: directory
           path: "{{ he_local_vm_dir_path }}"
           prefix: "{{ he_local_vm_dir_prefix }}"
         register: otopi_localvm_dir
       - name: Set local vm dir path
-        set_fact:
+        ansible.builtin.set_fact:
           he_local_vm_dir: "{{ otopi_localvm_dir.path }}"
       - include_tasks: ../install_appliance.yml
         when: he_appliance_ova is none or he_appliance_ova|length == 0
       - name: Register appliance PATH
-        set_fact:
+        ansible.builtin.set_fact:
           he_appliance_ova_path: "{{ he_appliance_ova }}"
         when: he_appliance_ova is not none and he_appliance_ova|length > 0
-      - debug: var=he_appliance_ova_path
+      - name: Debug var he_appliance_ova_path
+        ansible.builtin.debug:
+          var: he_appliance_ova_path
       - name: Check available space on local VM directory
-        shell: df -k --output=avail "{{ he_local_vm_dir_path }}" | grep -v Avail | cat
+        ansible.builtin.shell: df -k --output=avail "{{ he_local_vm_dir_path }}" | grep -v Avail | cat
         environment: "{{ he_cmd_lang }}"
         changed_when: true
         register: local_vm_dir_space_out
       - name: Check appliance size
-        shell: zcat "{{ he_appliance_ova_path }}" | wc --bytes
+        ansible.builtin.shell: zcat "{{ he_appliance_ova_path }}" | wc --bytes
         environment: "{{ he_cmd_lang }}"
         changed_when: true
         register: appliance_size
       - name: Ensure we have enough space to extract the appliance
-        assert:
+        ansible.builtin.assert:
           that:
             - "local_vm_dir_space_out.stdout_lines[0]|int * 1024 > appliance_size.stdout_lines[0]|int * 1.1"
           msg: >
@@ -50,29 +52,33 @@
             are available while {{ appliance_size.stdout_lines[0]|int / 1024 / 1024 * 1.1 | int }} Mb
             are required.
       - name: Extract appliance to local VM directory
-        unarchive:
+        ansible.builtin.unarchive:
           remote_src: true
           src: "{{ he_appliance_ova_path }}"
           dest: "{{ he_local_vm_dir }}"
           extra_opts: ['--sparse']
       - include_tasks: ../get_local_vm_disk_path.yml
       - name: Get appliance disk size
-        command: qemu-img info --output=json {{ local_vm_disk_path }}
+        ansible.builtin.command: qemu-img info --output=json {{ local_vm_disk_path }}
         environment: "{{ he_cmd_lang }}"
         changed_when: true
         register: qemu_img_out
-      - debug: var=qemu_img_out
+      - name: Debug var qemu_img_out
+        ansible.builtin.debug:
+          var: qemu_img_out
       - name: Parse qemu-img output
-        set_fact:
+        ansible.builtin.set_fact:
           virtual_size={{ qemu_img_out.stdout|from_json|@NAMESPACE@.@NAME@.json_query('"virtual-size"') }}
         register: otopi_appliance_disk_size
-      - debug: var=virtual_size
+      - name: Debug var virtual_size
+        ansible.builtin.debug:
+          var: virtual_size
       - name: Hash the appliance root password
-        set_fact:
+        ansible.builtin.set_fact:
           he_hashed_appliance_password: "{{ he_appliance_password | string | password_hash('sha512') }}"
         no_log: true
       - name: Create cloud init user-data and meta-data files
-        template:
+        ansible.builtin.template:
           src: "{{ item.src }}"
           dest: "{{ item.dest }}"
           mode: 0640
@@ -81,22 +87,22 @@
           - {src: templates/meta-data.j2, dest: "{{ he_local_vm_dir }}/meta-data"}
           - {src: templates/network-config-dhcp.j2, dest: "{{ he_local_vm_dir }}/network-config"}
       - name: Create ISO disk
-        command: >-
+        ansible.builtin.command: >-
           mkisofs -output {{ he_local_vm_dir }}/seed.iso -volid cidata -joliet -rock -input-charset utf-8
           {{ he_local_vm_dir }}/meta-data {{ he_local_vm_dir }}/user-data
           {{ he_local_vm_dir }}/network-config
         environment: "{{ he_cmd_lang }}"
         changed_when: true
       - name: Fix local VM directory permission
-        file:
+        ansible.builtin.file:
           state: directory
           path: "{{ he_local_vm_dir }}"
           owner: vdsm
           group: qemu
-          recurse: yes
+          recurse: true
           mode: u=rwX,g=rwX,o=
       - name: Create local VM
-        command: >-
+        ansible.builtin.command: >-
           virt-install -n {{ he_vm_name }}Local --os-variant rhel8.0 --virt-type kvm --memory {{ he_mem_size_MB }}
           --vcpus {{ he_vcpus }}  --network network=default,mac={{ he_vm_mac_addr }},model=virtio
           --disk {{ local_vm_disk_path }} --import --disk path={{ he_local_vm_dir }}/seed.iso,device=cdrom
@@ -105,23 +111,27 @@
         environment: "{{ he_cmd_lang }}"
         register: create_local_vm
         changed_when: true
-      - debug: var=create_local_vm
+      - name: Debug var create_local_vm
+        ansible.builtin.debug:
+          var: create_local_vm
       - name: Get local VM IP
-        shell: virsh -r net-dhcp-leases default | grep -i {{ he_vm_mac_addr }} | awk '{ print $5 }' | cut -f1 -d'/'
+        ansible.builtin.shell: virsh -r net-dhcp-leases default | grep -i {{ he_vm_mac_addr }} | awk '{ print $5 }' | cut -f1 -d'/'
         environment: "{{ he_cmd_lang }}"
         register: local_vm_ip
         until: local_vm_ip.stdout_lines|length >= 1
         retries: 90
         delay: 10
         changed_when: true
-      - debug: var=local_vm_ip
+      - name: Debug var local_vm_ip
+        ansible.builtin.debug:
+          var: local_vm_ip
       - name: Remove leftover entries in /etc/hosts for the local VM
-        lineinfile:
+        ansible.builtin.lineinfile:
           dest: /etc/hosts
           regexp: "# temporary entry added by hosted-engine-setup for the bootstrap VM$"
           state: absent
       - name: Create an entry in /etc/hosts for the local VM
-        lineinfile:
+        ansible.builtin.lineinfile:
           dest: /etc/hosts
           line:
             "{{ local_vm_ip.stdout_lines[0] }} \
@@ -129,20 +139,20 @@
           insertbefore: BOF
           backup: true
       - name: Wait for SSH to restart on the local VM
-        wait_for:
+        ansible.builtin.wait_for:
           host='{{ he_fqdn }}'
           port=22
           delay=30
           timeout=300
       - name: Set the name for add_host
-        set_fact:
+        ansible.builtin.set_fact:
           he_fqdn_ansible_host: "{{ local_vm_ip.stdout_lines[0] }}"
       - import_tasks: ../add_engine_as_ansible_host.yml
     rescue:
       - include_tasks: ../clean_localvm_dir.yml
       - include_tasks: ../clean_local_storage_pools.yml
       - name: Notify the user about a failure
-        fail:
+        ansible.builtin.fail:
           msg: >
             The system may not be provisioned according to the playbook
             results: please check the logs for the issue,

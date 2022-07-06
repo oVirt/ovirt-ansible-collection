@@ -6,8 +6,10 @@
       when: not he_offline_deployment|bool
 
     - name: System configuration validations
-      include_tasks: "{{ item }}"
+      include_tasks: "{{ pre_checks_item }}"
       with_fileglob: "pre_checks/*.yml"
+      loop_control:
+        loop_var: pre_checks_item
 
     - name: Clean environment before deployment
       import_tasks: initial_clean.yml
@@ -39,7 +41,7 @@
         ovirt_engine_setup_offline: "{{ he_offline_deployment }}"
         ovirt_engine_setup_package_list: "{{ he_additional_package_list }}"
         ovirt_engine_setup_admin_password: "{{ he_admin_password }}"
-      import_role:
+      ansible.builtin.import_role:
         name: @NAMESPACE@.@NAME@.engine_setup
       delegate_to: "{{ groups.engine[0] }}"
 

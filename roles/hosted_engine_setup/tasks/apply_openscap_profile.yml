@@ -1,17 +1,17 @@
 ---
 - name: Initialize OpenSCAP variables
-  set_fact:
+  ansible.builtin.set_fact:
     oscap_dir: "/usr/share/xml/scap/ssg/content"
     oscap_ver: "{{ appliance_ver if ansible_distribution != 'Fedora' else '' }}"
 - name: Set OpenSCAP datastream path
-  set_fact:
+  ansible.builtin.set_fact:
     oscap_datastream: "{{ oscap_dir }}/ssg-{{ appliance_dist | replace('RedHat', 'rhel') | lower }}{{ oscap_ver }}-ds.xml"
 - name: Verify OpenSCAP datastream
-  stat:
+  ansible.builtin.stat:
     path: "{{ oscap_datastream }}"
   register: oscap_ds_stat
 - name: Set OpenSCAP profile
-  shell: >-
+  ansible.builtin.shell: >-
     set -euo pipefail && oscap info --profiles {{ oscap_datastream }} |
     grep -Ei "({{ he_openscap_profile_name }}:)" | sort | tail -1 | cut -d':' -f1
   register: oscap_profile
@@ -19,7 +19,7 @@
   changed_when: true
   when: oscap_ds_stat.stat.exists
 - name: Apply OpenSCAP profile
-  command: >-
+  ansible.builtin.command: >-
     oscap xccdf eval --profile {{ oscap_profile.stdout }} --remediate
     --report /root/openscap-report.html {{ oscap_datastream }}
   register: oscap_applied
@@ -31,7 +31,7 @@
   changed_when: true
   when: oscap_profile.stdout is defined
 - name: Reset PermitRootLogin for sshd
-  lineinfile: dest=/etc/ssh/sshd_config
+  ansible.builtin.lineinfile: dest=/etc/ssh/sshd_config
               regexp="^\s*PermitRootLogin"
               line="PermitRootLogin yes"
               state=present

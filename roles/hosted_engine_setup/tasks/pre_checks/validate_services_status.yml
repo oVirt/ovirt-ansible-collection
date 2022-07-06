@@ -1,6 +1,6 @@
 ---
 - name: Populate service facts
-  systemd:
+  ansible.builtin.systemd:
     name: "{{ service_item }}"
   register: checked_services
   with_items:
@@ -8,7 +8,7 @@
   loop_control:
     loop_var: service_item
 - name: Fail if the service is masked or not running
-  fail:
+  ansible.builtin.fail:
     msg: "{{ service.name }} is masked or not running"
   when: service.status.SubState != 'running' or service.status.LoadState == 'masked'
   with_items: "{{ checked_services.results }}"

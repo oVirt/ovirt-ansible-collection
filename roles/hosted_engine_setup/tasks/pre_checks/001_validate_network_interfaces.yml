@@ -2,7 +2,7 @@
 - name: Network interfaces
   block:
   - name: Detecting interface on existing management bridge
-    set_fact:
+    ansible.builtin.set_fact:
       bridge_interface="{{ hostvars[inventory_hostname]['ansible_' + bridge_name ]['interfaces']|first }}"
     when: "'ansible_' + bridge_name in hostvars[inventory_hostname]"
     with_items:
@@ -11,10 +11,10 @@
     loop_control:
       loop_var: bridge_name
   - name: Set variable for supported bond modes
-    set_fact:
+    ansible.builtin.set_fact:
       acceptable_bond_modes: ['active-backup', 'balance-xor', 'broadcast', '802.3ad']
   - name: Get all active network interfaces
-    set_fact:
+    ansible.builtin.set_fact:
       otopi_net_host="{{ hostvars[inventory_hostname]['ansible_' + iface_item]['device'] }}"
       type="{{ hostvars[inventory_hostname]['ansible_' + iface_item]['type'] }}"
       bond_valid_name="{{ iface_item | regex_search('(^bond[0-9]+)') }}"
@@ -51,7 +51,7 @@
       loop_var: iface_item
     register: valid_network_interfaces
   - name: Filter bonds with bad naming
-    set_fact:
+    ansible.builtin.set_fact:
       net_iface="{{ bond_item }}"
     when: >-
       not 'skipped' in bond_item and ((bond_item['ansible_facts']['type']  == 'ether') or
@@ -62,21 +62,21 @@
       loop_var: bond_item
     register: bb_filtered_list
   - name: Generate output list
-    set_fact:
+    ansible.builtin.set_fact:
       host_net: >-
         {{ [bridge_interface] if bridge_interface is defined else bb_filtered_list.results |
         reject('skipped') | map(attribute='bond_item.ansible_facts.otopi_net_host') | list }}
   - import_tasks: ../filter_team_devices.yml
   - import_tasks: ../filter_unsupported_vlan_devices.yml
   - name: Generate list of all unsupported network devices
-    set_fact:
+    ansible.builtin.set_fact:
       invalid_net_if: "{{ invalid_vlan_if + team_if }}"
   - name: Filter unsupported interface types
-    set_fact:
+    ansible.builtin.set_fact:
       otopi_host_net: "{{ host_net | difference(invalid_net_if) }}"
     register: otopi_host_net
   - name: Failed if only unsupported devices are available
-    fail:
+    ansible.builtin.fail:
       msg: >-
         Only unsupported devices {{ invalid_net_if | join(', ') }} are present.
         Teaming and bond modes: Round Robin, TLB, ALB are unsupported.
@@ -84,7 +84,7 @@
         The following bond modes are supported: {{ acceptable_bond_modes }}
     when: (otopi_host_net.ansible_facts.otopi_host_net | length == 0)
   - name: Validate selected bridge interface if management bridge does not exist
-    fail:
+    ansible.builtin.fail:
       msg: The selected network interface is not valid
     when:
       he_bridge_if not in otopi_host_net.ansible_facts.otopi_host_net and bridge_interface is not defined and

@@ -2,7 +2,7 @@
 - name: Create hosted engine local vm
   block:
   - name: Wait for the storage interface to be up
-    command: ip -j link show '{{ he_storage_if }}'
+    ansible.builtin.command: ip -j link show '{{ he_storage_if }}'
     register: storage_if_result_up_check
     until: >-
       storage_if_result_up_check.stdout|from_json|map(attribute='operstate')|join('') == 'UP'
@@ -11,11 +11,11 @@
     delegate_to: "{{ he_ansible_host_name }}"
     when: (he_domain_type == "glusterfs" or he_domain_type == "nfs") and he_storage_if is not none
   - name: Check local VM dir stat
-    stat:
+    ansible.builtin.stat:
       path: "{{ he_local_vm_dir }}"
     register: local_vm_dir_stat
   - name: Enforce local VM dir existence
-    fail:
+    ansible.builtin.fail:
       msg: "Local VM dir '{{ he_local_vm_dir }}' doesn't exist"
     when: not local_vm_dir_stat.stat.exists
   - include_tasks: auth_sso.yml
@@ -31,7 +31,7 @@
     retries: 50
     delay: 10
   - name: Fetch cluster ID
-    set_fact: cluster_id="{{ host_result.ovirt_hosts[0].cluster.id }}"
+    ansible.builtin.set_fact: cluster_id="{{ host_result.ovirt_hosts[0].cluster.id }}"
   - name: Fetch cluster facts
     ovirt_cluster_info:
       auth: "{{ ovirt_auth }}"
@@ -41,27 +41,27 @@
       auth: "{{ ovirt_auth }}"
     register: datacenter_facts
   - name: Fetch Datacenter ID
-    set_fact: >-
+    ansible.builtin.set_fact: >-
       datacenter_id={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].data_center.id")|first }}
   - name: Fetch Datacenter name
-    set_fact: >-
+    ansible.builtin.set_fact: >-
       datacenter_name={{ datacenter_facts.ovirt_datacenters|@NAMESPACE@.@NAME@.json_query("[?id=='" + datacenter_id + "'].name")|first }}
   - name: Fetch cluster name
-    set_fact: >-
+    ansible.builtin.set_fact: >-
       cluster_name={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].name")|first }}
   - name: Fetch cluster version
-    set_fact: >-
+    ansible.builtin.set_fact: >-
       cluster_version={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].version")|first }}
   - name: Enforce cluster major version
-    fail:
+    ansible.builtin.fail:
       msg: "Cluster {{ cluster_name }} major version is {{ cluster_version.major }}, needs to be at least 4"
     when: cluster_version.major < 4
   - name: Enforce cluster minor version
-    fail:
+    ansible.builtin.fail:
       msg: "Cluster {{ cluster_name }} minor version is {{ cluster_version.minor }}, needs to be at least 2"
     when: cluster_version.minor < 2
   - name: Set storage_format
-    set_fact: >-
+    ansible.builtin.set_fact: >-
       storage_format={{ 'v4' if cluster_version.minor == 2 else 'v5' }}
   - name: Add NFS storage domain
     ovirt_storage_domain:
@@ -138,20 +138,21 @@
       auth: "{{ ovirt_auth }}"
     register: storage_domain_details
   - name: Find the appliance OVF
-    find:
+    ansible.builtin.find:
       paths: "{{ he_local_vm_dir }}/master"
       recurse: true
       patterns: ^.*.(?<!meta).ovf$
       use_regex: true
     register: app_ovf
   - name: Get ovf data
-    command: cat "{{ app_ovf.files[0].path }}"
+    ansible.builtin.command: cat "{{ app_ovf.files[0].path }}"
     register: ovf_data
+    changed_when: false
   - name: Get disk size from ovf data
-    set_fact:
+    ansible.builtin.set_fact:
       disk_size: "{{ ovf_data['stdout'] | @NAMESPACE@.@NAME@.get_ovf_disk_size }}"
   - name: Get required size
-    set_fact:
+    ansible.builtin.set_fact:
       required_size: >-
         {{ disk_size|int * 1024 * 1024 * 1024 +
         storage_domain_details.ovirt_storage_domains[0].critical_space_action_blocker|int *
@@ -169,7 +170,7 @@
     when: storage_domain_details.ovirt_storage_domains[0].available|int < required_size|int
     register: remove_storage_domain_details
   - name: Check storage domain free space
-    fail:
+    ansible.builtin.fail:
       msg: >-
         Error: the target storage domain contains only
         {{ storage_domain_details.ovirt_storage_domains[0].available|int / 1024 / 1024 / 1024 }}GiB of

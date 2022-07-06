@@ -38,18 +38,18 @@
 
 - name: Handle non_operational myhost
   block:
-  - name: Attach interface eth0 on host myhost to network net1
-    ovirt.ovirt.ovirt_host_network:
-      auth: "{{ ovirt_auth }}"
-      name: myhost
-      interface: eth0
-      networks:
-        - name: net1
-  - name: Activate host myhost
-    ovirt.ovirt.ovirt_host:
-      auth: "{{ ovirt_auth }}"
-      name: myhost
-      state: present
+    - name: Attach interface eth0 on host myhost to network net1
+      ovirt.ovirt.ovirt_host_network:
+        auth: "{{ ovirt_auth }}"
+        name: myhost
+        interface: eth0
+        networks:
+          - name: net1
+    - name: Activate host myhost
+      ovirt.ovirt.ovirt_host:
+        auth: "{{ ovirt_auth }}"
+        name: myhost
+        state: present
   when: >-
     host_result_up_check is succeeded and
     host_result_up_check.ovirt_hosts|length >= 1 and

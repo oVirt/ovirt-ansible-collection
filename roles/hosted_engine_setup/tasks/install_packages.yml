@@ -1,6 +1,6 @@
 ---
 - name: Install oVirt Hosted Engine packages
-  package:
+  ansible.builtin.package:
     name: "ovirt-hosted-engine-setup"
     state: present
   register: task_result

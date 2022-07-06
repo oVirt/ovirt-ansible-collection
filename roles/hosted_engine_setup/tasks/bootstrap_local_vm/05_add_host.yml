@@ -2,7 +2,7 @@
 - name: Add host
   block:
   - name: Wait for ovirt-engine service to start
-    uri:
+    ansible.builtin.uri:
       url: http://{{ he_fqdn }}/ovirt-engine/services/health
       return_content: true
     register: engine_status
@@ -10,26 +10,26 @@
     retries: 30
     delay: 20
   - name: Open a port on firewalld
-    command: firewall-cmd --zone=public --add-port {{ he_webui_forward_port }}/tcp
+    ansible.builtin.command: firewall-cmd --zone=public --add-port {{ he_webui_forward_port }}/tcp
+    changed_when: true
   - name: Expose engine VM webui over a local port via ssh port forwarding
-    command: >-
+    ansible.builtin.command: >-
       sshpass -e ssh -tt -o ServerAliveInterval=5 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -g -L
       {{ he_webui_forward_port }}:{{ he_fqdn }}:443 {{ he_fqdn }}
     environment:
-      - "{{ he_cmd_lang }}"
-      - SSHPASS: "{{ he_appliance_password }}"
+      "{{ he_cmd_lang | combine( { 'SSHPASS': he_appliance_password } ) }}"
     changed_when: true
     async: 86400
     poll: 0
     register: sshpf
   - name: Evaluate temporary bootstrap engine VM URL
-    set_fact: bootstrap_engine_url="https://{{ he_host_address }}:{{ he_webui_forward_port }}/ovirt-engine/"
+    ansible.builtin.set_fact: bootstrap_engine_url="https://{{ he_host_address }}:{{ he_webui_forward_port }}/ovirt-engine/"
   - name: Display the temporary bootstrap engine VM URL
-    debug:
+    ansible.builtin.debug:
       msg: >-
         The bootstrap engine is temporarily accessible via {{ bootstrap_engine_url }}
   - name: Detect VLAN ID
-    shell: ip -d link show {{ he_bridge_if }} | grep 'vlan ' | grep -Po 'id \K[\d]+' | cat
+    ansible.builtin.shell: ip -d link show {{ he_bridge_if }} | grep 'vlan ' | grep -Po 'id \K[\d]+' | cat
     environment: "{{ he_cmd_lang }}"
     register: vlan_id_out
     changed_when: true
@@ -60,7 +60,7 @@
       auth: "{{ ovirt_auth }}"
     register: cluster_result_presence
   - name: Check actual cluster location
-    fail:
+    ansible.builtin.fail:
       msg: >-
         A cluster named '{{ he_cluster }}' has been created earlier in a different
         datacenter and cluster moving is still not supported.
@@ -86,12 +86,12 @@
       auth: "{{ ovirt_auth }}"
     when: vlan_id_out.stdout|length > 0
   - name: Get active list of active firewalld zones
-    shell: set -euo pipefail && firewall-cmd --get-active-zones | grep -v "^\s*interfaces"
+    ansible.builtin.shell: set -euo pipefail && firewall-cmd --get-active-zones | grep -v "^\s*interfaces"
     environment: "{{ he_cmd_lang }}"
     register: active_f_zone
     changed_when: true
   - name: Configure libvirt firewalld zone
-    command: firewall-cmd --zone=libvirt --permanent --add-service={{ service_item }}
+    ansible.builtin.command: firewall-cmd --zone=libvirt --permanent --add-service={{ service_item }}
     with_items:
       - vdsm
       - libvirt-tls
@@ -102,7 +102,8 @@
       loop_var: service_item
     when: "'libvirt' in active_f_zone.stdout_lines"
   - name: Reload firewall-cmd
-    command: firewall-cmd --reload
+    ansible.builtin.command: firewall-cmd --reload
+    changed_when: true
   - name: Add host
     ovirt_host:
       cluster: "{{ he_cluster }}"
@@ -115,13 +116,15 @@
     async: 1
     poll: 0
   - name: Include after_add_host tasks files
-    include_tasks: "{{ item }}"
+    include_tasks: "{{ after_add_host_item }}"
     with_fileglob: "hooks/after_add_host/*.yml"
+    loop_control:
+      loop_var: after_add_host_item
     register: include_after_add_host_results
   - name: Pause the execution to let the user interactively reconfigure the host
     block:
       - name: Let the user connect to the bootstrap engine VM to manually fix host configuration
-        debug:
+        ansible.builtin.debug:
           msg: >-
             You can now connect to {{ bootstrap_engine_url }} and check the status of this host and
             eventually remediate it, please continue only when the host is listed as 'up'
@@ -146,14 +149,15 @@
     delay: 10
     ignore_errors: true
   - name: Notify the user about a failure
-    fail:
+    ansible.builtin.fail:
       msg: >-
         Host is not up, please check logs, perhaps also on the engine machine
     when: host_result_up_check is failed
 
   - name: Emit error messages about the failure
     block:
-      - set_fact: host_id={{ host_result_up_check.ovirt_hosts[0].id }}
+      - name: Set host_id
+        ansible.builtin.set_fact: host_id={{ host_result_up_check.ovirt_hosts[0].id }}
       - name: Collect error events from the Engine
         ovirt_event_info:
           auth: "{{ ovirt_auth }}"
@@ -161,7 +165,7 @@
         register: error_events
 
       - name: Generate the error message from the engine events
-        set_fact:
+        ansible.builtin.set_fact:
           error_description: >-
             {% for event in error_events.ovirt_events | groupby('code') %}
             {% if 'host' in event[1][0] and 'id' in event[1][0].host and event[1][0].host.id == host_id %}
@@ -171,14 +175,14 @@
         ignore_errors: true
 
       - name: Notify with error description
-        debug:
+        ansible.builtin.debug:
           msg: >-
             The host has been set in non_operational status,
             deployment errors: {{ error_description }}
         when: error_description is defined
 
       - name: Notify with generic error
-        debug:
+        ansible.builtin.debug:
           msg: >-
             The host has been set in non_operational status,
             please check engine logs,
@@ -192,7 +196,7 @@
   - name: Pause the execution to let the user interactively reconfigure the host
     block:
       - name: Let the user connect to the bootstrap engine to manually fix host configuration
-        debug:
+        ansible.builtin.debug:
           msg: >-
             You can now connect to {{ bootstrap_engine_url }} and check the status of this host and
             eventually remediate it, please continue only when the host is listed as 'up'
@@ -215,7 +219,8 @@
 
   - name: Handle deployment failure
     block:
-      - set_fact: host_id={{ host_result_up_check.ovirt_hosts[0].id }}
+      - name: Set host_id
+        ansible.builtin.set_fact: host_id={{ host_result_up_check.ovirt_hosts[0].id }}
       - name: Collect error events from the Engine
         ovirt_event_info:
           auth: "{{ ovirt_auth }}"
@@ -223,7 +228,7 @@
         register: error_events
 
       - name: Generate the error message from the engine events
-        set_fact:
+        ansible.builtin.set_fact:
           error_description: >-
             {% for event in error_events.ovirt_events | groupby('code') %}
             {% if event[1][0].host.id == host_id %}
@@ -233,7 +238,7 @@
         ignore_errors: true
 
       - name: Fail with error description
-        fail:
+        ansible.builtin.fail:
           msg: >-
             The host has been set in non_operational status,
             deployment errors: {{ error_description }}
@@ -241,7 +246,7 @@
         when: error_description is defined
 
       - name: Fail with generic error
-        fail:
+        ansible.builtin.fail:
           msg: >-
             The host has been set in non_operational status,
             please check engine logs,
@@ -255,7 +260,7 @@
       host_result_up_check.ovirt_hosts[0].status == 'non_operational'
   rescue:
     - name: Sync on engine machine
-      command: sync
+      ansible.builtin.command: sync
       changed_when: true
     - name: Fetch logs from the engine VM
       include_tasks: fetch_engine_logs.yml
@@ -263,7 +268,7 @@
     - include_tasks: ../clean_localvm_dir.yml
     - include_tasks: ../clean_local_storage_pools.yml
     - name: Notify the user about a failure
-      fail:
+      ansible.builtin.fail:
         msg: >
           The system may not be provisioned according to the playbook
           results: please check the logs for the issue,
