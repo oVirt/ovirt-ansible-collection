@@ -117,14 +117,22 @@
       - name: Get local VM IP
         ansible.builtin.shell: virsh -r net-dhcp-leases default | grep -i {{ he_vm_mac_addr }} | awk '{ print $5 }' | cut -f1 -d'/'
         environment: "{{ he_cmd_lang }}"
-        register: local_vm_ip
-        until: local_vm_ip.stdout_lines|length >= 1
+        register: local_vm_ip_candidates
+        until: local_vm_ip_candidates.stdout_lines|length >= 1
         retries: 90
         delay: 10
         changed_when: true
-      - name: Debug var local_vm_ip
+      - name: Debug var local_vm_ip_candidates
         ansible.builtin.debug:
-          var: local_vm_ip
+          var: local_vm_ip_candidates
+      - name: Select first IPv6 address
+        ansible.builtin.set_fact:
+          local_vm_ip: "{{ local_vm_ip_candidates.stdout_lines | ansible.netcommon.ipv6 | first }}"
+        when: ipv6_deployment
+      - name: Select first IPv4 address
+        ansible.builtin.set_fact:
+          local_vm_ip: "{{ local_vm_ip_candidates.stdout_lines | ansible.netcommon.ipv4 | first }}"
+        when: not ipv6_deployment
       - name: Remove leftover entries in /etc/hosts for the local VM
         ansible.builtin.lineinfile:
           dest: /etc/hosts
@@ -134,7 +142,7 @@
         ansible.builtin.lineinfile:
           dest: /etc/hosts
           line:
-            "{{ local_vm_ip.stdout_lines[0] }} \
+            "{{ local_vm_ip }} \
             {{ he_fqdn }} # temporary entry added by hosted-engine-setup for the bootstrap VM"
           insertbefore: BOF
           backup: true
@@ -146,7 +154,7 @@
           timeout=300
       - name: Set the name for add_host
         ansible.builtin.set_fact:
-          he_fqdn_ansible_host: "{{ local_vm_ip.stdout_lines[0] }}"
+          he_fqdn_ansible_host: "{{ local_vm_ip }}"
       - import_tasks: ../add_engine_as_ansible_host.yml
     rescue:
       - include_tasks: ../clean_localvm_dir.yml
