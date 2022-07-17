@@ -65,7 +65,7 @@ options:
                if you want to upload the disk even if the disk with C(id) or C(name) exists,
                then please use C(force) I(true). If you will use C(force) I(false), which
                is default, then the disk image won't be uploaded."
-            - "Note that to upload iso the C(format) should be 'raw'"
+            - "Note that in order to upload iso the C(format) should be 'raw'."
         type: str
         aliases: ['image_path']
     size:
@@ -211,7 +211,7 @@ options:
     activate:
         description:
             - I(True) if the disk should be activated.
-            - When creating disk of virtual machine it is set to I(True).
+            - When creating disk of Virtual Machine it is set to I(True).
         type: bool
     backup:
         description:
@@ -229,13 +229,13 @@ options:
         version_added: 1.2.0
     propagate_errors:
         description:
-            - Indicates if disk errors should cause virtual machine to be paused or if disk errors should be
+            - Indicates if disk errors should cause Virtual Machine to be paused or if disk errors should be
             - propagated to the the guest operating system instead.
         type: bool
         version_added: 1.2.0
     pass_discard:
         description:
-            - Defines whether the virtual machine passes discard commands to the storage.
+            - Defines whether the Virtual Machine passes discard commands to the storage.
         type: bool
         version_added: 1.2.0
     uses_scsi_reservation:
@@ -423,7 +423,7 @@ def create_transfer_connection(module, transfer, context, connect_timeout=10, re
     try:
         connection.connect()
     except Exception as e:
-        # Typically ConnectionRefusedError or socket.gaierror.
+        # Typically, "ConnectionRefusedError" or "socket.gaierror".
         module.warn("Cannot connect to %s, trying %s: %s" % (transfer.transfer_url, transfer.proxy_url, e))
 
         url = urlparse(transfer.proxy_url)
@@ -789,7 +789,7 @@ def get_vm_service(connection, module):
 
         if vm_id is None:
             module.fail_json(
-                msg="VM don't exists, please create it first."
+                msg="VM doesn't exist, please create it first."
             )
 
         return vms_service.vm_service(vm_id)
@@ -845,8 +845,8 @@ def main():
 
     lun = module.params.get('logical_unit')
     host = module.params['host']
-    # Fail when host is specified with the LUN id. Lun id is needed to identify
-    # an existing disk if already available inthe environment.
+    # Fail when host is specified with the LUN id. LUN id is needed to identify
+    # an existing disk if already available in the environment.
     if (host and lun is None) or (host and lun.get("id") is None):
         module.fail_json(
             msg="Can not use parameter host ({0!s}) without "
@@ -875,14 +875,14 @@ def main():
         else:
             disk = disks_module.search_entity(search_params=searchable_attributes(module))
             if vm_service and disk and state != 'attached':
-                # If the VM don't exist in VMs disks, but still it's found it means it was found
+                # If the VM doesn't exist in VMs disks, but still it's found it means it was found
                 # for template with same name as VM, so we should force create the VM disk.
                 force_create = disk.id not in [a.disk.id for a in vm_service.disk_attachments_service().list() if a.disk]
 
         ret = None
         # First take care of creating the VM, if needed:
         if state in ('present', 'detached', 'attached'):
-            # Always activate disk when its being created
+            # Always activate disk when it is created.
             if vm_service is not None and disk is None:
                 module.params['activate'] = module.params['activate'] is None or module.params['activate']
             ret = disks_module.create(
@@ -895,17 +895,17 @@ def main():
             )
             is_new_disk = ret['changed']
             ret['changed'] = ret['changed'] or disks_module.update_storage_domains(ret['id'])
-            # We need to pass ID to the module, so in case we want detach/attach disk
+            # We need to pass ID to the module, so in case we want to detach/attach disk
             # we have this ID specified to attach/detach method:
             module.params['id'] = ret['id']
 
-            # Upload disk image in case it's new disk or force parameter is passed:
+            # Upload disk image in case it is a new disk or force parameter is passed:
             if module.params['upload_image_path'] and (is_new_disk or module.params['force']):
                 if module.params['format'] == 'cow' and module.params['content_type'] == 'iso':
                     module.warn("To upload an ISO image 'format' parameter needs to be set to 'raw'.")
                 uploaded = upload_disk_image(connection, module)
                 ret['changed'] = ret['changed'] or uploaded
-            # Download disk image in case it's file don't exist or force parameter is passed:
+            # Download disk image in case the file doesn't exist or force parameter is passed:
             if (
                 module.params['download_image_path'] and (not os.path.isfile(module.params['download_image_path']) or module.params['force'])
             ):
@@ -986,7 +986,7 @@ def main():
                 module.params.get('bootable'),
                 module.params.get('uses_scsi_reservation'),
                 module.params.get('pass_discard'), ]):
-            module.warn("Cannot use 'interface', 'activate', 'bootable', 'uses_scsi_reservation' or 'pass_discard' without specifing VM.")
+            module.warn("Cannot use 'interface', 'activate', 'bootable', 'uses_scsi_reservation' or 'pass_discard' without specifying VM.")
 
         # When the host parameter is specified and the disk is not being
         # removed, refresh the information about the LUN.
