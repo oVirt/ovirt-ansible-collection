@@ -87,7 +87,7 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
-* Tue Jul 25 2022 Martin Necas <mnecas@redhat.com> - 2.2.0-1
+* Mon Jul 25 2022 Martin Necas <mnecas@redhat.com> - 2.2.0-1
 - cluster_upgrade - Fix starting up pinned vms
 - disaster_recovery - Fix ansible-lint version 6.0.0 violations
 - fix ansible-lint for basic roles(infra, vm_infra, engine_setup, repositories, cluster_upgrade)
