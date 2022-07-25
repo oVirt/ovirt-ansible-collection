@@ -1,3 +1,0 @@
----
-minor_changes:
-  - repositories - Add ovirt_repositories_rhsm_environment and FIPS fix (https://github.com/oVirt/ovirt-ansible-collection/pull/483).

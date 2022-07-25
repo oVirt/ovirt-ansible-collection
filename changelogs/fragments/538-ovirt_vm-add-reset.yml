@@ -1,3 +1,0 @@
----
-minor_changes:
-  - ovirt_vm - Add reset of VM (https://github.com/oVirt/ovirt-ansible-collection/pull/538).

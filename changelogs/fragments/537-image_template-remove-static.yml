@@ -1,3 +1,0 @@
----
-bugfixes:
-  - image_template - Remove static (https://github.com/oVirt/ovirt-ansible-collection/pull/537).

@@ -1,3 +1,0 @@
----
-minor_changes:
-  - ovirt_snapshot - Add vm_id to select VM (https://github.com/oVirt/ovirt-ansible-collection/pull/550).

@@ -1,3 +1,0 @@
----
-bugfixes:
-  - repositories - Move fips check to satellite CA install block (https://github.com/oVirt/ovirt-ansible-collection/pull/553).

@@ -1,3 +1,0 @@
----
-bugfixes:
-  - he - Align role with ansible-lint-6.0 (https://github.com/oVirt/ovirt-ansible-collection/pull/545).

@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Updating the documentation - "vm_name" / "vm_id" and/or disk "id" parameter(s) are required when extending disk with non-unique name (https://github.com/oVirt/ovirt-ansible-collection/pull/559).

@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Fix "ansible-lint" version 6.0.0 violations for "disaster_recovery" & "remove_stale_lun" roles (https://github.com/oVirt/ovirt-ansible-collection/pull/554).
