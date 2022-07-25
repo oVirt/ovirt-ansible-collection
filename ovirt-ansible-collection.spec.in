@@ -87,6 +87,35 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Tue Jul 25 2022 Martin Necas <mnecas@redhat.com> - 2.2.0-1
+- cluster_upgrade - Fix starting up pinned vms
+- disaster_recovery - Fix ansible-lint version 6.0.0 violations
+- fix ansible-lint for basic roles(infra, vm_infra, engine_setup, repositories, cluster_upgrade)
+- gluster_heal_info - Replacing gluster module to CLI to support RHV automation hub
+- image_template - Remove static no - unsupported in ansible 2.12
+- hosted_engine - During he_setup, configure ovn with he_host_name for correct operation of ovn
+- hosted_engine - Handle migration to hosts that use systemd-coredump
+- hosted_engine - Specify fqcn for ovirt_system_option_info
+- hosted_engine - Align role with ansible-lint-6.0
+- hosted_engine - Fix cleanup on el9
+- ovirt_disk - Add warning for disk attachments
+- ovirt_disk - Fix disk attachment to VM
+- ovirt_disk - Updating the documentation - vm_name/vm_id and/or disk id parameter(s) are required when extending disk with non-unique name
+- ovirt_host - Fix host wait
+- ovirt_host - Fix restarted wait condition
+- ovirt_qos, ovirt_disk_profile, ovirt_disk - Add modules to allow for creation and updating of disk_profiles
+- ovirt_snapshot - Add vm_id to select VM
+- ovirt_storage_domain - Fix inaccessible exception
+- ovirt_vm - Add reset of VM
+- ovirt_vm - Add virtio_scsi_enabled and multi_queues_enabled
+- ovirt_vm - Add volatile
+- ovirt_vm - Check if user inputed graphical protocol
+- remove_stale_lun - Fix ansible-lint version 6.0.0 violations
+- repositories - Add ovirt_repositories_rhsm_environment and FIPS fix
+- repositories - Replace redhat_subscription and rhsm_repository with command
+- repositories - Move fips check to satellite CA install block
+- shutdown_env - Align role with ansible-lint-6.0.0
+
 * Thu Jun 9 2022 Martin Necas <mnecas@redhat.com> - 2.1.0-1
 - Add convert_to_bytes filter
 - automation - Use python38 on el8 with ansible-core 2.12 and python39 on el9 with ansible-core 2.13

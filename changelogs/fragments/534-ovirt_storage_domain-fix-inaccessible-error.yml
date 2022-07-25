@@ -1,3 +1,0 @@
----
-bugfixes:
-  - ovirt_storage_domain - Fix inaccessible exception (https://github.com/oVirt/ovirt-ansible-collection/pull/534).

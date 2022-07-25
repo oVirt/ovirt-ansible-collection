@@ -1,3 +1,0 @@
----
-bugfixes:
-  - ovirt_host - Fix restarted wait condition (https://github.com/oVirt/ovirt-ansible-collection/pull/551).

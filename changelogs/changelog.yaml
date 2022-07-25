@@ -742,3 +742,72 @@ releases:
     - 524-ovirt_vm-add-wait_after_lease.yml
     - 525-ovirt_vm-check-if-snap-exists.yml
     release_date: '2022-06-09'
+  2.2.0:
+    changes:
+      bugfixes:
+      - HE - Handle migration to hosts that use systemd-coredump (https://github.com/oVirt/ovirt-ansible-collection/pull/557).
+      - cluster_upgrade - Fix starting up pinned vms (https://github.com/oVirt/ovirt-ansible-collection/pull/532).
+      - he - Align role with ansible-lint-6.0 (https://github.com/oVirt/ovirt-ansible-collection/pull/545).
+      - hosted_engine - Specify fqcn for ovirt_system_option_info (https://github.com/oVirt/ovirt-ansible-collection/pull/536).
+      - hosted_engine_setup - Fix cleanup on el9 (https://github.com/oVirt/ovirt-ansible-collection/pull/533).
+      - image_template - Remove static (https://github.com/oVirt/ovirt-ansible-collection/pull/537).
+      - image_template - Remove static no - unsupported in ansible 2.12 (https://github.com/oVirt/ovirt-ansible-collection/pull/341).
+      - ovirt_host - Fix host wait (https://github.com/oVirt/ovirt-ansible-collection/pull/531).
+      - ovirt_host - Fix restarted wait condition (https://github.com/oVirt/ovirt-ansible-collection/pull/551).
+      - ovirt_storage_domain - Fix inaccessible exception (https://github.com/oVirt/ovirt-ansible-collection/pull/534).
+      - ovirt_vm - check if user inputed graphical protocol (https://github.com/oVirt/ovirt-ansible-collection/pull/542).
+      - repositories - Move fips check to satellite CA install block (https://github.com/oVirt/ovirt-ansible-collection/pull/553).
+      - shutdown_env - Align role with ansible-lint-6.0 (https://github.com/oVirt/ovirt-ansible-collection/pull/544).
+      minor_changes:
+      - During he_setup, configure ovn with he_host_name for correct operation of
+        ovn (https://github.com/oVirt/ovirt-ansible-collection/pull/563).
+      - Fix "ansible-lint" version 6.0.0 "yaml" violations for "disaster_recovery"
+        role (https://github.com/oVirt/ovirt-ansible-collection/pull/543).
+      - Fix "ansible-lint" version 6.0.0 violations for "disaster_recovery" & "remove_stale_lun"
+        roles (https://github.com/oVirt/ovirt-ansible-collection/pull/554).
+      - Fix ansible-lint for basic roles (https://github.com/oVirt/ovirt-ansible-collection/pull/280).
+      - Updating the documentation - "vm_name" / "vm_id" and/or disk "id" parameter(s)
+        are required when extending disk with non-unique name (https://github.com/oVirt/ovirt-ansible-collection/pull/559).
+      - gluster_heal_info - Replacing gluster module to CLI to support RHV automation
+        hub (https://github.com/oVirt/ovirt-ansible-collection/pull/340).
+      - ovirt_disk - Add warning for disk attachments (https://github.com/oVirt/ovirt-ansible-collection/pull/347).
+      - ovirt_disk - Fix disk attachment to VM (https://github.com/oVirt/ovirt-ansible-collection/pull/361).
+      - ovirt_qos, ovirt_disk_profile, ovirt_disk - Add modules to allow for creation
+        and updating of disk_profiles (https://github.com/oVirt/ovirt-ansible-collection/pull/422).
+      - ovirt_snapshot - Add vm_id to select VM (https://github.com/oVirt/ovirt-ansible-collection/pull/550).
+      - ovirt_vm - Add reset of VM (https://github.com/oVirt/ovirt-ansible-collection/pull/538).
+      - ovirt_vm - Add virtio_scsi_enabled and multi_queues_enabled (https://github.com/oVirt/ovirt-ansible-collection/pull/348).
+      - ovirt_vm - add volatile (https://github.com/oVirt/ovirt-ansible-collection/pull/539).
+      - repositories - Add ovirt_repositories_rhsm_environment and FIPS fix (https://github.com/oVirt/ovirt-ansible-collection/pull/483).
+      - repositories - Replace redhat_subscription and rhsm_repository with command
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/346).
+    fragments:
+    - 280-fix-ansible-lint-for-basic-roles.yml
+    - 340-replace-gluster-module-to-cli.yml
+    - 341-image_template-fix-include-tasks.yml
+    - 346-repositories-replace-redhat_subscription-and-rhsm_repository-with-command.yml
+    - 347-ovirt_disk-add-warning-for-disk-attachemtns.yml
+    - 348-ovirt_vm-add-virtio_scsi_enabled-and-multi_queues_enabled.yml
+    - 361-ovirt_disk-fix-disk-attachment.yml
+    - 422-add-qos-and-disk_profle.yml
+    - 483-repositories-add-rhsm_environment.yml
+    - 531-ovirt_host-fix-host-wait.yml
+    - 532-cluster_upgrade-fix-starting-up-pinned-vms.yml
+    - 533_fix_cleanup.yml
+    - 534-ovirt_storage_domain-fix-inaccessible-error.yml
+    - 536-he-specify-fqcn.yml
+    - 537-image_template-remove-static.yml
+    - 538-ovirt_vm-add-reset.yml
+    - 539-ovirt_vm-add-volatile.yml
+    - 542-ovirt_vm-check-graphical-protocol.yml
+    - 543-fix-ansible-lint-for_disaster_recovery.yml
+    - 544-shutdown_env-align-with-ansible-lint-6.0.yml
+    - 545-he-setup-align-with-ansible-lint-6.0.yml
+    - 550-ovirt_snapshot-add-vm_id.yml
+    - 551-ovirt_host-fix-restarted-wait-condition.yml
+    - 553-repositories-move-check-fips.yml
+    - 554-fix-ansible_lint-for-disaster_recovery-and-remove_stale_lun.yml
+    - 557-fix-he-migration-to-systemd-coredump-hosts.yml
+    - 559-update-documentation-ovirt_disk-requires-extra_params-when-extending-disk-with-non-unique-name.yml
+    - 563-he-setup-configure-ovn-with-he-host-fqdn.yml
+    release_date: '2022-07-25'
