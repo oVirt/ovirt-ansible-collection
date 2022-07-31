@@ -421,7 +421,7 @@
   # Keep this aligned with:
   # https://github.com/oVirt/ovirt-engine/blob/master/packaging/playbooks/roles/ovirt-provider-ovn-driver/tasks/main.yml
   - name: Reconfigure OVN central address
-    ansible.builtin.command: vdsm-tool ovn-config {{ engine_vm_ip.stdout_lines[0] }} {{ he_mgmt_network }} {{ he_host_name }}
+    ansible.builtin.command: vdsm-tool ovn-config {{ engine_vm_ip.stdout_lines[0] }} {{ he_mgmt_network }} {{ he_host_address }}
     environment: "{{ he_cmd_lang }}"
     changed_when: true
   # Workaround for https://bugzilla.redhat.com/1540107
