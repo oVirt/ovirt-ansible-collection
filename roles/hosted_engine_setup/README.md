@@ -38,8 +38,8 @@ Ansible version >= 2.9.21 and < 2.10.0
 | he_cluster_comp_version | null | Compatibility version of the hosted-engine cluster. Default value is the latest compatibility version |
 | he_data_center | Default | name of the datacenter with hosted-engine hosts |
 | he_data_center_comp_version | null | Compatibility version of the hosted-engine data center. Default value is the latest compatibility version |
-| he_host_name | $(hostname -f) | name used by the engine for the first host |
-| he_host_address | $(hostname -f) | address used by the engine for the first host |
+| he_host_name | $(hostname -f) | Human readable name used by the engine for the first host |
+| he_host_address | $(hostname -f) | FQDN or IP address used by the engine for the first host |
 | he_bridge_if | null | interface used for the management bridge |
 | he_force_ip4 | false | Force resolving engine FQDN to ipv4 only using DNS server |
 | he_force_ip6 | false | Force resolving engine FQDN to ipv6 only using DNS server |
