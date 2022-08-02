@@ -147,15 +147,22 @@
       path: /var/run/ovirt-hosted-engine-ha
       state: directory
       mode: 0755
-  - name: Copy configuration files to the right location on host
+  - name: Copy vm.conf to the right location on host
     ansible.builtin.copy:
       remote_src: true
-      src: "{{ item.src }}"
-      dest: "{{ item.dest }}"
-      mode: 0644
-    with_items:
-      - {src: "{{ he_local_vm_dir }}/vm.conf", dest: /var/run/ovirt-hosted-engine-ha}
-      - {src: "{{ he_local_vm_dir }}/hosted-engine.conf", dest: /etc/ovirt-hosted-engine/}
+      src: "{{ he_local_vm_dir }}/vm.conf"
+      dest: "/var/run/ovirt-hosted-engine-ha"
+      owner: 'vdsm'
+      group: 'kvm'
+      mode: 0640
+  - name: Copy hosted-engine.conf to the right location on host
+    ansible.builtin.copy:
+      remote_src: true
+      src: "{{ he_local_vm_dir }}/hosted-engine.conf"
+      dest: "/etc/ovirt-hosted-engine/"
+      owner: 'vdsm'
+      group: 'kvm'
+      mode: 0440
   - name: Check fapolicyd status
     ansible.builtin.systemd:
       name: fapolicyd
