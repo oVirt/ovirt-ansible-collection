@@ -87,6 +87,10 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Wed Aug 3 2022 Martin Necas <mnecas@redhat.com> - 2.2.1-1
+- hosted_engine_setup - Fix hosted-engine.conf permissions and ownership
+- hosted_engine_setup - During he_setup, configure ovn with he_host_address
+
 * Mon Jul 25 2022 Martin Necas <mnecas@redhat.com> - 2.2.0-1
 - cluster_upgrade - Fix starting up pinned vms
 - disaster_recovery - Fix ansible-lint version 6.0.0 violations

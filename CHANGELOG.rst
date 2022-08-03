@@ -5,6 +5,19 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v2.2.1
+======
+
+Minor Changes
+-------------
+
+- During he_setup, configure ovn with he_host_address (https://github.com/oVirt/ovirt-ansible-collection/pull/568).
+
+Bugfixes
+--------
+
+- hosted_engine_setup - fix hosted-engine.conf permissions and ownership (https://github.com/oVirt/ovirt-ansible-collection/pull/569).
+
 v2.2.0
 ======
 
