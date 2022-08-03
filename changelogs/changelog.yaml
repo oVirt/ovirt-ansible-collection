@@ -811,3 +811,13 @@ releases:
     - 559-update-documentation-ovirt_disk-requires-extra_params-when-extending-disk-with-non-unique-name.yml
     - 563-he-setup-configure-ovn-with-he-host-fqdn.yml
     release_date: '2022-07-25'
+  2.2.1:
+    changes:
+      bugfixes:
+      - hosted_engine_setup - fix hosted-engine.conf permissions and ownership (https://github.com/oVirt/ovirt-ansible-collection/pull/569).
+      minor_changes:
+      - During he_setup, configure ovn with he_host_address (https://github.com/oVirt/ovirt-ansible-collection/pull/568).
+    fragments:
+    - 568-he-setup-configure-ovn-with-he-host-fqdn.yml
+    - 569-heconf-permissions.yml
+    release_date: '2022-08-03'
