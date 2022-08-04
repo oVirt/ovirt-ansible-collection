@@ -67,7 +67,7 @@ build() {
     BUILD_PATH="$BUILD_PATH/ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME/"
     mkdir -p "$BUILD_PATH"
     echo "The copying files to $BUILD_PATH"
-    cp -r ./* "$BUILD_PATH"
+    cp -r ./* .config/ "$BUILD_PATH"
     cd "$BUILD_PATH"
     rename
     dist
