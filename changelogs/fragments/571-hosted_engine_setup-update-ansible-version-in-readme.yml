@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - hosted_engine_setup - update ansible version in README (https://github.com/oVirt/ovirt-ansible-collection/pull/571).

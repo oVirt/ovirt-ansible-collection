@@ -4,7 +4,7 @@ Ansible role for deploying oVirt Hosted-Engine
 
 # Requirements
 
-Ansible version >= 2.9.21 and < 2.10.0
+Ansible Core >= 2.12.0 and < 2.13.0
 
 # Prerequisites
 
