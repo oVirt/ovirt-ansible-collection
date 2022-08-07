@@ -63,12 +63,11 @@ mv "$RHV_BUILD"/*tar.gz "$ROOT_PATH/exported-artifacts/"
 COLLECTION_DIR="/usr/local/share/ansible/collections/ansible_collections/ovirt/ovirt"
 export ANSIBLE_LIBRARY="$COLLECTION_DIR/plugins/modules"
 mkdir -p $COLLECTION_DIR
-cp -r "$OVIRT_BUILD"/* "$COLLECTION_DIR"
+cp -r "$OVIRT_BUILD"/* "$OVIRT_BUILD"/.config "$COLLECTION_DIR"
 cd "$COLLECTION_DIR"
 
 antsibull-changelog lint -v
-ansible-lint roles/* --exclude roles/hosted_engine_setup -x experimental
-ansible-lint -x var-spacing,ignore-errors,var-naming roles/hosted_engine_setup
+ansible-lint roles/*
 
 cd "$ROOT_PATH"
 
