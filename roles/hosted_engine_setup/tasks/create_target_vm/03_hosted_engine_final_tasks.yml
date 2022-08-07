@@ -111,7 +111,7 @@
     changed_when: true
   - name: Detect ovirt-hosted-engine-ha version
     ansible.builtin.command: >-
-      {{ ansible_python.executable }} -c
+      /usr/libexec/platform-python -c
       'from ovirt_hosted_engine_ha.agent import constants as agentconst; print(agentconst.PACKAGE_VERSION)'
     environment: "{{ he_cmd_lang }}"
     register: ha_version_out
