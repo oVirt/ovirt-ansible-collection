@@ -12,6 +12,12 @@
     {% if ovirt_repositories_force_register is defined and ovirt_repositories_force_register|bool %} --force {% endif %}
   changed_when: false
 
+- name: Fix RHEL version to 8.6
+  ansible.builtin.command: subscription-manager release --set=8.6
+  changed_when: false
+  when:
+    - ovirt_repositories_ovirt_version|string >= '4.4'
+
 - name: Enable dnf modules
   ansible.builtin.command: "dnf module enable -y {{ ovirt_repositories_rh_dnf_modules | join(' ') }}"
   args:
