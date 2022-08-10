@@ -587,7 +587,7 @@ def main():
             last_event = events_service.list(max=1)[0]
 
             if module.params['check_upgrade']:
-                ret = hosts_module.action(
+                hosts_module.action(
                     action='upgrade_check',
                     action_condition=lambda host: not host.update_available,
                     wait_condition=lambda host: host.update_available or (
@@ -610,44 +610,38 @@ def main():
                 )
                 # Set to False, because upgrade_check isn't 'changing' action:
                 hosts_module._changed = False
-            # List all update check events and check if we some updates were found
-            no_upgrade = events_service.list(
-                from_=int(last_event.id),
-                search='type=885 and message="*no updates found*" and host.name=%s' % host.name,
+            ret = hosts_module.action(
+                action='upgrade',
+                action_condition=lambda h: h.update_available,
+                wait_condition=lambda h: not h.update_available or h.status == result_state and (
+                    len([
+                        event
+                        for event in events_service.list(
+                            from_=int(last_event.id),
+                            # Finished upgrade:
+                            # 841: HOST_UPGRADE_FAILED
+                            # 842: HOST_UPGRADE_FINISHED
+                            # 888: HOST_UPGRADE_FINISHED_AND_WILL_BE_REBOOTED
+                            search='type=842 or type=841 or type=888',
+                        ) if host.name in event.description
+                    ]) > 0
+                ),
+                post_action=lambda h: time.sleep(module.params['poll_interval']),
+                fail_condition=lambda h: hosts_module.failed_state_after_reinstall(h) or (
+                    len([
+                        event
+                        for event in events_service.list(
+                            from_=int(last_event.id),
+                            # Fail upgrade if migration fails:
+                            # 17: Failed to switch Host to Maintenance mode
+                            # 65, 140: Migration failed
+                            # 166: No available host was found to migrate VM
+                            search='type=65 or type=140 or type=166 or type=17',
+                        ) if host.name in event.description
+                    ]) > 0
+                ),
+                reboot=module.params['reboot_after_upgrade'],
             )
-            if len(no_upgrade) == 0:
-                ret = hosts_module.action(
-                    action='upgrade',
-                    action_condition=lambda h: h.update_available,
-                    wait_condition=lambda h: h.status == result_state and (
-                        len([
-                            event
-                            for event in events_service.list(
-                                from_=int(last_event.id),
-                                # Finished upgrade:
-                                # 841: HOST_UPGRADE_FAILED
-                                # 842: HOST_UPGRADE_FINISHED
-                                # 888: HOST_UPGRADE_FINISHED_AND_WILL_BE_REBOOTED
-                                search='type=842 or type=841 or type=888',
-                            ) if host.name in event.description
-                        ]) > 0
-                    ),
-                    post_action=lambda h: time.sleep(module.params['poll_interval']),
-                    fail_condition=lambda h: hosts_module.failed_state_after_reinstall(h) or (
-                        len([
-                            event
-                            for event in events_service.list(
-                                from_=int(last_event.id),
-                                # Fail upgrade if migration fails:
-                                # 17: Failed to switch Host to Maintenance mode
-                                # 65, 140: Migration failed
-                                # 166: No available host was found to migrate VM
-                                search='type=65 or type=140 or type=166 or type=17',
-                            ) if host.name in event.description
-                        ]) > 0
-                    ),
-                    reboot=module.params['reboot_after_upgrade'],
-                )
         elif state == 'iscsidiscover':
             host_id = get_id_by_name(hosts_service, module.params['name'])
             iscsi_param = module.params['iscsi']
