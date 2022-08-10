@@ -821,3 +821,15 @@ releases:
     - 568-he-setup-configure-ovn-with-he-host-fqdn.yml
     - 569-heconf-permissions.yml
     release_date: '2022-08-03'
+  2.2.2:
+    changes:
+      bugfixes:
+      - hosted_engine_setup - Detect hosted-engine-ha version using /usr/libexec/platform-python
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/573).
+      - hosted_engine_setup - update ansible version in README (https://github.com/oVirt/ovirt-ansible-collection/pull/571).
+      - repositories - Add mod_auth_openidc:2.3 and nodejs:14 to dnf modules (https://github.com/oVirt/ovirt-ansible-collection/pull/578).
+    fragments:
+    - 571-hosted_engine_setup-update-ansible-version-in-readme.yml
+    - 573-hosted_engine_setup-fetch-hosted-engine-ha-version-by-rpm-command.yml
+    - 578-repositories-Add-mod_auth_openidc-and-nodejs-to-dnf-modules.yml
+    release_date: '2022-08-09'

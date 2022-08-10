@@ -5,6 +5,16 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v2.2.2
+======
+
+Bugfixes
+--------
+
+- hosted_engine_setup - Detect hosted-engine-ha version using /usr/libexec/platform-python (https://github.com/oVirt/ovirt-ansible-collection/pull/573).
+- hosted_engine_setup - update ansible version in README (https://github.com/oVirt/ovirt-ansible-collection/pull/571).
+- repositories - Add mod_auth_openidc:2.3 and nodejs:14 to dnf modules (https://github.com/oVirt/ovirt-ansible-collection/pull/578).
+
 v2.2.1
 ======
 

@@ -87,6 +87,11 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Tue Aug 9 2022 Martin Necas <mnecas@redhat.com> - 2.2.2-1
+- hosted_engine_setup - Detect hosted-engine-ha version using /usr/libexec/platform-python
+- hosted_engine_setup - update ansible version in README
+- repositories - Add mod_auth_openidc:2.3 and nodejs:14 to dnf modules
+
 * Wed Aug 3 2022 Martin Necas <mnecas@redhat.com> - 2.2.1-1
 - hosted_engine_setup - Fix hosted-engine.conf permissions and ownership
 - hosted_engine_setup - During he_setup, configure ovn with he_host_address
