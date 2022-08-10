@@ -49,7 +49,7 @@
   include_tasks: restore_host_redeploy.yml
   loop:
     - { vds_type: 'vds_name', input: "{{ he_host_name }}" }
-    - { vds_type: 'vds_id', input: "{{ hostvars[he_ansible_host_name]['unique_id_out']['stdout_lines']|first }}" }
+    - { vds_type: 'vds_unique_id', input: "{{ hostvars[he_ansible_host_name]['unique_id_out']['stdout_lines']|first }}" }
 - name: Rename previous HE storage domain to avoid name conflicts
   ansible.builtin.command: >-
     "{{ engine_psql }}" -c
