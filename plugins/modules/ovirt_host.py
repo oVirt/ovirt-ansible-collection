@@ -613,7 +613,7 @@ def main():
             ret = hosts_module.action(
                 action='upgrade',
                 action_condition=lambda h: h.update_available,
-                wait_condition=lambda h: h.status == result_state and (
+                wait_condition=lambda h: not h.update_available or h.status == result_state and (
                     len([
                         event
                         for event in events_service.list(

@@ -45,33 +45,11 @@
   environment: "{{ he_cmd_lang }}"
   changed_when: true
   register: db_remove_old_enginevm
-- name: Update dynamic data for VMs on the host used to redeploy
-  ansible.builtin.command: >-
-    "{{ engine_psql }}" -c
-    "UPDATE vm_dynamic SET run_on_vds = NULL, status=0 /* Down */ WHERE run_on_vds IN
-    (SELECT vds_id FROM vds
-    WHERE upper(vds_unique_id)=upper('{{ hostvars[he_ansible_host_name]['unique_id_out']['stdout_lines']|first }}'))"
-  environment: "{{ he_cmd_lang }}"
-  changed_when: true
-  register: db_update_host_vms
-- name: Update dynamic data for VMs migrating to the host used to redeploy
-  ansible.builtin.command: >-
-    "{{ engine_psql }}" -c
-    "UPDATE vm_dynamic SET migrating_to_vds = NULL, status=0 /* Down */ WHERE migrating_to_vds IN
-    (SELECT vds_id FROM vds WHERE
-    upper(vds_unique_id)=upper('{{ hostvars[he_ansible_host_name]['unique_id_out']['stdout_lines']|first }}'))"
-  environment: "{{ he_cmd_lang }}"
-  changed_when: true
-  register: db_update_host_migrating_vms
-- name: Remove host used to redeploy
-  ansible.builtin.command: >-
-    "{{ engine_psql }}" -c
-    "SELECT deletevds(vds_id) FROM
-    (SELECT vds_id FROM vds WHERE
-    upper(vds_unique_id)=upper('{{ hostvars[he_ansible_host_name]['unique_id_out']['stdout_lines']|first }}')) t"
-  environment: "{{ he_cmd_lang }}"
-  changed_when: true
-  register: db_remove_he_host
+- name: Update host used to redeploy
+  include_tasks: restore_host_redeploy.yml
+  loop:
+    - { vds_type: 'vds_name', input: "{{ he_host_name }}" }
+    - { vds_type: 'vds_unique_id', input: "{{ hostvars[he_ansible_host_name]['unique_id_out']['stdout_lines']|first }}" }
 - name: Rename previous HE storage domain to avoid name conflicts
   ansible.builtin.command: >-
     "{{ engine_psql }}" -c
