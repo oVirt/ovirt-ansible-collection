@@ -102,8 +102,8 @@ Example Playbook
     ovirt_repositories_ca_rpm_disable_gpg_check: true
     ovirt_repositories_target_host: engine
     ovirt_repositories_rhsm_environment: Library
-    ovirt_repositories_rh_password: "{{ ovirt_repositories_rh_username }}"
-    ovirt_repositories_rh_username: "{{ ovirt_repositories_rh_password }}"
+    ovirt_repositories_rh_password: "{{ ovirt_repositories_rh_password }}"
+    ovirt_repositories_rh_username: "{{ ovirt_repositories_rh_username }}"
     ovirt_repositories_pool_ids:
       - 8aa508b87f922c3b017f97a785a40068
 
