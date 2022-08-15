@@ -1,3 +1,0 @@
----
-bugfixes:
-  - hosted_engine_setup - restore - remove host also based on name (https://github.com/oVirt/ovirt-ansible-collection/pull/567).

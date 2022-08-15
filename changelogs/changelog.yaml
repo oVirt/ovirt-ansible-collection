@@ -833,3 +833,17 @@ releases:
     - 573-hosted_engine_setup-fetch-hosted-engine-ha-version-by-rpm-command.yml
     - 578-repositories-Add-mod_auth_openidc-and-nodejs-to-dnf-modules.yml
     release_date: '2022-08-09'
+  2.2.3:
+    changes:
+      bugfixes:
+      - cluster_upgrade - skip host upgrades without anything to update (https://github.com/oVirt/ovirt-ansible-collection/pull/580).
+      - hosted_engine_setup - restore - remove host also based on name (https://github.com/oVirt/ovirt-ansible-collection/pull/567).
+      - repositories - Fix example variable names (https://github.com/oVirt/ovirt-ansible-collection/pull/582).
+      minor_changes:
+      - hosted_engine_setup - fix ovirt-provider-ovn-driver broken link (https://github.com/oVirt/ovirt-ansible-collection/pull/581).
+    fragments:
+    - 567-hosted_engine_setup-remove-host-based-on-name.yml
+    - 580-cluster_upgrade-skip-host-upgrades-without-anything-to-update.yml
+    - 581-hosted_engine_setup-fix-broken-link.yml
+    - 582-repositories-fix-example-variable-names.yml
+    release_date: '2022-08-15'

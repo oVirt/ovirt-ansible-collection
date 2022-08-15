@@ -1,3 +1,0 @@
----
-minor_changes:
-  - hosted_engine_setup - fix ovirt-provider-ovn-driver broken link (https://github.com/oVirt/ovirt-ansible-collection/pull/581).
