@@ -1,3 +1,0 @@
----
-bugfixes:
-  - repositories - Fix example variable names (https://github.com/oVirt/ovirt-ansible-collection/pull/582).

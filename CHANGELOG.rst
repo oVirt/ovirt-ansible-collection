@@ -5,6 +5,21 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v2.2.3
+======
+
+Minor Changes
+-------------
+
+- hosted_engine_setup - fix ovirt-provider-ovn-driver broken link (https://github.com/oVirt/ovirt-ansible-collection/pull/581).
+
+Bugfixes
+--------
+
+- cluster_upgrade - skip host upgrades without anything to update (https://github.com/oVirt/ovirt-ansible-collection/pull/580).
+- hosted_engine_setup - restore - remove host also based on name (https://github.com/oVirt/ovirt-ansible-collection/pull/567).
+- repositories - Fix example variable names (https://github.com/oVirt/ovirt-ansible-collection/pull/582).
+
 v2.2.2
 ======
 

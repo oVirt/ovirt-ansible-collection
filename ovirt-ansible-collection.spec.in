@@ -87,6 +87,12 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Mon Aug 15 2022 Martin Necas <mnecas@redhat.com> - 2.2.3-1
+- cluster_upgrade - Skip host upgrades without anything to update
+- hosted_engine_setup - Fix ovirt-provider-ovn-driver broken link
+- hosted_engine_setup - restore - Remove host also based on name
+- repositories - Fix example variable names
+
 * Tue Aug 9 2022 Martin Necas <mnecas@redhat.com> - 2.2.2-1
 - hosted_engine_setup - Detect hosted-engine-ha version using /usr/libexec/platform-python
 - hosted_engine_setup - update ansible version in README

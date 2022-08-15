@@ -1,3 +1,0 @@
----
-bugfixes:
-  - cluster_upgrade - skip host upgrades without anything to update (https://github.com/oVirt/ovirt-ansible-collection/pull/580).
