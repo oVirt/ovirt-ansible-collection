@@ -719,10 +719,11 @@ def main():
             )
 
             # Reinstall host:
-            hosts_module.action(
+            ret = hosts_module.action(
                 action='install',
                 action_condition=lambda h: h.status == hoststate.MAINTENANCE,
                 post_action=hosts_module.post_reinstall,
+                reboot=module.params.get('reboot_after_installation'),
                 wait_condition=lambda h: h.status == hoststate.MAINTENANCE,
                 fail_condition=hosts_module.failed_state_after_reinstall,
                 host=otypes.Host(
@@ -741,12 +742,13 @@ def main():
             )
 
             # Activate host after reinstall:
-            ret = hosts_module.action(
-                action='activate',
-                action_condition=lambda h: h.status == hoststate.MAINTENANCE,
-                wait_condition=lambda h: h.status == hoststate.UP,
-                fail_condition=failed_state,
-            )
+            if module.params['activate']:
+                ret = hosts_module.action(
+                    action='activate',
+                    action_condition=lambda h: h.status == hoststate.MAINTENANCE,
+                    wait_condition=lambda h: h.status == hoststate.UP,
+                    fail_condition=failed_state,
+                )
         module.exit_json(**ret)
     except Exception as e:
         module.fail_json(msg=str(e), exception=traceback.format_exc())
