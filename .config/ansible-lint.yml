@@ -3,3 +3,8 @@ skip_list:
  - var-spacing
  - var-naming
  - experimental
+ - package-latest
+warn_list:
+ - name
+ - no-changed-when
+ - fqcn-builtins
