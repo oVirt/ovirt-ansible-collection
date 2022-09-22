@@ -7,6 +7,7 @@ TYPE=Ethernet
 USERCTL=no
 ZONE=public
 IPV6INIT=yes
+IPV6_AUTOCONF=no
 IPV6ADDR={{ he_vm_ip_addr }}/{{ he_vm_ip_prefix }}
 IPV6_DEFAULTGW={{ he_gateway }}
 {% if he_dns_addr is string %}
