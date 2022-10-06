@@ -4,7 +4,10 @@ skip_list:
  - var-naming
  - experimental
  - package-latest
+ - name[casing]
+ - name[template]
 warn_list:
- - name
  - no-changed-when
  - fqcn-builtins
+ - template-instead-of-copy
+ - jinja[invalid]
