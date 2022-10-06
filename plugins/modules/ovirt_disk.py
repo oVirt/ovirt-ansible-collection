@@ -140,6 +140,10 @@ options:
         description:
             - "I(True) if the disk should be shareable. By default when disk is created it isn't shareable."
         type: bool
+    read_only:
+        description:
+            - "I(True) if the disk should be read_only. By default when disk is created it isn't read_only."
+        type: bool
     logical_unit:
         description:
             - "Dictionary which describes LUN to be directly attached to VM:"
