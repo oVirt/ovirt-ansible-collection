@@ -42,6 +42,12 @@
   ansible.builtin.include_vars: "{{ ovirt_repositories_target_host }}_{{ ovirt_repositories_ovirt_version }}.yml"
   when: ovirt_repositories_subscription_manager_repos | list | length == 0
 
+- name: "Include {{ ovirt_repositories_target_host }}_eus_{{ ovirt_repositories_ovirt_version }}.yml variables"
+  ansible.builtin.include_vars: "{{ ovirt_repositories_target_host }}_eus_{{ ovirt_repositories_ovirt_version }}.yml"
+  when:
+    - ovirt_repositories_ovirt_version|string >= '4.4'
+    - ovirt_repositories_subscription_manager_eus_repos | list | length == 0
+
 - name: Disable all repositories
   ansible.builtin.command: subscription-manager repos --disable=*
   when: ovirt_repositories_clear
@@ -50,6 +56,20 @@
   ansible.builtin.command: subscription-manager repos --enable={{ item }}
   changed_when: false
   with_items: "{{ ovirt_repositories_subscription_manager_repos }}"
+
+- name: Enable EUS repositories
+  ansible.builtin.command: subscription-manager repos --enable={{ item }}
+  changed_when: false
+  ignore_errors: true # EUS channels might not be available, so we cannot break the installation when there is a subscription error
+  with_items: "{{ ovirt_repositories_subscription_manager_eus_repos }}"
+  when:
+    - ovirt_repositories_ovirt_version|string >= '4.4'
+
+- name: Fix RHEL version to 8.6
+  ansible.builtin.command: subscription-manager release --set=8.6
+  changed_when: false
+  when:
+    - ovirt_repositories_ovirt_version|string >= '4.4'
 
 - name: Enable dnf modules
   ansible.builtin.command: "dnf module enable -y {{ ovirt_repositories_rh_dnf_modules | join(' ') }}"
