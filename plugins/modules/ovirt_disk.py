@@ -745,6 +745,7 @@ class DiskAttachmentsModule(DisksModule):
             ) if self._module.params.get('interface') else None,
             bootable=self._module.params.get('bootable'),
             active=self.param('activate'),
+            read_only=self.param('read_only'),
             uses_scsi_reservation=self.param('uses_scsi_reservation'),
             pass_discard=self.param('pass_discard'),
         )
@@ -755,6 +756,7 @@ class DiskAttachmentsModule(DisksModule):
             equal(self._module.params.get('interface'), str(entity.interface)) and
             equal(self._module.params.get('bootable'), entity.bootable) and
             equal(self._module.params.get('pass_discard'), entity.pass_discard) and
+            equal(self._module.params.get('read_only'), entity.read_only) and
             equal(self._module.params.get('uses_scsi_reservation'), entity.uses_scsi_reservation) and
             equal(self.param('activate'), entity.active)
         )
@@ -820,6 +822,7 @@ def main():
         pass_discard=dict(default=None, type='bool'),
         propagate_errors=dict(default=None, type='bool'),
         logical_unit=dict(default=None, type='dict'),
+        read_only=dict(default=None, type='bool'),
         download_image_path=dict(default=None),
         upload_image_path=dict(default=None, aliases=['image_path']),
         force=dict(default=False, type='bool'),
