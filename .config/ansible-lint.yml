@@ -11,3 +11,7 @@ warn_list:
  - fqcn-builtins
  - template-instead-of-copy
  - jinja[invalid]
+ - fqcn[action-core]
+ - fqcn[action]
+ - name[missing]
+ - deprecated-module
