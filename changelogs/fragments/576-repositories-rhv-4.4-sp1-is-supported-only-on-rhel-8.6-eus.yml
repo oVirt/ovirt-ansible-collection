@@ -1,3 +1,0 @@
----
-bugfixes:
-    - repositories - RHV 4.4 SP1 is supported only on RHEL 8.6 EUS (https://github.com/oVirt/ovirt-ansible-collection/pull/576).
