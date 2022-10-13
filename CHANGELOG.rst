@@ -5,6 +5,24 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v2.3.0
+======
+
+Minor Changes
+-------------
+
+- filters - Add documentation to all filters (https://github.com/oVirt/ovirt-ansible-collection/pull/603).
+- ovirt_disk - Add read_only param for disk attachments (https://github.com/oVirt/ovirt-ansible-collection/pull/597).
+- ovirt_disk - Fix disk attachment to VM (https://github.com/oVirt/ovirt-ansible-collection/pull/361).
+
+Bugfixes
+--------
+
+- Fix ovirtvmipsv4 when using attribute (https://github.com/oVirt/ovirt-ansible-collection/pull/596).
+- he-setup - fix static ipv6 ifcfg setup (https://github.com/oVirt/ovirt-ansible-collection/pull/592).
+- ovirt_host - Honor activate and reboot_after_installation when they are set to false with reinstalled host state (https://github.com/oVirt/ovirt-ansible-collection/pull/587).
+- repositories - RHV 4.4 SP1 is supported only on RHEL 8.6 EUS (https://github.com/oVirt/ovirt-ansible-collection/pull/576).
+
 v2.2.3
 ======
 

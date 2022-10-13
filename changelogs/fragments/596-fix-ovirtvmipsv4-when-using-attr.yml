@@ -1,3 +1,0 @@
----
-bugfixes:
-  - Fix ovirtvmipsv4 when using attribute (https://github.com/oVirt/ovirt-ansible-collection/pull/596).

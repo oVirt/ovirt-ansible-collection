@@ -87,6 +87,15 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Thu Oct 13 2022 Martin Necas <mnecas@redhat.com> - 2.3.0-1
+- ovirt_host - Honor activate and reboot_after_installation when they are set to false with reinstalled host state
+- ovirt_disk - Add read_only param for disk attachments
+- ovirt_disk - Fix disk attachment to VM
+- filters - Add documentation to all filters
+- filters- Fix ovirtvmipsv4 when using attribute
+- he-setup - Fix static ipv6 ifcfg setup
+- repositories - RHV 4.4 SP1 is supported only on RHEL 8.6 EUS
+
 * Mon Aug 15 2022 Martin Necas <mnecas@redhat.com> - 2.2.3-1
 - cluster_upgrade - Skip host upgrades without anything to update
 - hosted_engine_setup - Fix ovirt-provider-ovn-driver broken link

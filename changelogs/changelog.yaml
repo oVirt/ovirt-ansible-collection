@@ -847,3 +847,24 @@ releases:
     - 581-hosted_engine_setup-fix-broken-link.yml
     - 582-repositories-fix-example-variable-names.yml
     release_date: '2022-08-15'
+  2.3.0:
+    changes:
+      bugfixes:
+      - Fix ovirtvmipsv4 when using attribute (https://github.com/oVirt/ovirt-ansible-collection/pull/596).
+      - he-setup - fix static ipv6 ifcfg setup (https://github.com/oVirt/ovirt-ansible-collection/pull/592).
+      - ovirt_host - Honor activate and reboot_after_installation when they are set
+        to false with reinstalled host state (https://github.com/oVirt/ovirt-ansible-collection/pull/587).
+      - repositories - RHV 4.4 SP1 is supported only on RHEL 8.6 EUS (https://github.com/oVirt/ovirt-ansible-collection/pull/576).
+      minor_changes:
+      - filters - Add documentation to all filters (https://github.com/oVirt/ovirt-ansible-collection/pull/603).
+      - ovirt_disk - Add read_only param for disk attachments (https://github.com/oVirt/ovirt-ansible-collection/pull/597).
+      - ovirt_disk - Fix disk attachment to VM (https://github.com/oVirt/ovirt-ansible-collection/pull/361).
+    fragments:
+    - 361-ovirt_disk-fix-disk-attachment.yml
+    - 576-repositories-rhv-4.4-sp1-is-supported-only-on-rhel-8.6-eus.yml
+    - 587-ovirt_host-honor-activate-and-reboot-params.yml
+    - 592-he-setup-static-ipv6.yml
+    - 596-fix-ovirtvmipsv4-when-using-attr.yml
+    - 597-ovirt_disk-add-read_only-param.yml
+    - 603-add-filter-docs.yml
+    release_date: '2022-10-13'
