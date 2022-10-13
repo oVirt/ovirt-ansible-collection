@@ -1,9 +1,9 @@
 DOCUMENTATION:
   name: json_query
-  author: Martin Necas (@mnecas)
   short_description: Copy of community.general.json_query
   description:
-    - Copy of community.general.json_query used internally in the collection.
+    - Copy of community.general.json_query used internally in the collection to ease RPM packaging, so we don't need to package/release/support the whole community.general collection for RHV customers
+    - The original can be found at link https://github.com/ansible-collections/community.general/blob/main/plugins/filter/json_query.py
   positional: _input
   options:
     _input:
