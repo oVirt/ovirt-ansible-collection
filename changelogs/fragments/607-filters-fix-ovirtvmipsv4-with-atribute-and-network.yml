@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - filters - Fix ovirtvmipsv4 with attribute and network (https://github.com/oVirt/ovirt-ansible-collection/pull/607).
