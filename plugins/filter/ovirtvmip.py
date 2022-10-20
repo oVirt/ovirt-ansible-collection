@@ -73,7 +73,7 @@ class FilterModule(object):
         ips = self._parse_ips(ovirt_vms, lambda version: version == 'v4', attr)
         if attr:
             return dict((k, list(filter(lambda x: self.__address_in_network(x, network_ip), v))) for k, v in ips.items())
-        return filter(lambda x: self.__address_in_network(x, network_ip), ips)
+        return list(filter(lambda x: self.__address_in_network(x, network_ip), ips))
 
     def ovirtvmipv6(self, ovirt_vms, attr=None, network_ip=None):
         'Return first IPv6 IP'
