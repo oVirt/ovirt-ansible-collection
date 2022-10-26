@@ -2,10 +2,10 @@ name: Build
 on:
   push:
     branches:
-      - master
+      - ovirt-ansible-collection-2.y
   pull_request:
     branches:
-      - master
+      - ovirt-ansible-collection-2.y
   workflow_dispatch:
 jobs:
   sanity_test:
