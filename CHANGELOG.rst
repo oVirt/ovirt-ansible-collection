@@ -5,6 +5,16 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v2.3.1
+======
+
+Bugfixes
+--------
+
+- filters - Fix ovirtvmipsv4 with attribute and network (https://github.com/oVirt/ovirt-ansible-collection/pull/607).
+- filters - Fix ovirtvmipsv4 with filter to list (https://github.com/oVirt/ovirt-ansible-collection/pull/609).
+- ovirt_host - Fix kernel_params elemets type (https://github.com/oVirt/ovirt-ansible-collection/pull/608).
+
 v2.3.0
 ======
 
