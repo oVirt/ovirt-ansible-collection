@@ -87,6 +87,11 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Thu Oct 27 2022 Martin Necas <mnecas@redhat.com> - 2.3.1-1
+- filters - Fix ovirtvmipsv4 with attribute and network
+- filters - Fix ovirtvmipsv4 with filter to list
+- ovirt_host - Fix kernel_params elemets type
+
 * Thu Oct 13 2022 Martin Necas <mnecas@redhat.com> - 2.3.0-1
 - ovirt_host - Honor activate and reboot_after_installation when they are set to false with reinstalled host state
 - ovirt_disk - Add read_only param for disk attachments

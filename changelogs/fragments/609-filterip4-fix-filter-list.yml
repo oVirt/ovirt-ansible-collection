@@ -1,3 +1,0 @@
----
-bugfixes:
-  - filters - Fix ovirtvmipsv4 with filter to list (https://github.com/oVirt/ovirt-ansible-collection/pull/609).
