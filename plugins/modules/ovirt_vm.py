@@ -1414,8 +1414,31 @@ class VmsModule(BaseModule):
         if self._is_new:
             if self.param('template'):
                 clusters_service = self._connection.system_service().clusters_service()
-                cluster = search_by_name(clusters_service, self.param('cluster'))
-                data_center = self._connection.follow_link(cluster.data_center)
+                data_centers_service = self._connection.system_service().data_centers_service()
+                clusters = clusters_service.list(
+                )
+                cluster = [
+                        c for c in clusters
+                        if c.name == self.param('cluster')
+                ]
+                cluster = cluster[0]
+
+                # For default DC/Cluster we use the hardcoded name 'Default' even that name
+                # can be modified, we have no other indication to know that.
+                # The API does not return a href for the data_center of the default cluster
+                # so, the workaround is looping over all DCs, if we find more than one DC with
+                # the 'Default' name, we will take only the first.
+                if self.param('cluster') == 'Default':
+                    data_centers = data_centers_service.list(
+                    )
+                    data_center = [
+                            d for d in data_centers
+                            if d.name == self.param('cluster')
+                    ]
+                    data_center = data_center[0]
+                else:
+                    # We have a href pointing to the right DC in the cluster
+                    data_center = self._connection.follow_link(cluster.data_center)
                 templates = templates_service.list(
                     search='name=%s and datacenter=%s' % (self.param('template'), data_center.name)
                 )
@@ -1426,10 +1449,11 @@ class VmsModule(BaseModule):
                     ]
                 if not templates:
                     raise ValueError(
-                        "Template with name '%s' and version '%s' in data center '%s' was not found" % (
+                        "Template with name '%s' and version '%s' in data center '%s' was not found , cluster is '%s'" % (
                             self.param('template'),
                             self.param('template_version'),
-                            data_center.name
+                            data_center.name,
+                            self.param('cluster')
                         )
                     )
                 template = sorted(templates, key=lambda t: t.version.version_number, reverse=True)[0]
