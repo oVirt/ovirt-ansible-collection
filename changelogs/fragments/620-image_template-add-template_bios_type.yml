@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - image_template - Add template_bios_type (https://github.com/oVirt/ovirt-ansible-collection/pull/620).
