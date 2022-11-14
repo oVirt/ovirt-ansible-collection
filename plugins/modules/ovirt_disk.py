@@ -21,7 +21,7 @@ description:
 options:
     id:
         description:
-            - "ID of the disk to manage. Either C(id) or C(name) is required."
+            - "ID of the disk to manage. Either C(id) or C(name)/C(alias) is required."
         type: str
     name:
         description:
@@ -373,7 +373,6 @@ disk_attachment:
 
 import json
 import os
-import ssl
 import subprocess
 import time
 import traceback
@@ -552,8 +551,6 @@ def finalize_transfer(connection, module, transfer_id):
 
 
 def download_disk_image(connection, module):
-    transfers_service = connection.system_service().image_transfers_service()
-    hosts_service = connection.system_service().hosts_service()
     transfer = start_transfer(connection, module, otypes.ImageTransferDirection.DOWNLOAD)
     try:
         extra_args = {}
@@ -579,8 +576,6 @@ def download_disk_image(connection, module):
 
 
 def upload_disk_image(connection, module):
-    transfers_service = connection.system_service().image_transfers_service()
-    hosts_service = connection.system_service().hosts_service()
     transfer = start_transfer(connection, module, otypes.ImageTransferDirection.UPLOAD)
     try:
         extra_args = {}
@@ -715,9 +710,9 @@ class DisksModule(BaseModule):
                     action='copy',
                     entity=disk,
                     action_condition=(
-                        lambda disk: new_disk_storage.id not in [sd.id for sd in disk.storage_domains]
+                        lambda d: new_disk_storage.id not in [sd.id for sd in d.storage_domains]
                     ),
-                    wait_condition=lambda disk: disk.status == otypes.DiskStatus.OK,
+                    wait_condition=lambda d: d.status == otypes.DiskStatus.OK,
                     storage_domain=otypes.StorageDomain(
                         id=new_disk_storage.id,
                     ),
@@ -857,7 +852,6 @@ def main():
     check_params(module)
 
     try:
-        disk = None
         state = module.params['state']
         auth = module.params.get('auth')
         connection = create_connection(auth)
