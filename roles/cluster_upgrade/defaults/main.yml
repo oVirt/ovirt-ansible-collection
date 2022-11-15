@@ -14,3 +14,4 @@ pinned_vms_names: []
 healing_in_progress_checks: 6
 healing_in_progress_check_delay: 300
 wait_to_finish_healing: 5
+engine_correlation_id: "{{ 99999999 | random | to_uuid }}"
