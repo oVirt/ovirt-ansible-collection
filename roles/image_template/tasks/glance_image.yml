@@ -50,6 +50,7 @@
         memory_guaranteed: "{{ template_memory_guaranteed | default(omit) }}"
         memory_max: "{{ template_memory_max | default(omit) }}"
         timeout: "{{ template_timeout }}"
+        bios_type: "{{ template_bios_type | default(omit) }}"
 
   always:
     - name: Logout from oVirt
