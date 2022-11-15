@@ -879,3 +879,12 @@ releases:
     - 608-fix-ovirt_host-kernel_params-type.yml
     - 609-filterip4-fix-filter-list.yml
     release_date: '2022-10-27'
+  2.4.0:
+    changes:
+      bugfixes:
+      - cluster_upgrade - Add default random uuid to engine_correlation_id (https://github.com/oVirt/ovirt-ansible-collection/pull/624).
+      - image_template - Add template_bios_type (https://github.com/oVirt/ovirt-ansible-collection/pull/620).
+    fragments:
+    - 625-cluster_upgrade-add-default-random-uuid-to-engine_correlation_id.yml
+    - 626-image_template-add-template_bios_type.yml
+    release_date: '2022-11-15'

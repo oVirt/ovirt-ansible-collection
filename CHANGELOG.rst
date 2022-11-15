@@ -5,6 +5,15 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v2.4.0
+======
+
+Bugfixes
+--------
+
+- cluster_upgrade - Add default random uuid to engine_correlation_id (https://github.com/oVirt/ovirt-ansible-collection/pull/624).
+- image_template - Add template_bios_type (https://github.com/oVirt/ovirt-ansible-collection/pull/620).
+
 v2.3.1
 ======
 
