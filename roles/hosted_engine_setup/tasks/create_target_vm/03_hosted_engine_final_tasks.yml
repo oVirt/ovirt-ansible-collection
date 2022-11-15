@@ -54,8 +54,6 @@
     delay: 10
     until: ovf_store_content.rc == 0
     with_items: "{{ ovf_store_disks }}"
-    args:
-      warn: false
   - name: Prepare images
     ansible.builtin.command: >-
       vdsm-client Image prepare storagepoolID={{ datacenter_id }}
@@ -136,7 +134,6 @@
     environment: "{{ he_cmd_lang }}"
     args:
       chdir: "{{ he_local_vm_dir }}"
-      warn: false
     become: true
     become_user: vdsm
     become_method: sudo
@@ -195,8 +192,6 @@
     become_user: vdsm
     become_method: sudo
     changed_when: true
-    args:
-      warn: false
   - name: Initialize metadata volume
     # Data is written at offset 4KiB*host_id and since ovirt supports 250 hosts per dc,
     # we can have maximum 250*4KiB = ~ 1MiB

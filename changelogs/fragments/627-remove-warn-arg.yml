@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Remove the 'warn:' argument (https://github.com/oVirt/ovirt-ansible-collection/pull/627).
