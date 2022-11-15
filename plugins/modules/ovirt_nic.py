@@ -196,6 +196,9 @@ class EntityNicsModule(BaseModule):
     def vnic_id(self, vnic_id):
         self._vnic_id = vnic_id
 
+    def post_create(self, entity):
+        self._set_network_filter_parameters(entity.id)
+
     def post_update(self, entity):
         self._set_network_filter_parameters(entity.id)
 
@@ -235,7 +238,7 @@ class EntityNicsModule(BaseModule):
                 equal(self._module.params.get('name'), str(entity.name)) and
                 equal(self._module.params.get('profile'), get_link_name(self._connection, entity.vnic_profile)) and
                 equal(self._module.params.get('mac_address'), entity.mac.address) and
-                equal(self._network_filter_parameters(), entity.network_filter_parameters)
+                equal(self._network_filter_parameters(), self._connection.follow_link(entity.network_filter_parameters))
             )
         elif self._module.params.get('template'):
             return (
