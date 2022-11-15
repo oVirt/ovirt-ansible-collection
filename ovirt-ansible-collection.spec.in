@@ -87,6 +87,10 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Tue Nov 15 2022 Martin Necas <mnecas@redhat.com> - 2.4.0-1
+- cluster_upgrade - Add default random uuid to engine_correlation_id
+- image_template - Add template_bios_type
+
 * Thu Oct 27 2022 Martin Necas <mnecas@redhat.com> - 2.3.1-1
 - filters - Fix ovirtvmipsv4 with attribute and network
 - filters - Fix ovirtvmipsv4 with filter to list
