@@ -136,6 +136,7 @@
             cpu_cores: "{{ template_cpu }}"
             operating_system: "{{ template_operating_system }}"
             type: "{{ template_type | default(omit) }}"
+            bios_type: "{{ template_bios_type | default(omit) }}"
             cloud_init: "{{ {'user_name': 'root', 'authorized_ssh_keys': lookup('file', tmp_private_key_file~'.pub') } if template_prerequisites_tasks is defined else omit }}" # noqa yaml[line-length]
             disks:
               - id: "{{ disk_info.ovirt_disks[0].id }}"
