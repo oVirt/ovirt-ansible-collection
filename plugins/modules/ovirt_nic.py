@@ -76,7 +76,7 @@ options:
             - "The list of network filter parameters."
         elements: dict
         type: list
-        version_added: 3.1.0
+        version_added: 3.0.0
         suboptions:
             name:
                 description:
