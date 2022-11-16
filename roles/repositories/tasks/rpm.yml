@@ -13,8 +13,6 @@
 
 - name: Enable dnf modules
   ansible.builtin.command: "dnf module enable -y {{ ovirt_repositories_ovirt_dnf_modules | join(' ') }}"
-  args:
-    warn: false
   when:
     - ovirt_repositories_ovirt_version|string >= '4.4'
     - ovirt_repositories_target_host == 'engine'

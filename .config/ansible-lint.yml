@@ -15,3 +15,4 @@ warn_list:
  - fqcn[action]
  - name[missing]
  - deprecated-module
+ - command-instead-of-module
