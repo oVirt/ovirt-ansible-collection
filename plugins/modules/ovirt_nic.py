@@ -71,6 +71,19 @@ options:
         description:
             - Defines if the NIC is linked to the virtual machine.
         type: bool
+    network_filter_parameters:
+        description:
+            - "The list of network filter parameters."
+        elements: dict
+        type: list
+        version_added: 3.0.0
+        suboptions:
+            name:
+                description:
+                    - "Name of the network filter parameter."
+            value:
+                description:
+                    - "Value of the network filter parameter."
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
 '''
 
@@ -122,6 +135,19 @@ EXAMPLES = '''
     id: 00000000-0000-0000-0000-000000000000
     name: "new_nic_name"
     vm: myvm
+
+# Add NIC network filter parameters
+- @NAMESPACE@.@NAME@.ovirt_nic:
+    state: present
+    name: mynic
+    vm: myvm
+    network_filter_parameters:
+      - name: GATEWAY_MAC
+        value: 01:02:03:ab:cd:ef
+      - name: GATEWAY_MAC
+        value: 01:02:03:ab:cd:eg
+      - name: GATEWAY_MAC
+        value: 01:02:03:ab:cd:eh
 '''
 
 RETURN = '''
@@ -170,6 +196,24 @@ class EntityNicsModule(BaseModule):
     def vnic_id(self, vnic_id):
         self._vnic_id = vnic_id
 
+    def post_create(self, entity):
+        self._set_network_filter_parameters(entity.id)
+
+    def post_update(self, entity):
+        self._set_network_filter_parameters(entity.id)
+
+    def _set_network_filter_parameters(self, entity_id):
+        if self._module.params['network_filter_parameters'] is not None:
+            nfps_service = self._service.service(entity_id).network_filter_parameters_service()
+            nfp_list = nfps_service.list()
+            # Remove all previous network filter parameters
+            for nfp in nfp_list:
+                nfps_service.service(nfp.id).remove()
+
+            # Create all specified netwokr filters by user
+            for nfp in self._network_filter_parameters():
+                nfps_service.add(nfp)
+
     def build_entity(self):
         return otypes.Nic(
             id=self._module.params.get('id'),
@@ -193,7 +237,8 @@ class EntityNicsModule(BaseModule):
                 equal(self._module.params.get('linked'), entity.linked) and
                 equal(self._module.params.get('name'), str(entity.name)) and
                 equal(self._module.params.get('profile'), get_link_name(self._connection, entity.vnic_profile)) and
-                equal(self._module.params.get('mac_address'), entity.mac.address)
+                equal(self._module.params.get('mac_address'), entity.mac.address) and
+                equal(self._network_filter_parameters(), self._connection.follow_link(entity.network_filter_parameters))
             )
         elif self._module.params.get('template'):
             return (
@@ -202,6 +247,19 @@ class EntityNicsModule(BaseModule):
                 equal(self._module.params.get('name'), str(entity.name)) and
                 equal(self._module.params.get('profile'), get_link_name(self._connection, entity.vnic_profile))
             )
+
+    def _network_filter_parameters(self):
+        if self._module.params['network_filter_parameters'] is None:
+            return []
+        networkFilterParameters = list()
+        for networkFilterParameter in self._module.params['network_filter_parameters']:
+            networkFilterParameters.append(
+                otypes.NetworkFilterParameter(
+                    name=networkFilterParameter.get("name"),
+                    value=networkFilterParameter.get("value")
+                )
+            )
+        return networkFilterParameters
 
 
 def get_vnics(networks_service, network, connection):
@@ -226,6 +284,7 @@ def main():
         network=dict(type='str'),
         mac_address=dict(type='str'),
         linked=dict(type='bool'),
+        network_filter_parameters=dict(type='list', default=None, elements='dict'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
