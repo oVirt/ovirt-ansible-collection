@@ -17,7 +17,7 @@ BuildRequires:	ansible-test
 BuildRequires:	glibc-langpack-en
 %endif
 
-Requires:	ansible-core >= 2.12.0
+Requires:	ansible-core >= 2.13.0
 Requires:	ovirt-imageio-client
 Requires:	python3-ovirt-engine-sdk4 >= 4.5.0
 Requires:	python3-netaddr
@@ -29,11 +29,11 @@ Requires:	ansible-collection-ansible-utils
 Requires:	qemu-img
 
 %if 0%{?rhel} < 9
-Requires:	python38-ovirt-imageio-client
-Requires:	python38-ovirt-engine-sdk4 >= 4.5.0
-Requires:	python38-netaddr
-Requires:	python38-jmespath
-Requires:	python38-passlib
+Requires:	python39-ovirt-imageio-client
+Requires:	python39-ovirt-engine-sdk4 >= 4.5.0
+Requires:	python39-netaddr
+Requires:	python39-jmespath
+Requires:	python39-passlib
 %endif
 
 Obsoletes:	ansible < 2.10.0
