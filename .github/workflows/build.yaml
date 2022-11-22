@@ -23,10 +23,10 @@ jobs:
           cd /tmp/ansible_collections/ovirt/ovirt/
           ansible-test sanity --docker
 
-      - name: Run ansible-lint 5.0.0
+      - name: Run ansible-lint 6.y.z
         run: |
           cd /tmp/ansible_collections/ovirt/ovirt/
-          pip3 install install pycodestyle pylint==2.4.4 voluptuous yamllint rstcheck antsibull-changelog "rich<11.0.0" "ansible-lint<5.0.0" cryptography
+          pip3 install pycodestyle pylint voluptuous yamllint rstcheck antsibull-changelog rich "ansible-lint>=6.0.0,<7.0.0" cryptography
           ansible-lint roles/* -x 204
   build:
     runs-on: ubuntu-latest
