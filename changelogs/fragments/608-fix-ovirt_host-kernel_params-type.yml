@@ -1,3 +1,0 @@
----
-bugfixes:
-  - ovirt_host - Fix kernel_params elemets type (https://github.com/oVirt/ovirt-ansible-collection/pull/608).
