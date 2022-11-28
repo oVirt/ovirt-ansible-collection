@@ -43,6 +43,10 @@ jobs:
     container:
       image: quay.io/ovirt/buildcontainer:${{ matrix.container-name }}
     steps:
+      - name: Install python3.8
+        if: ${{ matrix.shortcut == 'cs8' }}
+        run: yum install python38 -y
+
       - name: Install python3.8 modules
         run: |
           dnf install -y python38-devel python38-pip
