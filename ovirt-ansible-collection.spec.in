@@ -87,6 +87,9 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Mon Nov 28 2022 Martin Necas <mnecas@redhat.com> - 2.4.1-1
+- cluster_upgrade - Fix the engine_correlation_id location
+
 * Tue Nov 15 2022 Martin Necas <mnecas@redhat.com> - 2.4.0-1
 - cluster_upgrade - Add default random uuid to engine_correlation_id
 - image_template - Add template_bios_type
