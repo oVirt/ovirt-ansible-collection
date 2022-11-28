@@ -6,6 +6,7 @@
   ansible.builtin.set_fact:
     stop_non_migratable_vms: "{{ stop_non_migratable_vms }}"
     provided_token: "{{ engine_token | default(lookup('env','OVIRT_TOKEN')) | default('') }}"
+    engine_correlation_id: "{{ 99999999 | random | to_uuid }}"
 
 - name: Main block
   block:
