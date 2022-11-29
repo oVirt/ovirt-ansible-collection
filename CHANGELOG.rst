@@ -5,6 +5,27 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v3.0.0
+======
+
+Minor Changes
+-------------
+
+- Improving "ovirt_disk" and "disaster_recovery" documentation (https://github.com/oVirt/ovirt-ansible-collection/pull/562).
+
+Bugfixes
+--------
+
+- Remove the 'warn:' argument (https://github.com/oVirt/ovirt-ansible-collection/pull/627).
+- cluster_upgrade - Add default random uuid to engine_correlation_id (https://github.com/oVirt/ovirt-ansible-collection/pull/624).
+- cluster_upgrade - Fix the engine_correlation_id location (https://github.com/oVirt/ovirt-ansible-collection/pull/637).
+- filters - Fix ovirtvmipsv4 with attribute and network (https://github.com/oVirt/ovirt-ansible-collection/pull/607).
+- filters - Fix ovirtvmipsv4 with filter to list (https://github.com/oVirt/ovirt-ansible-collection/pull/609).
+- image_template - Add template_bios_type (https://github.com/oVirt/ovirt-ansible-collection/pull/620).
+- info modules - Bump the deprecation version of fetch_nested and nested_attributes (https://github.com/oVirt/ovirt-ansible-collection/pull/610).
+- ovirt_host - Fix kernel_params elemets type (https://github.com/oVirt/ovirt-ansible-collection/pull/608).
+- ovirt_nic - Add network_filter_parameters (https://github.com/oVirt/ovirt-ansible-collection/pull/623).
+
 v2.3.0
 ======
 

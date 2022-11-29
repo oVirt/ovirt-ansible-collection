@@ -87,6 +87,19 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Mon Nov 28 2022 Martin Perina <mperina@redhat.com> - 3.0.0-1
+- filters: Fix ovirtvmipsv4 with attribute and network
+- ovirt_host: Fix kernel_params elemets
+- ovirtvmipsv4: Fix filter list
+- cluster_upgrade: Add default random uuid to engine_correlation_id
+- image_template: Add template_bios_type
+- Support ansible 2.14
+- ovirt_nic: Add network_filter_parameters
+- Support ansible-core-2.13 on EL8
+- Use Python 3.9 on CS8 and CS9 builds
+- Improving "ovirt_disk" (mostly documentation)
+- cluster_upgrade: Fix the engine_correlation_id location
+
 * Thu Oct 13 2022 Martin Necas <mnecas@redhat.com> - 2.3.0-1
 - ovirt_host - Honor activate and reboot_after_installation when they are set to false with reinstalled host state
 - ovirt_disk - Add read_only param for disk attachments

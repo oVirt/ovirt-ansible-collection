@@ -1,3 +1,0 @@
----
-bugfixes:
-  - info modules - Bump the deprecation version of fetch_nested and nested_attributes (https://github.com/oVirt/ovirt-ansible-collection/pull/610).
