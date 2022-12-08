@@ -27,7 +27,7 @@
 
     - name: Init list property for running_vms
       ansible.builtin.set_fact:
-        res_ovirt_vms="[]"
+        res_ovirt_vms=[]
 
     - name: Map all running VMs in fact
       ansible.builtin.set_fact:
