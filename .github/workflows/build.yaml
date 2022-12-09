@@ -21,7 +21,7 @@ jobs:
       - name: Run ansible-test sanity
         run: |
           cd /tmp/ansible_collections/ovirt/ovirt/
-          ansible-test sanity --docker
+          ANSIBLE_TEST_PREFER_PODMAN=1 ansible-test sanity --docker
 
       - name: Run ansible-lint 6.y.z
         run: |
