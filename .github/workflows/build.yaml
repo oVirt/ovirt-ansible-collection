@@ -51,7 +51,7 @@ jobs:
         uses: ovirt/checkout-action@main
 
       - name: Run build.sh
-        run: ./automation/build.sh
+        run: .automation/build.sh
 
       - name: Upload artifacts
         uses: ovirt/upload-rpms-action@main
