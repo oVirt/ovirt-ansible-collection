@@ -505,6 +505,7 @@ def cancel_transfer(connection, transfer_id):
 
 
 def finalize_transfer(connection, module, transfer_id):
+    transfer = None
     transfer_service = (connection.system_service()
                         .image_transfers_service()
                         .image_transfer_service(transfer_id))
