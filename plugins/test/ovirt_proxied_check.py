@@ -34,7 +34,7 @@ except ImportError:
 def proxied(value):
     netloc = urlparse(value).netloc
     proxied = bool(getproxies_environment()) and not proxy_bypass(netloc)
-    return(proxied)
+    return (proxied)
 
 
 class TestModule(object):
