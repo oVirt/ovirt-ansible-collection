@@ -54,6 +54,6 @@ jobs:
         run: ./automation/build.sh
 
       - name: Upload artifacts
-        uses: ovirt/upload-rpms-action@v2
+        uses: ovirt/upload-rpms-action@main
         with:
           directory: exported-artifacts
