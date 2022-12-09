@@ -32,7 +32,7 @@
       with_items:
         - "{{ storage_domain_info_active.ovirt_storage_domains }}"
         - "{{ storage_domain_info_maintenance.ovirt_storage_domains }}"
-        - "{{ storage_domain_info_detached.ovirt_storage_domains }}" 
+        - "{{ storage_domain_info_detached.ovirt_storage_domains }}"
       when: (not only_master and not sd.master) or (only_master and sd.master)
       loop_control:
         loop_var: sd
