@@ -1,4 +1,3 @@
-automation/build.sh shebang!skip
 build.sh shebang!skip
 changelogs/fragments/.keep changelog!skip
 plugins/callback/stdout.py shebang!skip
