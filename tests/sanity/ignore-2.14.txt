@@ -1,0 +1,14 @@
+build.sh shebang!skip
+plugins/callback/stdout.py shebang!skip
+plugins/callback/stdout.py validate-modules!skip
+plugins/inventory/ovirt.py validate-modules!skip
+roles/disaster_recovery/files/fail_back.py shebang!skip
+roles/disaster_recovery/files/bcolors.py shebang!skip
+roles/disaster_recovery/files/fail_over.py shebang!skip
+roles/disaster_recovery/files/generate_mapping.py shebang!skip
+roles/disaster_recovery/files/generate_vars.py shebang!skip
+roles/disaster_recovery/files/generate_vars_test.py shebang!skip
+roles/disaster_recovery/files/validator.py shebang!skip
+roles/disaster_recovery/files/vault_secret.sh shellcheck!skip
+roles/disaster_recovery/files/ovirt-dr shebang!skip
+plugins/module_utils/cloud.py pylint!skip
