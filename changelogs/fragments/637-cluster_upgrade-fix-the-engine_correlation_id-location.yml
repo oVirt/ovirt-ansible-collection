@@ -1,3 +1,0 @@
----
-bugfixes:
-  - cluster_upgrade - Fix the engine_correlation_id location (https://github.com/oVirt/ovirt-ansible-collection/pull/637).
