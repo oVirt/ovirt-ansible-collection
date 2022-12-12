@@ -13,7 +13,7 @@ jobs:
     name: ansible-test docker
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@main
         with:
           fetch-depth: 0
 
@@ -53,7 +53,7 @@ jobs:
           pip-3.8 install pycodestyle pylint voluptuous yamllint "rstcheck<3.5.0" antsibull-changelog "rich<11.0.0" "ansible-lint>=6.0.0,<7.0.0" cryptography
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@main
         with:
           fetch-depth: 0
 
@@ -61,6 +61,6 @@ jobs:
         run: ./automation/build.sh
 
       - name: Upload artifacts
-        uses: ovirt/upload-rpms-action@v2
+        uses: ovirt/upload-rpms-action@main
         with:
           directory: exported-artifacts
