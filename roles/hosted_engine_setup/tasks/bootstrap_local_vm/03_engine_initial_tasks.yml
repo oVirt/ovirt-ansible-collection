@@ -18,7 +18,7 @@
     ansible.builtin.lineinfile:
       path: /etc/hosts
       line:
-        "{{ hostvars[he_ansible_host_name]['local_vm_ip']['stdout_lines'][0] }} {{ he_fqdn }} # hosted-engine-setup-{{ \
+        "{{ hostvars[he_ansible_host_name]['local_vm_ip'] }} {{ he_fqdn }} # hosted-engine-setup-{{ \
         hostvars[he_ansible_host_name]['he_local_vm_dir'] }}"
   - name: Reconfigure IPv6 default gateway
     ansible.builtin.command: ip -6 route add default via "{{ he_ipv6_subnet_prefix + '::1' }}"
@@ -99,7 +99,7 @@
         ansible.builtin.debug:
           msg: >-
             You can now connect from this host to the bootstrap engine VM using ssh as root
-            and the temporary IP address - {{ hostvars[he_ansible_host_name]['local_vm_ip']['stdout_lines'][0] }}
+            and the temporary IP address - {{ hostvars[he_ansible_host_name]['local_vm_ip'] }}
       - include_tasks: ../pause_execution.yml
     when: he_pause_before_engine_setup|bool
   - name: Restore a backup

@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - HE - Use ipv6_deployment var to select appropriate addresses for the HE VM (https://github.com/oVirt/ovirt-ansible-collection/pull/560)

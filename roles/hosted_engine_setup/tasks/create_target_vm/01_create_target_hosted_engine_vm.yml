@@ -5,11 +5,19 @@
   - name: Get local VM IP
     ansible.builtin.shell: virsh -r net-dhcp-leases default | grep -i {{ he_vm_mac_addr }} | awk '{ print $5 }' | cut -f1 -d'/'
     environment: "{{ he_cmd_lang }}"
-    register: local_vm_ip
+    register: local_vm_ip_candidates
     changed_when: true
+  - name: Select first IPv6 address
+    ansible.builtin.set_fact:
+      local_vm_ip: "{{ local_vm_ip_candidates.stdout_lines | ansible.netcommon.ipv6 | first }}"
+    when: ipv6_deployment
+  - name: Select first IPv4 address
+    ansible.builtin.set_fact:
+      local_vm_ip: "{{ local_vm_ip_candidates.stdout_lines | ansible.netcommon.ipv4 | first }}"
+    when: not ipv6_deployment
   - name: Set the name for add_host
     ansible.builtin.set_fact:
-      he_fqdn_ansible_host: "{{ local_vm_ip.stdout_lines[0] }}"
+      he_fqdn_ansible_host: "{{ local_vm_ip }}"
   - import_tasks: ../add_engine_as_ansible_host.yml
   - name: Fetch host facts
     ovirt_host_info:

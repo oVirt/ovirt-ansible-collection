@@ -26,7 +26,7 @@
 
           You can now connect from this host to the bootstrap engine VM using ssh as root
           and the temporary IP address -
-          {{ hostvars[he_ansible_host_name]['local_vm_ip']['stdout_lines'][0] }} -
+          {{ hostvars[he_ansible_host_name]['local_vm_ip'] }} -
           and fix this issue. Please continue only after the backup is restored.
 
           To retry the command that failed, you can run, on the bootstrap engine VM:
