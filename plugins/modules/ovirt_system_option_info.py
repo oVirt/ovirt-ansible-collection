@@ -100,7 +100,7 @@ def main():
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
             version='4.0.0',
-            collection_name='ovirt.ovirt'
+            collection_name='@NAMESPACE@.@NAME@'
         )
 
     try:
