@@ -21,7 +21,7 @@
       ovirt_storage_domain_info:
         pattern: >
           name={{ storage['dr_' + dr_source_map + '_name'] }} and
-            datacenter={{ storage['dr_' + dr_source_map + '_dc_name'] }} and {{ dr_unattached_domain_search }} 
+            {{ dr_unattached_domain_search }}
         auth: "{{ ovirt_auth }}"
       register: storage_domain_info_detached
 
