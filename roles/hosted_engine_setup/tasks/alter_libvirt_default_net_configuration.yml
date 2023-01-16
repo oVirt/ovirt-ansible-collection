@@ -19,6 +19,11 @@
   ignore_errors: true
   changed_when: false
 
+- name: Update libvirt default network configuration, delete the bridge
+  ansible.builtin.command: ip link delete {{ network_dict['bridge']['name'] }}
+  ignore_errors: true
+  changed_when: false
+
 - name: Update libvirt default network configuration, undefine
   ansible.builtin.command: virsh net-undefine default
   ignore_errors: true
