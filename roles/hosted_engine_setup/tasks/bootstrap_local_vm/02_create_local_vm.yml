@@ -106,7 +106,7 @@
             virt-install -n {{ he_vm_name }}Local --os-variant rhel8.0 --virt-type kvm --memory {{ he_mem_size_MB }}
             --vcpus {{ he_vcpus }}  --network network=default,mac={{ he_vm_mac_addr }},model=virtio
             --disk {{ local_vm_disk_path }} --import --disk path={{ he_local_vm_dir }}/seed.iso,device=cdrom
-            --noautoconsole --rng /dev/random --graphics vnc --video vga --sound none --controller usb,model=none
+            --noautoconsole --rng /dev/random --graphics none --sound none --controller usb,model=none
             --memballoon none --boot hd,menu=off --clock kvmclock_present=yes
             --serial=pty,log.file=/var/log/libvirt/qemu/HostedEngineLocal-console.log
           environment: "{{ he_cmd_lang }}"
