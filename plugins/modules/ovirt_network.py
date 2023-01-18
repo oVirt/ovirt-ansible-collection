@@ -109,6 +109,10 @@ options:
                 description:
                     - I(true) if the network should marked as gluster network.
                 type: bool
+            default_route:
+                description:
+                    - I(true) if the default gateway and the DNS resolver configuration of the host will be taken from this network.
+                type: bool
     label:
         description:
             - "Name of the label to assign to the network."
