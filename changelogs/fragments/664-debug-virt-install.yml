@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - he-setup - Run virt-install with options more suitable for debugging (https://github.com/oVirt/ovirt-ansible-collection/pull/664).
