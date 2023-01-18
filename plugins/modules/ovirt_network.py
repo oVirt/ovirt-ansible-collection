@@ -109,6 +109,10 @@ options:
                 description:
                     - I(true) if the network should marked as gluster network.
                 type: bool
+            default_route:
+                description:
+                    - I(true) if the default gateway and the DNS resolver configuration of the host will be taken from this network.
+                type: bool
     label:
         description:
             - "Name of the label to assign to the network."
@@ -262,13 +266,14 @@ class ClusterNetworksModule(BaseModule):
             display=self._cluster_network.get('display'),
             usages=list(set([
                 otypes.NetworkUsage(usage)
-                for usage in ['display', 'gluster', 'migration']
+                for usage in ['display', 'gluster', 'migration', 'default_route']
                 if self._cluster_network.get(usage, False)
             ] + self._old_usages))
             if (
                 self._cluster_network.get('display') is not None or
                 self._cluster_network.get('gluster') is not None or
-                self._cluster_network.get('migration') is not None
+                self._cluster_network.get('migration') is not None or
+                self._cluster_network.get('default_route') is not None
             ) else None,
         )
 
@@ -285,7 +290,7 @@ class ClusterNetworksModule(BaseModule):
                 ]
                 for x in [
                     usage
-                    for usage in ['display', 'gluster', 'migration']
+                    for usage in ['display', 'gluster', 'migration', 'default_route']
                     if self._cluster_network.get(usage, False)
                 ]
             )
