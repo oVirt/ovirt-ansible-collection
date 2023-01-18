@@ -280,7 +280,7 @@ def search_by_attributes(service, list_params=None, **kwargs):
     """
     list_params = list_params or {}
     # Check if 'list' method support search(look for search parameter):
-    if 'search' in inspect.getargspec(service.list)[0]:
+    if 'search' in inspect.getfullargspec(service.list)[0]:
         res = service.list(
             # There must be double quotes around name, because some oVirt resources it's possible to create then with space in name.
             search=' and '.join('{0}="{1}"'.format(k, v) for k, v in kwargs.items()),
@@ -308,7 +308,7 @@ def search_by_name(service, name, **kwargs):
     :return: Entity object returned by Python SDK
     """
     # Check if 'list' method support search(look for search parameter):
-    if 'search' in inspect.getargspec(service.list)[0]:
+    if 'search' in inspect.getfullargspec(service.list)[0]:
         res = service.list(
             # There must be double quotes around name, because some oVirt resources it's possible to create then with space in name.
             search='name="{name}"'.format(name=name)
