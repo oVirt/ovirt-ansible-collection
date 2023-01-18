@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - ovirt_network - Add default_route usage to the ovirt_network module (https://github.com/oVirt/ovirt-ansible-collection/pull/647).
