@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt_host - Wait for host to be in result state during upgrade (https://github.com/oVirt/ovirt-ansible-collection/pull/621)
