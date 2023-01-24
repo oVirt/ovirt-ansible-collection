@@ -87,6 +87,11 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Tue Jan 24 2023 Martin Necas <mnecas@redhat.com> - 2.4.2-1
+- info modules - Use dynamic collection name instead of ovirt.ovirt for deprecation warning
+- module_utils - Replace `getargspec` with `getfullargspec` to support newer python 3.y versions
+- ovirt_host - Wait for host to be in result state during upgrade
+
 * Mon Nov 28 2022 Martin Necas <mnecas@redhat.com> - 2.4.1-1
 - cluster_upgrade - Fix the engine_correlation_id location
 
