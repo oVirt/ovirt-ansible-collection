@@ -5,6 +5,16 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v2.4.2
+======
+
+Bugfixes
+--------
+
+- info modules - Use dynamic collection name instead of ovirt.ovirt for deprecation warning (https://github.com/oVirt/ovirt-ansible-collection/pull/653).
+- module_utils - replace `getargspec` with `getfullargspec` to support newer python 3.y versions (https://github.com/oVirt/ovirt-ansible-collection/pull/663).
+- ovirt_host - Wait for host to be in result state during upgrade (https://github.com/oVirt/ovirt-ansible-collection/pull/667)
+
 v2.4.1
 ======
 

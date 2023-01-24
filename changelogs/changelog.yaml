@@ -895,3 +895,16 @@ releases:
     fragments:
     - 637-cluster_upgrade-fix-the-engine_correlation_id-location.yml
     release_date: '2022-11-28'
+  2.4.2:
+    changes:
+      bugfixes:
+      - info modules - Use dynamic collection name instead of ovirt.ovirt for deprecation
+        warning (https://github.com/oVirt/ovirt-ansible-collection/pull/653).
+      - module_utils - replace `getargspec` with `getfullargspec` to support newer
+        python 3.y versions (https://github.com/oVirt/ovirt-ansible-collection/pull/663).
+      - ovirt_host - Wait for host to be in result state during upgrade (https://github.com/oVirt/ovirt-ansible-collection/pull/667)
+    fragments:
+    - 653-info-modules-use-dynamic-name.yml
+    - 663-replace-getargspec-with-getfullargspec.yml
+    - 667-wait-for-host-to-be-in-result-state.yml
+    release_date: '2023-01-24'

@@ -1,3 +1,0 @@
----
-bugfixes:
-  - info modules - Use dynamic collection name instead of ovirt.ovirt for deprecation warning (https://github.com/oVirt/ovirt-ansible-collection/pull/653).
