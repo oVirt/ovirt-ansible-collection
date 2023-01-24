@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - module_utils - replace `getargspec` with `getfullargspec` to support newer python 3.y versions (https://github.com/oVirt/ovirt-ansible-collection/pull/663).
