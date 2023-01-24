@@ -610,10 +610,12 @@ def main():
                 )
                 # Set to False, because upgrade_check isn't 'changing' action:
                 hosts_module._changed = False
+
+            updates_available = host.update_available
             ret = hosts_module.action(
                 action='upgrade',
                 action_condition=lambda h: h.update_available,
-                wait_condition=lambda h: not h.update_available or h.status == result_state and (
+                wait_condition=lambda h: h.status == result_state and ((
                     len([
                         event
                         for event in events_service.list(
@@ -625,7 +627,7 @@ def main():
                             search='type=842 or type=841 or type=888',
                         ) if host.name in event.description
                     ]) > 0
-                ),
+                ) or not updates_available),
                 post_action=lambda h: time.sleep(module.params['poll_interval']),
                 fail_condition=lambda h: hosts_module.failed_state_after_reinstall(h) or (
                     len([
