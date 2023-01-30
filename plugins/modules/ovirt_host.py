@@ -31,9 +31,11 @@ options:
         description:
             - "State which should a host to be in after successful completion."
             - "I(iscsilogin) and I(iscsidiscover) are supported since version 2.4."
+            - "I(refreshed) is supported since 3.1.0"
         choices: [
             'present', 'absent', 'maintenance', 'upgraded', 'started',
-            'restarted', 'stopped', 'reinstalled', 'iscsidiscover', 'iscsilogin'
+            'restarted', 'stopped', 'reinstalled', 'iscsidiscover', 'iscsilogin',
+            'refreshed'
         ]
         default: present
         type: str
@@ -493,7 +495,8 @@ def main():
         state=dict(
             choices=[
                 'present', 'absent', 'maintenance', 'upgraded', 'started',
-                'restarted', 'stopped', 'reinstalled', 'iscsidiscover', 'iscsilogin'
+                'restarted', 'stopped', 'reinstalled', 'iscsidiscover', 'iscsilogin',
+                'refreshed'
             ],
             default='present',
         ),
@@ -710,6 +713,10 @@ def main():
                 wait_condition=lambda h: h.status == result_state,
                 fail_condition=hosts_module.failed_state_after_reinstall,
                 fence_type='restart',
+            )
+        elif state == 'refreshed':
+            ret = hosts_module.action(
+                action='refreshed',
             )
         elif state == 'reinstalled':
             # Deactivate host if not in maintanence:
