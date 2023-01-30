@@ -26,7 +26,8 @@ jobs:
       - name: Run ansible-lint 6.y.z
         run: |
           cd /tmp/ansible_collections/ovirt/ovirt/
-          pip3 install pycodestyle pylint voluptuous yamllint rstcheck antsibull-changelog rich "ansible-lint>=6.0.0,<7.0.0" cryptography
+          # Dummy change to verify lint functionality
+          pip3 install pycodestyle pylint voluptuous yamllint rstcheck antsibull-changelog rich "ansible-lint>=6.0.0,<7.0.0" cryptography "bracex < 2.3.0"
           ansible-lint roles/* -x 204
   build:
     runs-on: ubuntu-latest
@@ -45,7 +46,7 @@ jobs:
       image: quay.io/ovirt/buildcontainer:${{ matrix.container-name }}
     steps:
       - name: Install python3.9 modules
-        run: ${{ matrix.pip-command }} install pycodestyle pylint voluptuous yamllint rstcheck antsibull-changelog rich "ansible-lint>=6.0.0,<7.0.0" cryptography
+        run: ${{ matrix.pip-command }} install pycodestyle pylint voluptuous yamllint rstcheck antsibull-changelog rich "ansible-lint>=6.0.0,<7.0.0" cryptography "bracex < 2.3.0"
 
       - name: Checkout
         uses: ovirt/checkout-action@main
