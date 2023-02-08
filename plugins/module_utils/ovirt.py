@@ -25,6 +25,10 @@ import inspect
 import os
 import time
 
+# getargspec deprecation workaround
+if not hasattr(inspect, 'getargspec'):
+    inspect.getargspec = inspect.getfullargspec
+
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 
