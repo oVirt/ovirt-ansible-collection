@@ -12,6 +12,13 @@ jobs:
     runs-on: ubuntu-20.04
     name: ansible-test docker
     steps:
+      - name: Install Python 3.9
+        run: |
+          sudo apt-get update
+          sudo apt-get install software-properties-common -y
+          sudo add-apt-repository ppa:deadsnakes/ppa
+          sudo apt-get install python3.9-venv -y
+
       - name: Checkout
         uses: ovirt/checkout-action@main
 
@@ -25,11 +32,26 @@ jobs:
 
       - name: Run ansible-lint 6.y.z
         run: |
+          set -e
+          # Activate Python 3.9 virtualenv and run ansible-lint there
+          python3.9 -m venv venv
+          source venv/bin/activate
           cd /tmp/ansible_collections/ovirt/ovirt/
-          pip3 install pycodestyle pylint voluptuous yamllint rstcheck antsibull-changelog rich "ansible-lint>=6.0.0,<7.0.0" cryptography
+          pip3 install --upgrade pip
+          pip3 install \
+            pycodestyle \
+            pylint \
+            voluptuous \
+            yamllint \
+            rstcheck \
+            antsibull-changelog \
+            rich \
+            "ansible-lint>=6.0.0,<7.0.0" \
+            cryptography \
+            "pyyaml>=5.4.1"
           ansible-lint roles/* -x 204
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
