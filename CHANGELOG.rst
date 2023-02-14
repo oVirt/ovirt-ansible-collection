@@ -5,6 +5,26 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v3.1.0
+======
+
+Minor Changes
+-------------
+
+- ovirt_host - Add refreshed state (https://github.com/oVirt/ovirt-ansible-collection/pull/673).
+- ovirt_network - Add default_route usage to the ovirt_network module (https://github.com/oVirt/ovirt-ansible-collection/pull/647).
+
+Bugfixes
+--------
+
+- engine_setup - Remove provision_docker from tests (https://github.com/oVirt/ovirt-ansible-collection/pull/677).
+- he-setup - Log the output sent to the serial console of the HostedEngineLocal VM to a file on the host, to allow diagnosing failures in that stage (https://github.com/oVirt/ovirt-ansible-collection/pull/664).
+- he-setup - Run virt-install with options more suitable for debugging (https://github.com/oVirt/ovirt-ansible-collection/pull/664).
+- he-setup - recently `virsh net-destroy default` doesn't delete the `virbr0`, so we need to delete it expicitly (https://github.com/oVirt/ovirt-ansible-collection/pull/661).
+- info modules - Use dynamic collection name instead of ovirt.ovirt for deprecation warning (https://github.com/oVirt/ovirt-ansible-collection/pull/653).
+- module_utils - replace `getargspec` with `getfullargspec` to support newer python 3.y versions (https://github.com/oVirt/ovirt-ansible-collection/pull/663).
+- ovirt_host - Wait for host to be in result state during upgrade (https://github.com/oVirt/ovirt-ansible-collection/pull/621)
+
 v3.0.0
 ======
 
