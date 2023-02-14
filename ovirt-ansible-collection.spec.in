@@ -87,6 +87,17 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Tue Feb 14 2023 Martin Necas <mnecas@redhat.com> - 3.1.0-1
+- ovirt_host - Add refreshed state.
+- ovirt_host - Wait for host to be in result state during upgrade.
+- ovirt_network - Add default_route usage to the ovirt_network module.
+- engine_setup - Remove provision_docker from tests.
+- he-setup - Log the output sent to the serial console of the HostedEngineLocal VM to a file on the host, to allow diagnosing failures in that stage.
+- he-setup - Run virt-install with options more suitable for debugging.
+- he-setup - recently `virsh net-destroy default` doesn't delete the `virbr0`, so we need to delete it expicitly.
+- info modules - Use dynamic collection name instead of ovirt.ovirt for deprecation warning.
+- module_utils - replace `getargspec` with `getfullargspec` to support newer python 3.y versions.
+
 * Mon Nov 28 2022 Martin Perina <mperina@redhat.com> - 3.0.0-1
 - filters: Fix ovirtvmipsv4 with attribute and network
 - ovirt_host: Fix kernel_params elemets

@@ -1,3 +1,0 @@
----
-bugfixes:
-  - he-setup - recently `virsh net-destroy default` doesn't delete the `virbr0`, so we need to delete it expicitly (https://github.com/oVirt/ovirt-ansible-collection/pull/661).

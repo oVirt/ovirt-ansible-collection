@@ -1,3 +1,0 @@
----
-bugfixes:
-  - engine_setup - Remove provision_docker from tests (https://github.com/oVirt/ovirt-ansible-collection/pull/677).
