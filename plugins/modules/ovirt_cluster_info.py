@@ -63,8 +63,7 @@ EXAMPLES = '''
 
 # Gather information about all clusters which names start with C<production>:
 - @NAMESPACE@.@NAME@.ovirt_cluster_info:
-    pattern:
-      name: 'production*'
+    pattern: "name=production*"
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_clusters }}"
