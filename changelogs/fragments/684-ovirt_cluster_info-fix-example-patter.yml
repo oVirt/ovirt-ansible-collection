@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt_cluster_info - Fix example patter (https://github.com/oVirt/ovirt-ansible-collection/pull/684).
