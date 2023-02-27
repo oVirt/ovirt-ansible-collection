@@ -716,7 +716,7 @@ def main():
             )
         elif state == 'refreshed':
             ret = hosts_module.action(
-                action='refreshed',
+                action='refresh',
             )
         elif state == 'reinstalled':
             # Deactivate host if not in maintanence:

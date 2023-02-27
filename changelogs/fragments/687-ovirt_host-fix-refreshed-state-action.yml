@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt_host - Fix refreshed state action (https://github.com/oVirt/ovirt-ansible-collection/pull/687).
