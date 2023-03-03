@@ -923,3 +923,15 @@ releases:
     - 673-ovirt_host-add-refresh.yml
     - 677-remove-provision_docker-dependency.yml
     release_date: '2023-02-14'
+  3.1.1:
+    changes:
+      bugfixes:
+      - hosted_engine_setup - Vdsm now uses -n flag for all qemu-img convert calls
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/682).
+      - ovirt_cluster_info - Fix example patter (https://github.com/oVirt/ovirt-ansible-collection/pull/684).
+      - ovirt_host - Fix refreshed state action (https://github.com/oVirt/ovirt-ansible-collection/pull/687).
+    fragments:
+    - 682-hosted_engine_setup-fix-disk-copying-command.yml
+    - 684-ovirt_cluster_info-fix-example-patter.yml
+    - 687-ovirt_host-fix-refreshed-state-action.yml
+    release_date: '2023-03-03'
