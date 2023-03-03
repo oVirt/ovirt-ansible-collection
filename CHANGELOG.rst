@@ -5,6 +5,16 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v3.1.1
+======
+
+Bugfixes
+--------
+
+- hosted_engine_setup - Vdsm now uses -n flag for all qemu-img convert calls (https://github.com/oVirt/ovirt-ansible-collection/pull/682).
+- ovirt_cluster_info - Fix example patter (https://github.com/oVirt/ovirt-ansible-collection/pull/684).
+- ovirt_host - Fix refreshed state action (https://github.com/oVirt/ovirt-ansible-collection/pull/687).
+
 v3.1.0
 ======
 
