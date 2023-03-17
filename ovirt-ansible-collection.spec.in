@@ -32,11 +32,11 @@ Requires:	python3.11-passlib
 %endif
 
 %if 0%{?rhel} < 9
-Requires:	python39-ovirt-imageio-client
-Requires:	python39-ovirt-engine-sdk4 >= 4.5.0
-Requires:	python39-netaddr
-Requires:	python39-jmespath
-Requires:	python39-passlib
+Requires:	python3.11-ovirt-imageio-client
+Requires:	python3.11-ovirt-engine-sdk4 >= 4.5.0
+Requires:	python3.11-netaddr
+Requires:	python3.11-jmespath
+Requires:	python3.11-passlib
 %endif
 
 Obsoletes:	ansible < 2.10.0
@@ -90,6 +90,9 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Thu Mar 23 2023 Martin Necas <mnecas@redhat.com> - 3.1.2-1
+- Add Python 3.11 subpackage to be usable in ansible-core 2.14 for el8
+
 * Fri Mar 3 2023 Martin Necas <mnecas@redhat.com> - 3.1.1-1
 - hosted_engine_setup - Vdsm now uses -n flag for all qemu-img convert calls.
 - ovirt_cluster_info - Fix example patter.
