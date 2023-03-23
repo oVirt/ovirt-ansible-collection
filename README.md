@@ -9,7 +9,6 @@ Requirements
 
  * Ansible core version 2.12.0 or higher
  * Python SDK version 4.5.0 or higher
- * Python netaddr library on the ansible controller node
 
 Upstream oVirt documentation
 --------------
