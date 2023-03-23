@@ -54,14 +54,14 @@
       ansible.builtin.set_fact:
         virbr_cidr_ipv4: >-
           {{ (hostvars[inventory_hostname]['ansible_'+virbr_default]['ipv4']['address']+'/'
-          +hostvars[inventory_hostname]['ansible_'+virbr_default]['ipv4']['netmask']) |ipv4('host/prefix') }}
+          +hostvars[inventory_hostname]['ansible_'+virbr_default]['ipv4']['netmask']) }}
       when: not ipv6_deployment|bool
     - name: Fetch IPv6 CIDR for {{ virbr_default }}
       ansible.builtin.set_fact:
         virbr_cidr_ipv6: >-
           {{ (hostvars[inventory_hostname]['ansible_'+virbr_default]['ipv6'][0]['address']+'/'+
-          hostvars[inventory_hostname]['ansible_'+virbr_default]['ipv6'][0]['prefix']) |
-          ipv6('host/prefix') if 'ipv6' in hostvars[inventory_hostname]['ansible_'+virbr_default] else None }}
+          hostvars[inventory_hostname]['ansible_'+virbr_default]['ipv6'][0]['prefix'])
+          if 'ipv6' in hostvars[inventory_hostname]['ansible_'+virbr_default] else None }}
       when: ipv6_deployment|bool
     - name: Add IPv4 outbound route rules
       ansible.builtin.command: ip rule add from {{ virbr_cidr_ipv4 }} priority 101 table main
@@ -71,7 +71,7 @@
         not ipv6_deployment|bool and
         route_rules_ipv4.stdout | from_json |
         selectattr('priority', 'equalto', 101) |
-        selectattr('src', 'equalto', virbr_cidr_ipv4 | ipaddr('address') ) |
+        selectattr('src', 'equalto', virbr_cidr_ipv4) |
         list | length == 0
       changed_when: true
     - name: Add IPv4 inbound route rules
@@ -83,7 +83,7 @@
         not ipv6_deployment|bool and
         route_rules_ipv4.stdout | from_json |
         selectattr('priority', 'equalto', 100) |
-        selectattr('dst', 'equalto', virbr_cidr_ipv4 | ipaddr('address') ) |
+        selectattr('dst', 'equalto', virbr_cidr_ipv4) |
         list | length == 0
     - name: Add IPv6 outbound route rules
       ansible.builtin.command: ip -6 rule add from {{ virbr_cidr_ipv6 }} priority 101 table main
