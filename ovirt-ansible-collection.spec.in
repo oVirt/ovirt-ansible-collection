@@ -26,7 +26,6 @@ Requires:	qemu-img
 %if 0%{?rhel} >= 9
 Requires:	python3.11-ovirt-imageio-client
 Requires:	python3.11-ovirt-engine-sdk4 >= 4.5.0
-Requires:	python3.11-netaddr
 Requires:	python3.11-jmespath
 Requires:	python3.11-passlib
 %endif
@@ -34,7 +33,6 @@ Requires:	python3.11-passlib
 %if 0%{?rhel} < 9
 Requires:	python3.11-ovirt-imageio-client
 Requires:	python3.11-ovirt-engine-sdk4 >= 4.5.0
-Requires:	python3.11-netaddr
 Requires:	python3.11-jmespath
 Requires:	python3.11-passlib
 %endif
