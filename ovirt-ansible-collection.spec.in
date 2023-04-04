@@ -22,6 +22,7 @@ Requires:	ansible-collection-ansible-netcommon
 Requires:	ansible-collection-ansible-posix
 Requires:	ansible-collection-ansible-utils
 Requires:	qemu-img
+Requires:   python3-jmespath
 
 %if 0%{?rhel} >= 9
 Requires:	python3.11-ovirt-imageio-client
