@@ -67,7 +67,8 @@ cp -r "$OVIRT_BUILD"/* "$OVIRT_BUILD"/.config "$COLLECTION_DIR"
 cd "$COLLECTION_DIR"
 
 antsibull-changelog lint -v
-ansible-lint roles/*
+#skip linting, done in separate github workflow
+#ansible-lint roles/*
 
 cd "$ROOT_PATH"
 
