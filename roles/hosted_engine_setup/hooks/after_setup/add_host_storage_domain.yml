@@ -8,7 +8,7 @@
 
 - name: Set Engine public key as authorized key without validating the TLS/SSL certificates
   connection: ssh
-  authorized_key:
+  ansible.posix.authorized_key:
     user: root
     state: present
     key: https://{{ he_fqdn }}/ovirt-engine/services/pki-resource?resource=engine-certificate&format=OPENSSH-PUBKEY
