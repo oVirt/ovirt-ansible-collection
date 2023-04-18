@@ -20,6 +20,12 @@
 - name: Apply any Affinity Labels
   import_tasks: affinity_labels.yml
 
+- name: Rename and resize boot disk
+  include_tasks: rename_resize_boot_disk.yml
+  with_items: "{{ create_vms }}"
+  loop_control:
+    loop_var: "current_vm"
+
 - name: Manage profile disks
   ovirt_disk:
     auth: "{{ ovirt_auth }}"
