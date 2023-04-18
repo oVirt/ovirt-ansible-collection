@@ -217,7 +217,7 @@
         owner: root
         group: root
         mode: 0644
-      when: he_vm_ip_addr is not none and he_vm_ip_addr
+      when: he_vm_ip_addr is not none and not he_vm_ip_addr is search(":")
     - name: Generate static network configuration for the engine VM, IPv6
       ansible.builtin.template:
         src: templates/ifcfg-eth0-static-ipv6.j2
@@ -225,7 +225,7 @@
         owner: root
         group: root
         mode: 0644
-      when: he_vm_ip_addr is not none and he_vm_ip_addr
+      when: he_vm_ip_addr is not none and he_vm_ip_addr is search(":")
     - name: Inject network configuration with guestfish
       ansible.builtin.command: >-
         guestfish -a {{ local_vm_disk_path }} --rw -i copy-in "{{ he_local_vm_dir }}/ifcfg-eth0"
