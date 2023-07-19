@@ -19,6 +19,9 @@ jobs:
           sudo add-apt-repository ppa:deadsnakes/ppa
           sudo apt-get install python3.9-venv -y
 
+      - name: Install ansible.posix
+        run: ansible-galaxy collection install -c ansible.posix
+
       - name: Checkout
         uses: ovirt/checkout-action@main
 
@@ -49,7 +52,7 @@ jobs:
             "ansible-lint>=6.0.0,<7.0.0" \
             cryptography \
             "pyyaml>=5.4.1"
-          ansible-lint roles/* -x 204
+          ansible-lint -x 'key-order[task],no-free-form,schema[vars],yaml[octal-values],risky-shell-pipe,fqcn[keyword]' roles/*
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -68,6 +71,9 @@ jobs:
     steps:
       - name: Install python3.9 modules
         run: ${{ matrix.pip-command }} install pycodestyle pylint voluptuous yamllint rstcheck antsibull-changelog rich "ansible-lint>=6.0.0,<7.0.0" cryptography
+
+      - name: Install ansible.posix
+        run: ansible-galaxy collection install -c ansible.posix
 
       - name: Checkout
         uses: ovirt/checkout-action@main

@@ -33,7 +33,7 @@
       ansible.builtin.set_fact:
         he_host_ip: "{{
         (
-          hostname_resolution_output.stdout.split() | 
+          hostname_resolution_output.stdout.split() |
             intersect(hostname_addresses_output.stdout.split())
         )[0]
         }}"

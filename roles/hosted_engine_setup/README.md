@@ -318,7 +318,7 @@ $ ansible-playbook hosted_engine_deploy.yml --extra-vars='@he_deployment.json' -
 
 Deployment over a remote host:
 ```sh
-ansible-playbook -i host123.localdomain, hosted_engine_deploy.yml --extra-vars='@he_deployment.json' --extra-vars='@passwords.yml' --ask-vault-pass
+$ ansible-playbook -i host123.localdomain, hosted_engine_deploy.yml --extra-vars='@he_deployment.json' --extra-vars='@passwords.yml' --ask-vault-pass
 ```
 
 Deploy over a remote host from Ansible AWX/Tower
