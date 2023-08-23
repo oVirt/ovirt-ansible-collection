@@ -1,3 +1,0 @@
----
-bugfixes:
-      - ovirt_disk -  Fix issue in detaching the direct LUN (https://github.com/oVirt/ovirt-ansible-collection/pull/700)

@@ -5,6 +5,20 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v3.1.3
+======
+
+Bugfixes
+--------
+
+- HE - add back dependency on python3-jmespath (https://github.com/oVirt/ovirt-ansible-collection/pull/701)
+- HE - drop remaining filters using netaddr (https://github.com/oVirt/ovirt-ansible-collection/pull/702)
+- HE - drop usage of ipaddr filters and remove dependency on python-netaddr (https://github.com/oVirt/ovirt-ansible-collection/pull/696)
+- HE - fix ipv4 and ipv6 check after dropping netaddr (https://github.com/oVirt/ovirt-ansible-collection/pull/704)
+- hosted_engine_setup -  Update README (https://github.com/oVirt/ovirt-ansible-collection/pull/706)
+- ovirt_disk -  Fix issue in detaching the direct LUN (https://github.com/oVirt/ovirt-ansible-collection/pull/700)
+- ovirt_quota - Convert storage size to integer (https://github.com/oVirt/ovirt-ansible-collection/pull/712)
+
 v3.1.1
 ======
 
