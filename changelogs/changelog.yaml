@@ -935,3 +935,23 @@ releases:
     - 684-ovirt_cluster_info-fix-example-patter.yml
     - 687-ovirt_host-fix-refreshed-state-action.yml
     release_date: '2023-03-03'
+  3.1.3:
+    changes:
+      bugfixes:
+      - HE - add back dependency on python3-jmespath (https://github.com/oVirt/ovirt-ansible-collection/pull/701)
+      - HE - drop remaining filters using netaddr (https://github.com/oVirt/ovirt-ansible-collection/pull/702)
+      - HE - drop usage of ipaddr filters and remove dependency on python-netaddr
+        (https://github.com/oVirt/ovirt-ansible-collection/pull/696)
+      - HE - fix ipv4 and ipv6 check after dropping netaddr (https://github.com/oVirt/ovirt-ansible-collection/pull/704)
+      - hosted_engine_setup -  Update README (https://github.com/oVirt/ovirt-ansible-collection/pull/706)
+      - ovirt_disk -  Fix issue in detaching the direct LUN (https://github.com/oVirt/ovirt-ansible-collection/pull/700)
+      - ovirt_quota - Convert storage size to integer (https://github.com/oVirt/ovirt-ansible-collection/pull/712)
+    fragments:
+    - 696-drop-netaddr.yml
+    - 700-fix-directlun.yml
+    - 701-fix-jmespath.yml
+    - 702-drop-netaddr2.yml
+    - 704-drop-netaddr3.yml
+    - 706-he-update-README.yml
+    - 712-ovirt_quota-fix-storage-size-typecast.yml
+    release_date: '2023-08-23'

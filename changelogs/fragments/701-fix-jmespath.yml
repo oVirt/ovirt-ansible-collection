@@ -1,3 +1,0 @@
----
-bugfixes:
-      - HE - add back dependency on python3-jmespath (https://github.com/oVirt/ovirt-ansible-collection/pull/701)
