@@ -67,7 +67,8 @@ cp -r "$OVIRT_BUILD"/* "$OVIRT_BUILD"/.config "$COLLECTION_DIR"
 cd "$COLLECTION_DIR"
 
 antsibull-changelog lint -v
-ansible-lint roles/*
+# dropping linter in favor of "ansible-test docker" github action
+#ansible-lint roles/*
 
 cd "$ROOT_PATH"
 
