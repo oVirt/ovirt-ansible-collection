@@ -236,6 +236,7 @@ options:
     pass_discard:
         description:
             - Defines whether the Virtual Machine passes discard commands to the storage.
+        default: false
         type: bool
         version_added: 1.2.0
     uses_scsi_reservation:
@@ -819,7 +820,7 @@ def main():
         shareable=dict(default=None, type='bool'),
         scsi_passthrough=dict(default=None, type='str', choices=['disabled', 'filtered', 'unfiltered']),
         uses_scsi_reservation=dict(default=None, type='bool'),
-        pass_discard=dict(default=None, type='bool'),
+        pass_discard=dict(default=False, type='bool'),
         propagate_errors=dict(default=None, type='bool'),
         logical_unit=dict(default=None, type='dict'),
         read_only=dict(default=None, type='bool'),
