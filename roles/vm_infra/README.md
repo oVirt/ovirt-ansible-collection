@@ -66,6 +66,9 @@ The `vms` and `profile` variables can contain following attributes, note that if
 | clone              | No                    | If yes then the disks of the created virtual machine will be cloned and independent of the template.  This parameter is used only when state is running or present and VM didn't exist before.  |
 | template           | Blank                 | Name of template that the virtual machine should be based on.   |
 | template_version   | UNDEF                 | Version number of the template to be used for VM. By default the latest available version of the template is used.   |
+| boot_disk_name     | UNDEF                 | Renames the bootable disk after the VM is created. Useful when creating VMs from templates |
+| boot_disk_use_vm_name_prefix | true        | Use the name of the virtual machine as prefix when renaming the VM boot disk. The resulting boot disk name would be <i>{{vm_name}}_{{boot_disk_name}}</i>|
+| boot_disk_size     | UNDEF                 | Resizes the bootable disk after the VM is created. A suffix that complies to the IEC 60027-2 standard (for example 10GiB, 1024MiB) can be used. |
 | memory             | UNDEF                 | Amount of virtual machine memory.               |
 | memory_max         | UNDEF                 | Upper bound of virtual machine memory up to which memory hot-plug can be performed. |
 | memory_guaranteed  | UNDEF                 | Amount of minimal guaranteed memory of the Virtual Machine. Prefix uses IEC 60027-2 standard (for example 1GiB, 1024MiB). <i>memory_guaranteed</i> parameter can't be lower than <i>memory</i> parameter. |

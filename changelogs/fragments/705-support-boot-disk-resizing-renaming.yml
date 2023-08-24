@@ -1,0 +1,3 @@
+---
+minor_changes:
+      - vm_infra - Support boot disk renaming and resizing. (https://github.com/oVirt/ovirt-ansible-collection/pull/705)
