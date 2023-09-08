@@ -750,6 +750,10 @@ options:
             - "If no value is passed, default value is set by oVirt/RHV engine."
         choices: ['interleave', 'preferred', 'strict']
         type: str
+    storage_error_resume_behaviour:
+        description:
+            - storage error resume behaviour. "auto_resume", "kill", "leave_paused"
+        version_added: "2.9"
     numa_nodes:
         description:
             - "List of vNUMA Nodes to set for this VM and pin them to assigned host's physical NUMA node."
@@ -1676,6 +1680,9 @@ class VmsModule(BaseModule):
             numa_tune_mode=otypes.NumaTuneMode(
                 self.param('numa_tune_mode')
             ) if self.param('numa_tune_mode') else None,
+            storage_error_resume_behaviour=otypes.VmStorageErrorResumeBehaviour(
+                self.param('storage_error_resume_behaviour')
+            ) if self.param('storage_error_resume_behaviour') else None,
             rng_device=otypes.RngDevice(
                 source=otypes.RngSource(self.param('rng_device')),
             ) if self.param('rng_device') else None,
@@ -1800,6 +1807,7 @@ class VmsModule(BaseModule):
             equal(self.param('serial_policy'), str(getattr(entity.serial_number, 'policy', None))) and
             equal(self.param('serial_policy_value'), getattr(entity.serial_number, 'value', None)) and
             equal(self.param('numa_tune_mode'), str(entity.numa_tune_mode)) and
+            equal(self.param('storage_error_resume_behaviour'), str(entity.storage_error_resume_behaviour)) and
             equal(self.param('virtio_scsi_enabled'), getattr(entity.virtio_scsi, 'enabled', None)) and
             equal(self.param('multi_queues_enabled'), entity.multi_queues_enabled) and
             equal(self.param('virtio_scsi_multi_queues'), entity.virtio_scsi_multi_queues) and
@@ -2624,6 +2632,7 @@ def main():
         ballooning_enabled=dict(type='bool', default=None),
         rng_device=dict(type='str'),
         numa_tune_mode=dict(type='str', choices=['interleave', 'preferred', 'strict']),
+        storage_error_resume_behaviour=dict(type='str', choices=['auto_resume', 'leave_paused', 'kill']),
         numa_nodes=dict(type='list', default=[], elements='dict'),
         custom_properties=dict(type='list', elements='dict'),
         watchdog=dict(type='dict'),
