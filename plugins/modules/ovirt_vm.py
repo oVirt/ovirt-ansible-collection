@@ -753,7 +753,7 @@ options:
     storage_error_resume_behaviour:
         description:
             - storage error resume behaviour. "auto_resume", "kill", "leave_paused"
-        version_added: "2.9"
+        version_added: "3.2.0"
     numa_nodes:
         description:
             - "List of vNUMA Nodes to set for this VM and pin them to assigned host's physical NUMA node."
