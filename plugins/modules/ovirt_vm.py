@@ -752,7 +752,10 @@ options:
         type: str
     storage_error_resume_behaviour:
         description:
-            - storage error resume behaviour. "auto_resume", "kill", "leave_paused"
+            - "If the storage, on which this virtual machine has some disks gets unresponsive, the virtual machine gets paused."
+            - "These are the possible options, what should happen with the virtual machine at the moment the storage becomes available again."
+        choices: ['auto_resume', 'kill', 'leave_paused']
+        type: str
         version_added: "3.2.0"
     numa_nodes:
         description:
