@@ -932,6 +932,11 @@ options:
               >0 - Number of Virtio SCSI queues to use by virtual machine."
         type: int
         version_added: 1.7.0
+    tpm_enabled:
+        description:
+            - "If `true`, a TPM device is added to the virtual machine."
+        type: bool
+        version_added: 3.2.0
     wait_after_lease:
         description:
             - "Number of seconds which should the module wait after the lease is changed."
@@ -1610,6 +1615,7 @@ class VmsModule(BaseModule):
             ) if self.param('virtio_scsi_enabled') is not None else None,
             multi_queues_enabled=self.param('multi_queues_enabled'),
             virtio_scsi_multi_queues=self.param('virtio_scsi_multi_queues'),
+            tpm_enabled=self.param('tpm_enabled'),
             os=otypes.OperatingSystem(
                 type=self.param('operating_system'),
                 boot=otypes.Boot(
@@ -1814,6 +1820,7 @@ class VmsModule(BaseModule):
             equal(self.param('virtio_scsi_enabled'), getattr(entity.virtio_scsi, 'enabled', None)) and
             equal(self.param('multi_queues_enabled'), entity.multi_queues_enabled) and
             equal(self.param('virtio_scsi_multi_queues'), entity.virtio_scsi_multi_queues) and
+            equal(self.param('tpm_enabled'), entity.tpm_enabled) and
             equal(self.param('rng_device'), str(entity.rng_device.source) if entity.rng_device else None) and
             equal(provided_vm_display.get('monitors'), getattr(vm_display, 'monitors', None)) and
             equal(provided_vm_display.get('copy_paste_enabled'), getattr(vm_display, 'copy_paste_enabled', None)) and
@@ -2664,6 +2671,7 @@ def main():
         virtio_scsi_multi_queues=dict(type='int'),
         snapshot_name=dict(type='str'),
         snapshot_vm=dict(type='str'),
+        tpm_enabled=dict(type='bool'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
