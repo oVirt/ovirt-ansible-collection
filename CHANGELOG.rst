@@ -5,6 +5,21 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v3.2.0
+======
+
+Minor Changes
+-------------
+
+- ovirt_vm - Add tpm_enabled (https://github.com/oVirt/ovirt-ansible-collection/pull/722).
+- storage_error_resume_behaviour - Support VM storage error resume behaviour "auto_resume", "kill", "leave_paused". (https://github.com/oVirt/ovirt-ansible-collection/pull/721)
+- vm_infra - Support boot disk renaming and resizing. (https://github.com/oVirt/ovirt-ansible-collection/pull/705)
+
+Bugfixes
+--------
+
+- ovirt_role - Fix administrative option when set to False (https://github.com/oVirt/ovirt-ansible-collection/pull/723).
+
 v3.1.3
 ======
 
