@@ -955,3 +955,18 @@ releases:
     - 706-he-update-README.yml
     - 712-ovirt_quota-fix-storage-size-typecast.yml
     release_date: '2023-08-23'
+  3.1.4:
+    changes:
+      bugfixes:
+      - ovirt_role - Fix administrative option when set to False (https://github.com/oVirt/ovirt-ansible-collection/pull/723).
+      minor_changes:
+      - ovirt_vm - Add tpm_enabled (https://github.com/oVirt/ovirt-ansible-collection/pull/722).
+      - storage_error_resume_behaviour - Support VM storage error resume behaviour
+        "auto_resume", "kill", "leave_paused". (https://github.com/oVirt/ovirt-ansible-collection/pull/721)
+      - vm_infra - Support boot disk renaming and resizing. (https://github.com/oVirt/ovirt-ansible-collection/pull/705)
+    fragments:
+    - 705-support-boot-disk-resizing-renaming.yml
+    - 721-enhancement-vm-storage-error-resume-behaviour.yml
+    - 722-add-tpm-enabled.yml
+    - 723-ovirt_role-fix-administrative-condition.yml
+    release_date: '2023-10-02'
