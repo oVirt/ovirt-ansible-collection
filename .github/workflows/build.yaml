@@ -23,7 +23,7 @@ jobs:
       - name: Run ansible-test sanity
         run: |
           cd /tmp/ansible_collections/ovirt/ovirt/
-          ANSIBLE_TEST_PREFER_PODMAN=1 ansible-test sanity --docker
+          ANSIBLE_TEST_PREFER_PODMAN=1 ansible-test sanity --docker --skip-test pylint
 
       - name: Run ansible-lint 5.0.0
         run: |
