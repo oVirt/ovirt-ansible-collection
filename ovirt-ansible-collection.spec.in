@@ -87,6 +87,11 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Wed Oct 11 2023 Martin Necas <mnecas@redhat.com> - 2.4.3-1
+- ovirt_disk - Fix issue in detaching the direct LUN
+- ovirt_quota - Convert storage size to integer
+- ovirt_role - Fix administrative option when set to False
+
 * Tue Jan 24 2023 Martin Necas <mnecas@redhat.com> - 2.4.2-1
 - info modules - Use dynamic collection name instead of ovirt.ovirt for deprecation warning
 - module_utils - Replace `getargspec` with `getfullargspec` to support newer python 3.y versions
