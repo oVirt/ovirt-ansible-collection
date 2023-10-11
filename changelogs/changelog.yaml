@@ -908,3 +908,14 @@ releases:
     - 663-replace-getargspec-with-getfullargspec.yml
     - 667-wait-for-host-to-be-in-result-state.yml
     release_date: '2023-01-24'
+  2.4.3:
+    changes:
+      bugfixes:
+      - ovirt_disk -  Fix issue in detaching the direct LUN (https://github.com/oVirt/ovirt-ansible-collection/pull/700)
+      - ovirt_quota - Convert storage size to integer (https://github.com/oVirt/ovirt-ansible-collection/pull/712)
+      - ovirt_role - Fix administrative option when set to False (https://github.com/oVirt/ovirt-ansible-collection/pull/723).
+    fragments:
+    - 700-fix-directlun.yml
+    - 712-ovirt_quota-fix-storage-size-typecast.yml
+    - 723-ovirt_role-fix-administrative-condition.yml
+    release_date: '2023-10-11'

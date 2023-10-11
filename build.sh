@@ -1,8 +1,10 @@
 #!/bin/bash
 
 VERSION="2.4.3"
-MILESTONE="master"
-RPM_RELEASE="0.1.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
+# MILESTONE="master"
+MILESTONE=""
+# RPM_RELEASE="0.1.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
+RPM_RELEASE="1"
 
 BUILD_TYPE=$2
 BUILD_PATH=$3

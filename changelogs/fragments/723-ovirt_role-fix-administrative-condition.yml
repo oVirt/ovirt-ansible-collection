@@ -1,3 +1,0 @@
----
-bugfixes:
-      - ovirt_role - Fix administrative option when set to False (https://github.com/oVirt/ovirt-ansible-collection/pull/723).

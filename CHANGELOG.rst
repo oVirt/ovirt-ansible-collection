@@ -5,6 +5,16 @@ ovirt.ovirt Release Notes
 .. contents:: Topics
 
 
+v2.4.3
+======
+
+Bugfixes
+--------
+
+- ovirt_disk - Fix issue in detaching the direct LUN (https://github.com/oVirt/ovirt-ansible-collection/pull/700).
+- ovirt_quota - Convert storage size to integer (https://github.com/oVirt/ovirt-ansible-collection/pull/712).
+- ovirt_role - Fix administrative option when set to False (https://github.com/oVirt/ovirt-ansible-collection/pull/723).
+
 v2.4.2
 ======
 
