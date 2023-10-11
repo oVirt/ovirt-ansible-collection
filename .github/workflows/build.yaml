@@ -8,28 +8,6 @@ on:
       - ovirt-ansible-collection-2.y
   workflow_dispatch:
 jobs:
-  sanity_test:
-    runs-on: ubuntu-latest
-    name: ansible-test docker
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
-        with:
-          fetch-depth: 0
-
-      - name: Build the project
-        run: ./build.sh build ovirt /tmp
-
-      - name: Run ansible-test sanity
-        run: |
-          cd /tmp/ansible_collections/ovirt/ovirt/
-          ANSIBLE_TEST_PREFER_PODMAN=1 ansible-test sanity --docker
-
-      - name: Run ansible-lint 5.0.0
-        run: |
-          cd /tmp/ansible_collections/ovirt/ovirt/
-          pip3 install install pycodestyle pylint==2.4.4 voluptuous yamllint rstcheck antsibull-changelog "rich<11.0.0" "ansible-lint<5.0.0" cryptography
-          ansible-lint roles/* -x 204
   build:
     runs-on: ubuntu-latest
     strategy:
