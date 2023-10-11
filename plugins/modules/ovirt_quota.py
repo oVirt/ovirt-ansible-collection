@@ -309,7 +309,7 @@ def main():
             for storage in module.params.get('storages'):
                 sd_limit_service.add(
                     limit=otypes.QuotaStorageLimit(
-                        limit=storage.get('size'),
+                        limit=int(storage.get('size')),
                         storage_domain=search_by_name(
                             connection.system_service().storage_domains_service(),
                             storage.get('name')

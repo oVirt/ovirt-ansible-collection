@@ -1,0 +1,3 @@
+---
+bugfixes:
+      - ovirt_quota - Convert storage size to integer (https://github.com/oVirt/ovirt-ansible-collection/pull/712)

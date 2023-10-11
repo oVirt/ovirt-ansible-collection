@@ -112,8 +112,7 @@ class RoleModule(BaseModule):
         return otypes.Role(
             id=self.param('id'),
             name=self.param('name'),
-            administrative=self.param('administrative') if self.param(
-                'administrative') else None,
+            administrative=self.param('administrative') if self.param('administrative') is not None else None,
             permits=[
                 otypes.Permit(id=all_permits.get(new_permit)) for new_permit in self.param('permits')
             ] if self.param('permits') else None,
