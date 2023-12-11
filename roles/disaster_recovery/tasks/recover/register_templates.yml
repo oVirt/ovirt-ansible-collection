@@ -10,7 +10,7 @@
       register: storage_template_info
 
     - name: Register unregistered templates
-      include: register_template.yml
+      include_tasks: register_template.yml
       # The main task is already declared to ignore errors so that might be
       # redundant to put it here ignore_errors: "{{ ignore | default(yes) }}"
       with_items: "{{ storage_template_info.ovirt_storage_templates }}"
