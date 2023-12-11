@@ -15,7 +15,7 @@
 
     # TODO: We should filter out VMs which already exist in the setup (diskless VMs)
     - name: Register VMs
-      include: register_vm.yml
+      include_tasks: register_vm.yml
       with_items: "{{ storage_vm_info.ovirt_storage_vms }}"
       # We use loop_control so storage.name will not be overridden by the nested loop.
       loop_control:

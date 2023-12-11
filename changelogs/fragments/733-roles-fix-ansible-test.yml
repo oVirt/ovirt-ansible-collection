@@ -1,0 +1,3 @@
+---
+bugfixes:
+      - roles - Fix ansible-test errors change include to include_tasks (https://github.com/oVirt/ovirt-ansible-collection/pull/733).

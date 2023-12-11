@@ -1,15 +1,15 @@
 ---
 - name: Remove VMPools
-  include: vm_pools.yml
+  include_tasks: vm_pools.yml
 
 - name: Remove VMs
-  include: vms.yml
+  include_tasks: vms.yml
 
 - name: Remove Templates
-  include: templates.yml
+  include_tasks: templates.yml
 
 - name: Remove Disks
-  include: disks.yml
+  include_tasks: disks.yml
 
 - name: Find existing Storage Domains in Datacenter
   ovirt_storage_domain_info:
@@ -18,7 +18,7 @@
   register: sd_info
 
 - name: Remove all Storage Domains except master
-  include: storages_pre.yml
+  include_tasks: storages_pre.yml
 
 - name: Find existing clusters in Datacenter
   ovirt_cluster_info:
@@ -27,13 +27,13 @@
   register: cluster_info
 
 - name: Remove Datacenter
-  include: datacenter.yml
+  include_tasks: datacenter.yml
 
 - name: Remove master Storage Domain
-  include: storages_last.yml
+  include_tasks: storages_last.yml
 
 - name: Remove Clusters and Hosts
-  include: cluster_and_hosts.yml
+  include_tasks: cluster_and_hosts.yml
   with_items: "{{ cluster_info.ovirt_clusters }}"
   loop_control:
     loop_var: cluster_item
