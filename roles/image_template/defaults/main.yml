@@ -16,6 +16,7 @@ template_nics:
     profile_name: ovirtmgmt
     interface: virtio
 template_seal: true
+template_version_name: "base version"
 
 disk_resize_timeout: 60
 disk_storage_domain: null

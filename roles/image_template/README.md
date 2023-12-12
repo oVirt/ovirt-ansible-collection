@@ -49,6 +49,9 @@ Role Variables
 | glance_image_provider        | UNDEF (mandatory if qcow_url is not used)            | Name of the glance image provider.                    |
 | glance_image            | UNDEF (mandatory if qcow_url is not used)               | This parameter specifies the name of disk in glance provider to be imported as template. |
 | template_prerequisites_tasks | UNDEF | Works only with qcow image. Specify a path to Ansible tasks file, which should be executed on virtual machine before creating a template from it. Note that qcow image must contain guest agent which reports IP address. |
+| template_version_name      | "base version" | Version name of the template. Allows to create different versions of a template.  |
+| template_description       | UNDEF | Sets the template description |
+| template_operating_system  | UNDEF | Sets the template Operative System |
 
 The `template_disks` List of dictionaries can contain following attributes:
 
