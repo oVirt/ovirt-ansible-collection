@@ -157,7 +157,7 @@ options:
             target:
                 description:
                     - iSCSI target.
-            lun_id:
+            id:
                 description:
                     - LUN id.
             username:
