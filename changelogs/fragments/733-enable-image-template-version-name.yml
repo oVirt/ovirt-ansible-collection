@@ -1,3 +1,0 @@
----
-minor_changes:
-      - image_template - Support `template_version_name`, `template_description` and `template_operative_system`. (https://github.com/oVirt/ovirt-ansible-collection/pull/733)

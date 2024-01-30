@@ -83,8 +83,7 @@
     - name: Check if template already exists
       ovirt_template_info:
         auth: "{{ ovirt_auth }}"
-        pattern: "name={{ template_name }} and datacenter={{ dc_info.ovirt_datacenters[0].name }}
-          and version_name=\"{{ template_version_name }}\""
+        pattern: "name={{ template_name }} and datacenter={{ dc_info.ovirt_datacenters[0].name }}"
       register: template_info
       tags:
         - ovirt-template-image
@@ -231,10 +230,6 @@
         cluster: "{{ template_cluster }}"
         timeout: "{{ template_timeout }}"
         seal: "{{ template_seal }}"
-        version:
-          name: "{{ template_version_name }}"
-        description: "{{ template_description | default(omit)}}"
-        operating_system: "{{ template_operating_system | default(omit)}}"
       when: template_info.ovirt_templates | length == 0
       tags:
         - ovirt-template-image
