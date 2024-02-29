@@ -217,6 +217,14 @@
       register: host_result_up_check
       ignore_errors: true
 
+    - name: Enable postfix service
+      ansible.builtin.service:
+        name: postfix
+        enabled: yes
+        state: started
+      register: postfix_service_status
+      ignore_errors: true
+
     - name: Handle deployment failure
       block:
         - name: Set host_id
