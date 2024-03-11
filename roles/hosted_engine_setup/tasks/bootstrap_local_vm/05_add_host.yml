@@ -220,7 +220,7 @@
     - name: Enable postfix service
       ansible.builtin.service:
         name: postfix
-        enabled: yes
+        enabled: true
         state: started
       register: postfix_service_status
       ignore_errors: true
