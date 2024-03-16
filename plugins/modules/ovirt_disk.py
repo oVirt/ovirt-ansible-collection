@@ -916,6 +916,12 @@ def main():
                         action_condition=lambda d: module.params['sparsify'],
                         wait_condition=lambda d: d.status == otypes.DiskStatus.OK,
                     )
+                ret = disks_module.action(
+                    disk=disk,
+                    action='convert',
+                    action_condition=lambda d: module.params['format'] != str(d.format),
+                    wait_condition=lambda d: d.status == otypes.DiskStatus.OK,
+                )
 
         # Export disk as image to glance domain
         elif state == 'exported':
