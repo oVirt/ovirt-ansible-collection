@@ -843,7 +843,7 @@ def main():
     host = module.params['host']
     # Fail when host is specified with the LUN id. LUN id is needed to identify
     # an existing disk if already available in the environment.
-    if (host and lun is None) or (host and lun.get("id") is None):
+    if (host and lun is None) or (host and lun.get("lun_id") is None):
         module.fail_json(
             msg="Can not use parameter host ({0!s}) without "
             "specifying the logical_unit id".format(host)
@@ -866,7 +866,7 @@ def main():
         force_create = False
         vm_service = get_vm_service(connection, module)
         if lun:
-            disk = _search_by_lun(disks_service, lun.get('id'))
+            disk = _search_by_lun(disks_service, lun.get('lun_id'))
         else:
             disk = disks_module.search_entity(search_params=searchable_attributes(module))
             if vm_service and disk and state != 'attached':
