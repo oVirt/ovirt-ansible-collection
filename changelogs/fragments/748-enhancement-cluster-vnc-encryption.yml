@@ -1,0 +1,3 @@
+---
+minor_changes:
+    - Enable `vnc_encryption` option for `ovirt_cluster` module (https://github.com/oVirt/ovirt-ansible-collection/pull/748)
