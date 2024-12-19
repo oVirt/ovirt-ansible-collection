@@ -1,0 +1,40 @@
+---
+- name: Configure Apache
+  block:
+    - name: Restore original OIDCProviderMetadataURL value
+      ansible.builtin.replace:
+        path: /etc/httpd/conf.d/internalsso-openidc.conf
+        regexp: '(^\s+OIDCProviderMetadataURL https:\/\/).+(\/ovirt-engine.*)'
+        replace: '\g<1>{{ he_fqdn }}\g<2>'
+    - name: Restore original OIDCRedirectURI value
+      ansible.builtin.replace:
+        path: /etc/httpd/conf.d/internalsso-openidc.conf
+        regexp: '(^\s+OIDCRedirectURI https:\/\/).+(\/ovirt-engine.*)'
+        replace: '\g<1>{{ he_fqdn }}\g<2>'
+    - name: Restore original OIDCDefaultURL value
+      ansible.builtin.replace:
+        path: /etc/httpd/conf.d/internalsso-openidc.conf
+        regexp: '(^\s+OIDCDefaultURL https:\/\/).+(\/ovirt-engine.*)'
+        replace: '\g<1>{{ he_fqdn }}\g<2>'
+    - name: Restore original OIDCOAuthIntrospectionEndpoint value
+      ansible.builtin.replace:
+        path: /etc/httpd/conf.d/internalsso-openidc.conf
+        regexp: '(^\s+OIDCOAuthIntrospectionEndpoint https:\/\/).+(\/ovirt-engine.*)'
+        replace: '\g<1>{{ he_fqdn }}\g<2>'
+- name: Configure Keycloak
+  block:
+    - name: Copy keycloak_he_pause_host.sh
+      ansible.builtin.copy:
+        src: /usr/share/ansible/collections/ansible_collections/ovirt/ovirt/roles/hosted_engine_setup/files/keycloak_he_pause_host.sh
+        dest: /tmp/keycloak_he_pause_host.sh
+        mode: '0644'
+    - name: Run keycloak_he_pause_host.sh
+      shell: /bin/bash /tmp/keycloak_he_pause_host.sh
+      environment:
+        KEYCLOAK_URL: "https://{{ he_fqdn }}/ovirt-engine-auth"
+        HOST_FQDN: "{{ he_host_name }}"
+        PASSWORD: "{{ he_admin_password }}"
+- name: Restart httpd service
+  ansible.builtin.service:
+    name: httpd
+    state: restarted
