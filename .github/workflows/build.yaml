@@ -9,15 +9,13 @@ on:
   workflow_dispatch:
 jobs:
   sanity_test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: ansible-test docker
     steps:
-      - name: Install Python 3.9
+      - name: Install Python
         run: |
           sudo apt-get update
-          sudo apt-get install software-properties-common -y
-          sudo add-apt-repository ppa:deadsnakes/ppa
-          sudo apt-get install python3.9-venv -y
+          sudo apt-get install python3-venv -y
 
       - name: Install ansible.posix
         run: ansible-galaxy collection install -c ansible.posix
@@ -36,8 +34,8 @@ jobs:
       - name: Run ansible-lint 6.y.z
         run: |
           set -e
-          # Activate Python 3.9 virtualenv and run ansible-lint there
-          python3.9 -m venv venv
+          # Activate Python 3 virtualenv and run ansible-lint there
+          python3 -m venv venv
           source venv/bin/activate
           cd /tmp/ansible_collections/ovirt/ovirt/
           pip3 install --upgrade pip
@@ -59,9 +57,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: centos-stream-8
-            pip-command: pip3.9
-            container-name: el8stream
           - name: centos-stream-9
             pip-command: pip3
             container-name: el9stream
@@ -69,7 +64,7 @@ jobs:
     container:
       image: quay.io/ovirt/buildcontainer:${{ matrix.container-name }}
     steps:
-      - name: Install python3.9 modules
+      - name: Install python3 modules
         run: ${{ matrix.pip-command }} install pycodestyle pylint voluptuous yamllint rstcheck antsibull-changelog rich "ansible-lint>=6.0.0,<7.0.0" cryptography
 
       - name: Install ansible.posix
