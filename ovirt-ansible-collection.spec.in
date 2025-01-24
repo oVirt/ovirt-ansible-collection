@@ -14,17 +14,16 @@ Url:		http://www.ovirt.org
 BuildRequires:	ansible-core
 BuildRequires:	ansible-test
 
-Requires:	ansible-core >= 2.13.0
+Requires:	ansible-core >= 1:2.14.7-1
 Requires:	ansible-collection-ansible-netcommon
 Requires:	ansible-collection-ansible-posix
 Requires:	ansible-collection-ansible-utils
 Requires:	qemu-img
 Requires:	python3-jmespath
 
-Requires:	python3.11-ovirt-imageio-client
-Requires:	python3.11-ovirt-engine-sdk4 >= 4.5.0
-Requires:	python3.11-jmespath
-Requires:	python3.11-passlib
+Requires:	python3-ovirt-imageio-client
+Requires:	python3-ovirt-engine-sdk4 >= 4.5.0
+Requires:	python3-passlib
 
 
 Obsoletes:	ansible < 2.10.0
