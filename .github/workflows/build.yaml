@@ -50,6 +50,7 @@ jobs:
             "ansible-lint>=6.0.0,<7.0.0" \
             cryptography \
             "pyyaml>=5.4.1"
+          ansible-galaxy collection install -c ansible.posix
           ansible-lint -x 'key-order[task],no-free-form,schema[vars],yaml[octal-values],risky-shell-pipe,fqcn[keyword]' roles/*
   build:
     runs-on: ubuntu-latest
