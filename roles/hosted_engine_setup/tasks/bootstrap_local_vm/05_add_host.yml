@@ -121,6 +121,13 @@
       loop_control:
         loop_var: after_add_host_item
       register: include_after_add_host_results
+    - name: Configure the Keycloak to be accessed over the first host
+      block:
+        - include_tasks: ../keycloak_config_for_he_pause_host.yml
+      when:
+        - he_pause_host|bool
+        - he_enable_keycloak|bool
+      delegate_to: "{{ groups.engine[0] }}"
     - name: Pause the execution to let the user interactively reconfigure the host
       block:
         - name: Let the user connect to the bootstrap engine VM to manually fix host configuration
@@ -130,6 +137,13 @@
               eventually remediate it, please continue only when the host is listed as 'up'
         - include_tasks: ../pause_execution.yml
       when: he_pause_host|bool
+    - name: Configure the Keycloak to be accessed over the Engine FQDN
+      block:
+        - include_tasks: ../keycloak_restore_after_he_pause_host.yml
+      when:
+        - he_pause_host|bool
+        - he_enable_keycloak|bool
+      delegate_to: "{{ groups.engine[0] }}"
     # refresh the auth token after a long operation to avoid having it expired
     - include_tasks: ../auth_revoke.yml
     - include_tasks: ../auth_sso.yml
