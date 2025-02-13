@@ -27,6 +27,7 @@ options:
       version_added: 1.5.0
       elements: str
       aliases: ['follows']
+      default: []
 notes:
     - "This module returns a variable C(ovirt_api),
        which contains a information about oVirt/RHV API. You need to register the result with

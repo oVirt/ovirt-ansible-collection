@@ -30,6 +30,7 @@ options:
             - "This parameter apply only when C(fetch_nested) is I(true)."
         type: list
         elements: str
+        default: []
     auth:
         description:
             - "Dictionary with values needed to create HTTP/HTTPS connection to oVirt:"
@@ -84,6 +85,7 @@ options:
             timeout:
                 description: Number of seconds to wait for response.
                 type: int
+                default: 0
             compress:
                 description: Flag indicating if compression is used for connection.
                 type: bool

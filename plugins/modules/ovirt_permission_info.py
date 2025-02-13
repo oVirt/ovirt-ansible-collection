@@ -67,6 +67,7 @@ options:
         version_added: 1.5.0
         elements: str
         aliases: ['follows']
+        default: []
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 

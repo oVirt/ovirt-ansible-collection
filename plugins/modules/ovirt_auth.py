@@ -81,6 +81,7 @@ options:
                the timeout expires before the response is received an exception
                will be raised."
         type: int
+        default: 0
     compress:
         required: False
         description:

@@ -60,6 +60,7 @@ options:
                vnic_profile is described by the following dictionary:"
         type: list
         elements: dict
+        default: []
         suboptions:
             source_network_name:
                 description:
@@ -77,6 +78,7 @@ options:
                Cluster mapping is described by the following dictionary:"
         type: list
         elements: dict
+        default: []
         suboptions:
             source_name:
                 description:
@@ -91,6 +93,7 @@ options:
                Role mapping is described by the following dictionary:"
         type: list
         elements: dict
+        default: []
         suboptions:
             source_name:
                 description:
@@ -105,6 +108,7 @@ options:
                The aaa domain mapping is described by the following dictionary:"
         type: list
         elements: dict
+        default: []
         suboptions:
             source_name:
                 description:
@@ -118,18 +122,21 @@ options:
             - "Mapper which maps affinity name between VM's OVF and the destination affinity this VM should be registered to,
                relevant when C(state) is registered."
         elements: dict
+        default: []
     affinity_label_mappings:
         type: list
         description:
             - "Mapper which maps affinity label name between VM's OVF and the destination label this VM should be registered to,
                relevant when C(state) is registered."
         elements: dict
+        default: []
     lun_mappings:
         description:
             - "Mapper which maps lun between VM's OVF and the destination lun this VM should contain, relevant when C(state) is registered.
                lun_mappings is described by the following dictionary:"
         type: list
         elements: dict
+        default: []
         suboptions:
             logical_unit_id:
                 description:
@@ -356,6 +363,7 @@ options:
             - List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
         type: list
         elements: dict
+        default: []
         suboptions:
             name:
                 description:
@@ -378,6 +386,7 @@ options:
             - List of disks, which should be attached to Virtual Machine. Disk is described by following dictionary.
         type: list
         elements: dict
+        default: []
         suboptions:
             name:
                 description:
@@ -514,6 +523,7 @@ options:
               are merged with C(cloud_init_nics) parameters.
         type: list
         elements: dict
+        default: []
         suboptions:
             nic_boot_protocol:
                 description:
@@ -763,6 +773,7 @@ options:
             - "Each vNUMA node is described by following dictionary:"
         type: list
         elements: dict
+        default: []
         suboptions:
             index:
                 description:
@@ -2427,7 +2438,7 @@ def _get_lun_mappings(module):
                     ),
                 ) if lunMapping['dest_logical_unit_id'] else None,
             ),
-        ),
+        )
     return lunMappings
 
 

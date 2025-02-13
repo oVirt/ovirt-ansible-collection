@@ -72,6 +72,7 @@ options:
                 type: str
         type: list
         elements: dict
+        default: []
     memory_max:
         description:
             - Upper bound of instance type memory up to which memory hot-plug can be performed.
@@ -291,14 +292,8 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     convert_to_bytes,
     create_connection,
     equal,
-    get_dict_of_struct,
-    get_entity,
-    get_link_name,
-    get_id_by_name,
     ovirt_full_argument_spec,
-    search_by_attributes,
     search_by_name,
-    wait,
 )
 
 try:

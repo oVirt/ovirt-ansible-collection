@@ -207,7 +207,7 @@ import os
 import ssl
 import time
 
-from ansible.module_utils.six.moves.http_client import HTTPSConnection, IncompleteRead
+from ansible.module_utils.six.moves.http_client import HTTPSConnection
 from ansible.module_utils.six.moves.urllib.parse import urlparse
 
 from datetime import datetime

@@ -22,7 +22,6 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 import inspect
-import os
 import time
 
 from abc import ABCMeta, abstractmethod

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eux
 
 VERSION="3.2.1"
 MILESTONE="master"

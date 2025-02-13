@@ -30,6 +30,7 @@ options:
             - "For example to search host X from datacenter Y use following pattern:
                name=X and datacenter=Y"
         type: str
+        default: ''
     all_content:
         description:
             - "If I(true) all the attributes of the hosts should be
@@ -49,6 +50,7 @@ options:
         version_added: 1.5.0
         elements: str
         aliases: ['follows']
+        default: []
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 

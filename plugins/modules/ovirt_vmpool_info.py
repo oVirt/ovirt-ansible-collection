@@ -44,6 +44,7 @@ options:
             - "Search term which is accepted by oVirt/RHV search backend."
             - "For example to search vmpool X: name=X"
         type: str
+        default: ''
     follow:
         description:
             - List of linked entities, which should be fetched along with the main entity.
@@ -53,6 +54,7 @@ options:
         version_added: 1.5.0
         elements: str
         aliases: ['follows']
+        default: []
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 

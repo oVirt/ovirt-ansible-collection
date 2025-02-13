@@ -185,7 +185,6 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     ovirt_full_argument_spec,
     search_by_name,
     get_id_by_name,
-    get_dict_of_struct,
     get_entity
 )
 

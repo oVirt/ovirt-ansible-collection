@@ -28,6 +28,7 @@ options:
             - This parameter is deprecated and replaced by C(follow).
         type: list
         elements: str
+        default: []
     auth:
         description:
             - "Dictionary with values needed to create HTTP/HTTPS connection to oVirt:"
@@ -82,6 +83,7 @@ options:
             timeout:
                 description: Number of seconds to wait for response.
                 type: int
+                default: 0
             compress:
                 description: Flag indicating if compression is used for connection.
                 type: bool

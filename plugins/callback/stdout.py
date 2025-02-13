@@ -1,21 +1,26 @@
-#!/usr/bin/python3
+#!/usr/bin/python
+
+# -*- coding: utf-8 -*-
+
+# Copyright: (c) 2016, Red Hat, Inc.
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
-
-from ansible.plugins.callback import CallbackBase
 
 # Not only visible to ansible-doc, it also 'declares' the options the plugin
 # requires and how to configure them.
 # TODO Fix DOCUMENTATION to pass the ansible-test validate-modules
 DOCUMENTATION = '''
-  callback: stdout
-  callback_type: aggregate
+  name: stdout
+  type: aggregate
   short_description: Output the log of ansible
-  version_added: "2.0"
+  version_added: "2.0.0"
   description:
       - This callback output the log of ansible play tasks.
 '''
+
+from ansible.plugins.callback import CallbackBase
 
 
 class CallbackModule(CallbackBase):

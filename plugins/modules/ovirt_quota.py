@@ -72,6 +72,7 @@ options:
             - "If cluster isn't specified it's valid to all clusters in system:"
         type: list
         elements: dict
+        default: []
         suboptions:
             cluster:
                 description:
@@ -88,6 +89,7 @@ options:
             - "If storage isn't specified it's valid to all storages in system:"
         type: list
         elements: dict
+        default: []
         suboptions:
             storage:
                 description:
