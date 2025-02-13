@@ -8,7 +8,6 @@ __metaclass__ = type
 # TODO Fix DOCUMENTATION to pass the ansible-test validate-modules
 DOCUMENTATION = '''
     name: ovirt
-    plugin_type: inventory
     short_description: oVirt inventory source
     version_added: "1.0.0"
     author: Bram Verschueren (@bverschueren)
@@ -58,6 +57,7 @@ DOCUMENTATION = '''
             - See U(https://ovirt.github.io/ovirt-engine-api-model/master/#types/vm) for available attributes.
         default: ['fqdn', 'name']
         type: list
+        elements: str
 '''
 
 EXAMPLES = '''
@@ -81,8 +81,6 @@ groups:
 compose:
   ansible_host: devices["eth0"][0]
 '''
-
-import sys
 
 from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable
 from ansible.errors import AnsibleError, AnsibleParserError

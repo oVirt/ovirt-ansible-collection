@@ -71,6 +71,7 @@ options:
                     - The id of the target profile id to be mapped to in the engine.
         type: list
         elements: dict
+        default: []
     cluster_mappings:
         description:
             - "Mapper which maps cluster name between Template's OVF and the destination cluster this Template should be registered to,
@@ -85,6 +86,7 @@ options:
                     - The name of the destination cluster.
         type: list
         elements: dict
+        default: []
     role_mappings:
         description:
             - "Mapper which maps role name between Template's OVF and the destination role this Template should be registered to,
@@ -99,6 +101,7 @@ options:
                     - The name of the destination role.
         type: list
         elements: dict
+        default: []
     domain_mappings:
         description:
             - "Mapper which maps aaa domain name between Template's OVF and the destination aaa domain this Template should be registered to,
@@ -113,6 +116,7 @@ options:
                     - The name of the destination aaa domain.
         type: list
         elements: dict
+        default: []
     exclusive:
         description:
             - "When C(state) is I(exported) this parameter indicates if the existing templates with the
@@ -291,6 +295,7 @@ options:
               are merged with C(cloud_init_nics) parameters.
         type: list
         elements: dict
+        default: []
         suboptions:
             nic_boot_protocol:
                 description:
@@ -331,6 +336,7 @@ options:
             - List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
         type: list
         elements: dict
+        default: []
         suboptions:
             name:
                 description:
@@ -583,7 +589,6 @@ template:
     type: dict
 '''
 
-import time
 import traceback
 
 try:

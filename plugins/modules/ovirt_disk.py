@@ -378,7 +378,7 @@ import time
 import traceback
 import inspect
 
-from ansible.module_utils.six.moves.http_client import HTTPSConnection, IncompleteRead
+from ansible.module_utils.six.moves.http_client import HTTPSConnection
 from ansible.module_utils.six.moves.urllib.parse import urlparse
 try:
     import ovirtsdk4 as sdk
@@ -397,7 +397,6 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     follow_link,
     get_id_by_name,
     ovirt_full_argument_spec,
-    get_dict_of_struct,
     search_by_name,
     wait,
 )

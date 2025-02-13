@@ -172,7 +172,6 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     equal,
     ovirt_full_argument_spec,
     search_by_name,
-    follow_link,
     get_id_by_name
 )
 

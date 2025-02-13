@@ -44,16 +44,19 @@ options:
             - "For example to search for events of severity alert use the following pattern: severity=alert"
         required: false
         type: str
+        default: ''
     headers:
         description:
             - "Additional HTTP headers."
         required: false
         type: str
+        default: ''
     query:
         description:
             - "Additional URL query parameters."
         required: false
         type: str
+        default: ''
     wait:
         description:
             - "If True wait for the response."
@@ -69,6 +72,7 @@ options:
         version_added: 1.5.0
         elements: str
         aliases: ['follows']
+        default: []
 extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
 '''
 

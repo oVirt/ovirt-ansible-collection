@@ -244,8 +244,6 @@ from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     ovirt_full_argument_spec,
-    search_by_name,
-    get_entity,
     get_id_by_name
 )
 

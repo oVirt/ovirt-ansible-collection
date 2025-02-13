@@ -138,10 +138,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
-    check_params,
     create_connection,
-    equal,
-    get_dict_of_struct,
     ovirt_full_argument_spec,
 )
 
