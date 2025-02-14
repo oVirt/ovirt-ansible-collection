@@ -67,9 +67,6 @@ sh build.sh install %{collectionname}
 
 %files
 %{_datadir}/%{ansible_collections_dir}/%{namespace}
-%if "%{collectionname}" == "rhv"
-%{_datadir}/%{ansible_collections_dir}/ovirt
-%endif
 
 %doc README.md
 %doc examples/
