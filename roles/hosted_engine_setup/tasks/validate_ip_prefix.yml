@@ -11,7 +11,7 @@
           ansible.builtin.debug:
             var: ip_route_result
         - name: Check if route exists
-          include_tasks: search_available_network_subnet.yaml
+          ansible.builtin.include_tasks: search_available_network_subnet.yaml
           when: ip_route_result.stdout.find("via") == -1
       when: not ipv6_deployment|bool
     - name: IPv6 Validation
@@ -24,6 +24,6 @@
           ansible.builtin.debug:
             var: ip_route_result
         - name: Check if route exists
-          include_tasks: search_available_network_subnet.yaml
+          ansible.builtin.include_tasks: search_available_network_subnet.yaml
           when: ip_route_result.stdout.find("via") == -1
       when: ipv6_deployment|bool

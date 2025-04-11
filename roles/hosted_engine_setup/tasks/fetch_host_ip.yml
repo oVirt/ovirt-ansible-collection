@@ -14,7 +14,7 @@
 - name: Get host IP address
   block:
     - name: Choose IPv4, IPv6 or auto
-      import_tasks: ipv_switch.yml
+      ansible.builtin.import_tasks: ipv_switch.yml
     - name: Get host address resolution
       ansible.builtin.shell: getent {{ ip_key }} {{ he_host_address }} | grep STREAM | cut -d ' ' -f1
       register: hostname_resolution_output

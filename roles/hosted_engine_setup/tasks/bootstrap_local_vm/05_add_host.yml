@@ -39,7 +39,7 @@
         state: present
         key: https://{{ he_fqdn }}/ovirt-engine/services/pki-resource?resource=engine-certificate&format=OPENSSH-PUBKEY
         validate_certs: false
-    - include_tasks: ../auth_sso.yml
+    - ansible.builtin.include_tasks: ../auth_sso.yml
     - name: Ensure that the target datacenter is present
       ovirt_datacenter:
         state: present
@@ -116,7 +116,7 @@
       async: 1
       poll: 0
     - name: Include after_add_host tasks files
-      include_tasks: "{{ after_add_host_item }}"
+      ansible.builtin.include_tasks: "{{ after_add_host_item }}"
       with_fileglob: "hooks/after_add_host/*.yml"
       loop_control:
         loop_var: after_add_host_item
@@ -128,11 +128,11 @@
             msg: >-
               You can now connect to {{ bootstrap_engine_url }} and check the status of this host and
               eventually remediate it, please continue only when the host is listed as 'up'
-        - include_tasks: ../pause_execution.yml
+        - ansible.builtin.include_tasks: ../pause_execution.yml
       when: he_pause_host|bool
     # refresh the auth token after a long operation to avoid having it expired
-    - include_tasks: ../auth_revoke.yml
-    - include_tasks: ../auth_sso.yml
+    - ansible.builtin.include_tasks: ../auth_revoke.yml
+    - ansible.builtin.include_tasks: ../auth_sso.yml
     - name: Wait for the host to be up
       ovirt_host_info:
         pattern: name={{ he_host_name }}
@@ -200,7 +200,7 @@
             msg: >-
               You can now connect to {{ bootstrap_engine_url }} and check the status of this host and
               eventually remediate it, please continue only when the host is listed as 'up'
-        - include_tasks: ../pause_execution.yml
+        - ansible.builtin.include_tasks: ../pause_execution.yml
       when: >-
         he_pause_after_failed_add_host|bool and
         host_result_up_check is succeeded and
@@ -208,8 +208,8 @@
         host_result_up_check.ovirt_hosts[0].status == 'non_operational'
 
     # refresh the auth token after a long operation to avoid having it expired
-    - include_tasks: ../auth_revoke.yml
-    - include_tasks: ../auth_sso.yml
+    - ansible.builtin.include_tasks: ../auth_revoke.yml
+    - ansible.builtin.include_tasks: ../auth_sso.yml
     - name: Check if the host is up
       ovirt_host_info:
         pattern: name={{ he_host_name }}
@@ -271,10 +271,10 @@
       ansible.builtin.command: sync
       changed_when: true
     - name: Fetch logs from the engine VM
-      include_tasks: fetch_engine_logs.yml
+      ansible.builtin.include_tasks: fetch_engine_logs.yml
       ignore_errors: true
-    - include_tasks: ../clean_localvm_dir.yml
-    - include_tasks: ../clean_local_storage_pools.yml
+    - ansible.builtin.include_tasks: ../clean_localvm_dir.yml
+    - ansible.builtin.include_tasks: ../clean_local_storage_pools.yml
     - name: Notify the user about a failure
       ansible.builtin.fail:
         msg: >

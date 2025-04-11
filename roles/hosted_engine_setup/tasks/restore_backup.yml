@@ -33,7 +33,7 @@
 
           engine-backup --mode=restore --file=/root/engine_backup --provision-all-databases
           --restore-permissions
-    - include_tasks: pause_execution.yml
+    - ansible.builtin.include_tasks: pause_execution.yml
   when: engine_restore_out.rc != 0
 - name: Remove backup file
   ansible.builtin.file:
@@ -46,7 +46,7 @@
   changed_when: true
   register: db_remove_old_enginevm
 - name: Update host used to redeploy
-  include_tasks: restore_host_redeploy.yml
+  ansible.builtin.include_tasks: restore_host_redeploy.yml
   loop:
     - { vds_type: 'vds_name', input: "{{ he_host_name }}" }
     - { vds_type: 'vds_unique_id', input: "{{ hostvars[he_ansible_host_name]['unique_id_out']['stdout_lines']|first }}" }

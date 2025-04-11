@@ -1,5 +1,5 @@
 ---
-- include_tasks: auth_sso.yml
+- ansible.builtin.include_tasks: auth_sso.yml
 - name: iSCSI login
   ovirt_host:
     name: "{{ he_host_name }}"

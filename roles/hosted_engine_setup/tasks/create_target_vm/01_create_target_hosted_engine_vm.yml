@@ -1,7 +1,7 @@
 ---
 - name: Create target Hosted Engine VM
   block:
-    - include_tasks: ../auth_sso.yml
+    - ansible.builtin.include_tasks: ../auth_sso.yml
     - name: Get local VM IP
       ansible.builtin.shell: virsh -r net-dhcp-leases default | grep -i {{ he_vm_mac_addr }} | awk '{ print $5 }' | cut -f1 -d'/'
       environment: "{{ he_cmd_lang }}"
@@ -10,7 +10,7 @@
     - name: Set the name for add_host
       ansible.builtin.set_fact:
         he_fqdn_ansible_host: "{{ local_vm_ip.stdout_lines[0] }}"
-    - import_tasks: ../add_engine_as_ansible_host.yml
+    - ansible.builtin.import_tasks: ../add_engine_as_ansible_host.yml
     - name: Fetch host facts
       ovirt_host_info:
         pattern: name={{ he_host_name }} status=up
