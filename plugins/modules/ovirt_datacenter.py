@@ -107,7 +107,7 @@ EXAMPLES = '''
 # Create datacenter
 - ovirt.ovirt.ovirt_datacenter:
     name: mydatacenter
-    local: True
+    local: true
     compatibility_version: 4.0
     quota_mode: enabled
 
@@ -127,15 +127,15 @@ EXAMPLES = '''
     iscsi_bonds:
       - name: bond1
         networks:
-            - network1
-            - network2
+          - network1
+          - network2
         storage_domains:
-            - storage1
+          - storage1
       - name: bond2
         networks:
-            - network3
+          - network3
         storage_connections:
-            - cf780201-6a4f-43c1-a019-e65c4220ab73
+          - cf780201-6a4f-43c1-a019-e65c4220ab73
 
 # Remove all iscsi bonds
 - ovirt.ovirt.ovirt_datacenter:

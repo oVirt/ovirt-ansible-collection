@@ -212,7 +212,6 @@ EXAMPLES = '''
         - name: nicname
           interface: virtio
           profile_name: network
-
 '''
 
 RETURN = '''

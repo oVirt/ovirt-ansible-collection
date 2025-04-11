@@ -494,8 +494,8 @@ EXAMPLES = '''
     name: mytemplate
     vm: rhel7
     version:
-        number: 2
-        name: subversion
+      number: 2
+      name: subversion
 
 # Create new template subversion
 - ovirt.ovirt.ovirt_template:
@@ -503,7 +503,7 @@ EXAMPLES = '''
     name: mytemplate
     vm: rhel7
     version:
-        name: subversion
+      name: subversion
 
 - name: Template with cloud init
   ovirt.ovirt.ovirt_template:
@@ -534,13 +534,13 @@ EXAMPLES = '''
     cluster: mycluster
     vm: rhel8
     cloud_init_nics:
-    - nic_name: eth0
-      nic_boot_protocol: dhcp
-    - nic_name: eth1
-      nic_boot_protocol: static
-      nic_ip_address: 10.34.60.86
-      nic_netmask: 255.255.252.0
-      nic_gateway: 10.34.63.254
+      - nic_name: eth0
+        nic_boot_protocol: dhcp
+      - nic_name: eth1
+        nic_boot_protocol: static
+        nic_ip_address: 10.34.60.86
+        nic_netmask: 255.255.252.0
+        nic_gateway: 10.34.63.254
 
 - name: Template with timezone and nic
   ovirt.ovirt.ovirt_template:

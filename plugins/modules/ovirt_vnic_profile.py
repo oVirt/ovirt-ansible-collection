@@ -121,7 +121,7 @@ EXAMPLES = '''
     name: myvnic
     network: mynetwork
     data_center: datacenter
-    migratable: False
+    migratable: false
     pass_through: enabled
 
 - name: Remove vNIC

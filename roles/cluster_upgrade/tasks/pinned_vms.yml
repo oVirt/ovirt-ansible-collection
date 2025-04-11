@@ -1,6 +1,6 @@
 ---
 - name: Get list of VMs in cluster
-  ovirt_vm_info:
+  ovirt.ovirt.ovirt_vm_info:
     auth: "{{ ovirt_auth }}"
     pattern: "cluster={{ cluster_name }}"
   check_mode: "no"

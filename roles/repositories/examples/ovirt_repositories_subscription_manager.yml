@@ -17,6 +17,4 @@
       - 1123456789abcdef0123456789abcdef
 
   roles:
-    - repositories
-  collections:
-    - ovirt.ovirt
+    - ovirt.ovirt.repositories

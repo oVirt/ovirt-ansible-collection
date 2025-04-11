@@ -1,8 +1,12 @@
 ---
 - name: Import FCP storage domain main block
+  ignore_errors: "{{ dr_ignore_error_recover }}"
+  tags:
+    - fail_over
+    - fail_back
   block:
     - name: Import FCP storage domain
-      ovirt_storage_domain:
+      ovirt.ovirt.ovirt_storage_domain:
         state: imported
         id: "{{ fcp_storage['dr_domain_id'] }}"
         name: "{{ fcp_storage['dr_' + dr_target_host + '_name'] | default('') }}"
@@ -26,7 +30,3 @@
       ansible.builtin.set_fact:
         failed_storage_domains: "{{ failed_storage_domains }} + [ \"{{ fcp_storage['dr_' + dr_target_host + '_name'] | default('') }}\" ]"
       when: result is failed
-  ignore_errors: "{{ dr_ignore_error_recover }}"
-  tags:
-    - fail_over
-    - fail_back

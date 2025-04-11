@@ -8,4 +8,3 @@ roles/disaster_recovery/files/generate_vars.py shebang
 roles/disaster_recovery/files/generate_vars_test.py shebang
 roles/disaster_recovery/files/validator.py shebang
 roles/disaster_recovery/files/ovirt-dr shebang
-plugins/module_utils/cloud.py pylint!skip

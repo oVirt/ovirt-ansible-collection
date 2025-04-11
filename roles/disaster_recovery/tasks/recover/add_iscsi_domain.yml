@@ -1,12 +1,16 @@
 ---
 - name: Import iSCSI storage domain main block
+  ignore_errors: "{{ dr_ignore_error_recover }}"
+  tags:
+    - fail_over
+    - fail_back
   block:
     # TODO: Add support for connect to multiple targets with the same LUN.
     # Every connect should be done using a different IP.
     - name: Import iSCSI storage domain block
       block:
         - name: Login to iSCSI targets
-          ovirt_host:
+          ovirt.ovirt.ovirt_host:
             state: iscsilogin
             name: "{{ host_info.ovirt_hosts[0].name }}"
             auth: "{{ ovirt_auth }}"
@@ -23,7 +27,7 @@
             loop_var: dr_target
 
         - name: Import iSCSI storage domain
-          ovirt_storage_domain:
+          ovirt.ovirt.ovirt_storage_domain:
             state: imported
             id: "{{ iscsi_storage['dr_domain_id'] }}"
             name: "{{ iscsi_storage['dr_' + dr_target_host + '_name'] | default('') }}"
@@ -55,7 +59,3 @@
         - name: Log append to failed_storage_domains
           ansible.builtin.set_fact:
             failed_storage_domains: "{{ failed_storage_domains }} + [ \"{{ iscsi_storage['dr_' + dr_target_host + '_name'] | default('') }}\" ]"
-  ignore_errors: "{{ dr_ignore_error_recover }}"
-  tags:
-    - fail_over
-    - fail_back

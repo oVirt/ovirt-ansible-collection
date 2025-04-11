@@ -20,7 +20,7 @@
 
   pre_tasks:
     - name: Login to oVirt
-      ovirt_auth:
+      ovirt.ovirt.ovirt_auth:
         hostname: "{{ engine_fqdn }}"
         username: "{{ engine_user }}"
         password: "{{ engine_password }}"
@@ -30,14 +30,12 @@
         - always
 
   roles:
-    - infra
+    - ovirt.ovirt.infra
 
   post_tasks:
     - name: Logout from oVirt
-      ovirt_auth:
+      ovirt.ovirt.ovirt_auth:
         state: absent
         ovirt_auth: "{{ ovirt_auth }}"
       tags:
         - always
-  collections:
-    - ovirt.ovirt

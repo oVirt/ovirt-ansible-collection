@@ -1,6 +1,6 @@
 ---
 - name: Remove master Storage Domain
-  ovirt_storage_domain:
+  ovirt.ovirt.ovirt_storage_domain:
     state: absent
     id: "{{ ovirt_item.id }}"
     auth: "{{ ovirt_auth }}"

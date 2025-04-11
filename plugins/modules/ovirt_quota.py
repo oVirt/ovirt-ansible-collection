@@ -109,17 +109,17 @@ EXAMPLES = '''
     name: quota1
     data_center: dcX
     clusters:
-        - name: cluster1
-          memory: 20
-          cpu: 10
+      - name: cluster1
+        memory: 20
+        cpu: 10
 
 # Add cluster quota to all clusters with memory limit 30GiB and CPU limit to 15:
 - ovirt.ovirt.ovirt_quota:
     name: quota2
     data_center: dcX
     clusters:
-        - memory: 30
-          cpu: 15
+      - memory: 30
+        cpu: 15
 
 # Add storage quota to storage data1 with size limit to 100GiB
 - ovirt.ovirt.ovirt_quota:
@@ -128,8 +128,8 @@ EXAMPLES = '''
     storage_grace: 40
     storage_threshold: 60
     storages:
-        - name: data1
-          size: 100
+      - name: data1
+        size: 100
 
 # Remove quota quota1 (Note the quota must not be assigned to any VM/disk):
 - ovirt.ovirt.ovirt_quota:

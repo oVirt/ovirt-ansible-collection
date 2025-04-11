@@ -289,11 +289,11 @@ EXAMPLES = '''
     iscsi:
       target: iqn.2016-08-09.domain-01:nickname
       lun_id:
-       - 1IET_000d0001
-       - 1IET_000d0002
+        - 1IET_000d0001
+        - 1IET_000d0002
       address: 10.34.63.204
-    discard_after_delete: True
-    backup: False
+    discard_after_delete: true
+    backup: false
     critical_space_action_blocker: 5
     warning_low_space: 10
 
@@ -310,7 +310,7 @@ EXAMPLES = '''
         - target: iqn.2016-08-09.domain-02:nickname
           lun_id: 1IET_000d0002
       address: 10.34.63.204
-    discard_after_delete: True
+    discard_after_delete: true
 
 # Add data glusterfs storage domain
 - ovirt.ovirt.ovirt_storage_domain:
@@ -330,8 +330,8 @@ EXAMPLES = '''
     nfs:
       address: 10.34.63.199
       path: /path/export
-    wipe_after_delete: False
-    backup: True
+    wipe_after_delete: false
+    backup: true
     critical_space_action_blocker: 2
     warning_low_space: 5
 

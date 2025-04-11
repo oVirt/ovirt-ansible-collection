@@ -1,5 +1,7 @@
 ---
 - name: Generate mapping var file main block
+  tags:
+    - generate_mapping
   block:
     - name: Generate mapping var file
       ansible.builtin.command: >-
@@ -11,5 +13,3 @@
         -f "{{ var_file }}"
       changed_when: true
       run_once: true
-  tags:
-    - generate_mapping

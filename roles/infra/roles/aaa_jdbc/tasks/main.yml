@@ -20,7 +20,8 @@
 
 - name: Manage internal users
   no_log: true
-  ansible.builtin.command: "{{ aaa_jdbc_prefix }}/ovirt-aaa-jdbc-tool user {{ (item.state is undefined or item.state == 'present') | ternary('add','delete') }} {{ item.name }}" # noqa yaml[line-length]
+  ansible.builtin.command: "{{ aaa_jdbc_prefix }}/ovirt-aaa-jdbc-tool user {{ (item.state is undefined or item.state == 'present') | ternary('add','delete') }} {{
+    item.name }}"  # noqa yaml[line-length]
   with_items:
     - "{{ users | default([]) }}"
   register: out_users
@@ -34,7 +35,8 @@
     - users
 
 - name: Update users according to attributes
-  ansible.builtin.command: "{{ aaa_jdbc_prefix }}/ovirt-aaa-jdbc-tool user edit {{ item.name }} {% for attr, value in item['attributes'].items() %} --attribute={{ attr }}='{{ value }}' {% endfor %}" # noqa yaml[line-length]
+  ansible.builtin.command: "{{ aaa_jdbc_prefix }}/ovirt-aaa-jdbc-tool user edit {{ item.name }} {% for attr, value in item['attributes'].items() %} --attribute={{
+    attr }}='{{ value }}' {% endfor %}"  # noqa yaml[line-length]
   with_items:
     - "{{ users | default([]) }}"
   register: out_users
@@ -52,7 +54,8 @@
 # but is not current password we continue with changed=false:
 - name: Manage internal users passwords
   no_log: true
-  ansible.builtin.command: "{{ aaa_jdbc_prefix }}/ovirt-aaa-jdbc-tool user password-reset {{ item.name }} --password=\"pass:{{ item.password }}\" --password-valid-to=\"{{ item.valid_to }}\"" # noqa yaml[line-length]
+  ansible.builtin.command: "{{ aaa_jdbc_prefix }}/ovirt-aaa-jdbc-tool user password-reset {{ item.name }} --password=\"pass:{{ item.password }}\" --password-valid-to=\"\
+    {{ item.valid_to }}\""  # noqa yaml[line-length]
   with_items:
     - "{{ users | default([]) }}"
   register: out_users
@@ -64,7 +67,8 @@
     - users
 
 - name: Manage internal groups
-  ansible.builtin.command: "{{ aaa_jdbc_prefix }}/ovirt-aaa-jdbc-tool group {{ (item.state is undefined or item.state == 'present') | ternary('add','delete') }} {{ item.name }}" # noqa yaml[line-length]
+  ansible.builtin.command: "{{ aaa_jdbc_prefix }}/ovirt-aaa-jdbc-tool group {{ (item.state is undefined or item.state == 'present') | ternary('add','delete') }} {{
+    item.name }}"  # noqa yaml[line-length]
   with_items:
     - "{{ user_groups | default([]) }}"
   register: out_groups
@@ -76,7 +80,8 @@
 
 # FIXME: Support only add, if the user is removed from list, it's not removed from the group:
 - name: Manage groups members
-  ansible.builtin.command: "{{ aaa_jdbc_prefix }}/ovirt-aaa-jdbc-tool group-manage {{ (item.state is undefined or item.state == 'present') | ternary('useradd','userdel') }} {{ item.0.name }} --user {{ item.1 }}" # noqa yaml[line-length]
+  ansible.builtin.command: "{{ aaa_jdbc_prefix }}/ovirt-aaa-jdbc-tool group-manage {{ (item.state is undefined or item.state == 'present') | ternary('useradd','userdel')
+    }} {{ item.0.name }} --user {{ item.1 }}"  # noqa yaml[line-length]
   with_subelements:
     - "{{ user_groups | default([]) }}"
     - users

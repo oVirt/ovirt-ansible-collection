@@ -1,6 +1,6 @@
 ---
 - name: Add data center
-  ovirt_datacenter:
+  ovirt.ovirt.ovirt_datacenter:
     auth: "{{ ovirt_auth }}"
     state: present
     name: "{{ data_center_name }}"
@@ -12,7 +12,7 @@
     - datacenters
 
 - name: Remove data center
-  ovirt_datacenter:
+  ovirt.ovirt.ovirt_datacenter:
     auth: "{{ ovirt_auth }}"
     state: absent
     name: "{{ data_center_name }}"

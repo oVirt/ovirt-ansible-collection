@@ -7,8 +7,10 @@
           {{ true if he_host_ip not in target_address_v4.stdout_lines and
           he_host_ip in target_address_v6.stdout_lines
           else false }}
-    - include_tasks: ../validate_ip_prefix.yml
-    - include_tasks: ../alter_libvirt_default_net_configuration.yml
+    - name: Validate ip prefix
+      ansible.builtin.include_tasks: ../validate_ip_prefix.yml
+    - name: Alter libvirt default net configuration
+      ansible.builtin.include_tasks: ../alter_libvirt_default_net_configuration.yml
     # all of the next is a workaround for a network issue:
     # vdsm installation breaks the routing by defining separate
     # routing table for ovirtmgmt. But we need to enable communication
@@ -49,7 +51,7 @@
       when: ipv6_deployment|bool
     - name: Refresh network facts
       ansible.builtin.setup:
-      tags: ['skip_ansible_lint']
+      tags: ["skip_ansible_lint"]
     - name: Fetch IPv4 CIDR for {{ virbr_default }}
       ansible.builtin.set_fact:
         virbr_cidr_ipv4: >-

@@ -2,6 +2,4 @@
 - name: Deploy oVirt hosted engine
   hosts: host123.localdomain
   roles:
-    - role: hosted_engine_setup
-  collections:
-    - ovirt.ovirt
+    - role: ovirt.ovirt.hosted_engine_setup

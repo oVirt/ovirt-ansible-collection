@@ -14,13 +14,13 @@ he_data_center: Default
 he_cluster: Default
 he_local_vm_dir_path: /var/tmp
 he_local_vm_dir_prefix: localvm
-he_appliance_ova: ''
-he_root_ssh_pubkey: ''
-he_root_ssh_access: 'yes'
+he_appliance_ova: ""
+he_root_ssh_pubkey: ""
+he_root_ssh_access: "yes"
 he_apply_openscap_profile: false
 he_openscap_profile_name: stig
 he_enable_fips: false
-he_cdrom: ''
+he_cdrom: ""
 he_console_type: vnc
 he_video_device: vga
 he_graphic_device: vnc
@@ -38,12 +38,11 @@ he_avail_memory_grace_MB: 200
 
 engine_psql: /usr/share/ovirt-engine/dbscripts/engine-psql.sh
 
-he_host_ip: null
-he_host_name: null
-he_host_address: null
-he_cloud_init_host_name: null
-he_cloud_init_domain_name: null
-
+he_host_ip:
+he_host_name:
+he_host_address:
+he_cloud_init_host_name:
+he_cloud_init_domain_name:
 he_smtp_port: 25
 he_smtp_server: localhost
 he_dest_email: root@localhost
@@ -60,59 +59,55 @@ he_debug_mode: false
 
 ## Mandatory variables:
 
-he_bridge_if: null
-he_fqdn: null
+he_bridge_if:
+he_fqdn:
 he_mem_size_MB: max
 he_vcpus: max
 he_disk_size_GB: 61
 
 he_enable_libgfapi: false
 he_enable_hc_gluster_service: false
-he_vm_mac_addr: null
+he_vm_mac_addr:
 he_remove_appliance_rpm: true
 he_pki_renew_on_restore: false
 he_enable_keycloak: true
 
 ## Storage domain vars:
-he_domain_type: null  # can be: nfs | iscsi | glusterfs | fc
-he_storage_domain_addr: null
-
+he_domain_type:  # can be: nfs | iscsi | glusterfs | fc
+he_storage_domain_addr:
 ## NFS vars:
 ## Defaults are null, user should specify if NFS is chosen
-he_mount_options: ''
-he_storage_domain_path: null
+he_mount_options: ""
+he_storage_domain_path:
 he_nfs_version: auto  # can be: auto, v4 or v3
-he_storage_if: null
-
+he_storage_if:
 ## ISCSI vars:
 ## Defaults are null, user should specify if ISCSI is chosen
-he_iscsi_username: null
-he_iscsi_password: null
-he_iscsi_discover_username: null
-he_iscsi_discover_password: null
-he_iscsi_target: null
-he_lun_id: null
-he_iscsi_portal_port: null
-he_iscsi_portal_addr: null
-he_iscsi_tpgt: null
+he_iscsi_username:
+he_iscsi_password:
+he_iscsi_discover_username:
+he_iscsi_discover_password:
+he_iscsi_target:
+he_lun_id:
+he_iscsi_portal_port:
+he_iscsi_portal_addr:
+he_iscsi_tpgt:
 he_discard: false
 
 # Define if using STATIC ip configuration
-he_vm_ip_addr: null
-he_vm_ip_prefix: null
-he_dns_addr: null  # up to 3 DNS servers IPs can be added
+he_vm_ip_addr:
+he_vm_ip_prefix:
+he_dns_addr:  # up to 3 DNS servers IPs can be added
 he_vm_etc_hosts: false  # user can add lines to /etc/hosts on the engine VM
-he_gateway: null
-he_network_test: 'dns'  # can be: 'dns', 'ping', 'tcp' or 'none'
-he_tcp_t_address: null
-he_tcp_t_port: null
-
+he_gateway:
+he_network_test: "dns"  # can be: 'dns', 'ping', 'tcp' or 'none'
+he_tcp_t_address:
+he_tcp_t_port:
 # ovirt-hosted-engine-setup variables
 he_just_collect_network_interfaces: false
-he_libvirt_authfile: '/etc/ovirt-hosted-engine/virsh_auth.conf'
+he_libvirt_authfile: "/etc/ovirt-hosted-engine/virsh_auth.conf"
 he_offline_deployment: false
 he_additional_package_list: []
-
 # *** Do Not Use On Production Environment ***
 # ********** Used for testing ONLY ***********
 he_requirements_check_enabled: true

@@ -14,7 +14,7 @@
           - "{{ ', Cluster: ' + cluster_name if (cluster_name is defined and cluster_name) else '' }}"
           - "{{ ', Host: ' + host_name if (host_name is defined and host_name) else '' }}"
           - " [{{ description }}]"
-      ovirt_event:
+      ovirt.ovirt.ovirt_event:
         auth: "{{ ovirt_auth }}"
         state: present
         severity: normal

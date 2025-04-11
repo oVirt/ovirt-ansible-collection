@@ -137,7 +137,7 @@ EXAMPLES = '''
 - name: Bonds
   ovirt.ovirt.ovirt_host_network:
     name: myhost
-    save: yes
+    save: true
     bond:
       name: bond0
       mode: 2

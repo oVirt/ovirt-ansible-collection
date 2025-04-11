@@ -3,12 +3,19 @@
 # Legacy modification of cloud_init:
 ########################################################################
 - name: Set cloud_init
+  no_log: true
+
+  ########################################################################
+  # Legacy modification of sysprep:
+  ########################################################################
+
   block:
     - name: Set cloud_init fact
       ansible.builtin.set_fact:
         cloud_init: "{{ current_vm.cloud_init | default(current_vm.profile.cloud_init) | default({}) }}"
 
     - name: Define cloud_init block
+      when: current_vm.cloud_init is defined or current_vm.profile.cloud_init is defined
       block:
         - name: Define cloud_init user_name
           ansible.builtin.set_fact:
@@ -33,20 +40,15 @@
           ansible.builtin.set_fact:
             vms_passwords: "{{ vms_passwords + [{'name': current_vm.name, 'root_password': cloud_init.root_password}] }}"
           when: "'root_password' in cloud_init"
-      when: current_vm.cloud_init is defined or current_vm.profile.cloud_init is defined
-  no_log: true
-
-########################################################################
-# Legacy modification of sysprep:
-########################################################################
-
 - name: Set sysprep
+  no_log: true
   block:
     - name: Set sysprep fact
       ansible.builtin.set_fact:
         sysprep: "{{ current_vm.sysprep | default(current_vm.profile.sysprep) | default({}) }}"
 
     - name: Define cloud_init block
+      when: current_vm.sysprep is defined or current_vm.profile.sysprep is defined
       block:
         - name: Define cloud_init user_name
           ansible.builtin.set_fact:
@@ -66,13 +68,10 @@
           ansible.builtin.set_fact:
             vms_passwords: "{{ vms_passwords + [{'name': current_vm.name, 'root_password': sysprep.root_password}] }}"
           when: "'root_password' in sysprep"
-      when: current_vm.sysprep is defined or current_vm.profile.sysprep is defined
-  no_log: true
 ########################################################################
 ########################################################################
-
 - name: "Manage VM '{{ current_vm.name }}' state"
-  ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     auth: "{{ ovirt_auth }}"
     state: "{{ current_vm.state | default(current_vm.profile.state) | default('present') }}"
     name: "{{ current_vm.name }}"
