@@ -9,7 +9,7 @@ use_maintenance_policy: true
 host_statuses:
   - up
 host_names:
-  - '*'
+  - "*"
 pinned_vms_names: []
 healing_in_progress_checks: 6
 healing_in_progress_check_delay: 300

@@ -7,7 +7,7 @@
       when: "glance_image_provider is undefined or glance_image is undefined"
 
     - name: Login to oVirt
-      ovirt_auth:
+      ovirt.ovirt.ovirt_auth:
         url: "{{ engine_url | default(lookup('env','OVIRT_URL')) | default(omit) }}"
         hostname: "{{ engine_fqdn | default(lookup('env','OVIRT_HOSTNAME')) | default(omit) }}"
         username: "{{ engine_user | default(lookup('env','OVIRT_USERNAME')) | default(omit) }}"
@@ -20,7 +20,7 @@
         - always
 
     - name: Fetch storages
-      ovirt_storage_domain_info:
+      ovirt.ovirt.ovirt_storage_domain_info:
         auth: "{{ ovirt_auth }}"
       register: sd_info
       tags:
@@ -28,14 +28,14 @@
 
     - name: Find data domain
       ansible.builtin.set_fact:
-        disk_storage_domain: "{{ sd_info.ovirt_storage_domains | ovirt.ovirt.json_query(the_query) | list | first }}"
+        disk_storage_domain: "{{ sd_info.ovirt_storage_domains | ovirt.ovirt.json_query(the_query) | list | first }}"  # noqa: jinja
       vars:
         the_query: "[?type=='data']"
       tags:
         - ovirt-template-image
 
     - name: Import templates from glance
-      ovirt_template:
+      ovirt.ovirt.ovirt_template:
         auth: "{{ ovirt_auth }}"
         state: imported
         name: "{{ template_name }}"
@@ -54,7 +54,7 @@
 
   always:
     - name: Logout from oVirt
-      ovirt_auth:
+      ovirt.ovirt.ovirt_auth:
         state: absent
         ovirt_auth: "{{ ovirt_auth }}"
       when: not loggedin.skipped | default(false)

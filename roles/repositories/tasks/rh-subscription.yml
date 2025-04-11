@@ -29,7 +29,7 @@
   changed_when: false
   no_log: true
 
-- include_tasks: search-pool-id.yml
+- ansible.builtin.include_tasks: search-pool-id.yml
   with_items:
     - "{{ ovirt_repositories_pools }}"
   when: ovirt_repositories_pools is defined
@@ -60,7 +60,7 @@
 - name: Enable EUS repositories
   ansible.builtin.command: subscription-manager repos --enable={{ item }}
   changed_when: false
-  ignore_errors: true # EUS channels might not be available, so we cannot break the installation when there is a subscription error
+  ignore_errors: true  # EUS channels might not be available, so we cannot break the installation when there is a subscription error
   with_items: "{{ ovirt_repositories_subscription_manager_eus_repos }}"
   when:
     - ovirt_repositories_ovirt_version|string >= '4.4'

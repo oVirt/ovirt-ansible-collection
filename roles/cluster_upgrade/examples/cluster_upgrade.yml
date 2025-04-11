@@ -21,6 +21,4 @@
       - myhost2
 
   roles:
-    - cluster_upgrade
-  collections:
-    - ovirt.ovirt
+    - ovirt.ovirt.cluster_upgrade

@@ -1,3 +1,4 @@
+---
 - name: Initialize variables
   ansible.builtin.set_fact:
     lun_wwid: "{{ lun_wwid | mandatory }}"

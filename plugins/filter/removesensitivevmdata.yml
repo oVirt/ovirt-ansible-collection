@@ -1,3 +1,4 @@
+---
 DOCUMENTATION:
   name: removesensitivevmdata
   author: Martin Necas (@mnecas)
@@ -12,9 +13,9 @@ DOCUMENTATION:
       required: true
 
 EXAMPLES: |
-    - name: Print VM
-      debug:
-        msg: "{{ vms | ovirt.ovirt.removesensitivevmdata }}"
+  - name: Print VM
+    debug:
+      msg: "{{ vms | ovirt.ovirt.removesensitivevmdata }}"
 
 RETURN:
   _value:

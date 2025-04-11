@@ -1,8 +1,12 @@
 ---
 - name: Register unregistered template main block
+  ignore_errors: "{{ dr_ignore_error_recover }}"
+  tags:
+    - fail_over
+    - fail_back
   block:
     - name: "Register unregistered template '{{ unreg_template.id }}'"
-      ovirt_template:
+      ovirt.ovirt.ovirt_template:
         state: registered
         storage_domain: "{{ storage.name }}"
         id: "{{ unreg_template.id }}"
@@ -23,7 +27,3 @@
       ansible.builtin.set_fact:
         succeed_template_names: "{{ succeed_template_names }} + [ '{{ unreg_template.name }}' ]"
       when: template_register_result is succeeded
-  ignore_errors: "{{ dr_ignore_error_recover }}"
-  tags:
-    - fail_over
-    - fail_back

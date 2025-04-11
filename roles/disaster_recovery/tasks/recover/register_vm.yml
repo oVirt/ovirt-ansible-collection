@@ -1,8 +1,12 @@
 ---
 - name: Register VM main block
+  ignore_errors: "{{ dr_ignore_error_recover }}"
+  tags:
+    - fail_over
+    - fail_back
   block:
     - name: Register VM
-      ovirt_vm:
+      ovirt.ovirt.ovirt_vm:
         state: registered
         storage_domain: "{{ storage.name }}"
         id: "{{ unreg_vm.id }}"
@@ -27,7 +31,3 @@
       ansible.builtin.set_fact:
         succeed_vm_names: "{{ succeed_vm_names }} + [ '{{ unreg_vm.name }}' ]"
       when: vm_register_result is succeeded
-  ignore_errors: "{{ dr_ignore_error_recover }}"
-  tags:
-    - fail_over
-    - fail_back

@@ -18,7 +18,7 @@
 # https://docs.ansible.com/ansible/latest/collections/ovirt/ovirt/ovirt_host_network_module.html
 # https://docs.ansible.com/ansible/latest/collections/ovirt/ovirt/ovirt_host_module.html
 
-- include_tasks: auth_sso.yml
+- ansible.builtin.include_tasks: auth_sso.yml
 
 - name: Wait for the host to be up
   ovirt_host_info:

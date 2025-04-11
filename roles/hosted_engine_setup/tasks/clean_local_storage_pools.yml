@@ -1,5 +1,6 @@
 ---
 - name: Clean storage-pool
+  ignore_errors: true
   block:
     - name: Destroy local storage-pool {{ he_local_vm_dir | basename }}
       ansible.builtin.command: >-
@@ -25,4 +26,3 @@
         pool-undefine {{ local_vm_disk_path.split('/')[5] }}
       environment: "{{ he_cmd_lang }}"
       changed_when: true
-  ignore_errors: true

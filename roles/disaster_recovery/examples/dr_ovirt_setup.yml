@@ -3,9 +3,7 @@
   hosts: localhost
   connection: local
   vars_files:
-     - ovirt_passwords.yml
-     - disaster_recovery_vars.yml
+    - ovirt_passwords.yml
+    - disaster_recovery_vars.yml
   roles:
-     - disaster_recovery
-  collections:
-     - ovirt.ovirt
+    - ovirt.ovirt.disaster_recovery

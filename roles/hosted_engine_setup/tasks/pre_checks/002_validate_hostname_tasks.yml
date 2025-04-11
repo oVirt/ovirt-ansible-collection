@@ -1,11 +1,12 @@
 ---
 - name: Choose IPv4, IPv6 or auto
-  import_tasks: ipv_switch.yml
+  ansible.builtin.import_tasks: ipv_switch.yml
 - name: Define he_host_address and he_host_ip
-  import_tasks: fetch_host_ip.yml
+  ansible.builtin.import_tasks: fetch_host_ip.yml
   when: he_host_ip is none or he_host_address is none
 
 - name: Validate host hostname
+  when: he_host_address is defined and he_host_address is not none
   block:
     - name: Avoid localhost
       ansible.builtin.fail:
@@ -18,6 +19,7 @@
           The address proposed for this host does not resolves locally
       when: he_host_ip not in ansible_all_ipv4_addresses | union(ansible_all_ipv6_addresses)
     - name: Ensure the resolved address resolves on the selected interface
+      when: he_bridge_if is defined and he_bridge_if is not none and he_mgmt_network is defined
       block:
         - name: Get target address from selected interface (IPv4)
           ansible.builtin.shell: >-
@@ -80,9 +82,9 @@
               the interface for the management network resolves
               only there.
           when: hostname_res_count_output_filtered|length > 0
-      when: he_bridge_if is defined and he_bridge_if is not none and he_mgmt_network is defined
-  when: he_host_address is defined and he_host_address is not none
+
 - name: Validate engine he_fqdn
+  when: he_fqdn is defined and he_fqdn is not none
   block:
     - name: Avoid localhost
       ansible.builtin.fail:
@@ -119,4 +121,3 @@
       with_items:
         - "http://{{ he_fqdn }}/"
         - "https://{{ he_fqdn }}/"
-  when: he_fqdn is defined and he_fqdn is not none

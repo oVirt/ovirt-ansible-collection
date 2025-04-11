@@ -23,7 +23,7 @@
       memory: 1GiB
       memory_max: 2GiB
       cores: 1
-      root_password: '123456'
+      root_password: "123456"
 
     db_vm:
       # Must be set to running to create inventory
@@ -46,10 +46,7 @@
         profile: db_vm
 
   roles:
-    - vm_infra
-  collections:
-    - ovirt.ovirt
-
+    - ovirt.ovirt.vm_infra
 
 # This role also creates inventory of created virtual machines it defines if wait_for_ip is set to true
 # and VM state is running. All defined virtual machine are part of ovirt_vm inventory group. Role also
@@ -60,7 +57,7 @@
 
   tasks:
     - name: Print info about httpd VM
-      debug:
+      ansible.builtin.debug:
         msg: "{{ hostvars }}"
 
 - name: Print info about db VMs
@@ -68,5 +65,5 @@
 
   tasks:
     - name: Print info about db VM
-      debug:
+      ansible.builtin.debug:
         msg: "{{ hostvars }}"

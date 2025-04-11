@@ -8,10 +8,8 @@
     ovirt_engine_setup_organization: "example.com"
     ovirt_engine_setup_dwh_db_configure: true
     ovirt_engine_setup_dwh_db_host: "localhost"
-    ovirt_engine_setup_firewall_manager: null
+    ovirt_engine_setup_firewall_manager:
     ovirt_repositories_ovirt_release_rpm: "{{ ovirt_release_rpm }}"
   roles:
-    - role: repositories
-    - role: engine_setup
-  collections:
-    - ovirt.ovirt
+    - role: ovirt.ovirt.repositories
+    - role: ovirt.ovirt.engine_setup

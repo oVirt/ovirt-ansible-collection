@@ -18,7 +18,7 @@
         - /etc/libvirt/qemu.conf
         - /etc/libvirt/qemu-sanlock.conf
         - /etc/sysconfig/libvirtd
-      tags: ['skip_ansible_lint']
+      tags: ["skip_ansible_lint"]
     - name: Drop VNC encryption config statements
       ansible.builtin.command: >-
         sed -i
@@ -41,22 +41,10 @@
         dest: "{{ item.dest }}"
         mode: preserve
       with_items:
-        - {
-          src: /usr/share/abrt/conf.d/abrt-action-save-package-data.conf,
-          dest: /etc/abrt/abrt-action-save-package-data.conf
-        }
-        - {
-          src: /usr/share/abrt/conf.d/abrt.conf,
-          dest: /etc/abrt/abrt.conf
-        }
-        - {
-          src: /usr/share/abrt/conf.d/plugins/CCpp.conf,
-          dest: /etc/abrt/plugins/CCpp.conf
-        }
-        - {
-          src: /usr/share/abrt/conf.d/plugins/vmcore.conf,
-          dest: /etc/abrt/plugins/vmcore.conf
-        }
+        - {src: /usr/share/abrt/conf.d/abrt-action-save-package-data.conf, dest: /etc/abrt/abrt-action-save-package-data.conf}
+        - {src: /usr/share/abrt/conf.d/abrt.conf, dest: /etc/abrt/abrt.conf}
+        - {src: /usr/share/abrt/conf.d/plugins/CCpp.conf, dest: /etc/abrt/plugins/CCpp.conf}
+        - {src: /usr/share/abrt/conf.d/plugins/vmcore.conf, dest: /etc/abrt/plugins/vmcore.conf}
       when:
         - abrt_vdsm_config.stat.exists
         - abrt_installed_config.stat.exists
@@ -83,7 +71,7 @@
       ansible.builtin.command: >-
         sed -i '/## start vdsm-4.[0-9]\+.[0-9]\+ configuration/,/## end vdsm configuration/d' /etc/sasl2/libvirt.conf
       environment: "{{ he_cmd_lang }}"
-      tags: ['skip_ansible_lint']
+      tags: ["skip_ansible_lint"]
     - name: Stop and disable services
       ansible.builtin.service:
         name: "{{ item }}"
@@ -141,4 +129,3 @@
         state: absent
       delegate_to: localhost
       become: false
-...

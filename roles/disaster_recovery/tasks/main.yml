@@ -2,12 +2,12 @@
 - name: Main block
   block:
     - name: Start to unregister entities
-      include_tasks: unregister_entities.yml
+      ansible.builtin.include_tasks: unregister_entities.yml
       tags:
         - fail_back
 
     - name: Clean engine setup
-      include_tasks: clean_engine.yml
+      ansible.builtin.include_tasks: clean_engine.yml
       tags:
         - fail_back
         - clean_engine
@@ -19,17 +19,17 @@
         - fail_back
 
     - name: Recover target engine
-      include_tasks: recover_engine.yml
+      ansible.builtin.include_tasks: recover_engine.yml
       tags:
         - fail_over
         - fail_back
 
     - name: Run the appropriate unregistered entities
-      include_tasks: run_unregistered_entities.yml
+      ansible.builtin.include_tasks: run_unregistered_entities.yml
       tags:
         - fail_back
 
     - name: Generate mapping var file
-      include_tasks: generate_mapping.yml
+      ansible.builtin.include_tasks: generate_mapping.yml
       tags:
         - generate_mapping

@@ -12,7 +12,7 @@
   ansible.builtin.template:
     src: templates/network-config.j2
     dest: /tmp/he-network-config.xml
-    mode: 0644
+    mode: "0644"
 
 - name: Update libvirt default network configuration, destroy
   ansible.builtin.command: virsh net-destroy default

@@ -4,7 +4,7 @@
 #################################################
 # First add master storage
 - name: Add master storage
-  ovirt_storage_domain:
+  ovirt.ovirt.ovirt_storage_domain:
     auth: "{{ ovirt_auth }}"
     state: "{{ item.value.state | default(omit) }}"
     name: "{{ item.key }}"
@@ -25,7 +25,7 @@
 
 # Next add rest of data storages
 - name: Add storages
-  ovirt_storage_domain:
+  ovirt.ovirt.ovirt_storage_domain:
     auth: "{{ ovirt_auth }}"
     state: "{{ item.value.state | default(omit) }}"
     name: "{{ item.key }}"
@@ -46,7 +46,7 @@
 
 # Next add export/iso storages
 - name: Add export/iso storages
-  ovirt_storage_domain:
+  ovirt.ovirt.ovirt_storage_domain:
     auth: "{{ ovirt_auth }}"
     state: "{{ item.value.state | default(omit) }}"
     name: "{{ item.key }}"
@@ -66,7 +66,7 @@
     - storages
 
 - name: Fetch storages
-  ovirt_storage_domain_info:
+  ovirt.ovirt.ovirt_storage_domain_info:
     auth: "{{ ovirt_auth }}"
     pattern: "type=nfs or type=iscsi or type=posixfs or type=glusterfs or type=fcp"
     # pattern: "type=nfs or type=posixfs or type=glusterfs"
@@ -79,13 +79,14 @@
 
 - name: Storage connection warning
   ansible.builtin.debug:
-    msg: "[WARNING]: The storage domain '{{ item.name }}' has multiple connections. This is not supported by the role. The storage connection update of this domain will be skipped." # noqa yaml[line-length]
+    msg: "[WARNING]: The storage domain '{{ item.name }}' has multiple connections. This is not supported by the role. The storage connection update of this domain
+      will be skipped."  # noqa yaml[line-length]
   when: item.storage_connections | length > 1
   with_items:
     - "{{ sd_info.ovirt_storage_domains | default([]) }}"
 
 - name: Update storage parameters
-  ovirt_storage_connection:
+  ovirt.ovirt.ovirt_storage_connection:
     auth: "{{ ovirt_auth }}"
     id: "{{ ansible_version.full is version('2.6.0', '>=') | ternary(item.storage_connections[0].id, item.storage_connections[0].id[0]) }}"
     storage: "{{ item.name }}"

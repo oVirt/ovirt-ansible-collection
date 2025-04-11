@@ -275,7 +275,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_host:
     state: absent
     name: myhost
-    force: True
+    force: true
 
 # Retry removing host when failed (https://bugzilla.redhat.com/show_bug.cgi?id=1719271)
 - ovirt.ovirt.ovirt_host:
@@ -295,7 +295,7 @@ EXAMPLES = '''
   ovirt.ovirt.ovirt_host:
     state: maintenance
     name: myhost
-    enroll_certificate: True
+    enroll_certificate: true
 '''
 
 RETURN = '''

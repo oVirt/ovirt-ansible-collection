@@ -1,6 +1,6 @@
 ---
 - name: Install ovirt-engine-appliance rpm
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: ovirt-engine-appliance
     state: present
   when: not he_offline_deployment|bool

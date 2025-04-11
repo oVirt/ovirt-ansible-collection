@@ -2,6 +2,7 @@
 - name: Define Variables
   block:
     - name: Define he_cloud_init_domain_name
+      when: he_cloud_init_domain_name is not defined
       block:
         - name: Get domain name
           ansible.builtin.command: hostname -d
@@ -10,7 +11,6 @@
         - name: Set he_cloud_init_domain_name
           ansible.builtin.set_fact:
             he_cloud_init_domain_name: "{{ host_domain_name.stdout_lines[0] if host_domain_name.stdout_lines else '' }}"
-      when: he_cloud_init_domain_name is not defined
     - name: Define he_cloud_init_host_name
       ansible.builtin.set_fact:
         he_cloud_init_host_name: "{{ he_fqdn }}"

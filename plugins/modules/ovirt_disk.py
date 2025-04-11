@@ -346,8 +346,8 @@ EXAMPLES = '''
     name: fcp_disk
     host: my_host
     logical_unit:
-        id: 3600a09803830447a4f244c4657597777
-        storage_type: fcp
+      id: 3600a09803830447a4f244c4657597777
+      storage_type: fcp
 '''
 
 

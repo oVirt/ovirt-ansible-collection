@@ -9,7 +9,7 @@
 - name: Fetch hosts main block
   block:
     - name: Login to oVirt
-      ovirt_auth:
+      ovirt.ovirt.ovirt_auth:
         url: "{{ engine_url | default(lookup('env','OVIRT_URL')) | default(omit) }}"
         username: "{{ engine_user | default(lookup('env','OVIRT_USERNAME')) | default(omit) }}"
         hostname: "{{ engine_fqdn | default(lookup('env','OVIRT_HOSTNAME')) | default(omit) }}"
@@ -23,7 +23,7 @@
         - always
 
     - name: Get datacenter hosts
-      ovirt_host_info:
+      ovirt.ovirt.ovirt_host_info:
         auth: "{{ ovirt_auth }}"
         pattern: "datacenter={{ data_center }}"
       register: host_info
@@ -37,7 +37,7 @@
 
   always:
     - name: Logout from oVirt
-      ovirt_auth:
+      ovirt.ovirt.ovirt_auth:
         state: absent
         ovirt_auth: "{{ ovirt_auth }}"
       when:

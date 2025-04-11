@@ -72,7 +72,7 @@ EXAMPLES = '''
 # Gather information about all Templates which relate to a storage domain and
 # are unregistered:
 - ovirt.ovirt.ovirt_storage_template_info:
-    unregistered: True
+    unregistered: true
     storage_domain: storage
   register: result
 - ansible.builtin.debug:

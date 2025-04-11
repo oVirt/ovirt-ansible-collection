@@ -1,12 +1,12 @@
 ---
 - name: Find existing Disks
-  ovirt_disk_info:
+  ovirt.ovirt.ovirt_disk_info:
     auth: "{{ ovirt_auth }}"
     pattern: "datacenter={{ data_center_name }}"
   register: disk_info
 
 - name: Remove Disks
-  ovirt_disk:
+  ovirt.ovirt.ovirt_disk:
     state: absent
     id: "{{ ovirt_item.id }}"
     auth: "{{ ovirt_auth }}"

@@ -1,12 +1,12 @@
 ---
 - name: Find existing VMPools
-  ovirt_vmpool_info:
+  ovirt.ovirt.ovirt_vmpool_info:
     auth: "{{ ovirt_auth }}"
     pattern: "datacenter={{ data_center_name }}"
   register: vmpool_info
 
 - name: Remove VMPools
-  ovirt_vmpool:
+  ovirt.ovirt.ovirt_vmpool:
     state: absent
     name: "{{ ovirt_item.name }}"
     auth: "{{ ovirt_auth }}"

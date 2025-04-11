@@ -1,10 +1,10 @@
 ---
 - name: Deploy hosted-engine
-  import_tasks: full_execution.yml
+  ansible.builtin.import_tasks: full_execution.yml
   tags: always
 
 - name: Execute just a specific set of steps
-  include_tasks: partial_execution.yml
+  ansible.builtin.include_tasks: partial_execution.yml
   tags:
     - initial_clean
     - final_clean

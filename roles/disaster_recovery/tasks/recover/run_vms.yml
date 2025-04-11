@@ -1,8 +1,12 @@
 ---
 - name: Run VMs main block
+  ignore_errors: "{{ dr_ignore_error_recover }}"
+  tags:
+    - fail_over
+    - fail_back
   block:
     - name: Run VMs
-      ovirt_vm:
+      ovirt.ovirt.ovirt_vm:
         state: running
         name: "{{ vms.name }}"
         wait: false
@@ -17,7 +21,3 @@
       ansible.builtin.set_fact:
         failed_to_run_vms: "{{ failed_to_run_vms }} + [ '{{ vms.name }}' ]"
       when: result is failed
-  ignore_errors: "{{ dr_ignore_error_recover }}"
-  tags:
-    - fail_over
-    - fail_back
