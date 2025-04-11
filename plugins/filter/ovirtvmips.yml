@@ -1,3 +1,4 @@
+---
 DOCUMENTATION:
   name: ovirtvmips
   author: Martin Necas (@mnecas)
@@ -18,12 +19,12 @@ DOCUMENTATION:
       type: string
 
 EXAMPLES: |
-    - name: Print VM all IPs
-      debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmips }}"
-    - name: Print VM all IPs
-      debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmips(attr='name') }}"
+  - name: Print VM all IPs
+    debug:
+      msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmips }}"
+  - name: Print VM all IPs
+    debug:
+      msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmips(attr='name') }}"
 
 RETURN:
   _value:

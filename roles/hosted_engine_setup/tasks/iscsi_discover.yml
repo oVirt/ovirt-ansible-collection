@@ -1,7 +1,7 @@
 ---
-- include_tasks: auth_sso.yml
+- ansible.builtin.include_tasks: auth_sso.yml
 - name: Fetch host facts
-  ovirt_host_info:
+  ovirt.ovirt.ovirt_host_info:
     pattern: name={{ he_host_name }}
     auth: "{{ ovirt_auth }}"
   register: host_result
@@ -9,7 +9,7 @@
   retries: 50
   delay: 10
 - name: iSCSI discover
-  ovirt_host:
+  ovirt.ovirt.ovirt_host:
     auth: "{{ ovirt_auth }}"
     state: iscsidiscover
     name: "{{ he_host_name }}"
@@ -22,4 +22,3 @@
 # TODO: perform an iSCSI logout when viable, see:
 # https://bugzilla.redhat.com/show_bug.cgi?id=1535951
 # https://github.com/ansible/ansible/issues/35039
-...

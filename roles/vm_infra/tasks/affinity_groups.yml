@@ -3,7 +3,7 @@
 # Affinity groups
 #########################################
 - name: Create affinity groups
-  ovirt_affinity_group:
+  ovirt.ovirt.ovirt_affinity_group:
     auth: "{{ ovirt_auth }}"
     cluster: "{{ item.cluster | default(omit) }}"
     description: "{{ item.description | default(omit) }}"

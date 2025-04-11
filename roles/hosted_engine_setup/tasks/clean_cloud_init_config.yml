@@ -12,7 +12,7 @@
   ansible.builtin.lineinfile:
     path: /etc/sudoers
     state: absent
-    regexp: '^cloud-user'
+    regexp: "^cloud-user"
 - name: Remove cloud-init package
   ansible.builtin.dnf:
     name: cloud-init

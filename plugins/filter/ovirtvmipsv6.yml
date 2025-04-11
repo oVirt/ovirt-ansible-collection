@@ -1,3 +1,4 @@
+---
 DOCUMENTATION:
   name: ovirtvmipsv6
   author: Martin Necas (@mnecas)
@@ -18,12 +19,12 @@ DOCUMENTATION:
       type: string
 
 EXAMPLES: |
-    - name: Print VM all IPv6
-      debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipsv6 }}"
-    - name: Print VM all IPv6
-      debug:
-        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipsv6(attr='name') }}"
+  - name: Print VM all IPv6
+    debug:
+      msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipsv6 }}"
+  - name: Print VM all IPv6
+    debug:
+      msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipsv6(attr='name') }}"
 
 RETURN:
   _value:

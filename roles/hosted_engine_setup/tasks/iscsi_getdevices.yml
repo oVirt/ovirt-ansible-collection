@@ -1,7 +1,7 @@
 ---
-- include_tasks: auth_sso.yml
+- ansible.builtin.include_tasks: auth_sso.yml
 - name: iSCSI login
-  ovirt_host:
+  ovirt.ovirt.ovirt_host:
     name: "{{ he_host_name }}"
     state: iscsilogin
     timeout: 30
@@ -21,7 +21,7 @@
     - "{{ he_iscsi_portal_addr.split(',') }}"
     - "{{ he_iscsi_portal_port.split(',') if he_iscsi_portal_port is string else he_iscsi_portal_port }}"
 - name: Get iSCSI LUNs
-  ovirt_host_storage_info:
+  ovirt.ovirt.ovirt_host_storage_info:
     host: "{{ he_host_name }}"
     iscsi:
       username: "{{ he_iscsi_username }}"
@@ -31,4 +31,3 @@
       target: "{{ he_iscsi_target }}"
     auth: "{{ ovirt_auth }}"
   register: otopi_iscsi_devices
-...

@@ -35,7 +35,7 @@
         memory: 2GiB
         cloud_init:
           host_name: ps.example.com
-          root_password: 'mypassword'
+          root_password: "mypassword"
           authorized_ssh_keys: ssh-rsa A...LGx ondra@ondra
         profile: "{{ db_vm }}"
         tag:
@@ -43,6 +43,4 @@
           - httpd
 
   roles:
-    - vm_infra
-  collections:
-    - ovirt.ovirt
+    - ovirt.ovirt.vm_infra

@@ -2,7 +2,7 @@
 - name: Final engine tasks
   block:
     - name: Include after engine-setup custom tasks files for the engine VM
-      include_tasks: "{{ after_engine_setup_item }}"
+      ansible.builtin.include_tasks: "{{ after_engine_setup_item }}"
       with_fileglob: "hooks/enginevm_after_engine_setup/*.yml"
       loop_control:
         loop_var: after_engine_setup_item
@@ -11,7 +11,8 @@
     # other actions like electing a new SPM host or reconstructing
     # the master storage domain could require more time
     - name: Wait for the engine to reach a stable condition
-      ansible.builtin.wait_for: timeout=600
+      ansible.builtin.wait_for:
+        timeout: "600"
       when: he_restore_from_file is defined and he_restore_from_file
     - name: Configure LibgfApi support
       ansible.builtin.command: engine-config -s LibgfApiSupported=true --cver=4.2
@@ -32,8 +33,8 @@
         - name: Saving original value
           ansible.builtin.replace:
             path: /etc/ovirt-engine/engine.conf.d/11-setup-sso.conf
-            regexp: '^(SSO_ALTERNATE_ENGINE_FQDNS=.*)'
-            replace: '#\1 # pre hosted-engine-setup'
+            regexp: "^(SSO_ALTERNATE_ENGINE_FQDNS=.*)"
+            replace: "#\\1 # pre hosted-engine-setup"
         - name: Adding new SSO_ALTERNATE_ENGINE_FQDNS line
           ansible.builtin.lineinfile:
             path: /etc/ovirt-engine/engine.conf.d/11-setup-sso.conf
@@ -68,23 +69,19 @@
       ansible.builtin.command: sync
       changed_when: true
     - name: Fetch logs from the engine VM
-      import_tasks: fetch_engine_logs.yml
+      ansible.builtin.import_tasks: fetch_engine_logs.yml
       ignore_errors: true
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Get local VM dir path
       ansible.builtin.set_fact:
-        he_local_vm_dir={{ hostvars[he_ansible_host_name]['he_local_vm_dir'] }}
+        he_local_vm_dir: "{{ hostvars[he_ansible_host_name]['he_local_vm_dir'] }}"
     - name: Clean bootstrap engine VM
-      import_tasks: ../clean_localvm_dir.yml
+      ansible.builtin.import_tasks: ../clean_localvm_dir.yml
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Clean local storage pools
-      import_tasks: ../clean_local_storage_pools.yml
+      ansible.builtin.import_tasks: ../clean_local_storage_pools.yml
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Notify the user about a failure
       ansible.builtin.fail:
-        msg:
-          There was a failure deploying the engine on the local engine VM.
-          The system may not be provisioned according to the playbook results,
-          please check the logs for the issue,
-          fix accordingly or re-deploy from scratch.
-...
+        msg: There was a failure deploying the engine on the local engine VM. The system may not be provisioned according to the playbook results, please check the
+          logs for the issue, fix accordingly or re-deploy from scratch.

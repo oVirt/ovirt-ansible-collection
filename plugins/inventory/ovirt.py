@@ -71,7 +71,7 @@ ovirt_username: ansible-tester
 ovirt_password: secure
 ovirt_query_filter:
   search: 'name=myvm AND cluster=mycluster'
-  case_sensitive: no
+  case_sensitive: false
   max: 15
 keyed_groups:
   - key: cluster

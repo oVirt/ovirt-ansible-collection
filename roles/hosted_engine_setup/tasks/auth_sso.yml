@@ -5,7 +5,7 @@
     OVIRT_URL: https://{{ he_fqdn }}/ovirt-engine/api
     OVIRT_USERNAME: "{{ he_admin_username }}"
     OVIRT_PASSWORD: "{{ he_admin_password }}"
-  ovirt_auth:
+  ovirt.ovirt.ovirt_auth:
     insecure: true
   register: ovirt_sso_auth
   until: ovirt_sso_auth is succeeded

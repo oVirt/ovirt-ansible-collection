@@ -254,8 +254,8 @@ EXAMPLES = '''
 # Enable usb support and serial console
 - ovirt.ovirt.ovirt_instance_type:
     name: myit
-    usb_support: True
-    serial_console: True
+    usb_support: true
+    serial_console: true
 
 # Use graphical console with spice and vnc
 - name: Create a instance type that has the console configured for both Spice and VNC

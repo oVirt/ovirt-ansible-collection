@@ -2,7 +2,8 @@
 - name: Add the engine VM as an ansible host
   block:
     - name: Fetch the value of HOST_KEY_CHECKING
-      ansible.builtin.set_fact: host_key_checking="{{ lookup('config', 'HOST_KEY_CHECKING') }}"
+      ansible.builtin.set_fact:
+        host_key_checking: "{{ lookup('config', 'HOST_KEY_CHECKING') }}"
     - name: Get the username running the deploy
       become: false
       ansible.builtin.command: whoami

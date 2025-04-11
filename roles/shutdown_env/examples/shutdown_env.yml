@@ -13,6 +13,4 @@
     engine_user: admin@internal
 
   roles:
-    - role: shutdown_env
-  collections:
-    - ovirt.ovirt
+    - role: ovirt.ovirt.shutdown_env
