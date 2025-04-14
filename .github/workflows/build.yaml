@@ -1,59 +1,81 @@
+---
 name: Build
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
   pull_request:
     branches:
       - master
-  workflow_dispatch:
+  # schedule# Run CI once per day (at 06:00 UTC)
+  # This ensures that even if there haven't been commits that we are still
+  # testing against latest version of ansible-test for each ansible-core
+  # version:
+  schedule:
+    - cron: '0 6 * * *'
+
+concurrency:
+  group: >-
+    ${{ github.workflow }}-${{
+      github.event.pull_request.number || github.sha
+    }}
+  cancel-in-progress: true
+
 jobs:
-  sanity_test:
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
-    name: ansible-test docker
     steps:
-      - name: Install Python
-        run: |
-          sudo apt-get update
-          sudo apt-get install python3-venv -y
+      - name: Checkout
+        uses: ovirt/checkout-action@main
+      - name: Build the project
+        run: ./build.sh build ovirt /tmp;cp -rf /tmp/ansible_collections/ovirt/ovirt/* .
+      - name: Run ansible lint
+        uses: ansible/ansible-lint@v25
+        with:
+          args: "-x 'key-order[task],no-free-form,schema[vars],yaml[octal-values],risky-shell-pipe,fqcn[keyword]' roles/*"
+          requirements_file: "meta/requirements.yml"
 
-      - name: Install ansible.posix
-        run: ansible-galaxy collection install -c ansible.posix
+  sanity:
+    name: Sanity (Ⓐ${{ matrix.ansible }})
+    needs:
+      - lint
+    strategy:
+      matrix:
+        ansible:
+          - stable-2.14
+          - stable-2.15
+          - stable-2.16
+          - stable-2.17
+          - stable-2.18
+          - devel
 
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout
         uses: ovirt/checkout-action@main
 
       - name: Build the project
         run: ./build.sh build ovirt /tmp
 
-      - name: Run ansible-test sanity
-        run: |
-          cd /tmp/ansible_collections/ovirt/ovirt/
-          ANSIBLE_TEST_PREFER_PODMAN=1 ansible-test sanity --docker
+      - name: Perform sanity testing
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: ${{ matrix.ansible }}
+          testing-type: sanity
+          pull-request-change-detection: false
+          test-deps:
+            ansible.posix
+          collection-src-directory: /tmp/ansible_collections/ovirt/ovirt
 
-      - name: Run ansible-lint 6.y.z
-        run: |
-          set -e
-          # Activate Python 3 virtualenv and run ansible-lint there
-          python3 -m venv venv
-          source venv/bin/activate
-          cd /tmp/ansible_collections/ovirt/ovirt/
-          pip3 install --upgrade pip
-          pip3 install \
-            pycodestyle \
-            pylint \
-            voluptuous \
-            yamllint \
-            rstcheck \
-            antsibull-changelog \
-            rich \
-            "ansible-lint>=6.0.0,<7.0.0" \
-            cryptography \
-            "pyyaml>=5.4.1"
-          ansible-galaxy collection install -c ansible.posix
-          ansible-lint -x 'key-order[task],no-free-form,schema[vars],yaml[octal-values],risky-shell-pipe,fqcn[keyword]' roles/*
   build:
+    name: Build for ${{ matrix.name }}
     runs-on: ubuntu-latest
+    if: github.event_name != 'schedule'
+    needs:
+      - sanity
+      - lint
     strategy:
       fail-fast: false
       matrix:
@@ -61,12 +83,11 @@ jobs:
           - name: centos-stream-9
             pip-command: pip3
             container-name: el9stream
-    name: ${{ matrix.name }}
     container:
       image: quay.io/ovirt/buildcontainer:${{ matrix.container-name }}
     steps:
       - name: Install python3 modules
-        run: ${{ matrix.pip-command }} install pycodestyle pylint voluptuous yamllint rstcheck antsibull-changelog rich "ansible-lint>=6.0.0,<7.0.0" cryptography
+        run: ${{ matrix.pip-command }} install pycodestyle pylint voluptuous yamllint rstcheck antsibull-changelog rich ansible-lint cryptography
 
       - name: Install ansible.posix
         run: ansible-galaxy collection install -c ansible.posix
@@ -81,3 +102,4 @@ jobs:
         uses: ovirt/upload-rpms-action@main
         with:
           directory: exported-artifacts
+
