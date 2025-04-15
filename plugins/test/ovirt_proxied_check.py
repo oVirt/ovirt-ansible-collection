@@ -19,7 +19,27 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-DOCUMENTATION = ''' Check if un URL will be accessed through a proxy '''
+DOCUMENTATION = '''
+---
+module: ovirt_proxied_check
+short_description: Check if a URL will be accessed through a proxy
+description:
+    - This module checks if a given URL is routed through a proxy based on the system's proxy configuration.
+version_added: 3.2.0-1
+author: Asaf Rachmani (@arachmani)
+options:
+    url:
+        description:
+            - The URL to check for proxy routing.
+        required: true
+        type: str
+returns:
+    proxied:
+        description:
+            - Whether the URL is routed through a proxy.
+        type: bool
+        returned: always
+'''
 
 try:
     from urllib import getproxies_environment
