@@ -43,7 +43,7 @@
     # do we still want to continue and attach the other storage
     # domain (which will make another storage domain as master instead).
     - name: Add master storage domain to the setup
-      include_tasks: recover/add_domain.yml
+      ansible.builtin.include_tasks: recover/add_domain.yml
       vars:
         storage: "{{ item }}"
       with_items:
@@ -51,7 +51,7 @@
       when: item['dr_' + dr_target_host + '_master_domain']
 
     - name: Add non master storage domains to the setup
-      include_tasks: recover/add_domain.yml
+      ansible.builtin.include_tasks: recover/add_domain.yml
       vars:
         storage: "{{ item }}"
       with_items:
@@ -168,7 +168,7 @@
     # We register the Templates first since we might have
     # VMs which are based on them
     - name: Register templates
-      include_tasks: recover/register_templates.yml
+      ansible.builtin.include_tasks: recover/register_templates.yml
       vars:
         storage: "{{ item }}"
       with_items:
@@ -177,7 +177,7 @@
     # Register all the unregistered VMs after we registered
     # all the templates from the active storage domains fetched before.
     - name: Register VMs
-      include_tasks: recover/register_vms.yml
+      ansible.builtin.include_tasks: recover/register_vms.yml
       vars:
         storage: "{{ item }}"
       with_items:
@@ -185,7 +185,7 @@
 
     # Run all the high availability VMs.
     - name: Run highly available VMs
-      include_tasks: recover/run_vms.yml
+      ansible.builtin.include_tasks: recover/run_vms.yml
       vars:
         vms: "{{ item }}"
       with_items: "{{ unreg_vms }}"
@@ -193,7 +193,7 @@
 
     # Run all the rest of the VMs.
     - name: Run the rest of the VMs
-      include_tasks: recover/run_vms.yml
+      ansible.builtin.include_tasks: recover/run_vms.yml
       vars:
         vms: "{{ item }}"
       with_items: "{{ unreg_vms }}"
@@ -206,7 +206,7 @@
     - fail_back
   always:
     - name: Print operation summary
-      include_tasks: recover/print_info.yml
+      ansible.builtin.include_tasks: recover/print_info.yml
     - name: Revoke the SSO token
       ovirt_auth:
         state: absent

@@ -23,7 +23,8 @@
         - name: Set local vm dir path
           ansible.builtin.set_fact:
             he_local_vm_dir: "{{ otopi_localvm_dir.path }}"
-        - include_tasks: ../install_appliance.yml
+        - name: Install applicance
+          ansible.builtin.include_tasks: ../install_appliance.yml
           when: he_appliance_ova is none or he_appliance_ova|length == 0
         - name: Register appliance PATH
           ansible.builtin.set_fact:
@@ -57,7 +58,8 @@
             src: "{{ he_appliance_ova_path }}"
             dest: "{{ he_local_vm_dir }}"
             extra_opts: ['--sparse']
-        - include_tasks: ../get_local_vm_disk_path.yml
+        - name: Get local vm disk path
+          ansible.builtin.include_tasks: ../get_local_vm_disk_path.yml
         - name: Get appliance disk size
           ansible.builtin.command: qemu-img info --output=json {{ local_vm_disk_path }}
           environment: "{{ he_cmd_lang }}"
@@ -148,10 +150,10 @@
         - name: Set the name for add_host
           ansible.builtin.set_fact:
             he_fqdn_ansible_host: "{{ local_vm_ip.stdout_lines[0] }}"
-        - import_tasks: ../add_engine_as_ansible_host.yml
+        - ansible.builtin.import_tasks: ../add_engine_as_ansible_host.yml
       rescue:
-        - include_tasks: ../clean_localvm_dir.yml
-        - include_tasks: ../clean_local_storage_pools.yml
+        - ansible.builtin.include_tasks: ../clean_localvm_dir.yml
+        - ansible.builtin.include_tasks: ../clean_local_storage_pools.yml
         - name: Notify the user about a failure
           ansible.builtin.fail:
             msg: >

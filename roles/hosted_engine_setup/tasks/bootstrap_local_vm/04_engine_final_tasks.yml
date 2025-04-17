@@ -2,7 +2,7 @@
 - name: Final engine tasks
   block:
     - name: Include after engine-setup custom tasks files for the engine VM
-      include_tasks: "{{ after_engine_setup_item }}"
+      ansible.builtin.include_tasks: "{{ after_engine_setup_item }}"
       with_fileglob: "hooks/enginevm_after_engine_setup/*.yml"
       loop_control:
         loop_var: after_engine_setup_item
@@ -68,17 +68,17 @@
       ansible.builtin.command: sync
       changed_when: true
     - name: Fetch logs from the engine VM
-      import_tasks: fetch_engine_logs.yml
+      ansible.builtin.import_tasks: fetch_engine_logs.yml
       ignore_errors: true
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Get local VM dir path
       ansible.builtin.set_fact:
         he_local_vm_dir={{ hostvars[he_ansible_host_name]['he_local_vm_dir'] }}
     - name: Clean bootstrap engine VM
-      import_tasks: ../clean_localvm_dir.yml
+      ansible.builtin.import_tasks: ../clean_localvm_dir.yml
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Clean local storage pools
-      import_tasks: ../clean_local_storage_pools.yml
+      ansible.builtin.import_tasks: ../clean_local_storage_pools.yml
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Notify the user about a failure
       ansible.builtin.fail:

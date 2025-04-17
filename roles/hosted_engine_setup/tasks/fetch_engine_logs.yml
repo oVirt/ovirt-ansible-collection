@@ -9,7 +9,7 @@
     owner: root
     group: root
     mode: 0700
-- include_tasks: get_local_vm_disk_path.yml
+- ansible.builtin.include_tasks: get_local_vm_disk_path.yml
 - name: Give the vm time to flush dirty buffers
   ansible.builtin.wait_for:
     timeout: 10

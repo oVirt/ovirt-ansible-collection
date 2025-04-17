@@ -13,7 +13,7 @@
 
     # TODO: Add a wait until the VM is really down
     - name: Shutdown VMs
-      include_tasks: shutdown_vm.yml
+      ansible.builtin.include_tasks: shutdown_vm.yml
       vars:
         vms: "{{ item }}"
       with_items: "{{ vm_info.ovirt_vms }}"

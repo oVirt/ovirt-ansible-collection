@@ -18,7 +18,7 @@
       ansible.builtin.fail:
         msg: "Local VM dir '{{ he_local_vm_dir }}' doesn't exist"
       when: not local_vm_dir_stat.stat.exists
-    - include_tasks: auth_sso.yml
+    - ansible.builtin.include_tasks: auth_sso.yml
     - name: Fetch host facts
       ovirt_host_info:
         pattern: name={{ he_host_name }}
