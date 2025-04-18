@@ -6,7 +6,7 @@ Name:		@PACKAGE_NAME@
 Summary:	Ansible collection to manage all ovirt modules and inventory
 Version:	@RPM_VERSION@
 Release:	@RPM_RELEASE@%{?release_suffix}%{?dist}
-Source0:	http://resources.ovirt.org/pub/src/@PACKAGE_NAME@/@PACKAGE_NAME@-@PACKAGE_VERSION@.tar.gz
+Source0:	https://resources.ovirt.org/pub/src/@PACKAGE_NAME@/@PACKAGE_NAME@-@PACKAGE_VERSION@.tar.gz
 License:	ASL 2.0 and GPLv3+
 BuildArch:	noarch
 Url:		http://www.ovirt.org
@@ -67,9 +67,6 @@ sh build.sh install %{collectionname}
 
 %files
 %{_datadir}/%{ansible_collections_dir}/%{namespace}
-%if "%{collectionname}" == "rhv"
-%{_datadir}/%{ansible_collections_dir}/ovirt
-%endif
 
 %doc README.md
 %doc examples/
