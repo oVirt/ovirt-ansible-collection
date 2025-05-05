@@ -1,3 +1,4 @@
+build.sh shebang!skip
 plugins/callback/stdout.py shebang!skip
 roles/disaster_recovery/files/bcolors.py shebang!skip
 roles/disaster_recovery/files/fail_back.py shebang!skip

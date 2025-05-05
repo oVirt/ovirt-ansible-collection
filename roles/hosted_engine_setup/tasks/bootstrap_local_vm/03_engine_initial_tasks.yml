@@ -61,11 +61,11 @@
         - "OVESETUP_CONFIG/keycloakEnable=bool:{{ he_enable_keycloak }}"
     - name: Enable security policy
       block:
-        - import_tasks: ../get_appliance_dist.yml
+        - ansible.builtin.import_tasks: ../get_appliance_dist.yml
         - name: Apply Security profile
           block:
             - name: Import OpenSCAP task
-              import_tasks: ../apply_openscap_profile.yml
+              ansible.builtin.import_tasks: ../apply_openscap_profile.yml
               when: he_apply_openscap_profile|bool
         - name: Enable FIPS on the engine VM
           ansible.builtin.command: >-
@@ -88,7 +88,7 @@
           when: he_enable_fips|bool
       when: he_apply_openscap_profile|bool or he_enable_fips|bool
     - name: Include before engine-setup custom tasks files for the engine VM
-      include_tasks: "{{ before_engine_setup_item }}"
+      ansible.builtin.include_tasks: "{{ before_engine_setup_item }}"
       with_fileglob: "hooks/enginevm_before_engine_setup/*.yml"
       loop_control:
         loop_var: before_engine_setup_item
@@ -100,28 +100,28 @@
             msg: >-
               You can now connect from this host to the bootstrap engine VM using ssh as root
               and the temporary IP address - {{ hostvars[he_ansible_host_name]['local_vm_ip']['stdout_lines'][0] }}
-        - include_tasks: ../pause_execution.yml
+        - ansible.builtin.include_tasks: ../pause_execution.yml
       when: he_pause_before_engine_setup|bool
     - name: Restore a backup
       block:
-        - include_tasks: ../restore_backup.yml
+        - ansible.builtin.include_tasks: ../restore_backup.yml
       when: he_restore_from_file is defined and he_restore_from_file
   rescue:
     - name: Sync on engine machine
       ansible.builtin.command: sync
       changed_when: true
     - name: Fetch logs from the engine VM
-      import_tasks: fetch_engine_logs.yml
+      ansible.builtin.import_tasks: fetch_engine_logs.yml
       ignore_errors: true
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Get local VM dir path
       ansible.builtin.set_fact:
         he_local_vm_dir={{ hostvars[he_ansible_host_name]['he_local_vm_dir'] }}
     - name: Clean bootstrap engine VM
-      import_tasks: ../clean_localvm_dir.yml
+      ansible.builtin.import_tasks: ../clean_localvm_dir.yml
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Clean local storage pools
-      import_tasks: ../clean_local_storage_pools.yml
+      ansible.builtin.import_tasks: ../clean_local_storage_pools.yml
       delegate_to: "{{ he_ansible_host_name }}"
     - name: Notify the user about a failure
       ansible.builtin.fail:

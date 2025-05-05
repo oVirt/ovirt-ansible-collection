@@ -32,11 +32,11 @@
         - always
 
     - name: Create infrastrucutre
-      import_tasks: create_infra.yml
+      ansible.builtin.import_tasks: create_infra.yml
       when: data_center_state == 'present'
 
     - name: Remove infrastrucutre
-      import_tasks: remove_infra.yml
+      ansible.builtin.import_tasks: remove_infra.yml
       when: data_center_state == 'absent'
 
   always:

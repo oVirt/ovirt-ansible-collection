@@ -29,7 +29,7 @@
   changed_when: false
   no_log: true
 
-- include_tasks: search-pool-id.yml
+- ansible.builtin.include_tasks: search-pool-id.yml
   with_items:
     - "{{ ovirt_repositories_pools }}"
   when: ovirt_repositories_pools is defined

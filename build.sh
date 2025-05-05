@@ -6,7 +6,6 @@ MILESTONE="master"
 RPM_RELEASE="0.1.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
 # RPM_RELEASE="1"
 
-BUILD_TYPE=$2
 BUILD_PATH=$3
 
 COLLECTION_NAMESPACE="ovirt"
@@ -59,7 +58,7 @@ build() {
     BUILD_PATH="$BUILD_PATH/ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME/"
     mkdir -p "$BUILD_PATH"
     echo "Copying files to $BUILD_PATH"
-    git config --global --add safe.directory $(pwd)
+    git config --global --add safe.directory "$(pwd)"
     git archive --format=tar HEAD | (cd "$BUILD_PATH" && tar xf -)
     cd "$BUILD_PATH"
     rename

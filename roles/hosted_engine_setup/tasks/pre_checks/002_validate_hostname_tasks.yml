@@ -1,8 +1,8 @@
 ---
 - name: Choose IPv4, IPv6 or auto
-  import_tasks: ipv_switch.yml
+  ansible.builtin.import_tasks: ipv_switch.yml
 - name: Define he_host_address and he_host_ip
-  import_tasks: fetch_host_ip.yml
+  ansible.builtin.import_tasks: fetch_host_ip.yml
   when: he_host_ip is none or he_host_address is none
 
 - name: Validate host hostname

@@ -1,6 +1,6 @@
 ---
 - name: Create VMs
-  include_tasks: create_vms.yml
+  ansible.builtin.include_tasks: create_vms.yml
   with_items: "{{ create_vms }}"
   loop_control:
     loop_var: "current_vm"
@@ -15,13 +15,13 @@
   delay: "{{ vm_infra_create_poll_interval }}"
 
 - name: Apply any Affinity Groups
-  import_tasks: affinity_groups.yml
+  ansible.builtin.import_tasks: affinity_groups.yml
 
 - name: Apply any Affinity Labels
-  import_tasks: affinity_labels.yml
+  ansible.builtin.import_tasks: affinity_labels.yml
 
 - name: Rename and resize boot disk
-  include_tasks: rename_resize_boot_disk.yml
+  ansible.builtin.include_tasks: rename_resize_boot_disk.yml
   with_items: "{{ create_vms }}"
   loop_control:
     loop_var: "current_vm"
@@ -99,7 +99,7 @@
       skip_missing: true
 
 - name: Manage VMs state
-  include_tasks: manage_state.yml
+  ansible.builtin.include_tasks: manage_state.yml
   with_items: "{{ create_sensitive_vms }}"
   loop_control:
     loop_var: "current_vm"
@@ -160,6 +160,6 @@
       # FIXME: Refactor the condition
 
     - name: Create inventory
-      include_tasks: create_inventory.yml
+      ansible.builtin.include_tasks: create_inventory.yml
 
   when: "wait_for_ip"

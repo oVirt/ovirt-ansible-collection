@@ -27,7 +27,7 @@
         - always
 
     - name: progress 0% - need to do info lookups
-      include_tasks: log_progress.yml
+      ansible.builtin.include_tasks: log_progress.yml
       vars:
         progress: 0
         description: "gathering cluster info"
@@ -53,7 +53,7 @@
         cluster_id: "{{ cluster_info.ovirt_clusters[0].id }}"
 
     - name: progress 2% - cluster upgrade is starting
-      include_tasks: log_progress.yml
+      ansible.builtin.include_tasks: log_progress.yml
       vars:
         progress: 2
         description: "starting upgrade"
@@ -74,7 +74,7 @@
       register: upgrade_set
 
     - name: progress 4% - all necessary info is all looked up, hosts can now be upgraded
-      include_tasks: log_progress.yml
+      ansible.builtin.include_tasks: log_progress.yml
       vars:
         progress: 4
         description: "collecting hosts to upgrade"
@@ -97,7 +97,7 @@
             msg: "No hosts to be upgraded"
 
         - name: progress 100% - no host need to be upgraded!
-          include_tasks: log_progress.yml
+          ansible.builtin.include_tasks: log_progress.yml
           vars:
             progress: 100
             description: "no hosts need to be upgraded!"
@@ -122,17 +122,17 @@
             description: "Upgrading hosts in {{ cluster_name }}"
 
         - name: progress 6% - log hosts that are marked to be upgraded
-          include_tasks: log_progress.yml
+          ansible.builtin.include_tasks: log_progress.yml
           vars:
             progress: 6
             description: "hosts to check for pinned VMs: {{ host_info.ovirt_hosts | map(attribute='name') | join(',') }}"
 
         - name: Change cluster scheduling_policy to cluster_maintenance
-          include_tasks: cluster_policy.yml
+          ansible.builtin.include_tasks: cluster_policy.yml
           when: use_maintenance_policy
 
         - name: Determine what hosts have running pinned vms, they will not be upgraded
-          include_tasks: pinned_vms.yml
+          ansible.builtin.include_tasks: pinned_vms.yml
 
         - name: Build the list of hosts that will be upgraded (hosts in host_info.ovirt_hosts hosts w/o pinned vms that cannot be stopped)
           ansible.builtin.set_fact:
@@ -143,13 +143,13 @@
           when: "host.id not in host_ids or stop_non_migratable_vms"
 
         - name: progress 8% - log hosts that will be upgraded
-          include_tasks: log_progress.yml
+          ansible.builtin.include_tasks: log_progress.yml
           vars:
             progress: 8
             description: "hosts to be upgraded: {{ good_hosts | map(attribute='name') | join(',') }}"
 
         - name: progress 10% - host upgrades starting
-          include_tasks: log_progress.yml
+          ansible.builtin.include_tasks: log_progress.yml
           vars:
             progress: 10
             description: "starting the upgrade of {{ good_hosts | length }} hosts"
@@ -158,7 +158,7 @@
         # or if stop_non_migratable_vms is enabled, which means we stop pinned VMs
         # Note: Progress goes from 10% to 95%, each host taking up an equal amount of progress
         - name: Upgrade the hosts in the cluster
-          include_tasks: upgrade.yml
+          ansible.builtin.include_tasks: upgrade.yml
           vars:
             progress_start: 10
             progress_end: 95
@@ -174,7 +174,7 @@
             state: finished
 
         - name: progress 95% - host upgrades completed successfully, only thing left is to start any non-migratable VMs stopped by the playbook
-          include_tasks: log_progress.yml
+          ansible.builtin.include_tasks: log_progress.yml
           vars:
             progress: 95
             description: "the upgrade of {{ good_hosts | length }} hosts finished successfully"
@@ -209,7 +209,7 @@
             state: failed
 
         - name: progress 95% - host upgrades failed, only thing left is to start any non-migratable VMs stopped by the playbook
-          include_tasks: log_progress.yml
+          ansible.builtin.include_tasks: log_progress.yml
           vars:
             progress: 95
             description: "hosts upgrades failed"
@@ -224,7 +224,7 @@
           when: use_maintenance_policy and cluster_policy.changed | default(false)
 
         - name: progress 95% - host upgrades are done (successful or not), only need to start VMs that were stopped by the playbook
-          include_tasks: log_progress.yml
+          ansible.builtin.include_tasks: log_progress.yml
           vars:
             progress: 95
             description: "host upgrades are done (successful or not), restarting non-migratable VMs"
@@ -250,7 +250,7 @@
           when: stop_non_migratable_vms
 
         - name: progress 100% - host upgrades are done (successful or not), non-migratable VMs are started, everything is now done
-          include_tasks: log_progress.yml
+          ansible.builtin.include_tasks: log_progress.yml
           vars:
             progress: 100
             description: "host upgrades are done, non-migratable VMs are restarted"

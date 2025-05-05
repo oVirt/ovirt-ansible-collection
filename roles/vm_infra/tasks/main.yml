@@ -39,7 +39,7 @@
       # Uses item state first if not defined it will check profile state and use it.
 
     - name: Delete VM
-      include_tasks: vm_state_absent.yml
+      ansible.builtin.include_tasks: vm_state_absent.yml
       with_items: "{{ vms }}"
       loop_control:
         loop_var: current_vm
@@ -47,7 +47,7 @@
         or (current_vm.profile.state is defined and current_vm.state is undefined and current_vm.profile.state == 'absent')
 
     - name: Include create VM
-      include_tasks: vm_state_present.yml
+      ansible.builtin.include_tasks: vm_state_present.yml
       when: create_vms is defined
 
   always:

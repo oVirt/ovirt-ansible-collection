@@ -14,14 +14,14 @@
       register: storage_domain_info
 
     - name: Remove valid storage domain
-      include_tasks: remove_domain_process.yml
+      ansible.builtin.include_tasks: remove_domain_process.yml
       vars:
-        sd: "{{ sd }}"
+        sd: "{{ sd_item }}"
       with_items:
         - "{{ storage_domain_info.ovirt_storage_domains }}"
       when: (not only_master and not sd.master) or (only_master and sd.master)
       loop_control:
-        loop_var: sd
+        loop_var: sd_item
   ignore_errors: "{{ dr_ignore_error_clean }}"
   tags:
     - fail_back

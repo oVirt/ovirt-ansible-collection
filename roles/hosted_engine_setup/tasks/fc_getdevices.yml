@@ -1,5 +1,6 @@
 ---
-- include_tasks: auth_sso.yml
+- name: Auth sso
+  ansible.builtin.include_tasks: auth_sso.yml
 - name: Get Fibre Channel LUNs
   ovirt_host_storage_info:
     host: "{{ he_host_name }}"

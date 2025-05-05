@@ -60,7 +60,7 @@
 
   tasks:
     - name: Print info about httpd VM
-      debug:
+      ansible.builtin.debug:
         msg: "{{ hostvars }}"
 
 - name: Print info about db VMs
@@ -68,5 +68,5 @@
 
   tasks:
     - name: Print info about db VM
-      debug:
+      ansible.builtin.debug:
         msg: "{{ hostvars }}"

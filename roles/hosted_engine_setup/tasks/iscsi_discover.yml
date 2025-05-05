@@ -1,5 +1,5 @@
 ---
-- include_tasks: auth_sso.yml
+- ansible.builtin.include_tasks: auth_sso.yml
 - name: Fetch host facts
   ovirt_host_info:
     pattern: name={{ he_host_name }}
