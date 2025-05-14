@@ -12,10 +12,8 @@ rm -f "$BUILD_ROOT_PATH"/*tar.gz
 
 # Create builds
 ./build.sh build ovirt "$BUILD_ROOT_PATH"
-./build.sh build rhv "$BUILD_ROOT_PATH"
 
 OVIRT_BUILD="$BUILD_ROOT_PATH/ansible_collections/ovirt/ovirt"
-RHV_BUILD="$BUILD_ROOT_PATH/ansible_collections/redhat/rhv"
 
 cd "$OVIRT_BUILD"
 
@@ -40,25 +38,12 @@ rpmbuild \
     -D "_topmdir $BUILD_ROOT_PATH/rpmbuild" \
     --rebuild "$BUILD_ROOT_PATH"/output/*.src.rpm
 
-cd "$RHV_BUILD"
-
-# Remove the tarball so it will not be included in automation hub build
-rm -rf ./*.gz
-
-# Overwrite github README with dynamic
-mv ./README.md.in ./README.md
-
-# create tar for automation hub
-ansible-galaxy collection build
-
 # Store any relevant artifacts in exported-artifacts for the ci system to
 # archive
 find "$BUILD_ROOT_PATH/output" -iname \*rpm -exec mv "{}" "$ROOT_PATH/exported-artifacts/" \;
 
 # Export build for Ansible Galaxy
 mv "$OVIRT_BUILD"/*tar.gz "$ROOT_PATH/exported-artifacts/"
-# Export build for Automation Hub
-mv "$RHV_BUILD"/*tar.gz "$ROOT_PATH/exported-artifacts/"
 
 COLLECTION_DIR="/usr/local/share/ansible/collections/ansible_collections/ovirt/ovirt"
 export ANSIBLE_LIBRARY="$COLLECTION_DIR/plugins/modules"
