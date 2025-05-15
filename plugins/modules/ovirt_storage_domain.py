@@ -27,9 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_storage_domain
 short_description: Module to manage storage domains in oVirt/RHV
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Module to manage storage domains in oVirt/RHV"
 options:

@@ -27,9 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_vm_info
 short_description: Retrieve information about one or more oVirt/RHV virtual machines
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information about one or more oVirt/RHV virtual machines."
     - This module was called C(ovirt_vm_facts) before Ansible 2.9, returning C(ansible_facts).

@@ -27,7 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_disk_info
 short_description: Retrieve information about one or more oVirt/RHV disks
 version_added: "1.0.0"
-author: "Katerina Koukiou (@KKoukiou)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information about one or more oVirt/RHV disks."
     - This module was called C(ovirt_disk_facts) before Ansible 2.9, returning C(ansible_facts).

@@ -12,7 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_host_storage_info
 short_description: Retrieve information about one or more oVirt/RHV HostStorages (applicable only for block storage)
 version_added: "1.0.0"
-author: "Daniel Erez (@derez)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information about one or more oVirt/RHV HostStorages (applicable only for block storage)."
     - This module was called C(ovirt_host_storage_facts) before Ansible 2.9, returning C(ansible_facts).

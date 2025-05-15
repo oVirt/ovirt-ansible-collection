@@ -27,7 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_group_info
 short_description: Retrieve information about one or more oVirt/RHV groups
 version_added: "1.0.0"
-author: "Ondra Machacek (@machacekondra)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information about one or more oVirt/RHV groups."
     - This module was called C(ovirt_group_facts) before Ansible 2.9, returning C(ansible_facts).

@@ -27,7 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_storage_vm_info
 short_description: Retrieve information about one or more oVirt/RHV virtual machines relate to a storage domain.
 version_added: "1.0.0"
-author: "Maor Lipchuk (@machacekondra)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information about one or more oVirt/RHV virtual machines relate to a storage domain."
     - This module was called C(ovirt_storage_vm_facts) before Ansible 2.9, returning C(ansible_facts).

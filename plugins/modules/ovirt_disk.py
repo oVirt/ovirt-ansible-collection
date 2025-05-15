@@ -12,9 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_disk
 short_description: "Module to manage Virtual Machine and floating disks in oVirt/RHV"
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Module to manage Virtual Machine and floating disks in oVirt/RHV."
     - "WARNING: If you are installing the collection from ansible galaxy you need to install 'qemu-img' package."
