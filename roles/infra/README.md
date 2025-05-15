@@ -134,7 +134,7 @@ by overriding value of `hosts_var_name` variable. Example:
   hosts: engine
 
   roles:
-    - role: @NAMESPACE@.@NAME@.infra
+    - role: ovirt.ovirt.infra
       vars:
         hosts_var_name: ovirt_hosts
         ovirt_hosts:
@@ -424,7 +424,7 @@ Example Playbook
         - always
 
   roles:
-    - @NAMESPACE@.@NAME@.infra
+    - ovirt.ovirt.infra
 
   post_tasks:
     - name: Logout from oVirt

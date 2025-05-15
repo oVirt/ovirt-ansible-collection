@@ -56,5 +56,5 @@ Example Playbook
         - user1
 
   roles:
-    - @NAMESPACE@.@NAME@.infra.roles.aaa_jdbc
+    - ovirt.ovirt.infra.roles.aaa_jdbc
 ```

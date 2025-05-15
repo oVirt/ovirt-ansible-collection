@@ -84,7 +84,7 @@ options:
             - List of the hosts lable names, which should have assigned this affinity group.
         type: list
         elements: str
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -92,7 +92,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Create(if not exists) and assign affinity group to VMs vm1 and vm2 and host host1
-  @NAMESPACE@.@NAME@.ovirt_affinity_group:
+  ovirt.ovirt.ovirt_affinity_group:
     name: mygroup
     cluster: mycluster
     vm_enforcing: true
@@ -106,7 +106,7 @@ EXAMPLES = '''
       - host1
 
 - name: Detach VMs from affinity group and disable VM rule
-  @NAMESPACE@.@NAME@.ovirt_affinity_group:
+  ovirt.ovirt.ovirt_affinity_group:
     name: mygroup
     cluster: mycluster
     vm_enforcing: false
@@ -119,7 +119,7 @@ EXAMPLES = '''
       - host2
 
 - name: Remove affinity group
-  @NAMESPACE@.@NAME@.ovirt_affinity_group:
+  ovirt.ovirt.ovirt_affinity_group:
     state: absent
     cluster: mycluster
     name: mygroup
@@ -146,7 +146,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     check_support,

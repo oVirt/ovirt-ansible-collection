@@ -113,7 +113,7 @@
         msg: >
           Your system is configured to use a proxy, please
           add an exception for {{ url }} with no_proxy directive.
-      when: url is @NAMESPACE@.@NAME@.proxied
+      when: url is ovirt.ovirt.proxied
       loop_control:
         loop_var: url
       with_items:

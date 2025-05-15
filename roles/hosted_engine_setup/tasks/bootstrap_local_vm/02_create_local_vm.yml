@@ -68,7 +68,7 @@
             var: qemu_img_out
         - name: Parse qemu-img output
           ansible.builtin.set_fact:
-            virtual_size={{ qemu_img_out.stdout|from_json|@NAMESPACE@.@NAME@.json_query('"virtual-size"') }}
+            virtual_size={{ qemu_img_out.stdout|from_json|ovirt.ovirt.json_query('"virtual-size"') }}
           register: otopi_appliance_disk_size
         - name: Debug var virtual_size
           ansible.builtin.debug:

@@ -15,4 +15,4 @@
     - role: repositories
     - role: engine_setup
   collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt

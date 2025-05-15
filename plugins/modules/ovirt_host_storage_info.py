@@ -16,7 +16,7 @@ author: "Daniel Erez (@derez)"
 description:
     - "Retrieve information about one or more oVirt/RHV HostStorages (applicable only for block storage)."
     - This module was called C(ovirt_host_storage_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(@NAMESPACE@.@NAME@.ovirt_host_storage_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_host_storage_info) module no longer returns C(ansible_facts)!
 options:
     host:
         description:
@@ -67,7 +67,7 @@ options:
         elements: str
         aliases: ['follows']
         default: []
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
+extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -75,7 +75,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about HostStorages with specified target and address:
-- @NAMESPACE@.@NAME@.ovirt_host_storage_info:
+- ovirt.ovirt.ovirt_host_storage_info:
     host: myhost
     iscsi:
       target: iqn.2016-08-09.domain-01:nickname
@@ -85,16 +85,16 @@ EXAMPLES = '''
     msg: "{{ result.ovirt_host_storages }}"
 
 - name: Gather information about all storages
-  @NAMESPACE@.@NAME@.ovirt_host_storage_info:
+  ovirt.ovirt.ovirt_host_storage_info:
     host: myhost
 
 - name: Gather information about all iscsi storages
-  @NAMESPACE@.@NAME@.ovirt_host_storage_info:
+  ovirt.ovirt.ovirt_host_storage_info:
     host: myhost
     iscsi: {}
 
 - name: Gather information about all fcp storages
-  @NAMESPACE@.@NAME@.ovirt_host_storage_info:
+  ovirt.ovirt.ovirt_host_storage_info:
     host: myhost
     fcp: {}
 '''
@@ -115,7 +115,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,
@@ -151,7 +151,7 @@ def main():
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
             version='4.0.0',
-            collection_name='@NAMESPACE@.@NAME@'
+            collection_name='ovirt.ovirt'
         )
 
     try:

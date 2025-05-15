@@ -18,7 +18,7 @@ EXAMPLES: |
     register: ovf_data
   - name: Get disk size from ovf data
     ansible.builtin.set_fact:
-      disk_size: "{{ ovf_data['stdout'] | @NAMESPACE@.@NAME@.get_ovf_disk_size }}"
+      disk_size: "{{ ovf_data['stdout'] | ovirt.ovirt.get_ovf_disk_size }}"
 RETURN:
   _value:
     description: OVF disk size

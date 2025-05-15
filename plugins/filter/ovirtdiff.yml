@@ -28,7 +28,7 @@ EXAMPLES: |
 
   - name: Print what will be changed in next run of the VM
     debug:
-      msg: "{{ vm.ovirt_vms[0] | @NAMESPACE@.@NAME@.ovirtdiff(vm_next_run.ovirt_vms[0]) }}"
+      msg: "{{ vm.ovirt_vms[0] | ovirt.ovirt.ovirtdiff(vm_next_run.ovirt_vms[0]) }}"
 RETURN:
   _value:
     description: VM

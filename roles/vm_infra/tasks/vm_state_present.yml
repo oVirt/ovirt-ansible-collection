@@ -120,7 +120,7 @@
   ovirt_tag:
     auth: "{{ ovirt_auth }}"
     name: "{{ item }}"
-    vms: "{{ create_vms | to_json | from_json | @NAMESPACE@.@NAME@.json_query(query) | map(attribute='name') | list }}"
+    vms: "{{ create_vms | to_json | from_json | ovirt.ovirt.json_query(query) | map(attribute='name') | list }}"
   with_items: "{{ create_vms | selectattr('tag', 'defined') | map(attribute='tag') | list | unique }}"
   vars:
     query: "[?contains(tag, '{{ item }}')]"
@@ -129,7 +129,7 @@
   ovirt_tag:
     auth: "{{ ovirt_auth }}"
     name: "{{ item }}"
-    vms: "{{ create_vms | to_json | from_json | @NAMESPACE@.@NAME@.json_query(query) | map(attribute='name') | list }}"
+    vms: "{{ create_vms | to_json | from_json | ovirt.ovirt.json_query(query) | map(attribute='name') | list }}"
   with_items: "{{ create_vms | selectattr('profile', 'defined') | map(attribute='profile')
     | selectattr('tag', 'defined') | map(attribute='tag') | list | unique }}"
   vars:
@@ -141,7 +141,7 @@
   block:
     - name: Filter ovirt_vms to get IP
       ansible.builtin.set_fact:
-        ip_cond: "vm_info.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmip{{ wait_for_ip_version }}(network_ip='{{ wait_for_ip_range }}') | length > 0"
+        ip_cond: "vm_info.ovirt_vms | ovirt.ovirt.ovirtvmip{{ wait_for_ip_version }}(network_ip='{{ wait_for_ip_range }}') | length > 0"
 
     - name: Wait for VMs IP
       ovirt_vm_info:

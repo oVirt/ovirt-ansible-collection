@@ -31,7 +31,7 @@ author: "Maor Lipchuk (@machacekondra)"
 description:
     - "Retrieve information about one or more oVirt/RHV quotas."
     - This module was called C(ovirt_quota_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(@NAMESPACE@.@NAME@.ovirt_quota_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_quota_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_quotas), which
        contains a list of quotas. You need to register the result with
@@ -56,7 +56,7 @@ options:
         elements: str
         aliases: ['follows']
         default: []
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
+extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -64,7 +64,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about quota named C<myquota> in Default datacenter:
-- @NAMESPACE@.@NAME@.ovirt_quota_info:
+- ovirt.ovirt.ovirt_quota_info:
     data_center: Default
     name: myquota
   register: result
@@ -84,7 +84,7 @@ import fnmatch
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,
@@ -107,7 +107,7 @@ def main():
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
             version='4.0.0',
-            collection_name='@NAMESPACE@.@NAME@'
+            collection_name='ovirt.ovirt'
         )
 
     try:
