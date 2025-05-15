@@ -22,7 +22,7 @@ DOCUMENTATION:
 EXAMPLES: |
   - name: Set filtred ovirt_vms
     ansible.builtin.set_fact:
-      ovirt_vms: "{{ vms | @NAMESPACE@.@NAME@.filtervalue('name', item.name) }}"
+      ovirt_vms: "{{ vms | ovirt.ovirt.filtervalue('name', item.name) }}"
 
 RETURN:
   _value:

@@ -68,7 +68,7 @@ options:
             - "List of the hosts names, which should have assigned this tag."
         type: list
         elements: str
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -76,38 +76,38 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create(if not exists) and assign tag to vms vm1 and vm2:
-- @NAMESPACE@.@NAME@.ovirt_tag:
+- ovirt.ovirt.ovirt_tag:
     name: mytag
     vms:
       - vm1
       - vm2
 
 # Attach a tag to VM 'vm3', keeping the rest already attached tags on VM:
-- @NAMESPACE@.@NAME@.ovirt_tag:
+- ovirt.ovirt.ovirt_tag:
     name: mytag
     state: attached
     vms:
       - vm3
 
 # Detach a tag from VM 'vm3', keeping the rest already attached tags on VM:
-- @NAMESPACE@.@NAME@.ovirt_tag:
+- ovirt.ovirt.ovirt_tag:
     name: mytag
     state: detached
     vms:
       - vm3
 
 # To detach all VMs from tag:
-- @NAMESPACE@.@NAME@.ovirt_tag:
+- ovirt.ovirt.ovirt_tag:
     name: mytag
     vms: []
 
 # Remove tag
-- @NAMESPACE@.@NAME@.ovirt_tag:
+- ovirt.ovirt.ovirt_tag:
     state: absent
     name: mytag
 
 # Change Tag Name
-- @NAMESPACE@.@NAME@.ovirt_tag:
+- ovirt.ovirt.ovirt_tag:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_tag_name"
 '''
@@ -133,7 +133,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

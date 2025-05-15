@@ -97,7 +97,7 @@ options:
             size:
                 description:
                     - Size limit (in GiB).
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -105,7 +105,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Add cluster quota to cluster cluster1 with memory limit 20GiB and CPU limit to 10:
-- @NAMESPACE@.@NAME@.ovirt_quota:
+- ovirt.ovirt.ovirt_quota:
     name: quota1
     data_center: dcX
     clusters:
@@ -114,7 +114,7 @@ EXAMPLES = '''
           cpu: 10
 
 # Add cluster quota to all clusters with memory limit 30GiB and CPU limit to 15:
-- @NAMESPACE@.@NAME@.ovirt_quota:
+- ovirt.ovirt.ovirt_quota:
     name: quota2
     data_center: dcX
     clusters:
@@ -122,7 +122,7 @@ EXAMPLES = '''
           cpu: 15
 
 # Add storage quota to storage data1 with size limit to 100GiB
-- @NAMESPACE@.@NAME@.ovirt_quota:
+- ovirt.ovirt.ovirt_quota:
     name: quota3
     data_center: dcX
     storage_grace: 40
@@ -132,13 +132,13 @@ EXAMPLES = '''
           size: 100
 
 # Remove quota quota1 (Note the quota must not be assigned to any VM/disk):
-- @NAMESPACE@.@NAME@.ovirt_quota:
+- ovirt.ovirt.ovirt_quota:
     state: absent
     data_center: dcX
     name: quota1
 
 # Change Quota Name
-- @NAMESPACE@.@NAME@.ovirt_quota:
+- ovirt.ovirt.ovirt_quota:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_quota_name"
     data_center: dcX
@@ -165,7 +165,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

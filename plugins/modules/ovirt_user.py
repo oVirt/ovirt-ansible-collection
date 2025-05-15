@@ -58,7 +58,7 @@ options:
             - "The user public key."
         type: str
         version_added: 1.4.0
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -66,24 +66,24 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Add user user1 from authorization provider example.com-authz
-- @NAMESPACE@.@NAME@.ovirt_user:
+- ovirt.ovirt.ovirt_user:
     name: user1
     domain: example.com-authz
 
 # Add user user1 from authorization provider example.com-authz
 # In case of Active Directory specify UPN:
-- @NAMESPACE@.@NAME@.ovirt_user:
+- ovirt.ovirt.ovirt_user:
     name: user1@ad2.example.com
     domain: example.com-authz
 
 # Remove user user1 with authorization provider example.com-authz
-- @NAMESPACE@.@NAME@.ovirt_user:
+- ovirt.ovirt.ovirt_user:
     state: absent
     name: user1
     authz_name: example.com-authz
 
 # Remove ssh_public_key
-- @NAMESPACE@.@NAME@.ovirt_user:
+- ovirt.ovirt.ovirt_user:
     name: user1
     authz_name: example.com-authz
     ssh_public_key: ""
@@ -110,7 +110,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     check_params,

@@ -192,7 +192,7 @@ options:
               possible. This can be useful for improving vGPU performance.
         choices: ['consolidated', 'separated']
         type: str
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -201,7 +201,7 @@ EXAMPLES = '''
 
 # Add host with username/password supporting SR-IOV.
 # Note that override_iptables is false by default in oVirt/RHV:
-- @NAMESPACE@.@NAME@.ovirt_host:
+- ovirt.ovirt.ovirt_host:
     cluster: Default
     name: myhost
     address: 10.34.61.145
@@ -211,7 +211,7 @@ EXAMPLES = '''
       - intel_iommu=on
 
 # Add host using public key
-- @NAMESPACE@.@NAME@.ovirt_host:
+- ovirt.ovirt.ovirt_host:
     public_key: true
     cluster: Default
     name: myhost2
@@ -219,7 +219,7 @@ EXAMPLES = '''
     override_iptables: true
 
 # Deploy hosted engine host
-- @NAMESPACE@.@NAME@.ovirt_host:
+- ovirt.ovirt.ovirt_host:
     cluster: Default
     name: myhost2
     password: secret
@@ -228,22 +228,22 @@ EXAMPLES = '''
     hosted_engine: deploy
 
 # Maintenance
-- @NAMESPACE@.@NAME@.ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: maintenance
     name: myhost
 
 # Restart host using power management:
-- @NAMESPACE@.@NAME@.ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: restarted
     name: myhost
 
 # Upgrade host
-- @NAMESPACE@.@NAME@.ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: upgraded
     name: myhost
 
 # discover iscsi targets
-- @NAMESPACE@.@NAME@.ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: iscsidiscover
     name: myhost
     iscsi:
@@ -254,7 +254,7 @@ EXAMPLES = '''
 
 
 # login to iscsi targets
-- @NAMESPACE@.@NAME@.ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: iscsilogin
     name: myhost
     iscsi:
@@ -266,19 +266,19 @@ EXAMPLES = '''
 
 
 # Reinstall host using public key
-- @NAMESPACE@.@NAME@.ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: reinstalled
     name: myhost
     public_key: true
 
 # Remove host
-- @NAMESPACE@.@NAME@.ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: absent
     name: myhost
     force: True
 
 # Retry removing host when failed (https://bugzilla.redhat.com/show_bug.cgi?id=1719271)
-- @NAMESPACE@.@NAME@.ovirt_host:
+- ovirt.ovirt.ovirt_host:
     state: absent
     name: myhost
   register: result
@@ -287,12 +287,12 @@ EXAMPLES = '''
   delay: 20
 
 # Change host Name
-- @NAMESPACE@.@NAME@.ovirt_host:
+- ovirt.ovirt.ovirt_host:
     id: 00000000-0000-0000-0000-000000000000
     name: "new host name"
 
 - name: Enroll host certificates
-  @NAMESPACE@.@NAME@.ovirt_host:
+  ovirt.ovirt.ovirt_host:
     state: maintenance
     name: myhost
     enroll_certificate: True
@@ -326,7 +326,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

@@ -23,4 +23,4 @@
   roles:
     - cluster_upgrade
   collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt

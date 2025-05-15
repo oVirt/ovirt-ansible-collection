@@ -20,10 +20,10 @@ DOCUMENTATION:
 EXAMPLES: |
     - name: Print VM IPv4
       debug:
-        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4 }}"
+        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipv4 }}"
     - name: Print VM IPv4
       debug:
-        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4(attr='name') }}"
+        msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipv4(attr='name') }}"
 
 RETURN:
   _value:

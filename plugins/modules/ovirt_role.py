@@ -47,7 +47,7 @@ options:
         type: list
         elements: str
         default: []
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -55,7 +55,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create administrative role with two permits
-- @NAMESPACE@.@NAME@.ovirt_role:
+- ovirt.ovirt.ovirt_role:
     name: role
     administrative: true
     permits:
@@ -63,12 +63,12 @@ EXAMPLES = '''
       - create_instance
 
 # Remove role
-- @NAMESPACE@.@NAME@.ovirt_role:
+- ovirt.ovirt.ovirt_role:
     name: role
     state: absent
 
 # Remove all permit
-- @NAMESPACE@.@NAME@.ovirt_role:
+- ovirt.ovirt.ovirt_role:
     name: role
     administrative: ture
     permits:
@@ -83,7 +83,7 @@ ovirt_role:
     type: list
 '''
 
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

@@ -124,7 +124,7 @@ options:
             - "If I(true) all networks will be synchronized before modification"
         type: bool
         default: false
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -135,7 +135,7 @@ EXAMPLES = '''
 
 # Create bond on eth0 and eth1 interface, and put 'myvlan' network on top of it and persist the new configuration:
 - name: Bonds
-  @NAMESPACE@.@NAME@.ovirt_host_network:
+  ovirt.ovirt.ovirt_host_network:
     name: myhost
     save: yes
     bond:
@@ -154,7 +154,7 @@ EXAMPLES = '''
 
 # Create bond on eth1 and eth2 interface, specifying both mode and miimon:
 - name: Bonds
-  @NAMESPACE@.@NAME@.ovirt_host_network:
+  ovirt.ovirt.ovirt_host_network:
     name: myhost
     bond:
       name: bond0
@@ -166,14 +166,14 @@ EXAMPLES = '''
         - eth2
 
 # Remove bond0 bond from host interfaces:
-- @NAMESPACE@.@NAME@.ovirt_host_network:
+- ovirt.ovirt.ovirt_host_network:
     state: absent
     name: myhost
     bond:
       name: bond0
 
 # Assign myvlan1 and myvlan2 vlans to host eth0 interface:
-- @NAMESPACE@.@NAME@.ovirt_host_network:
+- ovirt.ovirt.ovirt_host_network:
     name: myhost
     interface: eth0
     networks:
@@ -181,7 +181,7 @@ EXAMPLES = '''
       - name: myvlan2
 
 # Remove myvlan2 vlan from host eth0 interface:
-- @NAMESPACE@.@NAME@.ovirt_host_network:
+- ovirt.ovirt.ovirt_host_network:
     state: absent
     name: myhost
     interface: eth0
@@ -189,13 +189,13 @@ EXAMPLES = '''
       - name: myvlan2
 
 # Remove all networks/vlans from host eth0 interface:
-- @NAMESPACE@.@NAME@.ovirt_host_network:
+- ovirt.ovirt.ovirt_host_network:
     state: absent
     name: myhost
     interface: eth0
 
 # Add custom_properties to network:
-- @NAMESPACE@.@NAME@.ovirt_host_network:
+- ovirt.ovirt.ovirt_host_network:
     name: myhost
     interface: eth0
     networks:
@@ -227,7 +227,7 @@ except ImportError:
 
 from ansible.module_utils import six
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

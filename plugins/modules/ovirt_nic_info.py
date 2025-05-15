@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV virtual machine network interfaces."
     - This module was called C(ovirt_nic_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(@NAMESPACE@.@NAME@.ovirt_nic_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_nic_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_nics), which
        contains a list of NICs. You need to register the result with
@@ -64,7 +64,7 @@ options:
         elements: str
         aliases: ['follows']
         default: []
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
+extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -72,7 +72,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all NICs which names start with C(eth) for VM named C(centos7):
-- @NAMESPACE@.@NAME@.ovirt_nic_info:
+- ovirt.ovirt.ovirt_nic_info:
     vm: centos7
     name: eth*
   register: result
@@ -92,7 +92,7 @@ import fnmatch
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,
@@ -117,7 +117,7 @@ def main():
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
             version='4.0.0',
-            collection_name='@NAMESPACE@.@NAME@'
+            collection_name='ovirt.ovirt'
         )
 
     try:

@@ -130,7 +130,7 @@ EXAMPLES = '''
        - ansible.builtin.include_vars: ovirt_password.yml
 
        - name: Obtain SSO token with using username/password credentials
-         @NAMESPACE@.@NAME@.ovirt_auth:
+         ovirt.ovirt.ovirt_auth:
            url: https://ovirt.example.com/ovirt-engine/api
            username: admin@internal
            ca_file: ca.pem
@@ -138,14 +138,14 @@ EXAMPLES = '''
 
        # Previous task generated I(ovirt_auth) fact, which you can later use
        # in different modules as follows:
-       - @NAMESPACE@.@NAME@.ovirt_vm:
+       - ovirt.ovirt.ovirt_vm:
            auth: "{{ ovirt_auth }}"
            state: absent
            name: myvm
 
     always:
       - name: Always revoke the SSO token
-        @NAMESPACE@.@NAME@.ovirt_auth:
+        ovirt.ovirt.ovirt_auth:
           state: absent
           ovirt_auth: "{{ ovirt_auth }}"
 
@@ -218,7 +218,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import check_sdk
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import check_sdk
 
 
 def main():

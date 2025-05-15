@@ -42,16 +42,16 @@
       register: datacenter_facts
     - name: Fetch Datacenter ID
       ansible.builtin.set_fact: >-
-        datacenter_id={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].data_center.id")|first }}
+        datacenter_id={{ cluster_facts.ovirt_clusters|ovirt.ovirt.json_query("[?id=='" + cluster_id + "'].data_center.id")|first }}
     - name: Fetch Datacenter name
       ansible.builtin.set_fact: >-
-        datacenter_name={{ datacenter_facts.ovirt_datacenters|@NAMESPACE@.@NAME@.json_query("[?id=='" + datacenter_id + "'].name")|first }}
+        datacenter_name={{ datacenter_facts.ovirt_datacenters|ovirt.ovirt.json_query("[?id=='" + datacenter_id + "'].name")|first }}
     - name: Fetch cluster name
       ansible.builtin.set_fact: >-
-        cluster_name={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].name")|first }}
+        cluster_name={{ cluster_facts.ovirt_clusters|ovirt.ovirt.json_query("[?id=='" + cluster_id + "'].name")|first }}
     - name: Fetch cluster version
       ansible.builtin.set_fact: >-
-        cluster_version={{ cluster_facts.ovirt_clusters|@NAMESPACE@.@NAME@.json_query("[?id=='" + cluster_id + "'].version")|first }}
+        cluster_version={{ cluster_facts.ovirt_clusters|ovirt.ovirt.json_query("[?id=='" + cluster_id + "'].version")|first }}
     - name: Enforce cluster major version
       ansible.builtin.fail:
         msg: "Cluster {{ cluster_name }} major version is {{ cluster_version.major }}, needs to be at least 4"
@@ -150,7 +150,7 @@
       changed_when: false
     - name: Get disk size from ovf data
       ansible.builtin.set_fact:
-        disk_size: "{{ ovf_data['stdout'] | @NAMESPACE@.@NAME@.get_ovf_disk_size }}"
+        disk_size: "{{ ovf_data['stdout'] | ovirt.ovirt.get_ovf_disk_size }}"
     - name: Get required size
       ansible.builtin.set_fact:
         required_size: >-

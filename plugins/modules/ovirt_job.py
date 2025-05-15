@@ -62,7 +62,7 @@ options:
                 default: present
         type: list
         elements: dict
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -70,28 +70,28 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Create job with two steps
-  @NAMESPACE@.@NAME@.ovirt_job:
+  ovirt.ovirt.ovirt_job:
     description: job_name
     steps:
       - description: step_name_A
       - description: step_name_B
 
 - name: Finish one step
-  @NAMESPACE@.@NAME@.ovirt_job:
+  ovirt.ovirt.ovirt_job:
     description: job_name
     steps:
       - description: step_name_A
         state: finished
 
 - name: When you fail one step whole job will stop
-  @NAMESPACE@.@NAME@.ovirt_job:
+  ovirt.ovirt.ovirt_job:
     description: job_name
     steps:
       - description: step_name_B
         state: failed
 
 - name: Finish all steps
-  @NAMESPACE@.@NAME@.ovirt_job:
+  ovirt.ovirt.ovirt_job:
     description: job_name
     state: finished
 '''
@@ -117,7 +117,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     ovirt_full_argument_spec,

@@ -14,4 +14,4 @@
     - role: engine_setup
       ovirt_engine_setup_answer_file_path: "answerfile_{{ ovirt_engine_setup_version }}_upgrade.txt.j2"
   collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt
