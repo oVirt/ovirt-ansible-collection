@@ -5,5 +5,9 @@ output/
 ovirt-ansible-collection.spec
 exported-artifacts/
 .idea
+.ansible
+__pycache__
+.nox
+.vscode
 
 changelogs/.plugin-cache.yaml

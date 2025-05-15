@@ -1,0 +1,20 @@
+---
+extends: default
+
+ignore:
+  - "*.py"  # TODO check what needs to be fixed in python docstrings
+
+rules:
+  line-length: disable
+  document-start:
+    ignore:
+      - 'plugins/filter/*.yml'
+  # Below settings are recommended by ansible-lint
+  comments:
+    min-spaces-from-content: 1
+  comments-indentation: false
+  braces:
+    max-spaces-inside: 1
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
