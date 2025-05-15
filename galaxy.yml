@@ -12,6 +12,10 @@ tags:
     - linux
     - cloud
     - virtualization
+dependencies:
+    "ansible.netcommon": "<3.0.0"
+    "ansible.posix": "*"
+    "ansible.utils": "<2.6.0"
 readme: README.md
 repository: https://github.com/ovirt/ovirt-ansible-collection
 issues: https://github.com/ovirt/ovirt-ansible-collection/issues

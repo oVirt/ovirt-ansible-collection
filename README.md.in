@@ -80,6 +80,23 @@ Example Playbook
     - @NAMESPACE@.@NAME@
 ```
 
+Linting and testing
+----------------
+
+The linter and sanity tests are run with [antsibull-nox](https://ansible.readthedocs.io/projects/antsibull-nox/).
+Installation:
+```sh
+pip install antsibull-nox
+```
+Basic usage:
+```sh
+# List all test sessions
+nox --list
+
+# Run only the 'lint' session
+nox -e lint
+```
+
 Licenses
 -------
 
