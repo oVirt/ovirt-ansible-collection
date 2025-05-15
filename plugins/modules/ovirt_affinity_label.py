@@ -27,9 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_affinity_label
 short_description: Module to manage affinity labels in oVirt/RHV
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "This module manage affinity labels in oVirt/RHV. It can also manage assignments
        of those labels to hosts and VMs."

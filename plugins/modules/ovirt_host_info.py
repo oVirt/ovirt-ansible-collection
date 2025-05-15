@@ -12,9 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_host_info
 short_description: Retrieve information about one or more oVirt/RHV hosts
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information about one or more oVirt/RHV hosts."
     - This module was called C(ovirt_host_facts) before Ansible 2.9, returning C(ansible_facts).

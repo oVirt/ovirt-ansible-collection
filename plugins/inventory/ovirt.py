@@ -10,7 +10,7 @@ DOCUMENTATION = '''
     name: ovirt
     short_description: oVirt inventory source
     version_added: "1.0.0"
-    author: Bram Verschueren (@bverschueren)
+    author: "oVirt Developers (@oVirt)"
     requirements:
       - ovirt-engine-sdk-python >= 4.2.4
     extends_documentation_fragment:

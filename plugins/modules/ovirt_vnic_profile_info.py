@@ -27,7 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_vnic_profile_info
 short_description: Retrieve information about one or more oVirt/RHV vnic profiles
 version_added: "1.0.0"
-author: "Martin Necas (@mnecas)"
+author: "oVirt Developers (@ovirt)"
 description:
     - "Retrieve information about one or more oVirt/RHV vnic profiles."
 notes:

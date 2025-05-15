@@ -12,9 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_mac_pool
 short_description: Module to manage MAC pools in oVirt/RHV
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "This module manage MAC pools in oVirt/RHV."
 options:

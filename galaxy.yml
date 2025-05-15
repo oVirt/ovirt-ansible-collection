@@ -3,7 +3,7 @@ namespace: "ovirt"
 name: "ovirt"
 version: 3.2.1
 authors:
-  - Martin Necas <mnecas@redhat.com>
+  - oVirt Developers <devel@ovirt.org>
 license:
   - Apache-2.0
   - GPL-3.0-or-later

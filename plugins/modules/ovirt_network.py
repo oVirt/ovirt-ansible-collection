@@ -27,9 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_network
 short_description: Module to manage logical networks in oVirt/RHV
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Module to manage logical networks in oVirt/RHV"
 options:

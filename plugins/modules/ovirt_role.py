@@ -12,7 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_role
 short_description: Module to manage roles in oVirt/RHV
 version_added: "1.0.0"
-author: "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Module to manage roles in oVirt/RHV."
 options:

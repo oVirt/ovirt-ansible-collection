@@ -11,8 +11,7 @@ DOCUMENTATION = '''
 ---
 module: ovirt_disk_profile
 short_description: "Module to manage storage domain disk profiles in ovirt"
-author:
-- "Niall O Donnell (@odonnelln)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Module to manage storage domain disk profiles in ovirt."
 options:

@@ -1,7 +1,7 @@
 ---
 DOCUMENTATION:
   name: convert_to_bytes
-  author: Martin Necas (@mnecas)
+  author: "oVirt Developers <devel@ovirt.org>"
   # version_added: 'historical'
   short_description: Convert units to bytes
   description:

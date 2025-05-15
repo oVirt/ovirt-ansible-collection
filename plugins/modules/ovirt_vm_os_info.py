@@ -27,9 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_vm_os_info
 short_description: Retrieve information on all supported oVirt/RHV operating systems
 version_added: "1.1.0"
-author:
-- "Martin Necas (@mnecas)"
-- "Chris Brown (@snecklifter)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information on all supported oVirt/RHV operating systems."
 notes:

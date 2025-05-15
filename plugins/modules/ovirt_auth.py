@@ -12,8 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_auth
 short_description: "Module to manage authentication to oVirt/RHV"
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "This module authenticates to oVirt/RHV engine and creates SSO token, which should be later used in
        all other oVirt/RHV modules, so all modules don't need to perform login and logout.

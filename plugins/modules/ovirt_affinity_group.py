@@ -12,9 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_affinity_group
 short_description: Module to manage affinity groups in oVirt/RHV
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "This module manage affinity groups in oVirt/RHV. It can also manage assignments
        of those groups to VMs."

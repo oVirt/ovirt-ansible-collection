@@ -27,7 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_external_provider_info
 short_description: Retrieve information about one or more oVirt/RHV external providers
 version_added: "1.0.0"
-author: "Ondra Machacek (@machacekondra)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information about one or more oVirt/RHV external providers."
     - This module was called C(ovirt_external_provider_facts) before Ansible 2.9, returning C(ansible_facts).

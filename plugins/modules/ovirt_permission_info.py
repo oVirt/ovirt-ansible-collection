@@ -27,9 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_permission_info
 short_description: Retrieve information about one or more oVirt/RHV permissions
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information about one or more oVirt/RHV permissions."
     - This module was called C(ovirt_permission_facts) before Ansible 2.9, returning C(ansible_facts).

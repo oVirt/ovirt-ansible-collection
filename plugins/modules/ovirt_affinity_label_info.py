@@ -27,7 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_affinity_label_info
 short_description: Retrieve information about one or more oVirt/RHV affinity labels
 version_added: "1.0.0"
-author: "Ondra Machacek (@machacekondra)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information about one or more oVirt/RHV affinity labels."
     - This module was called C(ovirt_affinity_label_facts) before Ansible 2.9, returning C(ansible_facts).

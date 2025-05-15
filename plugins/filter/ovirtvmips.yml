@@ -1,7 +1,7 @@
 ---
 DOCUMENTATION:
   name: ovirtvmips
-  author: Martin Necas (@mnecas)
+  author: "oVirt Developers <devel@ovirt.org>"
   short_description: VM all IPs
   description:
     - VM all IPs

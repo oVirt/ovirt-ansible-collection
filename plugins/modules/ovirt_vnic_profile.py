@@ -12,9 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_vnic_profile
 short_description: Module to manage vNIC profile of network in oVirt/RHV
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: oVirt Developers (@ovirt)
 description:
     - "Module to manage vNIC profile of network in oVirt/RHV"
 options:
