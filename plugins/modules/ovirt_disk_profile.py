@@ -10,11 +10,11 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: ovirt_disk_profile
-short_description: "Module to manage storage domain disk profiles in @NAME@"
+short_description: "Module to manage storage domain disk profiles in ovirt"
 author:
 - "Niall O Donnell (@odonnelln)"
 description:
-    - "Module to manage storage domain disk profiles in @NAME@."
+    - "Module to manage storage domain disk profiles in ovirt."
 options:
     id:
         description:
@@ -42,7 +42,7 @@ options:
         type: str
     qos:
         description:
-            - "Name of the QoS entry on the disk profile. If not passed defaults to @NAME@ HE default"
+            - "Name of the QoS entry on the disk profile. If not passed defaults to ovirt HE default"
         type: str
     state:
         description:
@@ -50,12 +50,12 @@ options:
         choices: ['present', 'absent']
         default: 'present'
         type: str
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
 - name: Create a new disk profile on storage_domain_01 using the test_qos QoS in the Default datacenter
-  @NAMESPACE@.@NAME@.ovirt_disk_profile:
+  ovirt.ovirt.ovirt_disk_profile:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_disk_profile"
@@ -64,7 +64,7 @@ EXAMPLES = '''
     qos: "test_qos"
 
 - name: Create a new disk profile on storage_domain_01 in the Default datacenter using the HE default qos
-  @NAMESPACE@.@NAME@.ovirt_disk_profile:
+  ovirt.ovirt.ovirt_disk_profile:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_disk_profile"
@@ -72,7 +72,7 @@ EXAMPLES = '''
     storage_domain: "storage_domain_01"
 
 - name: Remove the test_qos disk profile
-  @NAMESPACE@.@NAME@.ovirt_disk_profile:
+  ovirt.ovirt.ovirt_disk_profile:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_disk_profile"
@@ -101,7 +101,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

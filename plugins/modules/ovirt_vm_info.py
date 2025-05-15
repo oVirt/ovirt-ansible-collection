@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV virtual machines."
     - This module was called C(ovirt_vm_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(@NAMESPACE@.@NAME@.ovirt_vm_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_vm_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_vms), which
        contains a list of virtual machines. You need to register the result with
@@ -83,7 +83,7 @@ options:
       elements: str
       aliases: ['follows']
       default: []
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
+extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -92,14 +92,14 @@ EXAMPLES = '''
 
 # Gather information about all VMs which names start with C(centos) and
 # belong to cluster C(west):
-- @NAMESPACE@.@NAME@.ovirt_vm_info:
+- ovirt.ovirt.ovirt_vm_info:
     pattern: name=centos* and cluster=west
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_vms }}"
 
 # Gather info about next run configuration of virtual machine named myvm
-- @NAMESPACE@.@NAME@.ovirt_vm_info:
+- ovirt.ovirt.ovirt_vm_info:
     pattern: name=myvm
     next_run: true
   register: result
@@ -107,7 +107,7 @@ EXAMPLES = '''
     msg: "{{ result.ovirt_vms[0] }}"
 
 # Gather info about VMs original template with follow parameter
-- @NAMESPACE@.@NAME@.ovirt_vm_info:
+- ovirt.ovirt.ovirt_vm_info:
     pattern: name=myvm
     follow: ['original_template.permissions', 'original_template.nics.vnic_profile']
   register: result
@@ -126,7 +126,7 @@ ovirt_vms:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,
@@ -152,7 +152,7 @@ def main():
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
             version='4.0.0',
-            collection_name='@NAMESPACE@.@NAME@'
+            collection_name='ovirt.ovirt'
         )
 
     try:

@@ -6,7 +6,7 @@
 
 - name: Check if VMs are correct
   ansible.builtin.set_fact:
-    vms: "{{ vms | @NAMESPACE@.@NAME@.removesensitivevmdata }}"
+    vms: "{{ vms | ovirt.ovirt.removesensitivevmdata }}"
 
 - name: Main block
   block:

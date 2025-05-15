@@ -115,7 +115,7 @@ options:
         type: list
         elements: dict
         aliases: ['auth_keys']
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -123,7 +123,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Add image external provider:
-- @NAMESPACE@.@NAME@.ovirt_external_provider:
+- ovirt.ovirt.ovirt_external_provider:
     name: image_provider
     type: os_image
     url: http://1.2.3.4:9292
@@ -133,7 +133,7 @@ EXAMPLES = '''
     auth_url: http://1.2.3.4:35357/v2.0
 
 # Add volume external provider:
-- @NAMESPACE@.@NAME@.ovirt_external_provider:
+- ovirt.ovirt.ovirt_external_provider:
     name: image_provider
     type: os_volume
     url: http://1.2.3.4:9292
@@ -147,7 +147,7 @@ EXAMPLES = '''
         value: "ABCD00000000111111222333445w=="
 
 # Add foreman provider:
-- @NAMESPACE@.@NAME@.ovirt_external_provider:
+- ovirt.ovirt.ovirt_external_provider:
     name: foreman_provider
     type: foreman
     url: https://foreman.example.com
@@ -155,14 +155,14 @@ EXAMPLES = '''
     password: 123456
 
 # Add external network provider for OVN:
-- @NAMESPACE@.@NAME@.ovirt_external_provider:
+- ovirt.ovirt.ovirt_external_provider:
     name: ovn_provider
     type: network
     network_type: external
     url: http://1.2.3.4:9696
 
 # Remove image external provider:
-- @NAMESPACE@.@NAME@.ovirt_external_provider:
+- ovirt.ovirt.ovirt_external_provider:
     state: absent
     name: image_provider
     type: os_image
@@ -204,7 +204,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_params,
     check_sdk,

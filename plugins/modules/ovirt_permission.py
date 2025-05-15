@@ -62,13 +62,13 @@ options:
             - Username of the user to manage. In most LDAPs it's I(uid) of the user,
               but in Active Directory you must specify I(UPN) of the user.
             - Note that if user does not exist in the system this module will fail,
-              you should ensure the user exists by using M(@NAMESPACE@.@NAME@.ovirt_users) module.
+              you should ensure the user exists by using M(ovirt.ovirt.ovirt_users) module.
         type: str
     group_name:
         description:
             - Name of the group to manage.
             - Note that if group does not exist in the system this module will fail,
-               you should ensure the group exists by using M(@NAMESPACE@.@NAME@.ovirt_groups) module.
+               you should ensure the group exists by using M(ovirt.ovirt.ovirt_groups) module.
         type: str
     authz_name:
         description:
@@ -84,7 +84,7 @@ options:
         description:
             - Name of the quota to assign permission. Works only with C(object_type) I(data_center).
         type: str
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -92,7 +92,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Add user user1 from authorization provider example.com-authz
-  @NAMESPACE@.@NAME@.ovirt_permission:
+  ovirt.ovirt.ovirt_permission:
     user_name: user1
     authz_name: example.com-authz
     object_type: vm
@@ -100,7 +100,7 @@ EXAMPLES = '''
     role: UserVmManager
 
 - name: Remove permission from user
-  @NAMESPACE@.@NAME@.ovirt_permission:
+  ovirt.ovirt.ovirt_permission:
     state: absent
     user_name: user1
     authz_name: example.com-authz
@@ -109,7 +109,7 @@ EXAMPLES = '''
     role: ClusterAdmin
 
 - name: Assign QuotaConsumer role to user
-  @NAMESPACE@.@NAME@.ovirt_permissions:
+  ovirt.ovirt.ovirt_permissions:
     state: present
     user_name: user1
     authz_name: example.com-authz
@@ -119,7 +119,7 @@ EXAMPLES = '''
     role: QuotaConsumer
 
 - name: Assign QuotaConsumer role to group
-  @NAMESPACE@.@NAME@.ovirt_permissions:
+  ovirt.ovirt.ovirt_permissions:
     state: present
     group_name: group1
     authz_name: example.com-authz
@@ -128,7 +128,7 @@ EXAMPLES = '''
     quota_name: myquota
     role: QuotaConsumer
 
-- @NAMESPACE@.@NAME@.ovirt_permission:
+- ovirt.ovirt.ovirt_permission:
     user_name: user1
     authz_name: example.com-authz
     object_type: mac_pool
@@ -157,7 +157,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

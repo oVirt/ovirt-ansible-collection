@@ -50,7 +50,7 @@ Example Playbook
   roles:
     - repositories
   collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt
 ```
 
 ```yaml
@@ -70,7 +70,7 @@ Example Playbook
   roles:
     - repositories
   collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt
 ```
 
 ```yaml
@@ -88,7 +88,7 @@ Example Playbook
   roles:
     - repositories
   collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt
 ```
 
 ```yaml
@@ -110,7 +110,7 @@ Example Playbook
   roles:
     - repositories
   collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt
 ```
 
 ```yaml
@@ -128,5 +128,5 @@ Example Playbook
   roles:
     - repositories
   collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt
 ```

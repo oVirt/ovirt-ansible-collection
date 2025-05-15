@@ -111,7 +111,7 @@ All the playbooks can be found inside the `examples/` folder.
   roles:
     - role: hosted_engine_setup
   collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt
 ```
 
 ## hosted_engine_deploy_remotehost.yml
@@ -123,7 +123,7 @@ All the playbooks can be found inside the `examples/` folder.
   roles:
     - role: hosted_engine_setup
   collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt
 ```
 
 ## passwords.yml

@@ -62,7 +62,7 @@
             ovirt_engine_setup_package_list: "{{ he_additional_package_list }}"
             ovirt_engine_setup_admin_password: "{{ he_admin_password }}"
           ansible.builtin.import_role:
-            name: @NAMESPACE@.@NAME@.engine_setup
+            name: ovirt.ovirt.engine_setup
           delegate_to: "{{ groups.engine[0] }}"
       rescue:
         - name: Sync on engine machine

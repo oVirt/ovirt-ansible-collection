@@ -14,7 +14,7 @@ DOCUMENTATION:
 EXAMPLES: |
     - name: Print VM
       debug:
-        msg: "{{ vms | @NAMESPACE@.@NAME@.removesensitivevmdata }}"
+        msg: "{{ vms | ovirt.ovirt.removesensitivevmdata }}"
 
 RETURN:
   _value:

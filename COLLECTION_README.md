@@ -4,7 +4,7 @@
 oVirt Ansible Collection
 ====================================
 
-The `@NAMESPACE@.@NAME@` manages all oVirt Ansible modules.
+The `ovirt.ovirt` manages all oVirt Ansible modules.
 
 The pypi installation is no longer supported if you want
 to install all dependencies do it manually or install the
@@ -15,7 +15,7 @@ Note
 Please note that when installing this collection from Ansible Galaxy you are instructed to run following command:
 
 ```bash
-$ ansible-galaxy collection install @NAMESPACE@.@NAME@
+$ ansible-galaxy collection install ovirt.ovirt
 ```
 
 Requirements
@@ -28,8 +28,8 @@ Content of the collection
 ----------------
 
 * modules:
-  * ovirt_* - Modules to manage objects in @NAME@ Engine
-  * ovirt_*_info - Modules to gather information about objects in @NAME@ Engine
+  * ovirt_* - Modules to manage objects in ovirt Engine
+  * ovirt_*_info - Modules to gather information about objects in ovirt Engine
 * roles:
   * cluster_upgrade
   * engine_setup
@@ -48,7 +48,7 @@ Example Playbook
 
 ```yaml
 ---
-- name: @NAME@ ansible collection
+- name: ovirt ansible collection
   hosts: localhost
   connection: local
   vars_files:
@@ -56,9 +56,9 @@ Example Playbook
     - passwords.yml
   tasks:
     - block:
-        # The use of @NAMESPACE@.@NAME@ before ovirt_auth is to check if the collection is correctly loaded
+        # The use of ovirt.ovirt before ovirt_auth is to check if the collection is correctly loaded
         - name: Obtain SSO token with using username/password credentials
-          @NAMESPACE@.@NAME@.ovirt_auth:
+          ovirt.ovirt.ovirt_auth:
             url: https://ovirt.example.com/ovirt-engine/api
             username: admin@internal
             ca_file: ca.pem
@@ -77,7 +77,7 @@ Example Playbook
             state: absent
             ovirt_auth: "{{ ovirt_auth }}"
   collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt
 ```
 
 Linting and testing

@@ -48,7 +48,7 @@ options:
             - "For example: 00:1a:4a:16:01:51,00:1a:4a:16:01:61"
         type: list
         elements: str
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -56,7 +56,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create MAC pool:
-- @NAMESPACE@.@NAME@.ovirt_mac_pool:
+- ovirt.ovirt.ovirt_mac_pool:
     name: mymacpool
     allow_duplicates: false
     ranges:
@@ -64,12 +64,12 @@ EXAMPLES = '''
       - 00:1a:4a:16:02:51,00:1a:4a:16:02:61
 
 # Remove MAC pool:
-- @NAMESPACE@.@NAME@.ovirt_mac_pool:
+- ovirt.ovirt.ovirt_mac_pool:
     state: absent
     name: mymacpool
 
 # Change MAC pool Name
-- @NAMESPACE@.@NAME@.ovirt_nic:
+- ovirt.ovirt.ovirt_nic:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_mac_pool_name"
 '''
@@ -95,7 +95,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     equal,

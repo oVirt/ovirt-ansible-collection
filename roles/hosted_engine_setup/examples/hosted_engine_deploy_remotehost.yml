@@ -4,4 +4,4 @@
   roles:
     - role: hosted_engine_setup
   collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt

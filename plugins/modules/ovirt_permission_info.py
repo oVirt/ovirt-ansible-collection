@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV permissions."
     - This module was called C(ovirt_permission_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(@NAMESPACE@.@NAME@.ovirt_permission_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_permission_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_permissions), which
        contains a list of permissions. You need to register the result with
@@ -68,7 +68,7 @@ options:
         elements: str
         aliases: ['follows']
         default: []
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
+extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -76,7 +76,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information about all permissions of user with username C(john):
-- @NAMESPACE@.@NAME@.ovirt_permission_info:
+- ovirt.ovirt.ovirt_permission_info:
     user_name: john
     authz_name: example.com-authz
   register: result
@@ -100,7 +100,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_link_name,
@@ -148,7 +148,7 @@ def main():
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
             version='4.0.0',
-            collection_name='@NAMESPACE@.@NAME@'
+            collection_name='ovirt.ovirt'
         )
 
     try:

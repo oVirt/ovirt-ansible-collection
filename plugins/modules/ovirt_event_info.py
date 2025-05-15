@@ -16,7 +16,7 @@ author: "Chris Keller (@nasx)"
 description:
     - "Retrieve information about one or more oVirt/RHV events."
     - This module was called C(ovirt_event_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(@NAMESPACE@.@NAME@.ovirt_event_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_event_info) module no longer returns C(ansible_facts)!
 options:
     case_sensitive:
         description:
@@ -73,7 +73,7 @@ options:
         elements: str
         aliases: ['follows']
         default: []
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
+extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -81,16 +81,16 @@ EXAMPLES = '''
 # look at the ovirt_auth module to see how to reuse authentication.
 
 - name: Return all events
-  @NAMESPACE@.@NAME@.ovirt_event_info:
+  ovirt.ovirt.ovirt_event_info:
   register: result
 
 - name: Return the last 10 events
-  @NAMESPACE@.@NAME@.ovirt_event_info:
+  ovirt.ovirt.ovirt_event_info:
     max: 10
   register: result
 
 - name: Return all events of type alert
-  @NAMESPACE@.@NAME@.ovirt_event_info:
+  ovirt.ovirt.ovirt_event_info:
     search: "severity=alert"
   register: result
 - ansible.builtin.debug:
@@ -109,7 +109,7 @@ ovirt_events:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,
@@ -136,7 +136,7 @@ def main():
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
             version='4.0.0',
-            collection_name='@NAMESPACE@.@NAME@'
+            collection_name='ovirt.ovirt'
         )
 
     try:

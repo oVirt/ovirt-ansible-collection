@@ -15,7 +15,7 @@ DOCUMENTATION:
 EXAMPLES: |
   - name: Get number of bytes
     ansible.builtin.set_fact:
-      disk_size: "{{ '1KiB' | @NAMESPACE@.@NAME@.convert_to_bytes }}"
+      disk_size: "{{ '1KiB' | ovirt.ovirt.convert_to_bytes }}"
 RETURN:
   _value:
     description: Amount of bytes

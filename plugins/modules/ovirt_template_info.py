@@ -33,7 +33,7 @@ author:
 description:
     - "Retrieve information about one or more oVirt/RHV templates."
     - This module was called C(ovirt_template_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(@NAMESPACE@.@NAME@.ovirt_template_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_template_info) module no longer returns C(ansible_facts)!
 notes:
     - "This module returns a variable C(ovirt_templates), which
        contains a list of templates. You need to register the result with
@@ -56,7 +56,7 @@ options:
         elements: str
         aliases: ['follows']
         default: []
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
+extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -65,7 +65,7 @@ EXAMPLES = '''
 
 # Gather information about all templates which names start with C(centos) and
 # belongs to data center C(west):
-- @NAMESPACE@.@NAME@.ovirt_template_info:
+- ovirt.ovirt.ovirt_template_info:
     pattern: name=centos* and datacenter=west
   register: result
 - ansible.builtin.debug:
@@ -83,7 +83,7 @@ ovirt_templates:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,
@@ -104,7 +104,7 @@ def main():
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
             version='4.0.0',
-            collection_name='@NAMESPACE@.@NAME@'
+            collection_name='ovirt.ovirt'
         )
 
     try:

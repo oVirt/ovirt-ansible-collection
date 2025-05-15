@@ -234,7 +234,7 @@ options:
         description:
             - "One of v1, v2, v3, v4, v5 - sets the storage format of the domain."
         type: str
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -242,7 +242,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Add data NFS storage domain
-- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: data_nfs
     host: myhost
     data_center: mydatacenter
@@ -251,7 +251,7 @@ EXAMPLES = '''
       path: /path/data
 
 # Add data NFS storage domain with id for data center
-- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: data_nfs
     host: myhost
     data_center: 11111
@@ -264,7 +264,7 @@ EXAMPLES = '''
 # E.g. the following will work if the data center is in 4.2 level.
 # Without this, you might get as error like:
 #     Cannot attach Storage. Storage Domain format V5 is illegal.
-- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: data_nfs
     host: myhost
     data_center: mydatacenter
@@ -274,7 +274,7 @@ EXAMPLES = '''
     storage_format: v4
 
 # Add data localfs storage domain
-- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: data_localfs
     host: myhost
     data_center: mydatacenter
@@ -282,7 +282,7 @@ EXAMPLES = '''
       path: /path/to/data
 
 # Add data iSCSI storage domain:
-- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: data_iscsi
     host: myhost
     data_center: mydatacenter
@@ -299,7 +299,7 @@ EXAMPLES = '''
 
 # Since Ansible 2.5 you can specify multiple targets for storage domain,
 # Add data iSCSI storage domain with multiple targets:
-- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: data_iscsi
     host: myhost
     data_center: mydatacenter
@@ -313,7 +313,7 @@ EXAMPLES = '''
     discard_after_delete: True
 
 # Add data glusterfs storage domain
-- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: glusterfs_1
     host: myhost
     data_center: mydatacenter
@@ -322,7 +322,7 @@ EXAMPLES = '''
       path: /path/data
 
 # Create export NFS storage domain:
-- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: myexportdomain
     domain_function: export
     host: myhost
@@ -336,7 +336,7 @@ EXAMPLES = '''
     warning_low_space: 5
 
 # Import export NFS storage domain:
-- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     state: imported
     domain_function: export
     host: myhost
@@ -346,7 +346,7 @@ EXAMPLES = '''
       path: /path/export
 
 # Import FCP storage domain:
-- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     state: imported
     name: data_fcp
     host: myhost
@@ -354,12 +354,12 @@ EXAMPLES = '''
     fcp: {}
 
 # Update OVF_STORE:
-- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     state: update_ovf_store
     name: domain
 
 # Create ISO NFS storage domain
-- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: myiso
     domain_function: iso
     host: myhost
@@ -370,7 +370,7 @@ EXAMPLES = '''
 
 # Create managed storage domain
 # Available from ovirt 4.3 and ansible 2.9
-- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     name: my_managed_domain
     host: myhost
     data_center: mydatacenter
@@ -389,7 +389,7 @@ EXAMPLES = '''
           value: password
 
 # Remove storage domain
-- @NAMESPACE@.@NAME@.ovirt_storage_domain:
+- ovirt.ovirt.ovirt_storage_domain:
     state: absent
     name: mystorage_domain
     format: true
@@ -419,7 +419,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

@@ -61,5 +61,5 @@ Example Playbook
           path: /iso
 
   roles:
-    - @NAMESPACE@.@NAME@.infra.roles.storages
+    - ovirt.ovirt.infra.roles.storages
 ```

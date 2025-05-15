@@ -10,11 +10,11 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: ovirt_qos
-short_description: "Module to manage QoS entries in @NAME@"
+short_description: "Module to manage QoS entries in ovirt"
 author:
 - "Niall O Donnell (@odonnelln)"
 description:
-    - "Module to manage QoS entries in @NAME@."
+    - "Module to manage QoS entries in ovirt."
     - "Doesn't support updating a QoS that exists"
     - "Only works with storage QoS entries atm"
 options:
@@ -136,12 +136,12 @@ options:
         choices: ['present', 'absent']
         default: 'present'
         type: str
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
 - name: Create a new storage QoS with default values for max_iops and max_throughput
-  @NAMESPACE@.@NAME@.ovirt_qos:
+  ovirt.ovirt.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
@@ -149,7 +149,7 @@ EXAMPLES = '''
     type: "storage"
 
 - name: Create a new storage QoS with default values for max_iops and read_throughput but 100 for write throughput
-  @NAMESPACE@.@NAME@.ovirt_qos:
+  ovirt.ovirt.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
@@ -158,7 +158,7 @@ EXAMPLES = '''
     write_throughput: 100
 
 - name: Create a new storage QoS with default values for write_iops and max_throughput but 100 for read iops
-  @NAMESPACE@.@NAME@.ovirt_qos:
+  ovirt.ovirt.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
@@ -167,7 +167,7 @@ EXAMPLES = '''
     read_iops: 100
 
 - name: Create a new storage QoS with 100 max_iops and 200 max_throughput
-  @NAMESPACE@.@NAME@.ovirt_qos:
+  ovirt.ovirt.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
@@ -177,7 +177,7 @@ EXAMPLES = '''
     max_throughput: 100
 
 - name: Remove a storage QoS
-  @NAMESPACE@.@NAME@.ovirt_qos:
+  ovirt.ovirt.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     data_center: "Default"
     name: "test_qos_01"
@@ -185,7 +185,7 @@ EXAMPLES = '''
     type: "storage"
 
 - name: Add a network QoS
-  @NAMESPACE@.@NAME@.ovirt_qos:
+  ovirt.ovirt.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     name: "myqos"
     data_center: "Default"
@@ -199,7 +199,7 @@ EXAMPLES = '''
     outbound_burst: 10
 
 - name: Add a hostnetwork QoS
-  @NAMESPACE@.@NAME@.ovirt_qos:
+  ovirt.ovirt.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     name: "myqos"
     data_center: "Default"
@@ -210,7 +210,7 @@ EXAMPLES = '''
     outbound_average_realtime: 50
 
 - name: Add a hostnetwork QoS
-  @NAMESPACE@.@NAME@.ovirt_qos:
+  ovirt.ovirt.ovirt_qos:
     auth: "{{ ovirt_auth }}"
     name: "myqos"
     data_center: "Default"
@@ -226,7 +226,7 @@ id:
     type: str
     sample: 7de90f31-222c-436c-a1ca-7e655bd5b60c
 qos:
-    description: "Dictionary of all the QoS attributes. QoS attributes can be found on your @NAME@ instance
+    description: "Dictionary of all the QoS attributes. QoS attributes can be found on your ovirt instance
                   at following url: http://ovirt.github.io/ovirt-engine-api-model/master/#types/qos."
     returned: "On success if QoS is found."
     type: dict
@@ -239,7 +239,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,
