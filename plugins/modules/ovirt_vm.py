@@ -12,9 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_vm
 short_description: Module to manage Virtual Machines in oVirt/RHV
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - This module manages whole lifecycle of the Virtual Machine(VM) in oVirt/RHV.
     - Since VM can hold many states in oVirt/RHV, this see notes to see how the states of the VM are handled.

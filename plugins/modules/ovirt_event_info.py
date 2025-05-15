@@ -12,7 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_event_info
 short_description: This module can be used to retrieve information about one or more oVirt/RHV events
 version_added: "1.0.0"
-author: "Chris Keller (@nasx)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information about one or more oVirt/RHV events."
     - This module was called C(ovirt_event_facts) before Ansible 2.9, returning C(ansible_facts).

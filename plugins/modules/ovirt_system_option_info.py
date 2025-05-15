@@ -27,7 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_system_option_info
 short_description: Retrieve information about one oVirt/RHV system options.
 version_added: "1.3.0"
-author: "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information about one oVirt/RHV system options."
 notes:

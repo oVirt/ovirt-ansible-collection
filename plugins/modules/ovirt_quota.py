@@ -12,9 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_quota
 short_description: Module to manage datacenter quotas in oVirt/RHV
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Module to manage datacenter quotas in oVirt/RHV"
 options:

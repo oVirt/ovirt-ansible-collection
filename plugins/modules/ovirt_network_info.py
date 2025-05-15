@@ -27,9 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_network_info
 short_description: Retrieve information about one or more oVirt/RHV networks
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information about one or more oVirt/RHV networks."
     - This module was called C(ovirt_network_facts) before Ansible 2.9, returning C(ansible_facts).

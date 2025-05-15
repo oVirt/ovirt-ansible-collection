@@ -27,9 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_vmpool_info
 short_description: Retrieve information about one or more oVirt/RHV vmpools
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information about one or more oVirt/RHV vmpools."
     - This module was called C(ovirt_vmpool_facts) before Ansible 2.9, returning C(ansible_facts).

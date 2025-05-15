@@ -1,7 +1,7 @@
 ---
 DOCUMENTATION:
   name: ovirtdiff
-  author: Martin Necas (@mnecas)
+  author: "oVirt Developers <devel@ovirt.org>"
   short_description: Show what will be changed in next run of the VM
   description:
     - Show what will be changed in next run of the VM
