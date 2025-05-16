@@ -1,6 +1,7 @@
+---
 DOCUMENTATION:
   name: removesensitivevmdata
-  author: Martin Necas (@mnecas)
+  author: "oVirt Developers <devel@ovirt.org>"
   short_description: removesensitivevmdata internal filter
   description:
     - removesensitivevmdata internal filter
@@ -12,9 +13,9 @@ DOCUMENTATION:
       required: true
 
 EXAMPLES: |
-    - name: Print VM
-      debug:
-        msg: "{{ vms | @NAMESPACE@.@NAME@.removesensitivevmdata }}"
+  - name: Print VM
+    debug:
+      msg: "{{ vms | ovirt.ovirt.removesensitivevmdata }}"
 
 RETURN:
   _value:

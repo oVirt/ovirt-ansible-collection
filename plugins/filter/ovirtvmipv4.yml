@@ -1,6 +1,7 @@
+---
 DOCUMENTATION:
   name: ovirtvmipv4
-  author: Martin Necas (@mnecas)
+  author: "oVirt Developers <devel@ovirt.org>"
   short_description: VM IPv4
   description:
     - VM IPv4
@@ -18,12 +19,12 @@ DOCUMENTATION:
       type: string
 
 EXAMPLES: |
-    - name: Print VM IPv4
-      debug:
-        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4 }}"
-    - name: Print VM IPv4
-      debug:
-        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmipv4(attr='name') }}"
+  - name: Print VM IPv4
+    debug:
+      msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipv4 }}"
+  - name: Print VM IPv4
+    debug:
+      msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipv4(attr='name') }}"
 
 RETURN:
   _value:

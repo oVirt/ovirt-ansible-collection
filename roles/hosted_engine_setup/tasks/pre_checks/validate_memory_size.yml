@@ -18,9 +18,9 @@
 - name: Fail if available memory is less then the minimal requirement
   ansible.builtin.fail:
     msg: >-
-     Available memory ( {{ max_mem }}MB ) is less then the minimal requirement ({{ he_minimal_mem_size_MB }}MB).
-     Be aware that {{ he_reserved_memory_MB }}MB is reserved for the host and cannot be allocated to the
-     engine VM.
+      Available memory ( {{ max_mem }}MB ) is less then the minimal requirement ({{ he_minimal_mem_size_MB }}MB).
+      Be aware that {{ he_reserved_memory_MB }}MB is reserved for the host and cannot be allocated to the
+      engine VM.
   when: >-
     he_requirements_check_enabled and he_memory_requirements_check_enabled and max_mem|int < he_minimal_mem_size_MB|int
 - name: Fail if user chose less memory then the minimal requirement

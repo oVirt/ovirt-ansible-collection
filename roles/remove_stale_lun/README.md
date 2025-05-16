@@ -42,5 +42,5 @@ Example Playbook
   roles:
     - remove_stale_lun
   collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt
 ```

@@ -10,6 +10,4 @@
     - vars/passwords.yml
 
   roles:
-    - infra
-  collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt.infra

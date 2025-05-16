@@ -1,7 +1,7 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import convert_to_bytes
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import convert_to_bytes
 
 
 class FilterModule(object):

@@ -27,9 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_network
 short_description: Module to manage logical networks in oVirt/RHV
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Module to manage logical networks in oVirt/RHV"
 options:
@@ -117,7 +115,7 @@ options:
         description:
             - "Name of the label to assign to the network."
         type: str
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -125,31 +123,31 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create network
-- @NAMESPACE@.@NAME@.ovirt_network:
+- ovirt.ovirt.ovirt_network:
     data_center: mydatacenter
     name: mynetwork
     vlan_tag: 10
     vm_network: true
 
 # Remove network
-- @NAMESPACE@.@NAME@.ovirt_network:
+- ovirt.ovirt.ovirt_network:
     state: absent
     name: mynetwork
 
 # Change Network Name
-- @NAMESPACE@.@NAME@.ovirt_network:
+- ovirt.ovirt.ovirt_network:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_network_name"
     data_center: mydatacenter
 
 # Add network from external provider
-- @NAMESPACE@.@NAME@.ovirt_network:
+- ovirt.ovirt.ovirt_network:
     data_center: mydatacenter
     name: mynetwork
     external_provider: ovirt-provider-ovn
 
 # Remove vlan_tag
-- @NAMESPACE@.@NAME@.ovirt_network:
+- ovirt.ovirt.ovirt_network:
     data_center: mydatacenter
     name: mynetwork
     vlan_tag: -1
@@ -176,7 +174,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     check_params,

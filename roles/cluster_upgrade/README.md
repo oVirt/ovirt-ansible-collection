@@ -47,7 +47,7 @@ Example Playbook
   roles:
     - cluster_upgrade
   collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt
 ```
 
 [![asciicast](https://asciinema.org/a/122760.png)](https://asciinema.org/a/122760)

@@ -1,8 +1,12 @@
 ---
 - name: Add POSIX storage domain main block
+  ignore_errors: "{{ dr_ignore_error_recover }}"
+  tags:
+    - fail_over
+    - fail_back
   block:
     - name: Add POSIX storage domain
-      ovirt_storage_domain:
+      ovirt.ovirt.ovirt_storage_domain:
         name: "{{ posix_storage['dr_' + dr_target_host + '_name'] }}"
         critical_space_action_blocker: "{{ posix_storage['dr_critical_space_action_blocker'] }}"
         domain_function: "{{ posix_storage['dr_storage_domain_type'] }}"
@@ -27,7 +31,3 @@
       ansible.builtin.set_fact:
         failed_storage_domains: "{{ failed_storage_domains }} + [ \"{{ posix_storage['dr_' + dr_target_host + '_name'] }}\" ]"
       when: result is failed
-  ignore_errors: "{{ dr_ignore_error_recover }}"
-  tags:
-    - fail_over
-    - fail_back

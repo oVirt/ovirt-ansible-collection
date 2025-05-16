@@ -22,6 +22,4 @@
     template_disk_storage: nfs
 
   roles:
-    - image_template
-  collections:
-    - @NAMESPACE@.@NAME@
+    - ovirt.ovirt.image_template

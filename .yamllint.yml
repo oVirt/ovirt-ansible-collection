@@ -1,0 +1,11 @@
+---
+extends: default
+
+ignore:
+  - "*.py"  # TODO check what needs to be fixed in python docstrings
+
+rules:
+  line-length: disable
+  document-start:
+    ignore:
+      - 'plugins/filter/*.yml'

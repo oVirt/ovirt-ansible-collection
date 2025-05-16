@@ -1,8 +1,12 @@
 ---
 - name: Add storage domain main block
+  ignore_errors: "{{ dr_ignore_error_recover }}"
+  tags:
+    - fail_over
+    - fail_back
   block:
     - name: Fetch available hosts in data center
-      ovirt_host_info:
+      ovirt.ovirt.ovirt_host_info:
         pattern: "status=up and datacenter={{ storage['dr_' + dr_target_host + '_dc_name'] }}"
         auth: "{{ ovirt_auth }}"
       register: host_info
@@ -10,13 +14,15 @@
     - name: Check for available hosts block
       block:
         - name: "Check for available hosts"
-          ansible.builtin.fail: msg="No hosts available"
+          ansible.builtin.fail:
+            msg: "No hosts available"
           when: host_info.ovirt_hosts.0 is undefined
 
     - name: Add storage domain block
+      when: host_info.ovirt_hosts.0 is defined
       block:
         - name: Add storage domain if NFS
-          include_tasks: add_nfs_domain.yml
+          ansible.builtin.include_tasks: add_nfs_domain.yml
           with_items:
             - "{{ storage }}"
           when: "storage.dr_domain_type == 'nfs'"
@@ -24,7 +30,7 @@
             loop_var: nfs_storage
 
         - name: Add storage domain if Gluster
-          include_tasks: add_glusterfs_domain.yml
+          ansible.builtin.include_tasks: add_glusterfs_domain.yml
           with_items:
             - "{{ storage }}"
           when: "storage.dr_domain_type == 'glusterfs'"
@@ -32,7 +38,7 @@
             loop_var: gluster_storage
 
         - name: Add storage domain if POSIX
-          include_tasks: add_posixfs_domain.yml
+          ansible.builtin.include_tasks: add_posixfs_domain.yml
           with_items:
             - "{{ storage }}"
           when: "storage.dr_domain_type == 'posixfs'"
@@ -40,7 +46,7 @@
             loop_var: posix_storage
 
         - name: Add storage domain if iSCSI
-          include_tasks: add_iscsi_domain.yml
+          ansible.builtin.include_tasks: add_iscsi_domain.yml
           with_items:
             - "{{ storage }}"
           when: "storage.dr_domain_type == 'iscsi'"
@@ -48,14 +54,9 @@
             loop_var: iscsi_storage
 
         - name: Add storage domain if FCP
-          include_tasks: add_fcp_domain.yml
+          ansible.builtin.include_tasks: add_fcp_domain.yml
           with_items:
             - "{{ storage }}"
           when: "storage.dr_domain_type == 'fcp'"
           loop_control:
             loop_var: fcp_storage
-      when: host_info.ovirt_hosts.0 is defined
-  ignore_errors: "{{ dr_ignore_error_recover }}"
-  tags:
-    - fail_over
-    - fail_back

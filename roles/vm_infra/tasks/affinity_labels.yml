@@ -1,6 +1,6 @@
 ---
 - name: Create affinity labels
-  ovirt_affinity_label:
+  ovirt.ovirt.ovirt_affinity_label:
     auth: "{{ ovirt_auth }}"
     cluster: "{{ item.cluster | default(omit) }}"
     hosts: "{{ item.hosts | default(omit) }}"

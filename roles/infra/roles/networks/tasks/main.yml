@@ -3,7 +3,7 @@
 # Logical networks
 #########################################
 - name: Add networks
-  ovirt_network:
+  ovirt.ovirt.ovirt_network:
     auth: "{{ ovirt_auth }}"
     state: "{{ item.state | default(omit) }}"
     name: "{{ item.name }}"
@@ -25,7 +25,7 @@
 # Host networks
 #########################################
 - name: Setup host networks
-  ovirt_host_network:
+  ovirt.ovirt.ovirt_host_network:
     auth: "{{ ovirt_auth }}"
     name: "{{ item.name }}"
     state: "{{ item.state | default(omit) }}"

@@ -1,6 +1,6 @@
 ---
 - name: Add data center
-  ovirt_datacenter:
+  ovirt.ovirt.ovirt_datacenter:
     auth: "{{ ovirt_auth }}"
     state: present
     name: "{{ data_center_name }}"
@@ -12,7 +12,7 @@
     - datacenters
 
 - name: Remove data center
-  ovirt_datacenter:
+  ovirt.ovirt.ovirt_datacenter:
     auth: "{{ ovirt_auth }}"
     state: absent
     name: "{{ data_center_name }}"
@@ -22,7 +22,7 @@
 
 - name: Recursively remove data center
   ansible.builtin.import_role:
-    name: @NAMESPACE@.@NAME@.infra.roles.datacenter_cleanup
+    name: ovirt.ovirt.infra.roles.datacenter_cleanup
   when: data_center_state=='absent' and recursive_cleanup
   tags:
     - datacenters

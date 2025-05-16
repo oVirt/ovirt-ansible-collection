@@ -6,13 +6,13 @@
 
 - name: Set network_dict from default_net_xml
   ansible.builtin.set_fact:
-    network_dict: "{{ default_net_xml['stdout'] | @NAMESPACE@.@NAME@.get_network_xml_to_dict }}"
+    network_dict: "{{ default_net_xml['stdout'] | ovirt.ovirt.get_network_xml_to_dict }}"
 
 - name: Create he-network-config.xml from network-config.j2 template
   ansible.builtin.template:
     src: templates/network-config.j2
     dest: /tmp/he-network-config.xml
-    mode: 0644
+    mode: "0644"
 
 - name: Update libvirt default network configuration, destroy
   ansible.builtin.command: virsh net-destroy default

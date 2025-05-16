@@ -1,6 +1,7 @@
+---
 DOCUMENTATION:
   name: filtervalue
-  author: Martin Necas (@mnecas)
+  author: "oVirt Developers <devel@ovirt.org>"
   short_description: Filter to findall occurance of some value in dict
   description:
     - Filter to findall occurance of some value in dict
@@ -22,7 +23,7 @@ DOCUMENTATION:
 EXAMPLES: |
   - name: Set filtred ovirt_vms
     ansible.builtin.set_fact:
-      ovirt_vms: "{{ vms | @NAMESPACE@.@NAME@.filtervalue('name', item.name) }}"
+      ovirt_vms: "{{ vms | ovirt.ovirt.filtervalue('name', item.name) }}"
 
 RETURN:
   _value:

@@ -12,9 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_vnic_profile
 short_description: Module to manage vNIC profile of network in oVirt/RHV
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: oVirt Developers (@ovirt)
 description:
     - "Module to manage vNIC profile of network in oVirt/RHV"
 options:
@@ -83,21 +81,21 @@ options:
         description:
             - "Marks whether pass_through NIC is migratable or not."
         type: bool
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
 # Examples don't contain auth parameter for simplicity,
 # look at ovirt_auth module to see how to reuse authentication:
 - name: Add vNIC
-  @NAMESPACE@.@NAME@.ovirt_vnic_profile:
+  ovirt.ovirt.ovirt_vnic_profile:
     name: myvnic
     network: mynetwork
     state: present
     data_center: datacenter
 
 - name: Editing vNICs network_filter, custom_properties, qos
-  @NAMESPACE@.@NAME@.ovirt_vnic_profile:
+  ovirt.ovirt.ovirt_vnic_profile:
     name: myvnic
     network: mynetwork
     data_center: datacenter
@@ -108,7 +106,7 @@ EXAMPLES = '''
     network_filter: allow-dhcp
 
 - name: Remove vNICs network_filter, custom_properties, qos
-  @NAMESPACE@.@NAME@.ovirt_vnic_profile:
+  ovirt.ovirt.ovirt_vnic_profile:
     name: myvnic
     network: mynetwork
     data_center: datacenter
@@ -117,15 +115,15 @@ EXAMPLES = '''
     network_filter: ""
 
 - name: Dont use migratable
-  @NAMESPACE@.@NAME@.ovirt_vnic_profile:
+  ovirt.ovirt.ovirt_vnic_profile:
     name: myvnic
     network: mynetwork
     data_center: datacenter
-    migratable: False
+    migratable: false
     pass_through: enabled
 
 - name: Remove vNIC
-  @NAMESPACE@.@NAME@.ovirt_vnic_profile:
+  ovirt.ovirt.ovirt_vnic_profile:
     name: myvnic
     network: mynetwork
     state: absent
@@ -153,7 +151,7 @@ except ImportError:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

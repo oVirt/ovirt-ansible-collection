@@ -12,9 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_vm
 short_description: Module to manage Virtual Machines in oVirt/RHV
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - This module manages whole lifecycle of the Virtual Machine(VM) in oVirt/RHV.
     - Since VM can hold many states in oVirt/RHV, this see notes to see how the states of the VM are handled.
@@ -252,7 +250,7 @@ options:
         description:
             - Operating system of the Virtual Machine, for example 'rhel_8x64'.
             - Default value is set by oVirt/RHV engine.
-            - Use the M(@NAMESPACE@.@NAME@.ovirt_vm_os_info) module to obtain the current list.
+            - Use the M(ovirt.ovirt.ovirt_vm_os_info) module to obtain the current list.
         type: str
     boot_devices:
         description:
@@ -380,7 +378,7 @@ options:
                 description:
                     - Custom MAC address of the network interface, by default it's obtained from MAC pool.
                     - "NOTE - This parameter is used only when C(state) is I(running) or I(present) and is able to only create NICs.
-                    To manage NICs of the VM in more depth please use M(@NAMESPACE@.@NAME@.ovirt_nic) module instead."
+                    To manage NICs of the VM in more depth please use M(ovirt.ovirt.ovirt_nic) module instead."
     disks:
         description:
             - List of disks, which should be attached to Virtual Machine. Disk is described by following dictionary.
@@ -407,7 +405,7 @@ options:
                 description:
                     - I(True) if the disk should be activated, default is activated.
                     - "NOTE - This parameter is used only when C(state) is I(running) or I(present) and is able to only attach disks.
-                    To manage disks of the VM in more depth please use M(@NAMESPACE@.@NAME@.ovirt_disk) module instead."
+                    To manage disks of the VM in more depth please use M(ovirt.ovirt.ovirt_disk) module instead."
                 type: bool
     sysprep:
         description:
@@ -978,7 +976,7 @@ notes:
       When user specify I(absent) C(state), we forcibly stop the VM in any state and remove it.
     - "If you update a VM parameter that requires a reboot, the oVirt engine always creates a new snapshot for the VM,
       and an Ansible playbook will report this as changed."
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -986,28 +984,28 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 - name: Creates a new Virtual Machine from template named 'rhel7_template'
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: present
     name: myvm
     template: rhel7_template
     cluster: mycluster
 
 - name: Register VM
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: registered
     storage_domain: mystorage
     cluster: mycluster
     name: myvm
 
 - name: Register VM using id
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: registered
     storage_domain: mystorage
     cluster: mycluster
     id: 1111-1111-1111-1111
 
 - name: Register VM, allowing partial import
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: registered
     storage_domain: mystorage
     allow_partial_import: "True"
@@ -1015,22 +1013,22 @@ EXAMPLES = '''
     id: 1111-1111-1111-1111
 
 - name: Register VM with vnic profile mappings and reassign bad macs
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: registered
     storage_domain: mystorage
     cluster: mycluster
     id: 1111-1111-1111-1111
     vnic_profile_mappings:
-    - source_network_name: mynetwork
-      source_profile_name: mynetwork
-      target_profile_id: 3333-3333-3333-3333
-    - source_network_name: mynetwork2
-      source_profile_name: mynetwork2
-      target_profile_id: 4444-4444-4444-4444
-    reassign_bad_macs: "True"
+      - source_network_name: mynetwork
+        source_profile_name: mynetwork
+        target_profile_id: 3333-3333-3333-3333
+      - source_network_name: mynetwork2
+        source_profile_name: mynetwork2
+        target_profile_id: 4444-4444-4444-4444
+        reassign_bad_macs: "True"
 
 - name: Register VM with mappings
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: registered
     storage_domain: mystorage
     cluster: mycluster
@@ -1065,7 +1063,7 @@ EXAMPLES = '''
         dest_name: cluster_B
 
 - name: Creates a stateless VM which will always use latest template version
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     template: rhel7
     cluster: mycluster
@@ -1074,7 +1072,7 @@ EXAMPLES = '''
 # Creates a new server rhel7 Virtual Machine from Blank template
 # on brq01 cluster with 2GiB memory and 2 vcpu cores/sockets
 # and attach bootable disk with name rhel7_disk and attach virtio NIC
-- @NAMESPACE@.@NAME@.ovirt_vm:
+- ovirt.ovirt.ovirt_vm:
     state: present
     cluster: brq01
     name: myvm
@@ -1086,17 +1084,17 @@ EXAMPLES = '''
     operating_system: rhel_7x64
     disks:
       - name: rhel7_disk
-        bootable: True
+        bootable: true
     nics:
       - name: nic1
 
 # Change VM Name
-- @NAMESPACE@.@NAME@.ovirt_vm:
+- ovirt.ovirt.ovirt_vm:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_vm_name"
 
 - name: Run VM with cloud init
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: rhel7
     template: rhel7
     cluster: Default
@@ -1121,29 +1119,29 @@ EXAMPLES = '''
       root_password: super_password
 
 - name: Run VM with cloud init, with multiple network interfaces
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: rhel7_4
     template: rhel7
     cluster: mycluster
     cloud_init_nics:
-    - nic_name: eth0
-      nic_boot_protocol: dhcp
-    - nic_name: eth1
-      nic_boot_protocol: static
-      nic_ip_address: 10.34.60.86
-      nic_netmask: 255.255.252.0
-      nic_gateway: 10.34.63.254
-    # IP version 6 parameters are supported since ansible 2.9
-    - nic_name: eth2
-      nic_boot_protocol_v6: static
-      nic_ip_address_v6: '2620:52:0:2282:b898:1f69:6512:36c5'
-      nic_gateway_v6: '2620:52:0:2282:b898:1f69:6512:36c9'
-      nic_netmask_v6: '120'
-    - nic_name: eth3
-      nic_boot_protocol_v6: dhcp
+      - nic_name: eth0
+        nic_boot_protocol: dhcp
+      - nic_name: eth1
+        nic_boot_protocol: static
+        nic_ip_address: 10.34.60.86
+        nic_netmask: 255.255.252.0
+        nic_gateway: 10.34.63.254
+      # IP version 6 parameters are supported since ansible 2.9
+      - nic_name: eth2
+        nic_boot_protocol_v6: static
+        nic_ip_address_v6: '2620:52:0:2282:b898:1f69:6512:36c5'
+        nic_gateway_v6: '2620:52:0:2282:b898:1f69:6512:36c9'
+        nic_netmask_v6: '120'
+      - nic_name: eth3
+        nic_boot_protocol_v6: dhcp
 
 - name: Run VM with sysprep
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: windows2012R2_AD
     template: windows2012R2
     cluster: Default
@@ -1155,93 +1153,93 @@ EXAMPLES = '''
       root_password: SuperPassword123
 
 - name: Migrate/Run VM to/on host named 'host1'
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: running
     name: myvm
     host: host1
 
 - name: Migrate/Run VM to/on host named 'host1' on cluster 'cluster1'
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: running
     name: myvm
     host: host1
     cluster: cluster1
 
 - name: Migrate VM to any available host
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: running
     name: myvm
     migrate: true
 
 - name: Change VMs CD
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     cd_iso: drivers.iso
 
 - name: Eject VMs CD
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     cd_iso: ''
 
 - name: Boot VM from CD
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     cd_iso: centos7_x64.iso
     boot_devices:
-        - cdrom
+      - cdrom
 
 - name: Stop vm
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: stopped
     name: myvm
 
 - name: Upgrade memory to already created VM
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     memory: 4GiB
 
 - name: Hot plug memory to already created and running VM (VM won't be restarted)
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     memory: 4GiB
 
 # Create/update a VM to run with two vNUMA nodes and pin them to physical NUMA nodes as follows:
 # vnuma index 0-> numa index 0, vnuma index 1-> numa index 1
 - name: Create a VM to run with two vNUMA nodes
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     cluster: mycluster
     numa_tune_mode: "interleave"
     numa_nodes:
-    - index: 0
-      cores: [0]
-      memory: 20
-      numa_node_pins: [0]
-    - index: 1
-      cores: [1]
-      memory: 30
-      numa_node_pins: [1]
+      - index: 0
+        cores: [0]
+        memory: 20
+        numa_node_pins: [0]
+      - index: 1
+        cores: [1]
+        memory: 30
+        numa_node_pins: [1]
 
 - name: Update an existing VM to run without previously created vNUMA nodes (i.e. remove all vNUMA nodes+NUMA pinning setting)
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     cluster: mycluster
     state: "present"
     numa_tune_mode: "interleave"
     numa_nodes:
-    - index: -1
+      - index: -1
 
 # When change on the VM needs restart of the VM, use next_run state,
 # The VM will be updated and rebooted if there are any changes.
 # If present state would be used, VM won't be restarted.
-- @NAMESPACE@.@NAME@.ovirt_vm:
+- ovirt.ovirt.ovirt_vm:
     state: next_run
     name: myvm
     boot_devices:
       - network
 
 - name: Import virtual machine from VMware
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: stopped
     cluster: mycluster
     name: vmware_win10
@@ -1255,36 +1253,36 @@ EXAMPLES = '''
       password: password
 
 - name: Create vm from template and create all disks on specific storage domain
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: vm_test
     cluster: mycluster
     template: mytemplate
     storage_domain: mynfs
     nics:
-    - name: nic1
+      - name: nic1
 
 - name: Remove VM, if VM is running it will be stopped
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: absent
     name: myvm
 
 # Defining a specific quota for a VM:
 # Since Ansible 2.5
-- @NAMESPACE@.@NAME@.ovirt_quotas_info:
+- ovirt.ovirt.ovirt_quotas_info:
     data_center: Default
     name: myquota
   register: ovirt_quotas
-- @NAMESPACE@.@NAME@.ovirt_vm:
+- ovirt.ovirt.ovirt_vm:
     name: myvm
-    sso: False
-    boot_menu: True
+    sso: false
+    boot_menu: true
     bios_type: q35_ovmf
-    usb_support: True
-    serial_console: True
+    usb_support: true
+    serial_console: true
     quota_id: "{{ ovirt_quotas[0]['id'] }}"
 
 - name: Create a VM that has the console configured for both Spice and VNC
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     template: mytemplate
     cluster: mycluster
@@ -1295,24 +1293,24 @@ EXAMPLES = '''
 
 # Execute remote viewer to VM
 - block:
-  - name: Create a ticket for console for a running VM
-    @NAMESPACE@.@NAME@.ovirt_vm:
-      name: myvm
-      ticket: true
-      state: running
-    register: myvm
+    - name: Create a ticket for console for a running VM
+      ovirt.ovirt.ovirt_vm:
+        name: myvm
+        ticket: true
+        state: running
+      register: myvm
 
-  - name: Save ticket to file
-    ansible.builtin.copy:
-      content: "{{ myvm.vm.remote_vv_file }}"
-      dest: ~/vvfile.vv
+    - name: Save ticket to file
+      ansible.builtin.copy:
+        content: "{{ myvm.vm.remote_vv_file }}"
+        dest: ~/vvfile.vv
 
-  - name: Run remote viewer with file
-    ansible.builtin.command: remote-viewer ~/vvfile.vv
+    - name: Run remote viewer with file
+      ansible.builtin.command: remote-viewer ~/vvfile.vv
 
 # Default value of host_device state is present
 - name: Attach host devices to virtual machine
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     host: myhost
     placement_policy: pinned
@@ -1324,7 +1322,7 @@ EXAMPLES = '''
         state: present
 
 - name: Add placement policy with multiple hosts
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     placement_policy: migratable
     placement_policy_hosts:
@@ -1332,24 +1330,24 @@ EXAMPLES = '''
       - host2
 
 - name: Export the VM as OVA
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     name: myvm
     state: exported
     cluster: mycluster
     export_ova:
-        host: myhost
-        filename: myvm.ova
-        directory: /tmp/
+      host: myhost
+      filename: myvm.ova
+      directory: /tmp/
 
 - name: Clone VM from snapshot
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     snapshot_vm: myvm
     snapshot_name: myvm_snap
     name: myvm_clone
     state: present
 
 - name: Import external ova VM
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     cluster: mycluster
     name: myvm
     host: myhost
@@ -1361,7 +1359,7 @@ EXAMPLES = '''
       storage_domain: mystorage
 
 - name: Cpu pinning of 0#12_1#13_2#14_3#15
-  @NAMESPACE@.@NAME@.ovirt_vm:
+  ovirt.ovirt.ovirt_vm:
     state: present
     cluster: mycluster
     name: myvm
@@ -1401,7 +1399,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_params,
     check_sdk,

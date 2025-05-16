@@ -7,7 +7,7 @@
         state: directory
         owner: postgres
         group: postgres
-        mode: 0700
+        mode: "0700"
     - name: Update target VM details at DB level
       ansible.builtin.command: >-
         "{{ engine_psql }}" -c
@@ -17,7 +17,7 @@
       changed_when: true
       register: db_vm_update
       with_items:
-        - {field: 'origin', value: 6}
+        - {field: "origin", value: 6}
     - name: Insert Hosted Engine configuration disk uuid into Engine database
       ansible.builtin.command: >-
         "{{ engine_psql }}" -c
@@ -35,7 +35,8 @@
       changed_when: true
       register: host_spm_id_out
     - name: Parse host SPM_ID
-      ansible.builtin.set_fact: host_spm_id="{{ host_spm_id_out.stdout_lines|first|trim }}"
+      ansible.builtin.set_fact:
+        host_spm_id: "{{ host_spm_id_out.stdout_lines|first|trim }}"
     - name: Restore original DisableFenceAtStartupInSec
       ansible.builtin.shell: "engine-config -s DisableFenceAtStartupInSec=$(cat /root/DisableFenceAtStartupInSec.txt)"
       environment: "{{ he_cmd_lang }}"
@@ -60,13 +61,13 @@
         - name: Removing temporary value
           ansible.builtin.lineinfile:
             path: /etc/ovirt-engine/engine.conf.d/11-setup-sso.conf
-            regexp: '^SSO_ALTERNATE_ENGINE_FQDNS=.* # hosted-engine-setup'
+            regexp: "^SSO_ALTERNATE_ENGINE_FQDNS=.* # hosted-engine-setup"
             state: absent
         - name: Restoring original value
           ansible.builtin.replace:
             path: /etc/ovirt-engine/engine.conf.d/11-setup-sso.conf
-            regexp: '^#(SSO_ALTERNATE_ENGINE_FQDNS=.*) # pre hosted-engine-setup'
-            replace: '\1'
+            regexp: "^#(SSO_ALTERNATE_ENGINE_FQDNS=.*) # pre hosted-engine-setup"
+            replace: "\\1"
     - name: Remove temporary directory for ansible as postgres user
       ansible.builtin.file:
         path: /var/lib/pgsql/.ansible
@@ -78,4 +79,4 @@
         line: "PermitRootLogin {{ he_root_ssh_access }}"
         state: present
     - name: Clean cloud-init configuration
-      include_tasks: ../clean_cloud_init_config.yml
+      ansible.builtin.include_tasks: ../clean_cloud_init_config.yml

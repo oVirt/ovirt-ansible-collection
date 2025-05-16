@@ -26,7 +26,7 @@ short_description: Check if a URL will be accessed through a proxy
 description:
     - This module checks if a given URL is routed through a proxy based on the system's proxy configuration.
 version_added: 3.2.0-1
-author: Asaf Rachmani (@arachmani)
+author: "oVirt Developers (@oVirt)"
 options:
     url:
         description:
