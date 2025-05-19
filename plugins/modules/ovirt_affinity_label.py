@@ -27,9 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_affinity_label
 short_description: Module to manage affinity labels in oVirt/RHV
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "This module manage affinity labels in oVirt/RHV. It can also manage assignments
        of those labels to hosts and VMs."
@@ -59,7 +57,7 @@ options:
             - "List of the hosts names, which should have assigned this affinity label."
         type: list
         elements: str
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -67,7 +65,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create(if not exists) and assign affinity label to vms vm1 and vm2 and host host1
-- @NAMESPACE@.@NAME@.ovirt_affinity_label:
+- ovirt.ovirt.ovirt_affinity_label:
     name: mylabel
     cluster: mycluster
     vms:
@@ -77,13 +75,13 @@ EXAMPLES = '''
       - host1
 
 # To detach all VMs from label
-- @NAMESPACE@.@NAME@.ovirt_affinity_label:
+- ovirt.ovirt.ovirt_affinity_label:
     name: mylabel
     cluster: mycluster
     vms: []
 
 # Remove affinity label
-- @NAMESPACE@.@NAME@.ovirt_affinity_label:
+- ovirt.ovirt.ovirt_affinity_label:
     state: absent
     name: mylabel
 '''
@@ -110,7 +108,7 @@ except ImportError:
 
 from collections import defaultdict
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     create_connection,

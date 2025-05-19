@@ -3,6 +3,4 @@
   hosts: localhost
   connection: local
   roles:
-     - disaster_recovery
-  collections:
-     - @NAMESPACE@.@NAME@
+    - ovirt.ovirt.disaster_recovery

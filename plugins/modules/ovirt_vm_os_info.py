@@ -27,9 +27,7 @@ DOCUMENTATION = '''
 module: ovirt_vm_os_info
 short_description: Retrieve information on all supported oVirt/RHV operating systems
 version_added: "1.1.0"
-author:
-- "Martin Necas (@mnecas)"
-- "Chris Brown (@snecklifter)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information on all supported oVirt/RHV operating systems."
 notes:
@@ -57,19 +55,19 @@ options:
         elements: str
         aliases: ['follows']
         default: []
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
+extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
 EXAMPLES = '''
 # Look at ovirt_auth module to see how to reuse authentication:
 
-- @NAMESPACE@.@NAME@.ovirt_vm_os_info:
+- ovirt.ovirt.ovirt_vm_os_info:
     auth: "{{ ovirt_auth }}"
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_operating_systems }}"
 
-- @NAMESPACE@.@NAME@.ovirt_vm_os_info:
+- ovirt.ovirt.ovirt_vm_os_info:
     auth: "{{ ovirt_auth }}"
     filter_keys: name,architecture
   register: result
@@ -89,7 +87,7 @@ ovirt_operating_systems:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,
@@ -111,7 +109,7 @@ def main():
         module.deprecate(
             "The 'fetch_nested' and 'nested_attributes' are deprecated please use 'follow' parameter",
             version='4.0.0',
-            collection_name='@NAMESPACE@.@NAME@'
+            collection_name='ovirt.ovirt'
         )
 
     try:

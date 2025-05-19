@@ -12,9 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_datacenter
 short_description: Module to manage data centers in oVirt/RHV
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
-- "Martin Necas (@mnecas)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Module to manage data centers in oVirt/RHV"
 options:
@@ -97,7 +95,7 @@ options:
         type: list
         elements: dict
 
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt
+extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
 EXAMPLES = '''
@@ -105,40 +103,40 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Create datacenter
-- @NAMESPACE@.@NAME@.ovirt_datacenter:
+- ovirt.ovirt.ovirt_datacenter:
     name: mydatacenter
-    local: True
+    local: true
     compatibility_version: 4.0
     quota_mode: enabled
 
 # Remove datacenter
-- @NAMESPACE@.@NAME@.ovirt_datacenter:
+- ovirt.ovirt.ovirt_datacenter:
     state: absent
     name: mydatacenter
 
 # Change Datacenter Name
-- @NAMESPACE@.@NAME@.ovirt_datacenter:
+- ovirt.ovirt.ovirt_datacenter:
     id: 00000000-0000-0000-0000-000000000000
     name: "new_datacenter_name"
 
 # Create datacenter with iscsi bond
-- @NAMESPACE@.@NAME@.ovirt_datacenter:
+- ovirt.ovirt.ovirt_datacenter:
     name: mydatacenter
     iscsi_bonds:
       - name: bond1
         networks:
-            - network1
-            - network2
+          - network1
+          - network2
         storage_domains:
-            - storage1
+          - storage1
       - name: bond2
         networks:
-            - network3
+          - network3
         storage_connections:
-            - cf780201-6a4f-43c1-a019-e65c4220ab73
+          - cf780201-6a4f-43c1-a019-e65c4220ab73
 
 # Remove all iscsi bonds
-- @NAMESPACE@.@NAME@.ovirt_datacenter:
+- ovirt.ovirt.ovirt_datacenter:
     name: mydatacenter
     iscsi_bonds: []
 '''
@@ -164,7 +162,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     BaseModule,
     check_sdk,
     check_params,

@@ -1,4 +1,5 @@
 ---
+# noqa: command-instead-of-module
 - name: Run engine cleanup command
   ansible.builtin.command: "engine-cleanup"
   when: ovirt_engine_setup_restore_engine_cleanup

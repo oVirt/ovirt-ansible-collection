@@ -12,8 +12,7 @@ DOCUMENTATION = '''
 module: ovirt_auth
 short_description: "Module to manage authentication to oVirt/RHV"
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "This module authenticates to oVirt/RHV engine and creates SSO token, which should be later used in
        all other oVirt/RHV modules, so all modules don't need to perform login and logout.
@@ -124,30 +123,30 @@ notes:
 '''
 
 EXAMPLES = '''
-  - block:
-       # Create a vault with `ovirt_password` variable which store your
-       # oVirt/RHV user's password, and include that yaml file with variable:
-       - ansible.builtin.include_vars: ovirt_password.yml
+- block:
+   # Create a vault with `ovirt_password` variable which store your
+   # oVirt/RHV user's password, and include that yaml file with variable:
+   - ansible.builtin.include_vars: ovirt_password.yml
 
-       - name: Obtain SSO token with using username/password credentials
-         @NAMESPACE@.@NAME@.ovirt_auth:
-           url: https://ovirt.example.com/ovirt-engine/api
-           username: admin@internal
-           ca_file: ca.pem
-           password: "{{ ovirt_password }}"
+   - name: Obtain SSO token with using username/password credentials
+     ovirt.ovirt.ovirt_auth:
+      url: https://ovirt.example.com/ovirt-engine/api
+      username: admin@internal
+      ca_file: ca.pem
+      password: "{{ ovirt_password }}"
 
-       # Previous task generated I(ovirt_auth) fact, which you can later use
-       # in different modules as follows:
-       - @NAMESPACE@.@NAME@.ovirt_vm:
-           auth: "{{ ovirt_auth }}"
-           state: absent
-           name: myvm
+   # Previous task generated I(ovirt_auth) fact, which you can later use
+   # in different modules as follows:
+   - ovirt.ovirt.ovirt_vm:
+      auth: "{{ ovirt_auth }}"
+      state: absent
+      name: myvm
 
-    always:
-      - name: Always revoke the SSO token
-        @NAMESPACE@.@NAME@.ovirt_auth:
-          state: absent
-          ovirt_auth: "{{ ovirt_auth }}"
+  always:
+   - name: Always revoke the SSO token
+     ovirt.ovirt.ovirt_auth:
+      state: absent
+      ovirt_auth: "{{ ovirt_auth }}"
 
 # When user will set following environment variables:
 #   OVIRT_URL = https://fqdn/ovirt-engine/api
@@ -157,9 +156,9 @@ EXAMPLES = '''
 # in yaml file.
 # This is mainly useful when using Ansible Tower or AWX, as it will work
 # for Red Hat Virtualization credentials type.
-  - name: Obtain SSO token
-    ovirt_auth:
-      state: present
+- name: Obtain SSO token
+  ovirt.ovirt.ovirt_auth:
+  state: present
 '''
 
 RETURN = '''
@@ -218,7 +217,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import check_sdk
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import check_sdk
 
 
 def main():

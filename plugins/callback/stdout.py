@@ -12,12 +12,12 @@ __metaclass__ = type
 # requires and how to configure them.
 # TODO Fix DOCUMENTATION to pass the ansible-test validate-modules
 DOCUMENTATION = '''
-  name: stdout
-  type: aggregate
-  short_description: Output the log of ansible
-  version_added: "2.0.0"
-  description:
-      - This callback output the log of ansible play tasks.
+name: stdout
+type: aggregate
+short_description: Output the log of ansible
+version_added: "2.0.0"
+description:
+ - This callback output the log of ansible play tasks.
 '''
 
 from ansible.plugins.callback import CallbackBase

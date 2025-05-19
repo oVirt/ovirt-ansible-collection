@@ -1,8 +1,12 @@
 ---
 - name: Add Gluster storage domain main block
+  ignore_errors: "{{ dr_ignore_error_recover }}"
+  tags:
+    - fail_over
+    - fail_back
   block:
     - name: Add Gluster storage domain
-      ovirt_storage_domain:
+      ovirt.ovirt.ovirt_storage_domain:
         name: "{{ gluster_storage['dr_' + dr_target_host + '_name'] }}"
         critical_space_action_blocker: "{{ gluster_storage['dr_critical_space_action_blocker'] }}"
         domain_function: "{{ gluster_storage['dr_storage_domain_type'] }}"
@@ -26,7 +30,3 @@
       ansible.builtin.set_fact:
         failed_storage_domains: "{{ failed_storage_domains }} + [ \"{{ gluster_storage['dr_' + dr_target_host + '_name'] }}\" ]"
       when: result is failed
-  ignore_errors: "{{ dr_ignore_error_recover }}"
-  tags:
-    - fail_over
-    - fail_back

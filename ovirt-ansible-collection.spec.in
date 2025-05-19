@@ -1,5 +1,5 @@
-%global namespace @NAMESPACE@
-%global collectionname @NAME@
+%global namespace ovirt
+%global collectionname ovirt
 %global ansible_collections_dir ansible/collections/ansible_collections
 
 Name:		@PACKAGE_NAME@
@@ -15,9 +15,7 @@ BuildRequires:	ansible-core
 BuildRequires:	ansible-test
 
 Requires:	ansible-core >= 1:2.14.7-1
-Requires:	ansible-collection-ansible-netcommon
 Requires:	ansible-collection-ansible-posix
-Requires:	ansible-collection-ansible-utils
 Requires:	qemu-img
 Requires:	python3-jmespath
 

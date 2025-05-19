@@ -57,8 +57,8 @@
 - name: Create list of unsupported network devices
   ansible.builtin.set_fact:
     invalid_net_if: "{{ bad_vlan_bond_list + team_if }}"
-- import_tasks: validate_vlan_name.yml
-- import_tasks: validate_vlan_bond_mode.yml
+- ansible.builtin.import_tasks: validate_vlan_name.yml
+- ansible.builtin.import_tasks: validate_vlan_bond_mode.yml
 - name: Generate list of all unsupported VLAN devices
   ansible.builtin.set_fact:
     invalid_vlan_if: "{{ bad_vlan_bond_list + bad_vlan_names_list }}"

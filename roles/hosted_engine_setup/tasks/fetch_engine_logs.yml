@@ -1,15 +1,15 @@
 ---
 - name: Set destination directory path
   ansible.builtin.set_fact:
-    destdir=/var/log/ovirt-hosted-engine-setup/engine-logs-{{ ansible_date_time.iso8601 }}/
+    destdir: "/var/log/ovirt-hosted-engine-setup/engine-logs-{{ ansible_date_time.iso8601 }}/"
 - name: Create destination directory
   ansible.builtin.file:
     state: directory
     path: "{{ destdir }}"
     owner: root
     group: root
-    mode: 0700
-- include_tasks: get_local_vm_disk_path.yml
+    mode: "0700"
+- ansible.builtin.include_tasks: get_local_vm_disk_path.yml
 - name: Give the vm time to flush dirty buffers
   ansible.builtin.wait_for:
     timeout: 10

@@ -1,0 +1,18 @@
+---
+skip_list:
+  - ignore-errors
+  - var-spacing
+  - var-naming
+  - experimental
+  - package-latest
+  - name[casing]
+  - name[template]
+  - meta-runtime[unsupported-version]  # we support an older version on purpose
+warn_list:  # TODO some of these can be fixed
+  - no-changed-when
+  - name[missing]
+  - risky-shell-pipe
+  - yaml[line-length]
+  - command-instead-of-module
+write_list:
+  - none

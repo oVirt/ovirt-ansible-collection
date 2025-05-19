@@ -3,7 +3,7 @@
 ## User & groups system magement
 ################################
 - name: Manage users
-  ovirt_user:
+  ovirt.ovirt.ovirt_user:
     auth: "{{ ovirt_auth }}"
     state: "{{ item.state | default(omit) }}"
     name: "{{ item.name }}"
@@ -14,7 +14,7 @@
     - permissions
 
 - name: Manage groups
-  ovirt_group:
+  ovirt.ovirt.ovirt_group:
     auth: "{{ ovirt_auth }}"
     state: "{{ item.state | default(omit) }}"
     name: "{{ item.name }}"
@@ -25,7 +25,7 @@
     - permissions
 
 - name: Manage permissions
-  ovirt_permission:
+  ovirt.ovirt.ovirt_permission:
     auth: "{{ ovirt_auth }}"
     state: "{{ item.state | default(omit) }}"
     group_name: "{{ item.group_name | default(omit) }}"

@@ -1,5 +1,8 @@
 ---
 - name: Print report file main block
+  tags:
+    - fail_over
+    - fail_back
   block:
     - name: Generate log file through template
       ansible.builtin.template:
@@ -13,7 +16,5 @@
       register: content
 
     - name: Print report file to stdout
-      ansible.builtin.debug: msg="{{ content.stdout_lines | quote }}"
-  tags:
-    - fail_over
-    - fail_back
+      ansible.builtin.debug:
+        msg: "{{ content.stdout_lines | quote }}"

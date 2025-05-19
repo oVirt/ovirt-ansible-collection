@@ -1,17 +1,20 @@
-namespace: "@NAMESPACE@"
-name: "@NAME@"
+---
+namespace: "ovirt"
+name: "ovirt"
 version: 3.2.1
 authors:
-    - Martin Necas <mnecas@redhat.com>
+  - oVirt Developers <devel@ovirt.org>
 license:
-    - Apache-2.0
-    - GPL-3.0-or-later
+  - Apache-2.0
+  - GPL-3.0-or-later
 tags:
-    - collection
-    - infrastructure
-    - linux
-    - cloud
-    - virtualization
+  - collection
+  - infrastructure
+  - linux
+  - cloud
+  - virtualization
+dependencies:
+  "ansible.posix": "*"
 readme: README.md
 repository: https://github.com/ovirt/ovirt-ansible-collection
 issues: https://github.com/ovirt/ovirt-ansible-collection/issues

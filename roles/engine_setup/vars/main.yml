@@ -1,2 +1,2 @@
 ---
-restore_cmd: 'engine-backup --mode=restore'
+restore_cmd: "engine-backup --mode=restore"

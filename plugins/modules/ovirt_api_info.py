@@ -11,12 +11,11 @@ DOCUMENTATION = '''
 module: ovirt_api_info
 short_description: Retrieve information about the oVirt/RHV API
 version_added: "1.0.0"
-author:
-- "Ondra Machacek (@machacekondra)"
+author: "oVirt Developers (@oVirt)"
 description:
     - "Retrieve information about the oVirt/RHV API."
     - This module was called C(ovirt_api_facts) before Ansible 2.9, returning C(ansible_facts).
-      Note that the M(@NAMESPACE@.@NAME@.ovirt_api_info) module no longer returns C(ansible_facts)!
+      Note that the M(ovirt.ovirt.ovirt_api_info) module no longer returns C(ansible_facts)!
 options:
     follow:
       description:
@@ -32,7 +31,7 @@ notes:
     - "This module returns a variable C(ovirt_api),
        which contains a information about oVirt/RHV API. You need to register the result with
        the I(register) keyword to use it."
-extends_documentation_fragment: @NAMESPACE@.@NAME@.ovirt_info
+extends_documentation_fragment: ovirt.ovirt.ovirt_info
 '''
 
 EXAMPLES = '''
@@ -40,7 +39,7 @@ EXAMPLES = '''
 # look at ovirt_auth module to see how to reuse authentication:
 
 # Gather information oVirt API:
-- @NAMESPACE@.@NAME@.ovirt_api_info:
+- ovirt.ovirt.ovirt_api_info:
   register: result
 - ansible.builtin.debug:
     msg: "{{ result.ovirt_api }}"
@@ -59,7 +58,7 @@ ovirt_api:
 import traceback
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.@NAMESPACE@.@NAME@.plugins.module_utils.ovirt import (
+from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
     check_sdk,
     create_connection,
     get_dict_of_struct,

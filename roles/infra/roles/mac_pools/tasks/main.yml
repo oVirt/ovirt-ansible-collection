@@ -1,6 +1,6 @@
 ---
 - name: set mac pools
-  ovirt_mac_pool:
+  ovirt.ovirt.ovirt_mac_pool:
     auth: "{{ ovirt_auth }}"
     name: "{{ item.mac_pool_name }}"
     allow_duplicates: "{{ item.mac_pool_allow_duplicates | default(omit) }}"

@@ -1,6 +1,7 @@
+---
 DOCUMENTATION:
   name: ovirtvmip
-  author: Martin Necas (@mnecas)
+  author: "oVirt Developers <devel@ovirt.org>"
   short_description: Return first IP
   description:
     - Return first IP
@@ -18,12 +19,12 @@ DOCUMENTATION:
       type: string
 
 EXAMPLES: |
-    - name: Print VM IP
-      debug:
-        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmip }}"
-    - name: Print VM IP
-      debug:
-        msg: "{{ vms.ovirt_vms | @NAMESPACE@.@NAME@.ovirtvmip(attr='name') }}"
+  - name: Print VM IP
+    debug:
+      msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmip }}"
+  - name: Print VM IP
+    debug:
+      msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmip(attr='name') }}"
 
 RETURN:
   _value:
