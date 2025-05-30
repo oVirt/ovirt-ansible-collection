@@ -19,7 +19,7 @@ Requires:	ansible-collection-ansible-posix
 Requires:	qemu-img
 Requires:	python3-jmespath
 
-Requires:	python3-ovirt-imageio-client
+Requires:	ovirt-imageio-client
 Requires:	python3-ovirt-engine-sdk4 >= 4.5.0
 Requires:	python3-passlib
 
