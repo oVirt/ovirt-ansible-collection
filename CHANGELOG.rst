@@ -4,6 +4,26 @@ ovirt.ovirt Release Notes
 
 .. contents:: Topics
 
+v3.2.1
+======
+
+Release Summary
+---------------
+
+This release contains some minor changes and bugfixes. But in the background, we have been working on improving the collection's code quality, testing and CI.
+
+Minor Changes
+-------------
+
+- Enable and start postfix service so that ovirt-ha-agent logs are not filled with mail notification errors (https://github.com/oVirt/ovirt-ansible-collection/pull/741)
+- Maintenance tasks regarding linting, testing and CI (https://github.com/oVirt/ovirt-ansible-collection/pull/762)
+
+Bugfixes
+--------
+
+- ovirt_disk - fix documentation for lun_id parameter (https://github.com/oVirt/ovirt-ansible-collection/pull/740)
+- ovirt_proxied_check - fix documentation string (https://github.com/oVirt/ovirt-ansible-collection/pull/761)
+- roles - Fix ansible-test errors change include to include_tasks (https://github.com/oVirt/ovirt-ansible-collection/pull/733).
 
 v3.2.0
 ======
