@@ -72,6 +72,14 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Tue Jun 3 2025 Jean-Louis Dupond <jean-louis@dupond.be> - 3.2.1-1
+- drop el8 support
+- roles - Fix ansible-test errors change include to include_tasks
+- ovirt_disk - fix documentation for lun_id parameter
+- ovirt_proxied_check - fix documentation string
+- Enable and start postfix service so that ovirt-ha-agent logs are not filled with mail notification errors
+- Maintenance tasks regarding linting, testing and CI
+
 * Mon Oct 2 2023 Martin Necas <mnecas@redhat.com> - 3.2.0-1
 - ovirt_vm - Add tpm_enabled
 - storage_error_resume_behaviour - Support VM storage error resume behaviour "auto_resume", "kill", "leave_paused"
