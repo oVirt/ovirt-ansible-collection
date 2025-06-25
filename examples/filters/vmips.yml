@@ -52,26 +52,26 @@
     # *********************************************************
     # Print VM IPs as dictionaries with name as key
     # *********************************************************
-    - name: Print VM IP
+    - name: Print VM IP by name
       ansible.builtin.debug:
         msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmip(attr='name') }}"
 
-    - name: Print VM all IPs
+    - name: Print VM all IP by name
       ansible.builtin.debug:
         msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmips(attr='name') }}"
 
-    - name: Print VM IPv4
+    - name: Print VM IPv4 by name
       ansible.builtin.debug:
         msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipv4(attr='name') }}"
 
-    - name: Print VM all IPv4
+    - name: Print VM all IPv4 by name
       ansible.builtin.debug:
         msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipsv4(attr='name') }}"
 
-    - name: Print VM IPv6
+    - name: Print VM IPv6 by name
       ansible.builtin.debug:
         msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipv6(attr='name') }}"
 
-    - name: Print VM all IPv6
+    - name: Print VM all IPv6 by name
       ansible.builtin.debug:
         msg: "{{ vms.ovirt_vms | ovirt.ovirt.ovirtvmipsv6(attr='name') }}"
