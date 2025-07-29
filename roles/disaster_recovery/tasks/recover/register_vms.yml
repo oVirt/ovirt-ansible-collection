@@ -15,7 +15,7 @@
 
     - name: Set unregistered VMs
       ansible.builtin.set_fact:
-        unreg_vms: "{{ unreg_vms | default([]) + storage_vm_info.ovirt_storage_vms }}"
+        unreg_vms: "{{ (unreg_vms | default([])) + (storage_vm_info.ovirt_storage_vms | default([])) }}"
 
     # TODO: We should filter out VMs which already exist in the setup (diskless VMs)
     - name: Register VMs
