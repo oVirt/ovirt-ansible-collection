@@ -138,11 +138,11 @@
 
         - name: Build the list of hosts that will be upgraded (hosts in host_info.ovirt_hosts hosts w/o pinned vms that cannot be stopped)
           ansible.builtin.set_fact:
-            good_hosts: "{{ (good_hosts | default([])) | list + [ host ] | list }}"
+            good_hosts: "{{ (good_hosts | default([])) + [ host ] }}"
           loop: "{{ host_info.ovirt_hosts | flatten(levels=1) }}"
           loop_control:
             loop_var: "host"
-          when: "host.id not in host_ids or stop_non_migratable_vms"
+          when: "host.id not in (host_ids | default([])) or stop_non_migratable_vms"
 
         - name: progress 8% - log hosts that will be upgraded
           ansible.builtin.include_tasks: log_progress.yml
