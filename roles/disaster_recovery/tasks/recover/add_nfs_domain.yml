@@ -1,12 +1,8 @@
 ---
 - name: Add NFS storage domain main block
-  ignore_errors: "{{ dr_ignore_error_recover }}"
-  tags:
-    - fail_over
-    - fail_back
   block:
     - name: Add NFS storage domain
-      ovirt.ovirt.ovirt_storage_domain:
+      ovirt_storage_domain:
         name: "{{ nfs_storage['dr_' + dr_target_host + '_name'] }}"
         domain_function: "{{ nfs_storage['dr_storage_domain_type'] }}"
         critical_space_action_blocker: "{{ nfs_storage['dr_critical_space_action_blocker'] }}"
@@ -18,6 +14,8 @@
         nfs:
           path: "{{ nfs_storage['dr_' + dr_target_host + '_path'] }}"
           address: "{{ nfs_storage['dr_' + dr_target_host + '_address'] }}"
+          mount_options: "{{ nfs_storage['dr_' + dr_target_host + '_mount_options'] }}"
+          version: "{{ nfs_storage['dr_' + dr_target_host + '_version'] }}"
     - name: Log append to successful storage domains
       ansible.builtin.set_fact:
         succeed_storage_domains: "{{ succeed_storage_domains }} + [ \"{{ nfs_storage['dr_' + dr_target_host + '_name'] }}\" ]"
@@ -26,3 +24,7 @@
     - name: Log append to failed storage domains
       ansible.builtin.set_fact:
         failed_storage_domains: "{{ failed_storage_domains }} + [ \"{{ nfs_storage['dr_' + dr_target_host + '_name'] }}\" ]"
+  ignore_errors: "{{ dr_ignore_error_recover }}"
+  tags:
+    - fail_over
+    - fail_back
