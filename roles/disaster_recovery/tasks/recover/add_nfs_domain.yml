@@ -2,7 +2,7 @@
 - name: Add NFS storage domain main block
   block:
     - name: Add NFS storage domain
-      ovirt_storage_domain:
+      ovirt.ovirt.ovirt_storage_domain:
         name: "{{ nfs_storage['dr_' + dr_target_host + '_name'] }}"
         domain_function: "{{ nfs_storage['dr_storage_domain_type'] }}"
         critical_space_action_blocker: "{{ nfs_storage['dr_critical_space_action_blocker'] }}"
