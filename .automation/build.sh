@@ -26,9 +26,6 @@ rpmbuild \
 # Remove the tarball so it will not be included in galaxy build
 mv ./*.gz "$ROOT_PATH/exported-artifacts/"
 
-# Overwrite github README with dynamic
-mv ./COLLECTION_README.md ./README.md
-
 # Create tar for galaxy
 ansible-galaxy collection build
 

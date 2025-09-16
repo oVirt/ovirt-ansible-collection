@@ -15,7 +15,7 @@ tags:
   - virtualization
 dependencies:
   "ansible.posix": "*"
-readme: README.md
+readme: COLLECTION_README.md
 repository: https://github.com/ovirt/ovirt-ansible-collection
 issues: https://github.com/ovirt/ovirt-ansible-collection/issues
 description: The oVirt Ansible Collection.
