@@ -1,5 +1,5 @@
-[![Build Status](https://jenkins.ovirt.org/job/oVirt_ovirt-ansible-collection_standard-check-pr/badge/icon)](https://jenkins.ovirt.org/job/oVirt_ovirt-ansible-collection_standard-check-pr/)
-[![Build Status](https://img.shields.io/badge/docs-latest-blue.svg)](https://docs.ansible.com/ansible/2.10/collections/ovirt/ovirt/index.html)
+[![CI](https://github.com/ovirt/ovirt-ansible-collection/actions/workflows/build.yaml/badge.svg?branch=master)](https://github.com/oVirt/ovirt-ansible-collection/actions/workflows/build.yaml)
+[![Build Status](https://img.shields.io/badge/docs-latest-blue.svg)](https://docs.ansible.com/ansible/latest/collections/ovirt/ovirt/index.html)
 
 oVirt Ansible Collection
 ====================================
