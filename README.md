@@ -8,7 +8,7 @@ oVirt Ansible Collection
 Requirements
 ------------
 
- * Ansible core version 2.12.0 or higher
+ * Ansible core version 2.14.0 or higher
  * Python SDK version 4.5.0 or higher
 
 Upstream oVirt documentation
