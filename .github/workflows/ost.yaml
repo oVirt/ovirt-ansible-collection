@@ -4,6 +4,10 @@ name: OST
 on:  # yamllint disable-line rule:truthy
   issue_comment:
     types: [created]
+
+permissions:
+  pull-requests: write
+
 jobs:
   trigger-ost:
     uses: oVirt/ovirt-system-tests/.github/workflows/ost.yaml@master
