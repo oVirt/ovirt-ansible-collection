@@ -1,0 +1,23 @@
+{
+  "name": "Ansible Development Container",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+"extensions": [
+    "ms-azuretools.vscode-docker",
+    "redhat.ansible",
+    "ms-vscode-remote.remote-containers"
+  ],
+  "features": {  
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": false
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "ansible.python.interpreterPath": "/usr/bin/python3"
+      }
+    }
+  }
+}
