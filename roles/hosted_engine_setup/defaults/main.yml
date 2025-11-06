@@ -10,11 +10,14 @@ he_cmd_lang:
   LC_ALL: en_US.UTF-8
 
 he_vm_name: HostedEngine
+he_vm_efi_boot_flags: "--boot uefi,loader.secure=no"
+he_use_uefi: false
 he_data_center: Default
 he_cluster: Default
 he_local_vm_dir_path: /var/tmp
 he_local_vm_dir_prefix: localvm
-he_appliance_ova: ""
+he_appliance: ""
+he_appliance_type: qcow2
 he_root_ssh_pubkey: ""
 he_root_ssh_access: "yes"
 he_apply_openscap_profile: false
