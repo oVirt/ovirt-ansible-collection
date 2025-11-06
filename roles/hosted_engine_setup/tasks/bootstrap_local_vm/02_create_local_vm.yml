@@ -14,36 +14,61 @@
           environment: "{{ he_cmd_lang }}"
           changed_when: true
           register: unique_id_out
+
         - name: Create directory for local VM
           ansible.builtin.tempfile:
             state: directory
             path: "{{ he_local_vm_dir_path }}"
             prefix: "{{ he_local_vm_dir_prefix }}"
           register: otopi_localvm_dir
+
         - name: Set local vm dir path
           ansible.builtin.set_fact:
             he_local_vm_dir: "{{ otopi_localvm_dir.path }}"
-        - name: Install applicance
+
+        - name: Set he_appliance from he_appliance_ova for backward compatibility
+          ansible.builtin.set_fact:
+            he_appliance: "{{ he_appliance_ova }}"
+          when: he_appliance is none or he_appliance|length == 0
+
+        - name: Install appliance
           ansible.builtin.include_tasks: ../install_appliance.yml
-          when: he_appliance_ova is none or he_appliance_ova|length == 0
+          when: he_appliance is none or he_appliance|length == 0
+
         - name: Register appliance PATH
           ansible.builtin.set_fact:
-            he_appliance_ova_path: "{{ he_appliance_ova }}"
-          when: he_appliance_ova is not none and he_appliance_ova|length > 0
-        - name: Debug var he_appliance_ova_path
+            he_appliance_path: "{{ he_appliance }}"
+          when: he_appliance is not none and he_appliance|length > 0
+
+        - name: Override boot flags to use UEFI if requested
+          ansible.builtin.set_fact:
+            he_vm_boot_flags: "{{ he_vm_efi_boot_flags }}"
+          when:
+            - he_use_uefi | bool
+            - he_vm_boot_flags is not defined
+
+        - name: Debug var he_appliance_path
           ansible.builtin.debug:
-            var: he_appliance_ova_path
+            var: he_appliance_path
+
+        - name: Detect if appliance is OVA
+          ansible.builtin.set_fact:
+            he_appliance_type: ova
+          when: he_appliance_path.endswith('.ova')
+
         - name: Check available space on local VM directory
           ansible.builtin.shell: df -k --output=avail "{{ he_local_vm_dir_path }}" | grep -v Avail | cat
           environment: "{{ he_cmd_lang }}"
           changed_when: true
           register: local_vm_dir_space_out
+
         - name: Check appliance size
-          ansible.builtin.shell: zcat "{{ he_appliance_ova_path }}" | wc --bytes
+          ansible.builtin.shell: zcat "{{ he_appliance_path }}" | wc --bytes
           environment: "{{ he_cmd_lang }}"
           changed_when: true
           register: appliance_size
-        - name: Ensure we have enough space to extract the appliance
+
+        - name: Ensure we have enough space to extract/copy the appliance
           ansible.builtin.assert:
             that:
               - "local_vm_dir_space_out.stdout_lines[0]|int * 1024 > appliance_size.stdout_lines[0]|int * 1.1"
@@ -52,33 +77,31 @@
               engine appliance: {{ local_vm_dir_space_out.stdout_lines[0]|int / 1024 | int }} Mb
               are available while {{ appliance_size.stdout_lines[0]|int / 1024 / 1024 * 1.1 | int }} Mb
               are required.
+
         - name: Extract appliance to local VM directory
           ansible.builtin.unarchive:
             remote_src: true
-            src: "{{ he_appliance_ova_path }}"
+            src: "{{ he_appliance_path }}"
             dest: "{{ he_local_vm_dir }}"
             extra_opts: ["--sparse"]
-        - name: Get local vm disk path
-          ansible.builtin.include_tasks: ../get_local_vm_disk_path.yml
-        - name: Get appliance disk size
-          ansible.builtin.command: qemu-img info --output=json {{ local_vm_disk_path }}
-          environment: "{{ he_cmd_lang }}"
-          changed_when: true
-          register: qemu_img_out
-        - name: Debug var qemu_img_out
-          ansible.builtin.debug:
-            var: qemu_img_out
-        - name: Parse qemu-img output
-          ansible.builtin.set_fact:
-            virtual_size: "{{ qemu_img_out.stdout|from_json|ovirt.ovirt.json_query('\"virtual-size\"') }}"
-          register: otopi_appliance_disk_size
-        - name: Debug var virtual_size
-          ansible.builtin.debug:
-            var: virtual_size
+          when: he_appliance_type == 'ova'
+
+        - name: Copy appliance to local VM directory
+          ansible.builtin.copy:
+            remote_src: true
+            src: "{{ he_appliance_path }}"
+            dest: "{{ he_local_vm_dir }}"
+            mode: "0640"
+          when: he_appliance_type != 'ova'
+
+        - name: Get local vm disk size
+          ansible.builtin.include_tasks: ../get_local_vm_disk_size.yml
+
         - name: Hash the appliance root password
           ansible.builtin.set_fact:
             he_hashed_appliance_password: "{{ he_appliance_password | string | password_hash('sha512') }}"
           no_log: true
+
         - name: Create cloud init user-data and meta-data files
           ansible.builtin.template:
             src: "{{ item.src }}"
@@ -88,6 +111,7 @@
             - {src: templates/user-data.j2, dest: "{{ he_local_vm_dir }}/user-data"}
             - {src: templates/meta-data.j2, dest: "{{ he_local_vm_dir }}/meta-data"}
             - {src: templates/network-config-dhcp.j2, dest: "{{ he_local_vm_dir }}/network-config"}
+
         - name: Create ISO disk
           ansible.builtin.command: >-
             mkisofs -output {{ he_local_vm_dir }}/seed.iso -volid cidata -joliet -rock -input-charset utf-8
@@ -95,6 +119,7 @@
             {{ he_local_vm_dir }}/network-config
           environment: "{{ he_cmd_lang }}"
           changed_when: true
+
         - name: Fix local VM directory permission
           ansible.builtin.file:
             state: directory
@@ -103,20 +128,27 @@
             group: qemu
             recurse: true
             mode: u=rwX,g=rwX,o=
+
+        - name: Debug var he_vm_boot_flags
+          ansible.builtin.debug:
+            var: he_vm_boot_flags
+
         - name: Create local VM
           ansible.builtin.command: >-
             virt-install -n {{ he_vm_name }}Local --os-variant rhel8.0 --virt-type kvm --memory {{ he_mem_size_MB }}
             --vcpus {{ he_vcpus }}  --network network=default,mac={{ he_vm_mac_addr }},model=virtio
             --disk {{ local_vm_disk_path }} --import --disk path={{ he_local_vm_dir }}/seed.iso,device=cdrom
             --autoconsole text --rng /dev/random --graphics none --sound none --controller usb,model=none
-            --memballoon none --boot hd,bootmenu.enable=on,bios.useserial=on --clock kvmclock_present=yes
+            --memballoon none {{ he_vm_boot_flags | default("--boot hd,bootmenu.enable=on,bios.useserial=on") }} --clock kvmclock_present=yes
             --serial=pty,log.file=/var/log/libvirt/qemu/HostedEngineLocal-console.log
           environment: "{{ he_cmd_lang }}"
           register: create_local_vm
           changed_when: true
+
         - name: Debug var create_local_vm
           ansible.builtin.debug:
             var: create_local_vm
+
         - name: Get local VM IP
           ansible.builtin.shell: virsh -r net-dhcp-leases default | grep -i {{ he_vm_mac_addr }} | awk '{ print $5 }' | cut -f1 -d'/'
           environment: "{{ he_cmd_lang }}"
@@ -125,33 +157,42 @@
           retries: 90
           delay: 10
           changed_when: true
+
         - name: Debug var local_vm_ip
           ansible.builtin.debug:
             var: local_vm_ip
+
         - name: Remove leftover entries in /etc/hosts for the local VM
           ansible.builtin.lineinfile:
             dest: /etc/hosts
             regexp: "# temporary entry added by hosted-engine-setup for the bootstrap VM$"
             state: absent
+
         - name: Create an entry in /etc/hosts for the local VM
           ansible.builtin.lineinfile:
             dest: /etc/hosts
             line: "{{ local_vm_ip.stdout_lines[0] }} {{ he_fqdn }} # temporary entry added by hosted-engine-setup for the bootstrap VM"
             insertbefore: BOF
             backup: true
+
         - name: Wait for SSH to restart on the local VM
           ansible.builtin.wait_for:
             host: "{{ he_fqdn }}"
             port: "22"
             delay: "30"
             timeout: "300"
+
         - name: Set the name for add_host
           ansible.builtin.set_fact:
             he_fqdn_ansible_host: "{{ local_vm_ip.stdout_lines[0] }}"
+
         - ansible.builtin.import_tasks: ../add_engine_as_ansible_host.yml
+
       rescue:
         - ansible.builtin.include_tasks: ../clean_localvm_dir.yml
+
         - ansible.builtin.include_tasks: ../clean_local_storage_pools.yml
+
         - name: Notify the user about a failure
           ansible.builtin.fail:
             msg: >

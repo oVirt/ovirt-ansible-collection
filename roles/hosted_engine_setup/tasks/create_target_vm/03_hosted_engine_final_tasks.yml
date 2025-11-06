@@ -95,7 +95,7 @@
       retries: 120
       delay: 5
     - name: Undefine local VM
-      ansible.builtin.command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} undefine {{ he_vm_name }}Local"
+      ansible.builtin.command: "virsh -c qemu:///system?authfile={{ he_libvirt_authfile }} undefine --nvram {{ he_vm_name }}Local"
       environment: "{{ he_cmd_lang }}"
       changed_when: true
     - name: Update libvirt default network configuration, destroy

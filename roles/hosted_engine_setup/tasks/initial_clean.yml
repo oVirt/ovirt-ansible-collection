@@ -109,7 +109,7 @@
       changed_when: true
       register: local_vm_list_all
     - name: Undefine leftover local engine VM
-      ansible.builtin.command: virsh undefine --managed-save {{ he_vm_name }}Local
+      ansible.builtin.command: virsh undefine --managed-save --nvram {{ he_vm_name }}Local
       environment: "{{ he_cmd_lang }}"
       when: local_vm_list_all.stdout_lines|length >= 1
       changed_when: true
@@ -119,7 +119,7 @@
       changed_when: true
       register: target_vm_list_all
     - name: Undefine leftover engine VM
-      ansible.builtin.command: virsh undefine --managed-save {{ he_vm_name }}
+      ansible.builtin.command: virsh undefine --managed-save --nvram {{ he_vm_name }}
       environment: "{{ he_cmd_lang }}"
       when: target_vm_list_all.stdout_lines|length >= 1
       changed_when: true

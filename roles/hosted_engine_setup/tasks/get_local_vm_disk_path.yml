@@ -1,12 +1,28 @@
 ---
-- name: Find the local appliance image
+- name: Find qcow2 image in local VM directory
+  ansible.builtin.find:
+    paths: "{{ he_local_vm_dir }}"
+    recurse: false
+    patterns: "*.qcow2"
+  register: app_img_qcow2
+  failed_when: false
+
+- name: Set local_vm_disk_path from qcow2
+  ansible.builtin.set_fact:
+    local_vm_disk_path: "{{ app_img_qcow2.files[0].path }}"
+  when: app_img_qcow2.matched > 0
+
+- name: Find the local appliance image in images subdirectory
   ansible.builtin.find:
     paths: "{{ he_local_vm_dir }}/images"
     recurse: true
     patterns: ^.*.(?<!meta)$
     use_regex: true
-  register: app_img
-- name: Set local_vm_disk_path
+  register: app_img_ova
+  failed_when: false
+  when: app_img_qcow2.matched == 0
+
+- name: Set local_vm_disk_path from OVA
   ansible.builtin.set_fact:
-    local_vm_disk_path: "{{ app_img.files[0].path }}"
-  when: app_img.files|length > 0
+    local_vm_disk_path: "{{ app_img_ova.files[0].path }}"
+  when: app_img_qcow2.matched == 0 and app_img_ova.matched > 0

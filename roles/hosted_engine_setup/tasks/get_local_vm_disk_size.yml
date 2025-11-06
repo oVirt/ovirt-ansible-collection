@@ -1,0 +1,49 @@
+---
+- name: Get local vm disk path
+  ansible.builtin.include_tasks: get_local_vm_disk_path.yml
+
+- name: Check if local VM is running
+  ansible.builtin.command: virsh -r list --name
+  environment: "{{ he_cmd_lang }}"
+  changed_when: false
+  register: running_vms
+
+- name: Get appliance disk size from qemu-img (VM not running)
+  when: he_vm_name + 'Local' not in running_vms.stdout_lines
+  block:
+    - name: Get disk info with qemu-img
+      ansible.builtin.command: qemu-img info --output=json {{ local_vm_disk_path }}
+      environment: "{{ he_cmd_lang }}"
+      changed_when: true
+      register: qemu_img_out
+
+    - name: Debug var qemu_img_out
+      ansible.builtin.debug:
+        var: qemu_img_out
+
+    - name: Parse qemu-img output
+      ansible.builtin.set_fact:
+        virtual_size: "{{ qemu_img_out.stdout|from_json|ovirt.ovirt.json_query('\"virtual-size\"') }}"
+      register: otopi_appliance_disk_size
+
+- name: Get appliance disk size from virsh (VM running)
+  when: he_vm_name + 'Local' in running_vms.stdout_lines
+  block:
+    - name: Get VM disk info from virsh
+      ansible.builtin.command: virsh -r domblkinfo {{ he_vm_name }}Local {{ local_vm_disk_path }}
+      environment: "{{ he_cmd_lang }}"
+      changed_when: false
+      register: virsh_disk_info
+
+    - name: Debug var virsh_disk_info
+      ansible.builtin.debug:
+        var: virsh_disk_info
+
+    - name: Parse virsh output to get virtual size
+      ansible.builtin.set_fact:
+        virtual_size: "{{ (virsh_disk_info.stdout | regex_search('Capacity:\\s+(\\d+)', '\\1') | first) | int }}"
+      register: otopi_appliance_disk_size
+
+- name: Debug var virtual_size
+  ansible.builtin.debug:
+    var: virtual_size

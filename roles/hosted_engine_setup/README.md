@@ -58,6 +58,11 @@ Ansible Core >= 2.12.0 and < 2.13.0
 | he_debug_mode | false | If `True`, HE deployment will execute additional tasks for debug |
 | he_db_password | UNDEF | Engine database password |
 | he_dwh_db_password | UNDEF | DWH database password |
+| ~~he_appliance_ova~~ **deprecated** | null | Override the path to the appliance. The default appliance rpm package won't be instaleld if set |
+| he_appliance | null | Override the path to the appliance (qcow2 or ova). The default appliance rpm package won't be installed if set |
+| he_use_uefi | false | Force UEFI boot for the engine VM (only applies if `he_vm_boot_flags` is at default value). By default, appliances >= 4.5.1 use UEFI automatically, older versions use BIOS |
+| he_appliance_package | ovirt-engine-appliance | Name of the appliance package to install. Can be a package name or path to RPM file |
+| he_vm_boot_flags | --boot hd,bootmenu.enable=on,bios.useserial=on | virt-install boot flags for the engine VM. Customizing this value will disable automatic UEFI detection and the `he_use_uefi` override |
 
 ## NFS / Gluster Variables
 
