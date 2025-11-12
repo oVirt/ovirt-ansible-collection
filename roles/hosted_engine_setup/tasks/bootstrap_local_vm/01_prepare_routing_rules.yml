@@ -73,7 +73,7 @@
         not ipv6_deployment|bool and
         route_rules_ipv4.stdout | from_json |
         selectattr('priority', 'equalto', 101) |
-        selectattr('src', 'equalto', virbr_cidr_ipv4) |
+        selectattr('src', 'equalto', virbr_cidr_ipv4.split('/')[0]) |
         list | length == 0
       changed_when: true
     - name: Add IPv4 inbound route rules
@@ -85,7 +85,7 @@
         not ipv6_deployment|bool and
         route_rules_ipv4.stdout | from_json |
         selectattr('priority', 'equalto', 100) |
-        selectattr('dst', 'equalto', virbr_cidr_ipv4) |
+        selectattr('dst', 'equalto', virbr_cidr_ipv4.split('/')[0]) |
         list | length == 0
     - name: Add IPv6 outbound route rules
       ansible.builtin.command: ip -6 rule add from {{ virbr_cidr_ipv6 }} priority 101 table main
