@@ -20,7 +20,6 @@ to ``ovirt_engine_setup_answer_file_path`` variable.
 | ovirt_engine_setup_use_remote_answer_file | False             | If `True`, use answerfile's path on the remote machine. This option should be used if the installation occurs on the remote machine and the answerfile is located there as well. |
 | ovirt_engine_setup_update_setup_packages | False              | If `True`, setup packages will be updated before `engine-setup` is executed. It makes sense if Engine has already been installed. |
 | ovirt_engine_setup_perform_upgrade    | False                 | If `True`, this role is used to perform an upgrade. |
-| ovirt_engine_setup_product_type       | oVirt                 | One of ["oVirt", "RHV"], case insensitive. |
 | ovirt_engine_setup_offline            | False                 | If `True`, updates for all packages will be disabled. |
 | ovirt_engine_setup_restore_engine_cleanup | False             | Remove the configuration files and clean the database associated with the Engine, relevant only when `ovirt_engine_setup_restore_file` is defined |
 | ovirt_engine_setup_restore_file       | UNDEF                 | Restored the engine with a backup file which created with engine-backup. |
@@ -102,22 +101,6 @@ Example Playbook
   vars:
     ovirt_engine_setup_version: '4.5'
     ovirt_engine_setup_organization: 'of.ovirt.engine.com'
-  roles:
-    - engine_setup
-  collections:
-    - ovirt.ovirt
-
-
-# Example of RHV setup:
-- name: Setup RHV
-  hosts: engine
-  vars_files:
-    # Contains encrypted `ovirt_engine_setup_admin_password` variable using ansible-vault
-    - passwords.yml
-  vars:
-    ovirt_engine_setup_version: '4.5'
-    ovirt_engine_setup_organization: 'rhv.redhat.com'
-    ovirt_engine_setup_product_type: 'rhv'
   roles:
     - engine_setup
   collections:

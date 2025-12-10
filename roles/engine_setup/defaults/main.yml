@@ -26,7 +26,6 @@ ovirt_engine_setup_firewall_manager: "firewalld"
 ovirt_engine_setup_update_setup_packages: false
 ovirt_engine_setup_offline: false
 
-ovirt_engine_setup_product_type: oVirt
 ovirt_engine_setup_package_list: []
 ovirt_engine_setup_use_remote_answer_file: false
 
