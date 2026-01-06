@@ -1,3 +1,0 @@
----
-bugfixes:
-  - Fix missing cluster name when starting VM (https://github.com/oVirt/ovirt-ansible-collection/pull/780)

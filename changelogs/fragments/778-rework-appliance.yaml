@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Rework hosted_engine_setup to support new ovirt-engine-appliance(s) built with kiwi  (https://github.com/oVirt/ovirt-ansible-collection/pull/778)
