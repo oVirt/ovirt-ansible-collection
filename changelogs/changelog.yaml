@@ -994,3 +994,20 @@ releases:
       - 762-maintenance-tasks.yml
       - release_summary.yml
     release_date: '2025-06-03'
+  3.2.2:
+    changes:
+      bugfixes:
+        - Fix missing cluster name when starting VM (https://github.com/oVirt/ovirt-ansible-collection/pull/780)
+      minor_changes:
+        - Fix linting issues `(can only concatenate list (not "UndefinedMarker") to
+          list)` (https://github.com/oVirt/ovirt-ansible-collection/pull/771)
+        - Remove product type in engine_setup role as Red Hat Virtualization is no
+          longer supported (https://github.com/oVirt/ovirt-ansible-collection/pull/779)
+        - Rework hosted_engine_setup to support new ovirt-engine-appliance(s) built
+          with kiwi  (https://github.com/oVirt/ovirt-ansible-collection/pull/778)
+    fragments:
+      - 771-fix-lint.yaml
+      - 778-rework-appliance.yaml
+      - 779-remove-rhv.yaml
+      - 780-fix-missing-cluster-name.yaml
+    release_date: '2026-01-06'

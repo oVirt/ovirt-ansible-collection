@@ -1,3 +1,0 @@
----
-minor_changes:
-  - Remove product type in engine_setup role as Red Hat Virtualization is no longer supported (https://github.com/oVirt/ovirt-ansible-collection/pull/779)

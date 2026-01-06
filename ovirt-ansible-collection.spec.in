@@ -72,6 +72,11 @@ sh build.sh install %{collectionname}
 %license licenses
 
 %changelog
+* Tue Jan 6 2026 Jean-Louis Dupond <jean-louis@dupond.be> - 3.2.2-1
+- Remove product type in engine_setup role as Red Hat Virtualization is no longer supported
+- Rework hosted_engine_setup to support new ovirt-engine-appliance(s) builds
+- Fix missing cluster name when starting VM
+
 * Tue Jun 3 2025 Jean-Louis Dupond <jean-louis@dupond.be> - 3.2.1-1
 - drop el8 support
 - roles - Fix ansible-test errors change include to include_tasks

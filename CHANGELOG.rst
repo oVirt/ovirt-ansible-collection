@@ -4,6 +4,21 @@ ovirt.ovirt Release Notes
 
 .. contents:: Topics
 
+v3.2.2
+======
+
+Minor Changes
+-------------
+
+- Fix linting issues `(can only concatenate list (not "UndefinedMarker") to list)` (https://github.com/oVirt/ovirt-ansible-collection/pull/771)
+- Remove product type in engine_setup role as Red Hat Virtualization is no longer supported (https://github.com/oVirt/ovirt-ansible-collection/pull/779)
+- Rework hosted_engine_setup to support new ovirt-engine-appliance(s) built with kiwi  (https://github.com/oVirt/ovirt-ansible-collection/pull/778)
+
+Bugfixes
+--------
+
+- Fix missing cluster name when starting VM (https://github.com/oVirt/ovirt-ansible-collection/pull/780)
+
 v3.2.1
 ======
 
