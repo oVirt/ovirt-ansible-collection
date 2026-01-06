@@ -1,10 +1,10 @@
 #!/bin/bash -eux
 
-VERSION="3.2.2"
-# MILESTONE="master"
-MILESTONE=""
-# RPM_RELEASE="0.1.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
-RPM_RELEASE="1"
+VERSION="3.2.3"
+MILESTONE="master"
+# MILESTONE=""
+RPM_RELEASE="0.1.$MILESTONE.$(date -u +%Y%m%d%H%M%S)"
+# RPM_RELEASE="1"
 
 BUILD_PATH=$3
 

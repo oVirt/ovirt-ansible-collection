@@ -1,7 +1,7 @@
 ---
 namespace: "ovirt"
 name: "ovirt"
-version: 3.2.2
+version: 3.2.3
 authors:
   - oVirt Developers <devel@ovirt.org>
 license:
