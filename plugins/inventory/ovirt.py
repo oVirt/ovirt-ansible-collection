@@ -25,17 +25,17 @@ DOCUMENTATION = '''
         required: True
         choices: ['ovirt', 'ovirt.ovirt.ovirt', 'redhat.rhv.ovirt']
       ovirt_url:
-        description: URL to ovirt-engine API.
+        description: URL to ovirt-engine API. You can also use templating to specify the value of the O(ovirt_url).
         required: True
         env:
           - name: OVIRT_URL
       ovirt_username:
-        description: ovirt authentication user.
+        description: ovirt authentication user. You can also use templating to specify the value of the O(ovirt_username).
         required: True
         env:
           - name: OVIRT_USERNAME
       ovirt_password:
-        description: ovirt authentication password.
+        description: ovirt authentication password. You can also use templating to specify the value of the O(ovirt_password).
         required : True
         env:
           - name: OVIRT_PASSWORD
@@ -80,6 +80,20 @@ groups:
   dev: "'dev' in tags"
 compose:
   ansible_host: devices["eth0"][0]
+
+# Specify `ovirt_url`, `ovirt_username`, and `ovirt_password` using templating or as an encrypted vault string
+# proxmox.yml
+plugin: @NAMESPACE@.@NAME@.ovirt
+ovirt_url: "{{ lookup('ansible.builtin.ini', 'url', section='ovirt', file='file.ini') }}"
+ovirt_username: "{{ lookup('ansible.builtin.env', 'OVIRT_USERNAME') | default('ansible@internal') }}"
+ovirt_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          62353634333163633336343265623632626339313032653563653165313262343931643431656138
+          6134333736323265656466646539663134306166666237630a653363623262636663333762316136
+          34616361326263383766366663393837626437316462313332663736623066656237386531663731
+          3037646432383064630a663165303564623338666131353366373630656661333437393937343331
+          32643131386134396336623736393634373936356332623632306561356361323737313663633633
+          6231313333666361656537343562333337323030623732323833
 '''
 
 from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable
@@ -236,6 +250,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         super(InventoryModule, self).parse(inventory, loader, path, cache)
 
         config = self._read_config_data(path)
+
+        # Read and template auth options
+        for auth_option_name in ('ovirt_url', 'ovirt_username', 'ovirt_password'):
+            auth_option_value = self.get_option(auth_option_name)
+            if self.templar.is_template(auth_option_value):
+                auth_option_value = self.templar.template(auth_option_value, disable_lookups=False)
+            self.set_option(auth_option_name, auth_option_value)
 
         self.connection = sdk.Connection(
             url=self.get_option('ovirt_url'),
