@@ -205,33 +205,36 @@
     - ansible.builtin.include_tasks: ../get_local_vm_disk_path.yml
     - name: Generate DHCP network configuration for the engine VM
       ansible.builtin.template:
-        src: templates/ifcfg-eth0-dhcp.j2
-        dest: "{{ he_local_vm_dir }}/ifcfg-eth0"
+        src: templates/hosted-engine-dhcp.nmconnection.j2
+        dest: "{{ he_local_vm_dir }}/hosted-engine.nmconnection"
         owner: root
         group: root
-        mode: "0644"
+        mode: "0600"
       when: he_vm_ip_addr is none
     - name: Generate static network configuration for the engine VM, IPv4
       ansible.builtin.template:
-        src: templates/ifcfg-eth0-static.j2
-        dest: "{{ he_local_vm_dir }}/ifcfg-eth0"
+        src: templates/hosted-engine-static.nmconnection.j2
+        dest: "{{ he_local_vm_dir }}/hosted-engine.nmconnection"
         owner: root
         group: root
-        mode: "0644"
+        mode: "0600"
       when: he_vm_ip_addr is not none and not he_vm_ip_addr is search(":")
     - name: Generate static network configuration for the engine VM, IPv6
       ansible.builtin.template:
-        src: templates/ifcfg-eth0-static-ipv6.j2
-        dest: "{{ he_local_vm_dir }}/ifcfg-eth0"
+        src: templates/hosted-engine-static-ipv6.nmconnection.j2
+        dest: "{{ he_local_vm_dir }}/hosted-engine.nmconnection"
         owner: root
         group: root
-        mode: "0644"
+        mode: "0600"
       when: he_vm_ip_addr is not none and he_vm_ip_addr is search(":")
-    - name: Inject network configuration with guestfish
+    - name: Inject NetworkManager keyfile configuration (delete deprecated ifcfg if needed)
       ansible.builtin.command: >-
-        guestfish -a {{ local_vm_disk_path }} --rw -i copy-in "{{ he_local_vm_dir }}/ifcfg-eth0"
-        /etc/sysconfig/network-scripts {{ ":" }} selinux-relabel /etc/selinux/targeted/contexts/files/file_contexts
-        /etc/sysconfig/network-scripts/ifcfg-eth0 force{{ ":" }}true
+        guestfish -a {{ local_vm_disk_path }} --rw -i
+        sh "rm -f /etc/sysconfig/network-scripts/ifcfg-eth0 || true" {{ ":" }}
+        copy-in "{{ he_local_vm_dir }}/hosted-engine.nmconnection" /etc/NetworkManager/system-connections {{ ":" }}
+        chmod 0600 /etc/NetworkManager/system-connections/hosted-engine.nmconnection {{ ":" }}
+        selinux-relabel /etc/selinux/targeted/contexts/files/file_contexts
+        /etc/NetworkManager/system-connections/hosted-engine.nmconnection force{{ ":" }}true
       environment:
         LIBGUESTFS_BACKEND: direct
         LANG: en_US.UTF-8

@@ -371,7 +371,6 @@ disk_attachment:
 
 import json
 import os
-import subprocess
 import time
 import traceback
 import inspect
@@ -604,8 +603,10 @@ class DisksModule(BaseModule):
         logical_unit = self._module.params.get('logical_unit')
         size = convert_to_bytes(self._module.params.get('size'))
         if not size and self._module.params.get('upload_image_path'):
-            out = subprocess.check_output(
+            rc, out, err = self._module.run_command(
                 ["qemu-img", "info", "--output", "json", self._module.params.get('upload_image_path')])
+            if rc != 0:
+                self._module.fail_json(msg="Failed to get image info for '%s': %s" % (self._module.params.get('upload_image_path'), err))
             image_info = json.loads(out)
             size = image_info["virtual-size"]
         disk = otypes.Disk(
@@ -661,13 +662,15 @@ class DisksModule(BaseModule):
             ) if logical_unit else None,
         )
         if hasattr(disk, 'initial_size') and self._module.params['upload_image_path']:
-            out = subprocess.check_output([
+            rc, out, err = self._module.run_command([
                 'qemu-img',
                 'measure',
                 '-O', 'qcow2' if self._module.params.get('format') == 'cow' else 'raw',
                 '--output', 'json',
                 self._module.params['upload_image_path']
             ])
+            if rc != 0:
+                self._module.fail_json(msg="Failed to measure image '%s': %s" % (self._module.params['upload_image_path'], err))
             measure = json.loads(out)
             disk.initial_size = measure["required"]
 
