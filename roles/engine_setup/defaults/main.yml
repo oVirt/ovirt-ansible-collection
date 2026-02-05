@@ -18,6 +18,7 @@ ovirt_engine_setup_dwh_db_user: "ovirt_engine_history"
 ovirt_engine_setup_dwh_vacuum_full: false
 
 ovirt_engine_grafana_enable: true
+ovirt_engine_setup_enable_engine: false
 
 ovirt_engine_setup_firewall_manager: "firewalld"
 

@@ -1,1 +1,5 @@
 {% include "./templates/answerfile_4.4_basic.txt.j2" %}
+
+{% if ovirt_engine_setup_enable_engine | default(false) | bool %}
+QUESTION/1/OVESETUP_ENGINE_ENABLE=str:yes
+{% endif %}
