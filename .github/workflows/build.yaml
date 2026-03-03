@@ -45,6 +45,9 @@ jobs:
           - name: centos-stream-9
             pip-command: pip3
             container-name: el9stream
+          - name: centos-stream-10
+            pip-command: pip3
+            container-name: el10stream
     container:
       image: quay.io/ovirt/buildcontainer:${{ matrix.container-name }}
     steps:
