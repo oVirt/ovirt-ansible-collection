@@ -1,0 +1,10 @@
+.automation/build.sh shebang
+plugins/callback/stdout.py shebang
+roles/disaster_recovery/files/bcolors.py shebang
+roles/disaster_recovery/files/fail_back.py shebang
+roles/disaster_recovery/files/fail_over.py shebang
+roles/disaster_recovery/files/generate_mapping.py shebang
+roles/disaster_recovery/files/generate_vars.py shebang
+roles/disaster_recovery/files/generate_vars_test.py shebang
+roles/disaster_recovery/files/validator.py shebang
+roles/disaster_recovery/files/ovirt-dr shebang
