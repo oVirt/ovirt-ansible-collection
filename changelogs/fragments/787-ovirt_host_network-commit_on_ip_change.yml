@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt_host_network - commit on ip/properties change (https://github.com/oVirt/ovirt-ansible-collection/pull/787).

@@ -588,6 +588,8 @@ def main():
                 elif module.params['save']:
                     setup_params['post_action'] = host_networks_module._action_save_configuration
                 host_networks_module.action(**setup_params)
+        elif host_networks_module.changed and module.params['save']:
+            host_networks_module._action_save_configuration(host)
 
         nic = search_by_name(nics_service, nic_name)
         module.exit_json(**{
