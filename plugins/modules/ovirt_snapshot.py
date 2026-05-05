@@ -204,6 +204,7 @@ except ImportError:
 import os
 import ssl
 import time
+import uuid
 
 from ansible.module_utils.six.moves.http_client import HTTPSConnection
 from ansible.module_utils.six.moves.urllib.parse import urlparse
@@ -364,6 +365,7 @@ def create_snapshot(module, vm_service, snapshots_service, connection):
         snapshots_service.snapshot_service(module.params['snapshot_id'])
     )
     if snapshot is None:
+        correlation_id = str(uuid.uuid4())
         if not module.check_mode:
             disk_attachments_id = set(
                 get_disk_attachment(disk, vm_service.disk_attachments_service().list(), connection).id
@@ -375,15 +377,26 @@ def create_snapshot(module, vm_service, snapshots_service, connection):
                     description=module.params.get('description'),
                     persist_memorystate=module.params.get('use_memory'),
                     disk_attachments=[otypes.DiskAttachment(disk=otypes.Disk(id=da_id)) for da_id in disk_attachments_id] if disk_attachments_id else None
-                )
+                ),
+                query={'correlation_id': correlation_id},
             )
         changed = True
+        snapshot_service = snapshots_service.snapshot_service(snapshot.id)
         wait(
-            service=snapshots_service.snapshot_service(snapshot.id),
-            condition=lambda snap: snap.snapshot_status == otypes.SnapshotStatus.OK,
+            service=snapshot_service,
+            condition=lambda snap: snap is not None and snap.snapshot_status == otypes.SnapshotStatus.OK,
+            fail_condition=lambda snap: snap is None,
             wait=module.params['wait'],
             timeout=module.params['timeout'],
         )
+        if not module.check_mode and module.params['wait']:
+            jobs_service = connection.system_service().jobs_service()
+            for job in jobs_service.list(search='correlation_id=%s' % correlation_id):
+                if job.status in [otypes.JobStatus.FAILED, otypes.JobStatus.ABORTED, otypes.JobStatus.UNKNOWN]:
+                    raise Exception(
+                        "Snapshot creation job failed in oVirt: %s" % job.description
+                    )
+            snapshot = get_entity(snapshot_service) or snapshot
     return {
         'changed': changed,
         'id': snapshot.id,

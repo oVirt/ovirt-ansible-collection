@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt_snapshot - fail the task when the engine snapshot creation job fails, and refresh the returned snapshot entity so the reported status reflects the final state (https://github.com/oVirt/ovirt-ansible-collection/issues/777).
