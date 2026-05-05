@@ -255,6 +255,8 @@ def _write_attached_storage_domains(f, dc_service, dc):
         if not is_fcp and not is_scsi:
             f.write("  dr_primary_path: %s\n" % attached_sd.storage.path)
             f.write("  dr_primary_address: %s\n" % attached_sd.storage.address)
+            f.write("  dr_primary_mount_options: # actimeo=0,_netdev,rdma,port=20049\n")
+            f.write("  dr_primary_version: # v4_2\n")
             if attached_sd._storage.type == otypes.StorageType.POSIXFS:
                 f.write("  dr_primary_vfs_type: %s\n"
                         % attached_sd.storage.vfs_type)
@@ -286,6 +288,8 @@ def _add_secondary_mount(f, dc_name, attached):
     f.write("  dr_secondary_dc_name: # %s\n" % dc_name)
     f.write("  dr_secondary_path: # %s\n" % attached.storage.path)
     f.write("  dr_secondary_address: # %s\n" % attached.storage.address)
+    f.write("  dr_secondary_mount_options: # actimeo=0,_netdev,rdma,port=20049\n")
+    f.write("  dr_secondary_version: # v4_2\n")
     if attached._storage.type == otypes.StorageType.POSIXFS:
         f.write("  dr_secondary_vfs_type: # %s\n" % attached.storage.vfs_type)
 
