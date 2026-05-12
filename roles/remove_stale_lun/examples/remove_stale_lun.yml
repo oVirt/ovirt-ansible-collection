@@ -5,7 +5,7 @@
   gather_facts: false
 
   vars_files:
-    # Contains encrypted `engine_password` varibale using ansible-vault
+    # Contains encrypted `engine_password` variable using ansible-vault
     - passwords.yml
 
   vars:
