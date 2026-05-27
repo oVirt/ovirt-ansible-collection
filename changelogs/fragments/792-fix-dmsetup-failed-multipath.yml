@@ -1,0 +1,3 @@
+---
+bugfixes:
+   - remove_stale_lun - fix dmsetup deps failure on failed multipath devices (https://github.com/oVirt/ovirt-ansible-collection/pull/792).
