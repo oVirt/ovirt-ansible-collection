@@ -1,0 +1,37 @@
+---
+- ansible.builtin.include_tasks: auth_sso.yml
+- name: List NVMe namespaces
+  ansible.builtin.command:
+    argv:
+      - nvme
+      - list
+      - -o
+      - json
+  delegate_to: "{{ he_ansible_host_name }}"
+  register: otopi_nvmeof_list_raw
+  changed_when: false
+
+- name: Parse NVMe namespace list
+  ansible.builtin.set_fact:
+    otopi_nvmeof_devices: >-
+      {%- set ns_list = otopi_nvmeof_list_raw.stdout | from_json -%}
+      {%- set devices = [] -%}
+      {%- for entry in ns_list.get('Devices', []) -%}
+      {%-   set lun_id = entry.get('Device', '').split('/')[-1] -%}
+      {%-   set nsid = entry.get('NSID', '') -%}
+      {%-   set size_bytes = entry.get('PhysicalSize', 0) -%}
+      {%-   set vendor = entry.get('ModelNumber', 'NVMe') -%}
+      {%-   set _ = devices.append({
+              'id': 'eui.{}'.format(nsid) if nsid else entry.get('Device', ''),
+              'logical_units': [{
+                'id': 'eui.{}'.format(nsid) if nsid else entry.get('Device', ''),
+                'size': size_bytes,
+                'vendor_id': vendor,
+                'product_id': 'NVMe Namespace',
+                'status': 'free',
+                'paths': 1,
+                'discard_max_size': 0,
+              }]
+            }) -%}
+      {%- endfor -%}
+      {{ {'ansible_facts': {'ovirt_host_storages': devices}} }}

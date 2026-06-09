@@ -1,0 +1,23 @@
+---
+- name: Install NVMe-oF prerequisites on host
+  ansible.builtin.import_role:
+    name: ovirt.ovirt.host_nvmeof_setup
+  delegate_to: "{{ he_ansible_host_name }}"
+
+- name: Connect NVMe-oF subsystem
+  ansible.builtin.command:
+    argv:
+      - nvme
+      - connect
+      - -t
+      - tcp
+      - -n
+      - "{{ he_nvmeof_nqn }}"
+      - -a
+      - "{{ he_nvmeof_address }}"
+      - -s
+      - "{{ he_nvmeof_port }}"
+  delegate_to: "{{ he_ansible_host_name }}"
+  register: otopi_nvmeof_connect
+  changed_when: "'connected' in otopi_nvmeof_connect.stdout"
+  failed_when: false
