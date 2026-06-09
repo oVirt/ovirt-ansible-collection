@@ -57,6 +57,26 @@ options:
                 description:
                   - "LUN id."
         type: dict
+    nvmeof:
+        description:
+            - "Dictionary with values for NVMe-oF storage type:"
+        suboptions:
+            address:
+                description:
+                  - "Address of the NVMe-oF target."
+            port:
+                description:
+                  - "Port of the NVMe-oF target."
+            nqn:
+                description:
+                  - "NVMe-oF subsystem NQN."
+            host_nqn:
+                description:
+                  - "Initiator NQN (optional)."
+            dhchap_key:
+                description:
+                  - "DH-HMAC-CHAP key (optional)."
+        type: dict
     follow:
         description:
             - List of linked entities, which should be fetched along with the main entity.
@@ -97,6 +117,16 @@ EXAMPLES = '''
   ovirt.ovirt.ovirt_host_storage_info:
     host: myhost
     fcp: {}
+
+- name: Gather information about NVMe-oF storages with a specific NQN
+  ovirt.ovirt.ovirt_host_storage_info:
+    host: myhost
+    nvmeof:
+      address: 10.34.63.199
+      nqn: nqn.2016-08.com.example:nvmeof-target
+  register: result
+- ansible.builtin.debug:
+    msg: "{{ result.ovirt_host_storages }}"
 '''
 
 RETURN = '''
@@ -136,11 +166,34 @@ def _login(host_service, iscsi):
     )
 
 
+def _nvmeof_login(host_service, nvmeof):
+    host_service.nvmeof_login(
+        nvmeof=otypes.NvmeOfDetails(
+            address=nvmeof.get('address'),
+            port=nvmeof.get('port', 4420),
+            nqn=nvmeof.get('nqn'),
+            host_nqn=nvmeof.get('host_nqn'),
+            dhchap_key=nvmeof.get('dhchap_key'),
+        ),
+    )
+
+
 def main():
     argument_spec = ovirt_info_full_argument_spec(
         host=dict(required=True),
         iscsi=dict(default=None, type='dict'),
         fcp=dict(default=None, type='dict'),
+        nvmeof=dict(
+            default=None,
+            type='dict',
+            options=dict(
+                address=dict(),
+                port=dict(type='int'),
+                nqn=dict(),
+                host_nqn=dict(),
+                dhchap_key=dict(no_log=True),
+            ),
+        ),
     )
     module = AnsibleModule(
         argument_spec,
@@ -166,6 +219,9 @@ def main():
         if module.params.get('iscsi'):
             # Login
             _login(host_service, module.params.get('iscsi'))
+        elif module.params.get('nvmeof'):
+            # NVMe-oF login
+            _nvmeof_login(host_service, module.params.get('nvmeof'))
 
         # Get LUNs exposed from the specified target
         host_storages = host_service.storage_service().list(follow=",".join(module.params['follow']))
@@ -175,6 +231,13 @@ def main():
                 host_storages = list(filter(lambda x: module.params.get('iscsi').get('target') == x.logical_units[0].target, host_storages))
         elif module.params.get('fcp') is not None:
             host_storages = list(filter(lambda x: x.type == otypes.StorageType.FCP, host_storages))
+        elif module.params.get('nvmeof') is not None:
+            host_storages = list(filter(lambda x: x.type == otypes.StorageType.NVMEOF, host_storages))
+            if 'nqn' in module.params.get('nvmeof'):
+                host_storages = list(filter(
+                    lambda x: module.params.get('nvmeof').get('nqn') == getattr(x.logical_units[0], 'nqn', None),
+                    host_storages
+                ))
 
         result = dict(
             ovirt_host_storages=[

@@ -70,6 +70,10 @@ options:
         description:
             - "The target IQN for the storage device."
         type: str
+    nqn:
+        description:
+            - "NVMe-oF subsystem NQN."
+        type: str
     type:
         description:
             - "Storage type. For example: I(nfs), I(iscsi), etc."
@@ -158,6 +162,7 @@ class StorageConnectionModule(BaseModule):
             username=self.param('username'),
             port=self.param('port'),
             target=self.param('target'),
+            nqn=self.param('nqn'),
             type=otypes.StorageType(
                 self.param('type')
             ) if self.param('type') is not None else None,
@@ -211,6 +216,7 @@ class StorageConnectionModule(BaseModule):
             equal(self.param('username'), entity.username) and
             equal(self.param('port'), entity.port) and
             equal(self.param('target'), entity.target) and
+            equal(self.param('nqn'), entity.nqn) and
             equal(self.param('type'), str(entity.type)) and
             equal(self.param('vfs_type'), entity.vfs_type)
         )
@@ -234,6 +240,12 @@ def find_sc_by_attributes(module, storage_connections_service):
                 module.params['target'] == sd_conn.target
             ):
                 return sd_conn
+        elif sd_conn_type == 'nvmeof':
+            if (
+                module.params['address'] == sd_conn.address and
+                module.params['nqn'] == sd_conn.nqn
+            ):
+                return sd_conn
 
 
 def main():
@@ -253,6 +265,7 @@ def main():
         username=dict(default=None),
         port=dict(default=None, type='int'),
         target=dict(default=None),
+        nqn=dict(default=None),
         type=dict(default=None),
         vfs_type=dict(default=None),
         force=dict(type='bool', default=False),
