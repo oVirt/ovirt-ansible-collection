@@ -645,28 +645,28 @@ class DisksModule(BaseModule):
             propagate_errors=self.param('propagate_errors'),
             backup=otypes.DiskBackup(self.param('backup')) if self.param('backup') else None,
             wipe_after_delete=self.param('wipe_after_delete'),
-                lun_storage=otypes.HostStorage(
-                    host=otypes.Host(
-                        id=get_id_by_name(hosts_service, self._module.params.get('host'))
-                    ) if self.param('host') else None,
-                    type=otypes.StorageType(
-                        logical_unit.get('storage_type', 'iscsi')
-                    ),
-                    logical_units=[
-                        otypes.LogicalUnit(
-                            address=logical_unit.get('address'),
-                            port=logical_unit.get(
-                                'port',
-                                4420 if logical_unit.get('storage_type') == 'nvmeof' else 3260
-                            ),
-                            target=logical_unit.get('target'),
-                            nqn=logical_unit.get('nqn'),
-                            id=logical_unit.get('id'),
-                            username=logical_unit.get('username'),
-                            password=logical_unit.get('password'),
-                        )
-                    ],
-                ) if logical_unit else None,
+            lun_storage=otypes.HostStorage(
+                host=otypes.Host(
+                    id=get_id_by_name(hosts_service, self._module.params.get('host'))
+                ) if self.param('host') else None,
+                type=otypes.StorageType(
+                    logical_unit.get('storage_type', 'iscsi')
+                ),
+                logical_units=[
+                    otypes.LogicalUnit(
+                        address=logical_unit.get('address'),
+                        port=logical_unit.get(
+                            'port',
+                            4420 if logical_unit.get('storage_type') == 'nvmeof' else 3260
+                        ),
+                        target=logical_unit.get('target'),
+                        nqn=logical_unit.get('nqn'),
+                        id=logical_unit.get('id'),
+                        username=logical_unit.get('username'),
+                        password=logical_unit.get('password'),
+                    )
+                ],
+            ) if logical_unit else None,
         )
         if hasattr(disk, 'initial_size') and self._module.params['upload_image_path']:
             rc, out, err = self._module.run_command([
