@@ -606,11 +606,19 @@ class StorageDomainModule(BaseModule):
                     otypes.LogicalUnit(
                         id=lun_id,
                         address=storage.get("address"),
-                        port=int(storage.get("port", 4420 if storage_type == "nvmeof" else 3260)),
-                        target=target,
+                        port=int(
+                            storage.get(
+                                "port", 4420 if storage_type == "nvmeof" else 3260
+                            )
+                        ),
+                        target=target if storage_type != "nvmeof" else None,
                         nqn=storage.get("nqn") if storage_type == "nvmeof" else None,
-                        username=storage.get("username"),
-                        password=storage.get("password"),
+                        username=storage.get("username")
+                        if storage_type != "nvmeof"
+                        else None,
+                        password=storage.get("password")
+                        if storage_type != "nvmeof"
+                        else None,
                     )
                     for lun_id, target in self.__target_lun_map(storage)
                 ]
