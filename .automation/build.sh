@@ -21,6 +21,7 @@ cd "$OVIRT_BUILD"
 rpmbuild \
     -D "_srcrpmdir $BUILD_ROOT_PATH/output" \
     -D "_topmdir $BUILD_ROOT_PATH/rpmbuild" \
+    -D "release_suffix ${RELEASE_SUFFIX:-}" \
     -ts ./*.gz
 
 # Remove the tarball so it will not be included in galaxy build
@@ -33,6 +34,7 @@ ansible-galaxy collection build
 rpmbuild \
     -D "_rpmdir $BUILD_ROOT_PATH/output" \
     -D "_topmdir $BUILD_ROOT_PATH/rpmbuild" \
+    -D "release_suffix ${RELEASE_SUFFIX:-}" \
     --rebuild "$BUILD_ROOT_PATH"/output/*.src.rpm
 
 # Store any relevant artifacts in exported-artifacts for the ci system to

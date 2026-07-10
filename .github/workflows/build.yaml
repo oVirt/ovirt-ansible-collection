@@ -1,14 +1,14 @@
 ---
 name: Build
-on:  # yamllint disable-line rule:truthy
-  workflow_dispatch:
+
+on: # yamllint disable-line rule:truthy
   push:
-    branches:
-      - master
+    branches: [master]
+    tags: ['*']
   pull_request:
-    branches:
-      - master
-  # schedule# Run CI once per day (at 06:00 UTC)
+    branches: [master]
+  workflow_dispatch:
+  # Run CI once per day (at 06:00 UTC)
   # This ensures that even if there haven't been commits that we are still
   # testing against latest version of ansible-test for each ansible-core
   # version:
@@ -21,11 +21,13 @@ jobs:
     name: "Run ansible-lint"
     steps:
       - name: Check out collection
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           persist-credentials: false
+
       - name: Run nox
         uses: ansible-community/antsibull-nox@main
+
   sanity:
     uses: ansible-community/antsibull-nox/.github/workflows/reusable-nox-matrix.yml@main
     with:
@@ -42,28 +44,66 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - name: almalinux-9
+            shortcut: el9
+            container-name: almalinux9
+          - name: almalinux-10
+            shortcut: el10
+            container-name: almalinux10
           - name: centos-stream-9
-            pip-command: pip3
+            shortcut: el9s
             container-name: el9stream
           - name: centos-stream-10
-            pip-command: pip3
+            shortcut: el10s
             container-name: el10stream
     container:
       image: quay.io/ovirt/buildcontainer:${{ matrix.container-name }}
+
     steps:
-      - name: Install python3 modules
-        run: ${{ matrix.pip-command }} install pycodestyle pylint voluptuous yamllint rstcheck antsibull-changelog rich ansible-lint cryptography
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      - name: Mark repository as safe
+        run: git config --global --add safe.directory "$(pwd)"
+
+      - name: Install dependencies
+        run: dnf install -y git rpm-build python3-pip
+
+      - name: Install python dependencies
+        run: pip3 install antsibull-changelog
 
       - name: Install ansible.posix
         run: ansible-galaxy collection install -c ansible.posix
 
-      - name: Checkout
-        uses: ovirt/checkout-action@main
+      - name: Set build environment
+        run: |
+          TAG=$(git tag --points-at HEAD | head -1)
+          if [[ -n "$TAG" ]]; then
+            if [[ "$TAG" =~ ([0-9]+\.[0-9]+\.[0-9]+)-([0-9]+)$ ]]; then
+              echo "RPM_VERSION=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+              echo "PACKAGE_RPM_RELEASE=${BASH_REMATCH[2]}" >> $GITHUB_ENV
+            else
+              echo "PACKAGE_RPM_RELEASE=1" >> $GITHUB_ENV
+            fi
+          else
+            echo "RELEASE_SUFFIX=.$(date --utc +%Y%m%d%H%M%S).git$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          fi
 
       - name: Run build.sh
         run: .automation/build.sh
 
       - name: Upload artifacts
-        uses: ovirt/upload-rpms-action@main
+        uses: actions/upload-artifact@v7
         with:
-          directory: exported-artifacts
+          name: rpm-${{ matrix.shortcut }}
+          path: exported-artifacts
+
+  publish-rpms:
+    permissions:
+      artifact-metadata: read
+    needs: build
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+    uses: ovirt/ovirt-workflows/.github/workflows/publish-rpms.yml@main
+    secrets: inherit
