@@ -14,7 +14,7 @@
     - iscsi_discover
     - iscsi_getdevices
     - fc_getdevices
-    - nvmeof_discover
+    - nvmeof_connect
     - nvmeof_getdevices
     - get_network_interfaces
     - validate_hostnames
