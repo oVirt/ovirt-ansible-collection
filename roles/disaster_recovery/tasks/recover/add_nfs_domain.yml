@@ -18,6 +18,8 @@
         nfs:
           path: "{{ nfs_storage['dr_' + dr_target_host + '_path'] }}"
           address: "{{ nfs_storage['dr_' + dr_target_host + '_address'] }}"
+          mount_options: "{{ nfs_storage['dr_' + dr_target_host + '_mount_options'] }}"
+          version: "{{ nfs_storage['dr_' + dr_target_host + '_version'] }}"
     - name: Log append to successful storage domains
       ansible.builtin.set_fact:
         succeed_storage_domains: "{{ succeed_storage_domains }} + [ \"{{ nfs_storage['dr_' + dr_target_host + '_name'] }}\" ]"
