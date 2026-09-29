@@ -1,0 +1,5 @@
+---
+ovirt_host_nvmeof_ensure_nvme_cli: true
+ovirt_host_nvmeof_ensure_modules_loaded: true
+ovirt_host_nvmeof_ensure_hostnqn: true
+ovirt_host_nvmeof_ensure_autoconnect: true

@@ -148,13 +148,16 @@ options:
         suboptions:
             address:
                 description:
-                    - Address of the storage server. Used by iSCSI.
+                    - Address of the storage server. Used by iSCSI and NVMe-oF.
             port:
                 description:
-                    - Port of the storage server. Used by iSCSI.
+                    - Port of the storage server. Used by iSCSI and NVMe-oF.
             target:
                 description:
                     - iSCSI target.
+            nqn:
+                description:
+                    - NVMe-oF subsystem NQN.
             id:
                 description:
                     - LUN id.
@@ -166,7 +169,7 @@ options:
                     - CHAP Password of the user to be used to access storage server. Used by iSCSI.
             storage_type:
                 description:
-                    - Storage type either I(fcp) or I(iscsi).
+                    - Storage type either I(fcp), I(iscsi) or I(nvmeof).
         type: dict
     sparsify:
         description:
@@ -652,8 +655,12 @@ class DisksModule(BaseModule):
                 logical_units=[
                     otypes.LogicalUnit(
                         address=logical_unit.get('address'),
-                        port=logical_unit.get('port', 3260),
+                        port=logical_unit.get(
+                            'port',
+                            4420 if logical_unit.get('storage_type') == 'nvmeof' else 3260
+                        ),
                         target=logical_unit.get('target'),
+                        nqn=logical_unit.get('nqn'),
                         id=logical_unit.get('id'),
                         username=logical_unit.get('username'),
                         password=logical_unit.get('password'),

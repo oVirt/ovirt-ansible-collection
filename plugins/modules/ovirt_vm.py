@@ -151,6 +151,9 @@ options:
             logical_unit_target:
                 description:
                     - The iSCSI specification located on an iSCSI server
+            logical_unit_nqn:
+                description:
+                    - NVMe-oF subsystem NQN.
             logical_unit_username:
                 description:
                     - Username to be used to connect to the block storage host.
@@ -159,7 +162,7 @@ options:
                     - Password to be used to connect to the block storage host.
             storage_type:
                 description:
-                    - The storage type which the LUN reside on (iscsi or fcp)"
+                    - The storage type which the LUN reside on (iscsi, fcp or nvmeof)"
     reassign_bad_macs:
         description:
             - "Boolean indication whether to reassign bad macs when C(state) is registered."

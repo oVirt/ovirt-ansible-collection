@@ -10,6 +10,8 @@
     - iscsi_discover
     - iscsi_getdevices
     - fc_getdevices
+    - nvmeof_connect
+    - nvmeof_getdevices
     - get_network_interfaces
     - validate_hostnames
     - never
@@ -148,3 +150,13 @@
 - name: Get iSCSI devices
   ansible.builtin.import_tasks: "iscsi_getdevices.yml"
   tags: [iscsi_getdevices, never]
+
+
+- name: NVMe-oF connect
+  ansible.builtin.import_tasks: "nvmeof_connect.yml"
+  tags: [nvmeof_connect, never]
+
+
+- name: Get NVMe-oF devices
+  ansible.builtin.import_tasks: "nvmeof_getdevices.yml"
+  tags: [nvmeof_getdevices, never]

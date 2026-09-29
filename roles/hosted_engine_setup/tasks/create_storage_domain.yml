@@ -152,6 +152,24 @@
       register: otopi_storage_domain_details_fc
       when: he_domain_type == "fc"
 
+    - name: Add NVMe-oF storage domain
+      ovirt.ovirt.ovirt_storage_domain:
+        state: unattached
+        name: "{{ he_storage_domain_name }}"
+        host: "{{ he_host_name }}"
+        data_center: "{{ datacenter_name }}"
+        storage_format: "{{ storage_format }}"
+        wait: true
+        discard_after_delete: "{{ he_discard }}"
+        nvmeof:
+          address: "{{ he_nvmeof_address }}"
+          port: "{{ he_nvmeof_port }}"
+          nqn: "{{ he_nvmeof_nqn }}"
+          lun_id: "{{ he_lun_id }}"
+        auth: "{{ ovirt_auth }}"
+      when: he_domain_type == "nvmeof"
+      register: otopi_storage_domain_details_nvmeof
+
     - name: Get storage domain details
       ovirt.ovirt.ovirt_storage_domain_info:
         pattern: name={{ he_storage_domain_name }}

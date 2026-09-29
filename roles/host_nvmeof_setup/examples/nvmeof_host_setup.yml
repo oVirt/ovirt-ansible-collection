@@ -1,0 +1,5 @@
+---
+- name: oVirt NVMe-oF host setup
+  hosts: ovirt_hosts
+  roles:
+    - ovirt.ovirt.host_nvmeof_setup
