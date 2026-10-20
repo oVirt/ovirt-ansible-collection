@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt_disk - Fix disk not being moved/copied to storage domains when other disk attributes changed in the same run (https://github.com/oVirt/ovirt-ansible-collection/issues/747).
