@@ -45,20 +45,20 @@ The items in `clusters` list variable can contain the following parameters:
 | state                             | present             | State of the cluster.                    |
 | cpu_type                          | Intel Conroe Family | CPU type of the cluster.                 |
 | profile                           | UNDEF               | The cluster profile. You can choose a predefined cluster profile, see the tables below. |
-| ballooning                        | UNDEF               | If True enable memory balloon optimization. Memory balloon is used to re-distribute / reclaim the host memory based on VM needs in a dynamic way. |
+| ballooning                        | UNDEF               | If true enable memory balloon optimization. Memory balloon is used to re-distribute / reclaim the host memory based on VM needs in a dynamic way. |
 | description                       | UNDEF               | Description of the cluster. |
-| ksm                               | UNDEF               | I True MoM enables to run Kernel Same-page Merging KSM when necessary and when it can yield a memory saving benefit that outweighs its CPU cost. |
-| ksm_numa                          | UNDEF               | If True enables KSM ksm for best berformance inside NUMA nodes. |
-| vm_reason                         | UNDEF               | If True enable an optional reason field when a virtual machine is shut down from the Manager, allowing the administrator to provide an explanation for the maintenance. |
-| host_reason                       | UNDEF               | If True enable an optional reason field when a host is placed into maintenance mode from the Manager, allowing the administrator to provide an explanation for the maintenance. |
+| ksm                               | UNDEF               | If true MoM enables to run Kernel Same-page Merging KSM when necessary and when it can yield a memory saving benefit that outweighs its CPU cost. |
+| ksm_numa                          | UNDEF               | If true enables KSM ksm for best berformance inside NUMA nodes. |
+| vm_reason                         | UNDEF               | If true enable an optional reason field when a virtual machine is shut down from the Manager, allowing the administrator to provide an explanation for the maintenance. |
+| host_reason                       | UNDEF               | If true enable an optional reason field when a host is placed into maintenance mode from the Manager, allowing the administrator to provide an explanation for the maintenance. |
 | memory_policy<br/>alias: <i>performance_preset</i>                     | UNDEF               | <ul><li>disabled - Disables memory page sharing.</li><li>server - Sets the memory page sharing threshold to 150% of the system memory on each host.</li><li>desktop - Sets the memory page sharing threshold to 200% of the system memory on each host.</li></ul> |
 | migration_policy                  | UNDEF               | A migration policy defines the conditions for live migrating virtual machines in the event of host failure. Following policies are supported:<ul><li>legacy - Legacy behavior of 3.6 version.</li><li>minimal_downtime - Virtual machines should not experience any significant downtime.</li><li>suspend_workload - Virtual machines may experience a more significant downtime.</li><li>post_copy - Virtual machines should not experience any significant downtime. If the VM migration is not converging for a long time, the migration will be switched to post-copy</li></ul> |
 | scheduling_policy                 | UNDEF               | The scheduling policy used by the cluster. |
-| ha_reservation                    | UNDEF               | If True enable the oVirt/RHV to monitor cluster capacity for highly available virtual machines. |
-| fence_enabled                     | UNDEF               | If True, enables fencing on the cluster. |
+| ha_reservation                    | UNDEF               | If true enable the oVirt/RHV to monitor cluster capacity for highly available virtual machines. |
+| fence_enabled                     | UNDEF               | If true, enables fencing on the cluster. |
 | fence_connectivity_threshold | UNDEF          | The threshold used by <i>fence_skip_if_connectivity_broken</i>. |
-| fence_skip_if_connectivity_broken | UNDEF               | If True, fencing will be temporarily disabled if the percentage of hosts in the cluster that are experiencing connectivity issues is greater than or equal to the defined threshold. |
-| fence_skip_if_sd_active           | UNDEF               | If True, any hosts in the cluster that are Non Responsive and still connected to storage will not be fenced. |
+| fence_skip_if_connectivity_broken | UNDEF               | If true, fencing will be temporarily disabled if the percentage of hosts in the cluster that are experiencing connectivity issues is greater than or equal to the defined threshold. |
+| fence_skip_if_sd_active           | UNDEF               | If true, any hosts in the cluster that are Non Responsive and still connected to storage will not be fenced. |
 | mac_pool                          | UNDEF               | Mac pool name. |
 | comment               | UNDEF                 | Comment of the cluster. |
 | migration_bandwidth          | UNDEF          | The bandwidth settings define the maximum bandwidth of both outgoing and incoming migrations per host.<br/>Following bandwidth options are supported:<br/><ul><li>auto - Bandwidth is copied from the rate limit [Mbps] setting in the data center host network QoS.</li><li>hypervisor_default - Bandwidth is controlled by local VDSM setting on sending host.</li><li>custom - Defined by user (in Mbps).</li></ul> |
@@ -70,10 +70,10 @@ The items in `clusters` list variable can contain the following parameters:
 | serial_policy_value | UNDEF                   | Allows you to specify a custom serial number. This parameter is used only when <i>serial_policy</i> is custom. |
 | spice_proxy         | UNDEF                   | The proxy by which the SPICE client will connect to virtual machines. The address must be in the following format: protocol://[host]:[port] |
 | switch_type         | UNDEF                   | Type of switch to be used by all networks in given cluster. Either legacy which is using linux brigde or ovs using Open vSwitch. |
-| threads_as_cores    | UNDEF                   | If True the exposed host threads would be treated as cores which can be utilized by virtual machines. |
-| trusted_service     | UNDEF                   | If True enable integration with an OpenAttestation server.|
-| virt                | UNDEF                   | If True, hosts in this cluster will be used to run virtual machines. Default is true. |
-| gluster                      | UNDEF          | If True, hosts in this cluster will be used as Gluster Storage server nodes, and not for running virtual machines. |
+| threads_as_cores    | UNDEF                   | If true the exposed host threads would be treated as cores which can be utilized by virtual machines. |
+| trusted_service     | UNDEF                   | If true enable integration with an OpenAttestation server.|
+| virt                | UNDEF                   | If true, hosts in this cluster will be used to run virtual machines. Default is true. |
+| gluster                      | UNDEF          | If true, hosts in this cluster will be used as Gluster Storage server nodes, and not for running virtual machines. |
 | external_network_providers   | UNDEF          |  List that specify the external network providers available in the cluster. |
 
 More information about the parameters can be found in the [ovirt_cluster](http://docs.ansible.com/ansible/ovirt_cluster_module.html) module documentation.
@@ -169,7 +169,7 @@ The `logical_networks` list can contain following parameters:
 | name          | UNDEF          | Name of the network.                   |
 | state         | present        | Specifies whether the network state is `present` or `absent`. |
 | vlan_tag      | UNDEF          | Specify VLAN tag.                |
-| vm_network    | True           | If True network will be marked as network for VM.             |
+| vm_network    | true           | If true network will be marked as network for VM.             |
 | mtu           | UNDEF          | Maximum transmission unit (MTU) of the network.    |
 | description   | UNDEF          | Description of the network.  |
 | clusters      | UNDEF          | List of dictionaries describing how the network is managed in specific cluster. |
@@ -210,7 +210,7 @@ The value of item in `storages` dictionary can contain following parameters (the
 | posixfs         | UNDEF          | Dictionary defining PosixFS storage. |
 | fcp             | UNDEF          | Dictionary defining FCP storage. |
 | glusterfs       | UNDEF          | Dictionary defining glusterFS storage. |
-| discard_after_delete  | UNDEF    | If True storage domain blocks will be discarded upon deletion. Enabled by default. This parameter is relevant only for block based storage domains. |
+| discard_after_delete  | UNDEF    | If true storage domain blocks will be discarded upon deletion. Enabled by default. This parameter is relevant only for block based storage domains. |
 
 More information about the parameters can be found in the [ovirt_storage_domain](http://docs.ansible.com/ansible/ovirt_storage_domain_module.html) module documentation.
 
@@ -350,11 +350,11 @@ Example Playbook
        - name: mynetwork
          clusters:
            - name: production
-             assigned: yes
-             required: no
-             display: no
-             migration: yes
-             gluster: no
+             assigned: true
+             required: false
+             display: false
+             migration: true
+             gluster: false
 
      host_networks:
        - name: myhost1
