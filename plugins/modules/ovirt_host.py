@@ -56,7 +56,7 @@ options:
         type: str
     password:
         description:
-            - "Password of the root. It's required in case C(public_key) is set to I(False)."
+            - "Password of the root. It's required in case C(public_key) is set to I(false)."
         type: str
     ssh_port:
         description:
@@ -64,16 +64,16 @@ options:
         type: int
     public_key:
         description:
-            - "I(True) if the public key should be used to authenticate to host."
+            - "I(true) if the public key should be used to authenticate to host."
             - "It's required in case C(password) is not set."
-        default: False
+        default: false
         type: bool
         aliases: ['ssh_public_key']
     enroll_certificate:
         description:
             - "Enrolls the certificate of the host. Useful in case you get a warning that it is about to expire or has already expired."
             - "The host must be in maintenance status before enrolling the certificates."
-        default: False
+        default: false
         type: bool
     kdump_integration:
         description:
@@ -86,7 +86,7 @@ options:
         type: int
     override_iptables:
         description:
-            - "If True host iptables will be overridden by host deploy script."
+            - "If true host iptables will be overridden by host deploy script."
             - "Note that C(override_iptables) is I(false) by default in oVirt/RHV."
         type: bool
     force:
@@ -94,7 +94,7 @@ options:
             - "Indicates that the host should be removed even if it is non-responsive,
                or if it is part of a Gluster Storage cluster and has volume bricks on it."
             - "WARNING: It doesn't forcibly remove the host if another host related operation is being executed on the host at the same time."
-        default: False
+        default: false
         type: bool
     override_display:
         description:
@@ -137,7 +137,7 @@ options:
             - "If C(state) is I(present) activate the host."
             - "This parameter is good to disable, when you don't want to change
                the state of host when using I(present) C(state)."
-        default: True
+        default: true
         type: bool
     iscsi:
         description:
@@ -169,12 +169,12 @@ options:
         description:
             - "If I(true) and C(state) is I(upgraded) run check for upgrade
                action before executing upgrade action."
-        default: True
+        default: true
         type: bool
     reboot_after_upgrade:
         description:
             - "If I(true) and C(state) is I(upgraded) reboot host after successful upgrade."
-        default: True
+        default: true
         type: bool
     reboot_after_installation:
         description:

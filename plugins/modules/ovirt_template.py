@@ -152,7 +152,7 @@ options:
         type: str
     clone_permissions:
         description:
-            - "If I(True) then the permissions of the VM (only the direct ones, not the inherited ones)
+            - "If I(true) then the permissions of the VM (only the direct ones, not the inherited ones)
             will be copied to the created template."
             - "This parameter is used only when C(state) I(present)."
         type: bool
@@ -196,7 +196,7 @@ options:
         type: str
     usb_support:
         description:
-            - "I(True) enable USB support, I(False) to disable it. By default is chosen by oVirt/RHV engine."
+            - "I(true) enable USB support, I(false) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
     timezone:
         description:
@@ -205,7 +205,7 @@ options:
         type: str
     sso:
         description:
-            - "I(True) enable Single Sign On by Guest Agent, I(False) to disable it. By default is chosen by oVirt/RHV engine."
+            - "I(true) enable Single Sign On by Guest Agent, I(false) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
     soundcard_enabled:
         description:
@@ -256,7 +256,7 @@ options:
                     - Use this SSH keys to login to Virtual Machine.
             regenerate_ssh_keys:
                 description:
-                    - If I(True) SSH keys will be regenerated on Virtual Machine.
+                    - If I(true) SSH keys will be regenerated on Virtual Machine.
                 type: bool
             custom_script:
                 description:
@@ -326,7 +326,7 @@ options:
         version_added: 2.0.0
     boot_menu:
         description:
-            - "I(True) enable menu to select boot device, I(False) to disable it. By default is chosen by oVirt/RHV engine."
+            - "I(true) enable menu to select boot device, I(false) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
         version_added: 2.0.0
     nics:
@@ -442,7 +442,7 @@ EXAMPLES = '''
 - ovirt.ovirt.ovirt_template:
     state: registered
     storage_domain: mystorage
-    allow_partial_import: "True"
+    allow_partial_import: true
     cluster: mycluster
     id: 1111-1111-1111-1111
 

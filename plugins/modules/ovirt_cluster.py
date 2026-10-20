@@ -49,54 +49,54 @@ options:
         type: str
     ballooning:
         description:
-            - "If I(True) enable memory balloon optimization. Memory balloon is used to
+            - "If I(true) enable memory balloon optimization. Memory balloon is used to
                re-distribute / reclaim the host memory based on VM needs
                in a dynamic way."
         type: bool
         aliases: ['balloon']
     virt:
         description:
-            - "If I(True), hosts in this cluster will be used to run virtual machines."
+            - "If I(true), hosts in this cluster will be used to run virtual machines."
         type: bool
     gluster:
         description:
-            - "If I(True), hosts in this cluster will be used as Gluster Storage
+            - "If I(true), hosts in this cluster will be used as Gluster Storage
                server nodes, and not for running virtual machines."
             - "By default the cluster is created for virtual machine hosts."
         type: bool
     threads_as_cores:
         description:
-            - "If I(True) the exposed host threads would be treated as cores
+            - "If I(true) the exposed host threads would be treated as cores
                which can be utilized by virtual machines."
         type: bool
     ksm:
         description:
-            - "I I(True) MoM enables to run Kernel Same-page Merging I(KSM) when
+            - "I I(true) MoM enables to run Kernel Same-page Merging I(KSM) when
                necessary and when it can yield a memory saving benefit that
                outweighs its CPU cost."
         type: bool
     ksm_numa:
         description:
-            - "If I(True) enables KSM C(ksm) for best performance inside NUMA nodes."
+            - "If I(true) enables KSM C(ksm) for best performance inside NUMA nodes."
         type: bool
     ha_reservation:
         description:
-            - "If I(True) enables the oVirt/RHV to monitor cluster capacity for highly
+            - "If I(true) enables the oVirt/RHV to monitor cluster capacity for highly
                available virtual machines."
         type: bool
     trusted_service:
         description:
-            - "If I(True) enables integration with an OpenAttestation server."
+            - "If I(true) enables integration with an OpenAttestation server."
         type: bool
     vm_reason:
         description:
-            - "If I(True) enables an optional reason field when a virtual machine
+            - "If I(true) enables an optional reason field when a virtual machine
                is shut down from the Manager, allowing the administrator to
                provide an explanation for the maintenance."
         type: bool
     host_reason:
         description:
-            - "If I(True) enables an optional reason field when a host is placed
+            - "If I(true) enables an optional reason field when a host is placed
                into maintenance mode from the Manager, allowing the administrator
                to provide an explanation for the maintenance."
         type: bool
@@ -121,7 +121,7 @@ options:
         type: str
     fence_enabled:
         description:
-            - "If I(True) enables fencing on the cluster."
+            - "If I(true) enables fencing on the cluster."
             - "Fencing is enabled by default."
         type: bool
     fence_skip_if_gluster_bricks_up:
@@ -137,12 +137,12 @@ options:
         type: bool
     fence_skip_if_sd_active:
         description:
-            - "If I(True) any hosts in the cluster that are Non Responsive
+            - "If I(true) any hosts in the cluster that are Non Responsive
                and still connected to storage will not be fenced."
         type: bool
     fence_skip_if_connectivity_broken:
         description:
-            - "If I(True) fencing will be temporarily disabled if the percentage
+            - "If I(true) fencing will be temporarily disabled if the percentage
                of hosts in the cluster that are experiencing connectivity issues
                is greater than or equal to the defined threshold."
             - "The threshold can be specified by C(fence_connectivity_threshold)."
@@ -176,7 +176,7 @@ options:
         type: int
     migration_auto_converge:
         description:
-            - "If I(True) auto-convergence is used during live migration of virtual machines."
+            - "If I(true) auto-convergence is used during live migration of virtual machines."
             - "Used only when C(migration_policy) is set to I(legacy)."
             - "Following options are supported:"
             - "C(true) - Override the global setting to I(true)."
@@ -186,7 +186,7 @@ options:
         type: str
     migration_compressed:
         description:
-            - "If I(True) compression is used during live migration of the virtual machine."
+            - "If I(true) compression is used during live migration of the virtual machine."
             - "Used only when C(migration_policy) is set to I(legacy)."
             - "Following options are supported:"
             - "C(true) - Override the global setting to I(true)."
@@ -196,7 +196,7 @@ options:
         type: str
     migration_encrypted:
         description:
-            - "If I(True) encryption is used during live migration of the virtual machine."
+            - "If I(true) encryption is used during live migration of the virtual machine."
             - "Following options are supported:"
             - "C(true) - Override the global setting to I(true)."
             - "C(false) - Override the global setting to I(false)."
