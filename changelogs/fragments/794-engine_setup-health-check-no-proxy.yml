@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - engine_setup - Do not use a proxy for the local engine health check (https://github.com/oVirt/ovirt-ansible-collection/issues/794).
