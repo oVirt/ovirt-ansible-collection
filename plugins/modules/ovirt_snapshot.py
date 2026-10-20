@@ -263,7 +263,6 @@ def transfer(connection, module, direction, transfer_func):
             transfer_service,
             proxy_connection,
             proxy_url,
-            transfer.signed_ticket
         )
         return True
     finally:
@@ -294,7 +293,7 @@ def transfer(connection, module, direction, transfer_func):
 
 
 def upload_disk_image(connection, module):
-    def _transfer(transfer_service, proxy_connection, proxy_url, transfer_ticket):
+    def _transfer(transfer_service, proxy_connection, proxy_url):
         BUF_SIZE = 128 * 1024
         path = module.params['upload_image_path']
 
@@ -322,16 +321,9 @@ def upload_disk_image(connection, module):
 
 
 def download_disk_image(connection, module):
-    def _transfer(transfer_service, proxy_connection, proxy_url, transfer_ticket):
+    def _transfer(transfer_service, proxy_connection, proxy_url):
         BUF_SIZE = 128 * 1024
-        transfer_headers = {
-            'Authorization': transfer_ticket,
-        }
-        proxy_connection.request(
-            'GET',
-            proxy_url.path,
-            headers=transfer_headers,
-        )
+        proxy_connection.request('GET', proxy_url.path)
         r = proxy_connection.getresponse()
         path = module.params["download_image_path"]
         image_size = int(r.getheader('Content-Length'))
@@ -546,16 +538,18 @@ def main():
     try:
         state = module.params['state']
         if state == 'present':
+            transferred = False
             if module.params.get('disk_id') or module.params.get('disk_name'):
                 module.params['disk_id'] = get_snapshot_disk_id(module, snapshots_service)
                 if module.params['upload_image_path']:
-                    ret['changed'] = upload_disk_image(connection, module)
+                    transferred = upload_disk_image(connection, module)
                 if module.params['download_image_path']:
-                    ret['changed'] = download_disk_image(connection, module)
+                    transferred = download_disk_image(connection, module) or transferred
             if module.params.get('keep_days_old') is not None:
                 ret = remove_old_snapshosts(module, vm_service, snapshots_service)
             else:
                 ret = create_snapshot(module, vm_service, snapshots_service, connection)
+            ret['changed'] = ret['changed'] or transferred
         elif state == 'restore':
             ret = restore_snapshot(module, vm_service, snapshots_service)
         elif state == 'absent':
