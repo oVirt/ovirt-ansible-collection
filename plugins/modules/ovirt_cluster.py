@@ -304,6 +304,12 @@ options:
                and relevant only for clusters with Gluster service."
             - "Could be for example I(virtual-host), I(rhgs-sequential-io), I(rhgs-random-io)"
         type: str
+    vnc_encryption:
+        description:
+            - "If I(true) enables VNC encryption for the cluster."
+            - "Requires oVirt/RHV engine 4.4 or higher."
+        type: bool
+        version_added: "3.3.0"
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -604,6 +610,7 @@ class ClustersModule(BaseModule):
                 self.param('firewall_type')
             ) if self.param('firewall_type') else None,
             gluster_tuned_profile=self.param('gluster_tuned_profile'),
+            vnc_encryption=self.param('vnc_encryption'),
         )
 
     def _matches_entity(self, item, entity):
@@ -680,6 +687,7 @@ class ClustersModule(BaseModule):
             equal(self.param('scheduling_policy'), getattr(self._connection.follow_link(entity.scheduling_policy), 'name', None)) and
             equal(self.param('firewall_type'), str(entity.firewall_type)) and
             equal(self.param('gluster_tuned_profile'), getattr(entity, 'gluster_tuned_profile', None)) and
+            equal(self.param('vnc_encryption'), entity.vnc_encryption) and
             equal(self._get_policy_id(), getattr(migration_policy, 'id', None)) and
             equal(self._get_memory_policy(), entity.memory_policy.over_commit.percent) and
             equal(self.__get_minor(self.param('compatibility_version')), self.__get_minor(entity.version)) and
@@ -755,6 +763,7 @@ def main():
         scheduling_policy_properties=dict(type='list', elements='dict'),
         firewall_type=dict(choices=['iptables', 'firewalld'], default=None),
         gluster_tuned_profile=dict(default=None),
+        vnc_encryption=dict(default=None, type='bool'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
