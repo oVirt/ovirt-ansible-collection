@@ -1025,7 +1025,7 @@ EXAMPLES = '''
       - source_network_name: mynetwork2
         source_profile_name: mynetwork2
         target_profile_id: 4444-4444-4444-4444
-        reassign_bad_macs: true
+    reassign_bad_macs: true
 
 - name: Register VM with mappings
   ovirt.ovirt.ovirt_vm:

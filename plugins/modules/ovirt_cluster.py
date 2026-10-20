@@ -71,7 +71,7 @@ options:
         type: bool
     ksm:
         description:
-            - "I I(true) MoM enables to run Kernel Same-page Merging I(KSM) when
+            - "If I(true), MoM enables to run Kernel Same-page Merging I(KSM) when
                necessary and when it can yield a memory saving benefit that
                outweighs its CPU cost."
         type: bool
