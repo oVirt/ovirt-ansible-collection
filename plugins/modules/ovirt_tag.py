@@ -205,13 +205,17 @@ class TagsModule(BaseModule):
         # Unassign tags:
         if state == 'present':
             # Use the IDs returned by the tag search, as entity names are not
-            # unique for all entity types (e.g. template versions):
+            # unique for all entity types (e.g. template versions). The search
+            # for templates returns every version of a template whose base
+            # version carries the tag, so only remove the tag from the entities
+            # that really have it:
             for current_entity in [e for e in current_entities if e.name not in self._module.params[name]]:
-                if not self._module.check_mode:
-                    tags_service = entities_service.service(current_entity.id).tags_service()
-                    tag_id = get_id_by_name(tags_service, self.param('name'))
-                    tags_service.tag_service(tag_id).remove()
-                self.changed = True
+                tags_service = entities_service.service(current_entity.id).tags_service()
+                for tag in tags_service.list():
+                    if tag.name == self._module.params['name']:
+                        if not self._module.check_mode:
+                            tags_service.tag_service(tag.id).remove()
+                        self.changed = True
 
     def _get_entity_id(self, entities_service, name, entity_name):
         if name != 'templates':
