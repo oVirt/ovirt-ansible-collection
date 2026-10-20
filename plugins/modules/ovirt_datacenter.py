@@ -41,7 +41,7 @@ options:
         type: str
     local:
         description:
-            - "I(True) if the data center should be local, I(False) if should be shared."
+            - "I(true) if the data center should be local, I(false) if should be shared."
             - "Default value is set by engine."
         type: bool
     compatibility_version:
@@ -63,8 +63,8 @@ options:
     force:
         description:
             - "This parameter can be used only when removing a data center.
-              If I(True) data center will be forcibly removed, even though it
-              contains some clusters. Default value is I(False), which means
+              If I(true) data center will be forcibly removed, even though it
+              contains some clusters. Default value is I(false), which means
               that only empty data center can be removed."
         type: bool
     iscsi_bonds:

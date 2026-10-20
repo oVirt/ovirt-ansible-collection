@@ -59,7 +59,7 @@ options:
         default: ''
     wait:
         description:
-            - "If True wait for the response."
+            - "If true wait for the response."
         required: false
         default: true
         type: bool

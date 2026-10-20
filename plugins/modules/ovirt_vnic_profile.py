@@ -72,7 +72,7 @@ options:
     pass_through:
         description:
             - "Enables passthrough to an SR-IOV-enabled host NIC."
-            - "When enabled C(qos) and  C(network_filter) are automatically set to None and C(port_mirroring) to False."
+            - "When enabled C(qos) and  C(network_filter) are automatically set to None and C(port_mirroring) to false."
             - "When enabled and C(migratable) not specified then C(migratable) is enabled."
             - "Port mirroring, QoS and network filters are not supported on passthrough profiles."
         choices: ['disabled', 'enabled']

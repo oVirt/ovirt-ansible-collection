@@ -71,7 +71,7 @@ options:
         type: str
     vm_network:
         description:
-            - "If I(True) network will be marked as network for VM."
+            - "If I(true) network will be marked as network for VM."
             - "VM network carries traffic relevant to the virtual machine."
         type: bool
     mtu:

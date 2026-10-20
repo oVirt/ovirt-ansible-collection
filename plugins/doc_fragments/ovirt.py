@@ -14,12 +14,12 @@ class ModuleDocFragment(object):
 options:
     wait:
         description:
-            - "C(yes) if the module should wait for the entity to get into desired state."
+            - "C(true) if the module should wait for the entity to get into desired state."
         type: bool
-        default: yes
+        default: true
     fetch_nested:
         description:
-            - "If I(True) the module will fetch additional data from the API."
+            - "If I(true) the module will fetch additional data from the API."
             - "It will fetch IDs of the VMs disks, snapshots, etc. User can configure to fetch other
                attributes of the nested entities by specifying C(nested_attributes)."
         type: bool

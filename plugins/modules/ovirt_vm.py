@@ -178,7 +178,7 @@ options:
     use_latest_template_version:
         description:
             - Specify if latest template version should be used, when running a stateless VM.
-            - If this parameter is set to I(yes) stateless VM is created.
+            - If this parameter is set to I(true) stateless VM is created.
         type: bool
     storage_domain:
         description:
@@ -261,7 +261,7 @@ options:
         type: list
     boot_menu:
         description:
-            - "I(True) enable menu to select boot device, I(False) to disable it. By default is chosen by oVirt/RHV engine."
+            - "I(true) enable menu to select boot device, I(false) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
     bios_type:
         description:
@@ -272,15 +272,15 @@ options:
         type: str
     usb_support:
         description:
-            - "I(True) enable USB support, I(False) to disable it. By default is chosen by oVirt/RHV engine."
+            - "I(true) enable USB support, I(false) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
     serial_console:
         description:
-            - "I(True) enable VirtIO serial console, I(False) to disable it. By default is chosen by oVirt/RHV engine."
+            - "I(true) enable VirtIO serial console, I(false) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
     sso:
         description:
-            - "I(True) enable Single Sign On by Guest Agent, I(False) to disable it. By default is chosen by oVirt/RHV engine."
+            - "I(true) enable Single Sign On by Guest Agent, I(false) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
     host:
         description:
@@ -289,8 +289,8 @@ options:
         type: str
     high_availability:
         description:
-            - If I(yes) Virtual Machine will be set as highly available.
-            - If I(no) Virtual Machine won't be set as highly available.
+            - If I(true) Virtual Machine will be set as highly available.
+            - If I(false) Virtual Machine won't be set as highly available.
             - If no value is passed, default value is set by oVirt/RHV engine.
         type: bool
     high_availability_priority:
@@ -319,29 +319,29 @@ options:
         elements: dict
     delete_protected:
         description:
-            - If I(yes) Virtual Machine will be set as delete protected.
-            - If I(no) Virtual Machine won't be set as delete protected.
+            - If I(true) Virtual Machine will be set as delete protected.
+            - If I(false) Virtual Machine won't be set as delete protected.
             - If no value is passed, default value is set by oVirt/RHV engine.
         type: bool
     stateless:
         description:
-            - If I(yes) Virtual Machine will be set as stateless.
-            - If I(no) Virtual Machine will be unset as stateless.
+            - If I(true) Virtual Machine will be set as stateless.
+            - If I(false) Virtual Machine will be unset as stateless.
             - If no value is passed, default value is set by oVirt/RHV engine.
         type: bool
     clone:
         description:
-            - If I(yes) then the disks of the created virtual machine will be cloned and independent of the template.
+            - If I(true) then the disks of the created virtual machine will be cloned and independent of the template.
             - This parameter is used only when C(state) is I(running) or I(present) and VM didn't exist before.
         type: bool
-        default: 'no'
+        default: false
     clone_permissions:
         description:
-            - If I(yes) then the permissions of the template (only the direct ones, not the inherited ones)
+            - If I(true) then the permissions of the template (only the direct ones, not the inherited ones)
               will be copied to the created virtual machine.
             - This parameter is used only when C(state) is I(running) or I(present) and VM didn't exist before.
         type: bool
-        default: 'no'
+        default: false
     cd_iso:
         description:
             - ISO file from ISO storage domain which should be attached to Virtual Machine.
@@ -355,7 +355,7 @@ options:
             - Please check to I(Synopsis) to more detailed description of force parameter, it can behave differently
               in different situations.
         type: bool
-        default: 'no'
+        default: false
     nics:
         description:
             - List of NICs, which should be attached to Virtual Machine. NIC is described by following dictionary.
@@ -399,11 +399,11 @@ options:
                 default: 'virtio'
             bootable:
                 description:
-                    - I(True) if the disk should be bootable, default is non bootable.
+                    - I(true) if the disk should be bootable, default is non bootable.
                 type: bool
             activate:
                 description:
-                    - I(True) if the disk should be activated, default is activated.
+                    - I(true) if the disk should be activated, default is activated.
                     - "NOTE - This parameter is used only when C(state) is I(running) or I(present) and is able to only attach disks.
                     To manage disks of the VM in more depth please use M(ovirt.ovirt.ovirt_disk) module instead."
                 type: bool
@@ -470,7 +470,7 @@ options:
                     - Use this SSH keys to login to Virtual Machine.
             regenerate_ssh_keys:
                 description:
-                    - If I(True) SSH keys will be regenerated on Virtual Machine.
+                    - If I(true) SSH keys will be regenerated on Virtual Machine.
                 type: bool
             custom_script:
                 description:
@@ -553,15 +553,15 @@ options:
                     - Set name to network interface of Virtual Machine.
     cloud_init_persist:
         description:
-            - "If I(yes) the C(cloud_init) or C(sysprep) parameters will be saved for the virtual machine
+            - "If I(true) the C(cloud_init) or C(sysprep) parameters will be saved for the virtual machine
                and the virtual machine won't be started as run-once."
         type: bool
         aliases: [ 'sysprep_persist' ]
-        default: 'no'
+        default: false
     kernel_params_persist:
         description:
             - "If I(true) C(kernel_params), C(initrd_path) and C(kernel_path) will persist in virtual machine configuration,
-               if I(False) it will be used for run once."
+               if I(false) it will be used for run once."
         type: bool
         default: false
     kernel_path:
@@ -776,17 +776,17 @@ options:
             index:
                 description:
                     - "The index of this NUMA node."
-                required: True
+                required: true
             memory:
                 description:
                     - "Memory size of the NUMA node in MiB."
-                required: True
+                required: true
             cores:
                 description:
                     - "List of VM CPU cores indexes to be included in this NUMA node."
                 type: list
                 elements: int
-                required: True
+                required: true
             numa_node_pins:
                 description:
                     - "List of physical NUMA node indexes to pin this virtual NUMA node to."
@@ -1008,7 +1008,7 @@ EXAMPLES = '''
   ovirt.ovirt.ovirt_vm:
     state: registered
     storage_domain: mystorage
-    allow_partial_import: "True"
+    allow_partial_import: true
     cluster: mycluster
     id: 1111-1111-1111-1111
 
@@ -1025,7 +1025,7 @@ EXAMPLES = '''
       - source_network_name: mynetwork2
         source_profile_name: mynetwork2
         target_profile_id: 4444-4444-4444-4444
-        reassign_bad_macs: "True"
+        reassign_bad_macs: true
 
 - name: Register VM with mappings
   ovirt.ovirt.ovirt_vm:

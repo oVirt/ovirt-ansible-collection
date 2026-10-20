@@ -95,10 +95,10 @@ options:
         default: 'data'
         type: str
     sparse:
-        required: False
+        required: false
         type: bool
         description:
-            - "I(True) if the disk should be sparse (also known as I(thin provision)).
+            - "I(true) if the disk should be sparse (also known as I(thin provision)).
               If the parameter is omitted, cow disks will be created as sparse and raw disks as I(preallocated)"
             - Note that this option isn't idempotent as it's not currently possible to change sparseness of the disk via API.
     storage_domain:
@@ -132,15 +132,15 @@ options:
         type: str
     bootable:
         description:
-            - "I(True) if the disk should be bootable. By default when disk is created it isn't bootable."
+            - "I(true) if the disk should be bootable. By default when disk is created it isn't bootable."
         type: bool
     shareable:
         description:
-            - "I(True) if the disk should be shareable. By default when disk is created it isn't shareable."
+            - "I(true) if the disk should be shareable. By default when disk is created it isn't shareable."
         type: bool
     read_only:
         description:
-            - "I(True) if the disk should be read_only. By default when disk is created it isn't read_only."
+            - "I(true) if the disk should be read_only. By default when disk is created it isn't read_only."
         type: bool
     logical_unit:
         description:
@@ -170,7 +170,7 @@ options:
         type: dict
     sparsify:
         description:
-            - "I(True) if the disk should be sparsified."
+            - "I(true) if the disk should be sparsified."
             - "Sparsification frees space in the disk image that is not used by
                its filesystem. As a result, the image will occupy less space on
                the storage."
@@ -208,8 +208,8 @@ options:
         type: bool
     activate:
         description:
-            - I(True) if the disk should be activated.
-            - When creating disk of Virtual Machine it is set to I(True).
+            - I(true) if the disk should be activated.
+            - When creating disk of Virtual Machine it is set to I(true).
         type: bool
     backup:
         description:

@@ -51,7 +51,7 @@ options:
         description:
             - "The storage domain name where the virtual machines should be listed."
         type: str
-        required: True
+        required: true
     follow:
         description:
             - List of linked entities, which should be fetched along with the main entity.

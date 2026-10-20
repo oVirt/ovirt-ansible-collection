@@ -22,36 +22,36 @@ DOCUMENTATION = '''
     options:
       plugin:
         description: the name of this plugin, it should always be set to 'ovirt' for this plugin to recognise it as it's own.
-        required: True
+        required: true
         choices: ['ovirt', 'ovirt.ovirt.ovirt', 'redhat.rhv.ovirt']
       ovirt_url:
         description: URL to ovirt-engine API.
-        required: True
+        required: true
         env:
           - name: OVIRT_URL
       ovirt_username:
         description: ovirt authentication user.
-        required: True
+        required: true
         env:
           - name: OVIRT_USERNAME
       ovirt_password:
         description: ovirt authentication password.
-        required : True
+        required: true
         env:
           - name: OVIRT_PASSWORD
       ovirt_cafile:
-        description: path to ovirt-engine CA file. If C(ovirt_cafile) parameter is not set and C(ovirt_insecure) is not True, system wide CA certificate store\
+        description: path to ovirt-engine CA file. If C(ovirt_cafile) parameter is not set and C(ovirt_insecure) is not true, system wide CA certificate store\
         is used.
-        required: False
+        required: false
       ovirt_insecure:
         description: A boolean flag that indicates if the server TLS certificate and host name should be checked.
-        required: False
+        required: false
       ovirt_query_filter:
-        required: False
+        required: false
         description: dictionary of filter key-values to query VM's. See U(https://ovirt.github.io/ovirt-engine-sdk/master/services.m.html#ovirtsdk4\
 .services.VmsService.list) for filter parameters.
       ovirt_hostname_preference:
-        required: False
+        required: false
         description:
             - List of options that describe the ordering for which hostnames should be assigned.
             - See U(https://ovirt.github.io/ovirt-engine-api-model/master/#types/vm) for available attributes.
