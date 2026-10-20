@@ -66,6 +66,14 @@ options:
             - "List of the hosts names, which should have assigned this tag."
         type: list
         elements: str
+    templates:
+        description:
+            - "List of the templates names, which should have assigned this tag."
+            - "If several versions of a template share the same name, the tag is assigned to the base version
+               (the version with the lowest version number)."
+        type: list
+        elements: str
+        version_added: "3.3.0"
 extends_documentation_fragment: ovirt.ovirt.ovirt
 '''
 
@@ -93,6 +101,13 @@ EXAMPLES = '''
     state: detached
     vms:
       - vm3
+
+# Create(if not exists) and assign tag to templates template1 and template2:
+- ovirt.ovirt.ovirt_tag:
+    name: mytag
+    templates:
+      - template1
+      - template2
 
 # To detach all VMs from tag:
 - ovirt.ovirt.ovirt_tag:
@@ -162,14 +177,11 @@ class TagsModule(BaseModule):
 
         state = self.param('state')
         entities_service = getattr(self._connection.system_service(), '%s_service' % name)()
-        current_vms = [
-            vm.name
-            for vm in entities_service.list(search='tag=%s' % self._module.params['name'])
-        ]
+        current_entities = entities_service.list(search='tag=%s' % self._module.params['name'])
         # Assign tags:
         if state in ['present', 'attached', 'detached']:
             for entity_name in self._module.params[name]:
-                entity_id = get_id_by_name(entities_service, entity_name)
+                entity_id = self._get_entity_id(entities_service, name, entity_name)
                 tags_service = entities_service.service(entity_id).tags_service()
                 current_tags = [tag.name for tag in tags_service.list()]
                 # Assign the tag:
@@ -192,13 +204,31 @@ class TagsModule(BaseModule):
 
         # Unassign tags:
         if state == 'present':
-            for entity_name in [e for e in current_vms if e not in self._module.params[name]]:
+            # Use the IDs returned by the tag search, as entity names are not
+            # unique for all entity types (e.g. template versions):
+            for current_entity in [e for e in current_entities if e.name not in self._module.params[name]]:
                 if not self._module.check_mode:
-                    entity_id = get_id_by_name(entities_service, entity_name)
-                    tags_service = entities_service.service(entity_id).tags_service()
+                    tags_service = entities_service.service(current_entity.id).tags_service()
                     tag_id = get_id_by_name(tags_service, self.param('name'))
                     tags_service.tag_service(tag_id).remove()
                 self.changed = True
+
+    def _get_entity_id(self, entities_service, name, entity_name):
+        if name != 'templates':
+            return get_id_by_name(entities_service, entity_name)
+
+        # Several template versions can share the same name, use the base
+        # version, which is the one with the lowest version number:
+        templates = [
+            t for t in entities_service.list(search='name="{name}"'.format(name=entity_name))
+            if t.name == entity_name
+        ]
+        if not templates:
+            raise Exception("Entity '%s' was not found." % entity_name)
+        return min(
+            templates,
+            key=lambda t: t.version.version_number if t.version else 0,
+        ).id
 
     def _get_parent(self, entity):
         parent = None
@@ -209,6 +239,7 @@ class TagsModule(BaseModule):
     def update_check(self, entity):
         self._update_tag_assignments(entity, 'vms')
         self._update_tag_assignments(entity, 'hosts')
+        self._update_tag_assignments(entity, 'templates')
         return (
             equal(self._module.params.get('description'), entity.description) and
             equal(self._module.params.get('name'), entity.name) and
@@ -228,6 +259,7 @@ def main():
         parent=dict(default=None),
         vms=dict(default=None, type='list', elements='str'),
         hosts=dict(default=None, type='list', elements='str'),
+        templates=dict(default=None, type='list', elements='str'),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
