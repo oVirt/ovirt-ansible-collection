@@ -377,9 +377,24 @@ def wait(
     # Wait until the desired state of the entity:
     if wait:
         start = time.time()
+        last_error = None
         while time.time() < start + timeout:
+            try:
+                entity = service.get()
+                last_error = None
+            except sdk.NotFoundError:
+                # The entity doesn't exist (anymore), e.g. it was removed:
+                entity = None
+            except sdk.AuthError:
+                raise
+            except sdk.Error as e:
+                # Transient API/connection error, don't pass None to the
+                # conditions, which expect an entity, just poll again:
+                last_error = e
+                time.sleep(float(poll_interval))
+                continue
+
             # Exit if the condition of entity is valid:
-            entity = get_entity(service)
             if condition(entity):
                 return
             elif fail_condition(entity):
@@ -388,7 +403,10 @@ def wait(
             # Sleep for `poll_interval` seconds if none of the conditions apply:
             time.sleep(float(poll_interval))
 
-        raise Exception("Timeout exceed while waiting on result state of the entity.")
+        msg = "Timeout exceed while waiting on result state of the entity."
+        if last_error is not None:
+            msg += " Last error: %s" % last_error
+        raise Exception(msg)
 
 
 def __get_auth_dict():
