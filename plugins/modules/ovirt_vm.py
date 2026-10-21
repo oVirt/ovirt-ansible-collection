@@ -1436,6 +1436,8 @@ class VmsModule(BaseModule):
             if self.param('template'):
                 clusters_service = self._connection.system_service().clusters_service()
                 cluster = search_by_name(clusters_service, self.param('cluster'))
+                if cluster is None:
+                    raise ValueError("Cluster with name '%s' was not found." % self.param('cluster'))
                 data_center = self._connection.follow_link(cluster.data_center)
                 templates = templates_service.list(
                     search='name=%s and datacenter=%s' % (self.param('template'), data_center.name)
@@ -2131,6 +2133,8 @@ class VmsModule(BaseModule):
         vnics_service = self._connection.system_service().vnic_profiles_service()
         clusters_service = self._connection.system_service().clusters_service()
         cluster = search_by_name(clusters_service, self.param('cluster'))
+        if cluster is None:
+            raise ValueError("Cluster with name '%s' was not found." % self.param('cluster'))
         profiles = [
             profile for profile in vnics_service.list()
             if profile.name == nic.get('profile_name')
