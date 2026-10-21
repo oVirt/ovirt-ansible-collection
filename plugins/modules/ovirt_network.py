@@ -78,6 +78,16 @@ options:
         description:
             - "Maximum transmission unit (MTU) of the network."
         type: int
+    port_isolation:
+        description:
+            - "If I(true), communication between VMs running on the same host is blocked on this network."
+            - "If not set when the network is created, communication between VMs running on the same host is allowed."
+            - "Port isolation applies only to VM networks (I(vm_network=true)) and is not supported for networks from an external provider."
+            - "It requires cluster compatibility level 4.5 or higher and clusters using the Linux bridge (legacy) switch type."
+            - "NOTE - This can be set only when the network is created, oVirt does not allow changing it on an existing network."
+            - "Communication between VMs running on different hosts is not blocked by this option, the network administrator has to ensure that."
+        type: bool
+        version_added: "3.3.0"
     clusters:
         description:
             - "List of dictionaries describing how the network is managed in specific cluster."
@@ -146,6 +156,13 @@ EXAMPLES = '''
     name: mynetwork
     external_provider: ovirt-provider-ovn
 
+# Create VM network with port isolation
+- ovirt.ovirt.ovirt_network:
+    data_center: mydatacenter
+    name: myisolatednetwork
+    vm_network: true
+    port_isolation: true
+
 # Remove vlan_tag
 - ovirt.ovirt.ovirt_network:
     data_center: mydatacenter
@@ -207,6 +224,7 @@ class NetworksModule(BaseModule):
                 otypes.NetworkUsage.VM if self._module.params['vm_network'] else None
             ] if self._module.params['vm_network'] is not None else None,
             mtu=self._module.params['mtu'],
+            port_isolation=self._module.params['port_isolation'],
             external_provider=otypes.OpenStackNetworkProvider(id=on_service.get().id)
             if self.param('external_provider') else None,
         )
@@ -240,7 +258,8 @@ class NetworksModule(BaseModule):
             equal(self._module.params.get('name'), entity.name) and
             equal(self._module.params.get('description'), entity.description) and
             equal(self._module.params.get('vm_network'), True if entity.usages else False) and
-            equal(self._module.params.get('mtu'), entity.mtu)
+            equal(self._module.params.get('mtu'), entity.mtu) and
+            equal(self._module.params.get('port_isolation'), getattr(entity, 'port_isolation', None))
         )
 
 
@@ -309,6 +328,7 @@ def main():
         vlan_tag=dict(default=None, type='int'),
         vm_network=dict(default=None, type='bool'),
         mtu=dict(default=None, type='int'),
+        port_isolation=dict(default=None, type='bool'),
         clusters=dict(default=None, type='list', elements='dict'),
         label=dict(default=None),
     )
