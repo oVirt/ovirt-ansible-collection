@@ -471,8 +471,10 @@ def remove_old_snapshosts(module, vm_service, snapshots_service):
     changed = False
     date_now = datetime.now()
     for snapshot in snapshots_service.list():
-        if snapshot.vm is not None and snapshot.vm.name == module.params.get('vm_name'):
-            diff = date_now - snapshot.date.replace(tzinfo=None)
+        # The list comes from the VM's own snapshots service, so it holds only
+        # this VM's snapshots. Skip the Active VM snapshot and other non-regular ones.
+        if snapshot.snapshot_type == otypes.SnapshotType.REGULAR:
+            diff = date_now - snapshot.date.astimezone().replace(tzinfo=None)
             if diff.days >= module.params.get('keep_days_old'):
                 snapshot = remove_snapshot(module, vm_service, snapshots_service, snapshot.id).get('snapshot')
                 deleted_snapshots.append(snapshot)
