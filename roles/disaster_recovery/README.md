@@ -53,7 +53,10 @@ There are four actions which the user can execute:
 
 Each of those actions are using a configuration file whose default location is `disaster_recovery/files/dr.conf`<br/>
 The configuration file's location can be changed using `--conf-file` flag in the `ovirt-dr` script.<br/>
-Log file and log level can be configured as well through the `ovirt-dr` script using the flags `--log-file` and `--log-level`
+Log file and log level can be configured as well through the `ovirt-dr` script using the flags `--log-file` and `--log-level`<br/>
+By default, `generate` writes the mapping var file to `~/ovirt-dr/disaster_recovery_vars.yml` and `validate`, `failover` and `failback` read it from there,
+so nothing is written into the installed collection (which may be read-only, e.g. under `/usr/share` for RPM installations).
+Use `output_file` and `var_file` in the configuration file to change this location.
 
 
 Example Script

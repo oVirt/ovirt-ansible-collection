@@ -3,6 +3,7 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
+import os
 import sys
 import getopt
 import logging
@@ -10,13 +11,16 @@ import logging
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as otypes
 
-# TODO: log file location is currently in the same folder
-logging.basicConfig(level=logging.DEBUG, filename='generator.log')
-
 
 # Documentation: We only support attached storage domains in the var generator.
 def main(argv):
     url, username, password, ca, file_ = _init_vars(argv)
+    # Log next to the generated var file rather than into the current
+    # directory, which may be the (read-only) installed collection.
+    logging.basicConfig(
+        level=logging.DEBUG,
+        filename=os.path.join(os.path.dirname(os.path.abspath(file_)), 'generator.log'),
+    )
     connection = _connect_sdk(url, username, password, ca, logging.getLogger())
     host_storages = _get_host_storages_for_external_lun_disks(connection)
     external_disks = _get_external_lun_disks(connection)
