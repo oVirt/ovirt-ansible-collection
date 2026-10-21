@@ -44,7 +44,7 @@ Ansible Core >= 2.12.0 and < 2.13.0
 | he_force_ip4 | false | Force resolving engine FQDN to ipv4 only using DNS server |
 | he_force_ip6 | false | Force resolving engine FQDN to ipv6 only using DNS server |
 | he_apply_openscap_profile | false | Apply an OpenSCAP security profile on HE VM |
-| he_openscap_profile_name | stig | OpenSCAP profile name, available options: *stig*, *pci-dss*. Requires `he_apply_openscap_profile` to be `True` |
+| he_openscap_profile_name | stig | OpenSCAP profile name, available options: *stig*, *pci-dss*. Requires `he_apply_openscap_profile` to be `true` |
 | he_enable_fips | false | Enable FIPS on HE VM |
 | he_network_test | dns | the way of the network connectivity check performed by ovirt-hosted-engine-ha and ovirt-hosted-engine-setup, available options: *dns*, *ping*, *tcp* or *none*.  |
 | he_tcp_t_address | null | hostname to connect if he_network_test is *tcp*  |
@@ -53,9 +53,9 @@ Ansible Core >= 2.12.0 and < 2.13.0
 | he_pause_after_failed_add_host | true | Pause the execution if Add Host failed with status non_operational, to let the user interactively fix host configuration |
 | he_pause_after_failed_restore | true | Pause the execution if engine-backup --mode=restore failed, to let the user handle this manually |
 | he_pause_before_engine_setup | false | Pause the execution and allow the user to make configuration changes to the bootstrap engine VM before running `engine-setup` |
-| he_offline_deployment | false | If `True`, updates for all packages will be disabled |
+| he_offline_deployment | false | If `true`, updates for all packages will be disabled |
 | he_additional_package_list | [] | List of additional packages to be installed on engine VM apart from ovirt-engine package |
-| he_debug_mode | false | If `True`, HE deployment will execute additional tasks for debug |
+| he_debug_mode | false | If `true`, HE deployment will execute additional tasks for debug |
 | he_db_password | UNDEF | Engine database password |
 | he_dwh_db_password | UNDEF | DWH database password |
 | ~~he_appliance_ova~~ **deprecated** | null | Override the path to the appliance. The default appliance rpm package won't be instaleld if set |

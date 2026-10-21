@@ -131,7 +131,7 @@ options:
                     - A CHAP password for logging into a target.
             override_luns:
                 description:
-                    - If I(True) ISCSI storage domain luns will be overridden before adding.
+                    - If I(true) ISCSI storage domain luns will be overridden before adding.
                 type: bool
             target_lun_map:
                 description:
@@ -195,7 +195,7 @@ options:
                     - LUN id.
             override_luns:
                 description:
-                    - If I(True) FCP storage domain LUNs will be overridden before adding.
+                    - If I(true) FCP storage domain LUNs will be overridden before adding.
                 type: bool
     wipe_after_delete:
         description:
@@ -220,12 +220,12 @@ options:
         type: bool
     format:
         description:
-            - "If I(True) storage domain will be formatted after removing it from oVirt/RHV."
+            - "If I(true) storage domain will be formatted after removing it from oVirt/RHV."
             - "This parameter is relevant only when C(state) is I(absent)."
         type: bool
     discard_after_delete:
         description:
-            - "If I(True) storage domain blocks will be discarded upon deletion. Enabled by default."
+            - "If I(true) storage domain blocks will be discarded upon deletion. Enabled by default."
             - "This parameter is relevant only for block based storage domains."
         type: bool
     storage_format:

@@ -39,7 +39,7 @@ options:
         type: str
     host_enforcing:
         description:
-            - If I(yes) VM cannot start on host if it does not satisfy the C(host_rule).
+            - If I(true) VM cannot start on host if it does not satisfy the C(host_rule).
             - This parameter is support since oVirt/RHV 4.1 version.
         type: bool
     host_rule:
@@ -52,7 +52,7 @@ options:
         type: str
     vm_enforcing:
         description:
-            - If I(yes) VM cannot start if it does not satisfy the C(vm_rule).
+            - If I(true) VM cannot start if it does not satisfy the C(vm_rule).
         type: bool
     vm_rule:
         description:

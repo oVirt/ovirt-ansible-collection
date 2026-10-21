@@ -33,7 +33,7 @@ options:
         description:
             - "If I(true) all the attributes of the hosts should be
                included in the response."
-        default: False
+        default: false
         type: bool
     cluster_version:
         description:

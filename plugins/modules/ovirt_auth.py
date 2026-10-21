@@ -26,24 +26,24 @@ options:
             - "Specifies if a token should be created or revoked."
         type: str
     username:
-        required: False
+        required: false
         description:
             - "The name of the user. For example: I(admin@internal)
                Default value is set by I(OVIRT_USERNAME) environment variable."
         type: str
     password:
-        required: False
+        required: false
         description:
             - "The password of the user. Default value is set by I(OVIRT_PASSWORD) environment variable."
         type: str
     token:
-        required: False
+        required: false
         description:
             - "SSO token to be used instead of login with username/password.
                Default value is set by I(OVIRT_TOKEN) environment variable."
         type: str
     url:
-        required: False
+        required: false
         description:
             - "A string containing the API URL of the server.
                For example: I(https://server.example.com/ovirt-engine/api).
@@ -51,7 +51,7 @@ options:
             - "Either C(url) or C(hostname) is required."
         type: str
     hostname:
-        required: False
+        required: false
         description:
             - "A string containing the hostname of the server.
                For example: I(server.example.com).
@@ -59,12 +59,12 @@ options:
             - "Either C(url) or C(hostname) is required."
         type: str
     insecure:
-        required: False
+        required: false
         description:
             - "A boolean flag that indicates if the server TLS certificate and host name should be checked."
         type: bool
     ca_file:
-        required: False
+        required: false
         description:
             - "A PEM file containing the trusted CA certificates. The
                certificate presented by the server will be verified using these CA
@@ -73,7 +73,7 @@ options:
                Default value is set by I(OVIRT_CAFILE) environment variable."
         type: path
     timeout:
-        required: False
+        required: false
         description:
             - "The maximum total time to wait for the response, in
                seconds. A value of zero (the default) means wait forever. If
@@ -82,23 +82,23 @@ options:
         type: int
         default: 0
     compress:
-        required: False
+        required: false
         description:
             - "A boolean flag indicating if the SDK should ask
-               the server to send compressed responses. The default is I(True).
+               the server to send compressed responses. The default is I(true).
                Note that this is a hint for the server, and that it may return
-               uncompressed data even when this parameter is set to I(True)."
+               uncompressed data even when this parameter is set to I(true)."
         type: bool
         default: true
     kerberos:
-        required: False
-        default: False
+        required: false
+        default: false
         description:
             - "A boolean flag indicating if Kerberos authentication
                should be used instead of the default basic authentication."
         type: bool
     headers:
-        required: False
+        required: false
         description:
             - "A dictionary of HTTP headers to be added to each API call."
         type: dict
@@ -186,7 +186,7 @@ ovirt_auth:
             description: Flag indicating if insecure connection is used.
             returned: success
             type: bool
-            sample: False
+            sample: false
         timeout:
             description: Number of seconds to wait for response.
             returned: success
@@ -196,12 +196,12 @@ ovirt_auth:
             description: Flag indicating if compression is used for connection.
             returned: success
             type: bool
-            sample: True
+            sample: true
         kerberos:
             description: Flag indicating if kerberos is used for authentication.
             returned: success
             type: bool
-            sample: False
+            sample: false
         headers:
             description: Dictionary of HTTP headers to be added to each API call.
             returned: success

@@ -59,7 +59,7 @@ The `template_disks` List of dictionaries can contain following attributes:
 | storage_domain     | UNDEF          | The name of storage domain where disk should be created. If no value is passed, value is set by <i>template_disk_storage</i>. |
 | interface          | UNDEF          | The interface of the disk.  If no value is passed, value is set by <i>template_disk_interface</i>. |
 | format             | UNDEF          | Specify format of the disk. If no value is passed, value is set by <i>template_disk_format</i>. <ul><li>cow - If set, the disk will by created as sparse disk, so space will be allocated for the volume as needed. This format is also known as thin provisioned disks</li><li>raw - If set, disk space will be allocated right away. This format is also known as preallocated disks.</li></ul> |
-| bootable           | UNDEF          | True if the disk should be bootable. |
+| bootable           | UNDEF          | true if the disk should be bootable. |
 
 Example Playbook
 ----------------

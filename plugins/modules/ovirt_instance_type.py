@@ -107,16 +107,16 @@ options:
         elements: str
     serial_console:
         description:
-            - "I(True) enable VirtIO serial console, I(False) to disable it. By default is chosen by oVirt/RHV engine."
+            - "I(true) enable VirtIO serial console, I(false) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
     usb_support:
         description:
-            - "I(True) enable USB support, I(False) to disable it. By default is chosen by oVirt/RHV engine."
+            - "I(true) enable USB support, I(false) to disable it. By default is chosen by oVirt/RHV engine."
         type: bool
     high_availability:
         description:
-            - If I(yes) Instance Type will be set as highly available.
-            - If I(no) Instance Type won't be set as highly available.
+            - If I(true) Instance Type will be set as highly available.
+            - If I(false) Instance Type won't be set as highly available.
             - If no value is passed, default value is set by oVirt/RHV engine.
         type: bool
     high_availability_priority:
