@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - module_utils - ``wait()`` retries on transient API errors instead of failing with ``'NoneType' object has no attribute 'status'`` (https://github.com/oVirt/ovirt-ansible-collection/issues/589).
