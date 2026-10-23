@@ -395,13 +395,13 @@ class HostsModule(BaseModule):
             entity=entity,
             action='deactivate',
             action_condition=lambda h: h.status != hoststate.MAINTENANCE,
-            wait_condition=lambda h: h.status == hoststate.MAINTENANCE,
+            wait_condition=lambda h: h and h.status == hoststate.MAINTENANCE,
         )
 
     def post_reinstall(self, host):
         wait(
             service=self._service.service(host.id),
-            condition=lambda h: h.status != hoststate.MAINTENANCE,
+            condition=lambda h: h and h.status != hoststate.MAINTENANCE,
             fail_condition=failed_state,
             wait=self.param('wait'),
             timeout=self.param('timeout'),
@@ -419,6 +419,9 @@ class HostsModule(BaseModule):
         return True
 
     def failed_state_after_reinstall(self, host, count=0):
+        if host is None:
+            return False
+
         if host.status in [
             hoststate.ERROR,
             hoststate.INSTALL_FAILED,
@@ -442,6 +445,9 @@ class HostsModule(BaseModule):
 
 
 def failed_state(host):
+    if host is None:
+        return False
+
     return host.status in [
         hoststate.ERROR,
         hoststate.INSTALL_FAILED,
@@ -475,13 +481,13 @@ def control_state(host_module):
     ]:
         wait(
             service=host_service,
-            condition=lambda host: host.status == hoststate.UP,
+            condition=lambda host: host and host.status == hoststate.UP,
             fail_condition=failed_state,
         )
     elif host.status == hoststate.PREPARING_FOR_MAINTENANCE:
         wait(
             service=host_service,
-            condition=lambda host: host.status == hoststate.MAINTENANCE,
+            condition=lambda host: host and host.status == hoststate.MAINTENANCE,
             fail_condition=failed_state,
         )
 
@@ -562,7 +568,7 @@ def main():
                 ret = hosts_module.action(
                     action='activate',
                     action_condition=lambda h: h.status != hoststate.UP,
-                    wait_condition=lambda h: h.status == hoststate.UP,
+                    wait_condition=lambda h: h and h.status == hoststate.UP,
                     fail_condition=failed_state,
                 )
         elif state == 'absent':
@@ -571,7 +577,7 @@ def main():
             hosts_module.action(
                 action='deactivate',
                 action_condition=lambda h: h.status != hoststate.MAINTENANCE,
-                wait_condition=lambda h: h.status == hoststate.MAINTENANCE,
+                wait_condition=lambda h: h and h.status == hoststate.MAINTENANCE,
                 fail_condition=failed_state,
             )
             ret = hosts_module.create()
@@ -579,10 +585,14 @@ def main():
                 ret = hosts_module.action(
                     action='enroll_certificate',
                     action_condition=lambda h: h.status == hoststate.MAINTENANCE,
-                    wait_condition=lambda h: h.status == hoststate.MAINTENANCE,
+                    wait_condition=lambda h: h and h.status == hoststate.MAINTENANCE,
                     fail_condition=failed_state,
                 )
         elif state == 'upgraded':
+            if host is None:
+                module.fail_json(
+                    msg="Host '%s' was not found, can't upgrade it." % module.params['name']
+                )
             result_state = hoststate.MAINTENANCE if host.status == hoststate.MAINTENANCE else hoststate.UP
             events_service = connection.system_service().events_service()
             last_event = events_service.list(max=1)[0]
@@ -590,8 +600,8 @@ def main():
             if module.params['check_upgrade']:
                 hosts_module.action(
                     action='upgrade_check',
-                    action_condition=lambda host: not host.update_available,
-                    wait_condition=lambda host: host.update_available or (
+                    action_condition=lambda h: h and not h.update_available,
+                    wait_condition=lambda h: h and (h.update_available or (
                         len([
                             event
                             for event in events_service.list(
@@ -602,8 +612,8 @@ def main():
                                 # search='type=885 and host.name=%s' % host.name,
                             ) if host.name in event.description
                         ]) > 0
-                    ),
-                    fail_condition=lambda host: len(events_service.list(
+                    )),
+                    fail_condition=lambda h: len(events_service.list(
                         from_=int(last_event.id),
                         search='type=839 or type=887 and host.name=%s' % host.name,
                     )
@@ -616,7 +626,7 @@ def main():
             ret = hosts_module.action(
                 action='upgrade',
                 action_condition=lambda h: h.update_available,
-                wait_condition=lambda h: h.status == result_state and ((
+                wait_condition=lambda h: h and h.status == result_state and ((
                     len([
                         event
                         for event in events_service.list(
@@ -685,22 +695,22 @@ def main():
         elif state == 'started':
             ret = hosts_module.action(
                 action='fence',
-                action_condition=lambda h: h.status == hoststate.DOWN,
-                wait_condition=lambda h: h.status in [hoststate.UP, hoststate.MAINTENANCE],
+                action_condition=lambda h: h and h.status == hoststate.DOWN,
+                wait_condition=lambda h: h and h.status in [hoststate.UP, hoststate.MAINTENANCE],
                 fail_condition=hosts_module.failed_state_after_reinstall,
                 fence_type='start',
             )
         elif state == 'stopped':
             hosts_module.action(
                 action='deactivate',
-                action_condition=lambda h: h.status not in [hoststate.MAINTENANCE, hoststate.DOWN],
-                wait_condition=lambda h: h.status in [hoststate.MAINTENANCE, hoststate.DOWN],
+                action_condition=lambda h: h and h.status not in [hoststate.MAINTENANCE, hoststate.DOWN],
+                wait_condition=lambda h: h and h.status in [hoststate.MAINTENANCE, hoststate.DOWN],
                 fail_condition=failed_state,
             )
             ret = hosts_module.action(
                 action='fence',
-                action_condition=lambda h: h.status != hoststate.DOWN,
-                wait_condition=lambda h: h.status == hoststate.DOWN if module.params['wait'] else True,
+                action_condition=lambda h: h and h.status != hoststate.DOWN,
+                wait_condition=lambda h: (h and h.status == hoststate.DOWN) if module.params['wait'] else True,
                 fail_condition=failed_state,
                 fence_type='stop',
             )
@@ -708,7 +718,7 @@ def main():
             result_state = hoststate.MAINTENANCE if host.status == hoststate.MAINTENANCE else hoststate.UP
             ret = hosts_module.action(
                 action='fence',
-                wait_condition=lambda h: h.status == result_state,
+                wait_condition=lambda h: h and h.status == result_state,
                 fail_condition=hosts_module.failed_state_after_reinstall,
                 fence_type='restart',
             )
@@ -731,7 +741,7 @@ def main():
                 action_condition=lambda h: h.status == hoststate.MAINTENANCE,
                 post_action=hosts_module.post_reinstall,
                 reboot=module.params.get('reboot_after_installation'),
-                wait_condition=lambda h: h.status == hoststate.MAINTENANCE,
+                wait_condition=lambda h: h and h.status == hoststate.MAINTENANCE,
                 fail_condition=hosts_module.failed_state_after_reinstall,
                 host=otypes.Host(
                     override_iptables=module.params['override_iptables'],
@@ -753,7 +763,7 @@ def main():
                 ret = hosts_module.action(
                     action='activate',
                     action_condition=lambda h: h.status == hoststate.MAINTENANCE,
-                    wait_condition=lambda h: h.status == hoststate.UP,
+                    wait_condition=lambda h: h and h.status == hoststate.UP,
                     fail_condition=failed_state,
                 )
         module.exit_json(**ret)
