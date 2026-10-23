@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt_host - fixed "'NoneType' object has no attribute 'status'" failure when the host entity is temporarily unavailable while waiting on wait/fail conditions (https://github.com/oVirt/ovirt-ansible-collection/pull/810)
