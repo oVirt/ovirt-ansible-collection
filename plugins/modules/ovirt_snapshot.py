@@ -224,6 +224,8 @@ from ansible_collections.ovirt.ovirt.plugins.module_utils.ovirt import (
 
 
 def transfer(connection, module, direction, transfer_func):
+    if module.check_mode:
+        return True
     transfers_service = connection.system_service().image_transfers_service()
     transfer = transfers_service.add(
         otypes.ImageTransfer(
@@ -377,16 +379,16 @@ def create_snapshot(module, vm_service, snapshots_service, connection):
                     disk_attachments=[otypes.DiskAttachment(disk=otypes.Disk(id=da_id)) for da_id in disk_attachments_id] if disk_attachments_id else None
                 )
             )
+            wait(
+                service=snapshots_service.snapshot_service(snapshot.id),
+                condition=lambda snap: snap.snapshot_status == otypes.SnapshotStatus.OK,
+                wait=module.params['wait'],
+                timeout=module.params['timeout'],
+            )
         changed = True
-        wait(
-            service=snapshots_service.snapshot_service(snapshot.id),
-            condition=lambda snap: snap.snapshot_status == otypes.SnapshotStatus.OK,
-            wait=module.params['wait'],
-            timeout=module.params['timeout'],
-        )
     return {
         'changed': changed,
-        'id': snapshot.id,
+        'id': snapshot.id if snapshot else None,
         'snapshot': get_dict_of_struct(snapshot),
     }
 
@@ -403,13 +405,13 @@ def remove_snapshot(module, vm_service, snapshots_service, snapshot_id=None):
         snapshot_service = snapshots_service.snapshot_service(snapshot.id)
         if not module.check_mode:
             snapshot_service.remove()
+            wait(
+                service=snapshot_service,
+                condition=lambda snapshot: snapshot is None,
+                wait=module.params['wait'],
+                timeout=module.params['timeout'],
+            )
         changed = True
-        wait(
-            service=snapshot_service,
-            condition=lambda snapshot: snapshot is None,
-            wait=module.params['wait'],
-            timeout=module.params['timeout'],
-        )
 
     return {
         'changed': changed,
@@ -440,7 +442,7 @@ def restore_snapshot(module, vm_service, snapshots_service):
             vm_service.commit_snapshot()
         changed = True
 
-    if changed:
+    if changed and not module.check_mode:
         wait(
             service=snapshot_service,
             condition=lambda snap: snap.snapshot_status == otypes.SnapshotStatus.OK,
