@@ -25,6 +25,7 @@ CA_DEF = '/etc/pki/ovirt-engine/ca.pem'
 USERNAME_DEF = 'admin@internal'
 SITE_DEF = 'http://localhost:8080/ovirt-engine/api'
 PLAY_DEF = "../examples/dr_play.yml"
+OUTPUT_DEF = "~/ovirt-dr/disaster_recovery_vars.yml"
 
 
 class GenerateMappingFile:
@@ -274,8 +275,8 @@ class GenerateMappingFile:
             output_file = input("%s%sOutput file location is not initialized. "
                                 "Please provide the output file location "
                                 "for the mapping var file (%s): %s"
-                                % (INPUT, PREFIX, _OUTPUT_FILE, END)
-                                ) or _OUTPUT_FILE
+                                % (INPUT, PREFIX, OUTPUT_DEF, END)
+                                ) or OUTPUT_DEF
             output_file = os.path.expanduser(output_file)
         self._validate_output_file_exists(output_file, log)
 
