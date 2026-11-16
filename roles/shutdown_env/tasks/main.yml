@@ -105,7 +105,19 @@
           when: "item.origin != 'managed_hosted_engine'"
           with_items:
             - "{{ vm_result.ovirt_vms }}"
+          async: 300
+          poll: 0
+          register: _alias_vmshutdown_0
           failed_when: false
+
+        - name: Wait for all VMs to shutdown
+          async_status:
+            jid: "{{ item.ansible_job_id }}"
+          register: _jobs_alias_vmshutdown_0
+          retries: 60
+          delay: 5
+          until: _jobs_alias_vmshutdown_0.finished
+          loop: "{{_alias_vmshutdown_0.results}}"
 
         - name: Refresh VM list
           ovirt.ovirt.ovirt_vm_info:
@@ -123,6 +135,18 @@
           when: "item.origin != 'managed_hosted_engine' and item.status != 'down'"
           with_items:
             - "{{ vm_result.ovirt_vms }}"
+          async: 300
+          poll: 0
+          register: _alias_vmshutdown_1
+
+        - name: Wait for all remaining VMs to shutdown
+          async_status:
+            jid: "{{ item.ansible_job_id }}"
+          register: _jobs_alias_vmshutdown_1
+          retries: 60
+          delay: 5
+          until: _jobs_alias_vmshutdown_1.finished
+          loop: "{{_alias_vmshutdown_1.results}}"
 
         - name: Shutdown hosts, except HE ones, via IPMI (if configured)
           ovirt.ovirt.ovirt_host:
