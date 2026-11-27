@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt_snapshot - Fix ``keep_days_old`` not deleting any snapshots, and compare snapshot dates in their own time zone (https://github.com/oVirt/ovirt-ansible-collection/issues/744).
