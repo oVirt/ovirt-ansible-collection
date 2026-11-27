@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - ovirt_tag - Add templates option to assign tags to templates (https://github.com/oVirt/ovirt-ansible-collection/issues/765).
