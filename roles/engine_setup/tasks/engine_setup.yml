@@ -106,6 +106,7 @@
       ansible.builtin.uri:
         validate_certs: "{{ ovirt_engine_setup_validate_certs | default(omit) }}"
         url: "http://localhost/ovirt-engine/services/health"
+        use_proxy: false
         status_code: 200
       register: health_page
       retries: 30
