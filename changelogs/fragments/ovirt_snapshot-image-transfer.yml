@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - ovirt_snapshot - Fix disk download and upload, which failed with ``'ImageTransfer' object has no attribute 'signed_ticket'``, and report changed after a transfer (https://github.com/oVirt/ovirt-ansible-collection/issues/738).
