@@ -707,7 +707,7 @@ class DisksModule(BaseModule):
         if self._module.params['storage_domains']:
             for sd in self._module.params['storage_domains']:
                 new_disk_storage = search_by_name(sds_service, sd)
-                changed = changed or self.action(
+                copied = self.action(
                     action='copy',
                     entity=disk,
                     action_condition=(
@@ -718,6 +718,7 @@ class DisksModule(BaseModule):
                         id=new_disk_storage.id,
                     ),
                 )['changed']
+                changed = changed or copied
 
         return changed
 
@@ -889,7 +890,8 @@ def main():
                 _wait=True if module.params['upload_image_path'] else module.params['wait'],
             )
             is_new_disk = ret['changed']
-            ret['changed'] = ret['changed'] or disks_module.update_storage_domains(ret['id'])
+            storage_domains_changed = disks_module.update_storage_domains(ret['id'])
+            ret['changed'] = ret['changed'] or storage_domains_changed
             # We need to pass ID to the module, so in case we want to detach/attach disk
             # we have this ID specified to attach/detach method:
             module.params['id'] = ret['id']
