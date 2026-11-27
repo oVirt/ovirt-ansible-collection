@@ -20,7 +20,7 @@ WARN = bcolors.WARNING
 FAIL = bcolors.FAIL
 END = bcolors.ENDC
 PREFIX = "[Failover] "
-VAR_FILE_DEF = "../examples/disaster_recovery_vars.yml"
+VAR_FILE_DEF = "~/ovirt-dr/disaster_recovery_vars.yml"
 PLAY_DEF = "../examples/dr_play.yml"
 report_name = "report-{}.log"
 

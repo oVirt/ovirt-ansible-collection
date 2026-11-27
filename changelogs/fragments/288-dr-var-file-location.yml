@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - disaster_recovery - Generate and read the ``ovirt-dr`` mapping var file at ``~/ovirt-dr/disaster_recovery_vars.yml`` by default instead of inside the installed collection, which may be read-only, and write ``generator.log`` next to that file instead of into the current directory (https://github.com/oVirt/ovirt-ansible-collection/issues/288).
